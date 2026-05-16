@@ -1,0 +1,228 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>elective-3\week-07-effects-and-data-fetching.md</title><style>
+body { font-family: 'Segoe UI', Arial, sans-serif; max-width: 960px; margin: 2em auto; padding: 0 1.5em; line-height: 1.7; color: #1a1a1a; background: #fafafa; }
+h1 { border-bottom: 2px solid #2563eb; padding-bottom: .3em; margin-top: 1.5em; color: #1e3a5f; }
+h2 { border-bottom: 1px solid #cbd5e1; padding-bottom: .2em; margin-top: 1.5em; color: #1e3a5f; }
+h3 { margin-top: 1.3em; color: #334155; }
+a { color: #2563eb; }
+code { background: #eef2ff; padding: .15em .35em; border-radius: 4px; font-size: .9em; }
+pre { background: #1e293b; color: #e2e8f0; padding: 1em; border-radius: 6px; overflow-x: auto; }
+pre code { background: none; padding: 0; color: inherit; }
+blockquote { border-left: 4px solid #2563eb; margin: 1em 0; padding: .5em 1em; background: #f1f5f9; border-radius: 0 6px 6px 0; }
+table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+th, td { border: 1px solid #cbd5e1; padding: .5em .75em; text-align: left; }
+th { background: #2563eb; color: #fff; }
+tr:nth-child(even) { background: #f8fafc; }
+hr { border: none; border-top: 2px solid #e2e8f0; margin: 2em 0; }
+</style></head><body>
+<nav><a href="index.htm">Home</a></nav>
+<h2>Week 7: Effects &amp; Data Fetching</h2>
+<blockquote>
+<p>[TIME] <strong>Session Pacing (180 min)</strong></p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Block</th>
+<th>Time</th>
+<th>Format</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Hook + Analogy</td>
+<td>15 min</td>
+<td>Lecture + Whiteboard</td>
+</tr>
+<tr>
+<td>Concept Discussion</td>
+<td>25 min</td>
+<td>Lecture + Slides + Dependency Array Diagram</td>
+</tr>
+<tr>
+<td>Code Walkthrough</td>
+<td>30 min</td>
+<td>Live Code (basic -&gt; loading/error -&gt; AbortController -&gt; custom hook)</td>
+</tr>
+<tr>
+<td>Industry Reality</td>
+<td>10 min</td>
+<td>Lecture + Discussion</td>
+</tr>
+<tr>
+<td>Break</td>
+<td>10 min</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Exercise</td>
+<td>55 min</td>
+<td>Lab (solo or pairs)</td>
+</tr>
+<tr>
+<td>AI Integration</td>
+<td>10 min</td>
+<td>Demo + Prompt Walkthrough</td>
+</tr>
+<tr>
+<td>Debugging + Wrap</td>
+<td>15 min</td>
+<td>Group Debug + Q&amp;A</td>
+</tr>
+<tr>
+<td>Buffer</td>
+<td>10 min</td>
+<td>Overflow / Stretch discussion</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>[TIP] <strong>Teaching Tip (Week 7 strategy):</strong> This is the hardest week so far. <code>useEffect</code> is the most misunderstood React hook. The dependency array is where 80% of bugs come from. Build progressively: basic effect -&gt; loading/error -&gt; AbortController -&gt; custom hook. Draw the dependency array logic on the whiteboard every time. Use the security guard analogy repeatedly.</p>
+</blockquote>
+<hr />
+<h3>1. The Hook</h3>
+<blockquote>
+<p>[SPEAK] <strong>Script:</strong> "You know how your TikTok feed refreshes when you pull down? Or how your Discord server list updates when someone creates a new channel? That's <code>useEffect</code> working behind the scenes — fetching data when the component loads, cleaning up when you navigate away, and re-fetching when something changes. It's the bridge between your React component and the outside world (APIs, timers, subscriptions). Get it wrong, and your app makes infinite API calls. Get it right, and your app feels alive."</p>
+<p>[SLIDE] <strong>Slide:</strong> Title: "The Hook That Connects Your App to the World"<br />
+Diagram: React Component &lt;-&gt; useEffect &lt;-&gt; API / Timer / DOM / Subscription. Show the bidirectional flow.</p>
+<p>[TIP] <strong>Teaching Tip:</strong> Make the stakes clear: "Get it wrong = infinite API calls = your app crashes." Students need to understand that useEffect is powerful but dangerous.</p>
+<p>[ENGAGE] <strong>Gen-Z:</strong> "useEffect is like your phone's background app refresh. It runs when needed — when you open the app, when data changes, when you close it. Without it, your apps would be static and dead."<br />
+<strong>-&gt; Phone moment:</strong> "Open TikTok. Pull down to refresh. Watch new videos appear. That's useEffect fetching new data when you trigger the action."</p>
+<p>[LOST] <strong>If they're lost:</strong> "useEffect just means 'run this code when something happens.' When the component loads, when data changes, when it unmounts. That's it."</p>
+</blockquote>
+<hr />
+<h3>2. The Analogy</h3>
+<blockquote>
+<p>[SPEAK] <strong>Script:</strong> "<code>useEffect</code> is like a security guard at a building. The guard has three jobs: (1) When someone enters (component mounts), check their ID and let them in. (2) When something changes (dependency updates), re-check their ID. (3) When someone leaves (component unmounts), make sure they return their badge. The dependency array is the guard's instruction manual: 'Re-check ID when X changes.' An empty array means 'Only check on entry.' No array means 'Check on every single change' — which is usually a mistake."</p>
+<p>[BOARD] <strong>Whiteboard:</strong> Draw the security guard comparison:
+```
+useEffect(() =&gt; {
+  // ENTRY: component mounts
+  checkID();</p>
+<p>return () =&gt; {
+    // EXIT: component unmounts
+    returnBadge();
+  };
+}, [dependency]);
+   ^
+   GUARD'S INSTRUCTIONS:
+   []     = only check on entry
+   [dep]  = re-check when dep changes
+   (none) = check EVERY render (BAD!)
+```</p>
+<p>[TIP] <strong>Teaching Tip:</strong> The security guard analogy is perfect because it maps to all three phases: mount, update, unmount. Draw it on the whiteboard and reference it throughout the session.</p>
+<p>[ENGAGE] <strong>Gen-Z:</strong> "The dependency array is like your GCash notification settings. <code>[]</code> = notify me once (on signup). <code>[userId]</code> = notify me when my user ID changes. No array = notify me on EVERY single action (annoying, right?)."<br />
+<strong>-&gt; Turn to your neighbor:</strong> "In the security guard analogy, what happens if there's NO dependency array? 15 seconds, discuss!"</p>
+<p>[LOST] <strong>If they're lost:</strong> "Forget the guard. <code>[]</code> = run once. <code>[x]</code> = run when x changes. Nothing = run every time (usually a bug). That's the whole dependency array."</p>
+</blockquote>
+<hr />
+<h3>3. Concept Discussion</h3>
+<blockquote>
+<p>[TIME] <strong>Pacing:</strong> 25 min total (5 min dependency array -&gt; 5 min cleanup -&gt; 4 min loading/error -&gt; 4 min custom hooks -&gt; 4 min race conditions -&gt; 3 min useEffect timing)</p>
+<p>[SPEAK] <strong>Script:</strong> "React components are pure functions of state — they take props and state and return UI. But real apps need to do <em>side effects</em>: fetch data, subscribe to events, set timers, manipulate the DOM directly. <code>useEffect</code> is React's way of saying 'run this code outside the normal render cycle.'"</p>
+<p>[SLIDE] <strong>Slide:</strong> Show one concept at a time. For each: (1) the concept, (2) a code example, (3) what happens if you get it wrong. Don't show all concepts at once.</p>
+<p>[TIP] <strong>Teaching Tip:</strong> Spend the most time on the dependency array — this is where most bugs happen. Show the three patterns clearly: <code>[]</code> (mount only), <code>[dep]</code> (on change), none (every render = bug). Draw a decision tree on the whiteboard.</p>
+<p>[ASK] <strong>Ask the class:</strong> "If I want to fetch data when the component first loads, what's my dependency array?" (<code>[]</code>) "If I want to re-fetch when the user ID changes?" (<code>[userId]</code>) "If I want to set up a timer that runs every second?" (trick question — use <code>setInterval</code> with functional updates, not useEffect with no deps)</p>
+<p>[ENGAGE] <strong>Gen-Z:</strong> "The dependency array is like your TikTok For You algorithm. <code>[]</code> = show me the same feed forever. <code>[interests]</code> = update when my interests change. No array = refresh on every single scroll (chaos)."<br />
+<strong>-&gt; Phone moment:</strong> "Open your browser console. We'll trace through a useEffect step by step. Watch when it runs and when it doesn't."</p>
+<p>[Q&amp;A] <strong>Student Q:</strong> "Why does useEffect run AFTER render? Why not before?"
+<strong>Short answer:</strong> Because the component needs to be on screen first.
+<strong>Real answer:</strong> useEffect runs after the browser has painted the screen. This prevents blocking the UI. If useEffect ran before render, it could delay showing anything to the user. The render happens first (so the user sees something), then the effect runs (to fetch data, set up subscriptions, etc.).
+<strong>The hidden question:</strong> "Can I block rendering with useEffect?" -&gt; No. Use <code>useSyncExternalStore</code> or Suspense for that.</p>
+<p>[Q&amp;A] <strong>Student Q:</strong> "What's a race condition and why should I care?"
+<strong>Short answer:</strong> When two async operations compete and the wrong one wins.
+<strong>Real answer:</strong> Imagine fetching user A's profile, then quickly clicking user B. User A's response might arrive AFTER user B's. Without cleanup, you'd see user A's data on user B's profile. AbortController cancels the stale request so only the latest one matters.
+<strong>The hidden question:</strong> "Does this actually happen?" -&gt; Yes, every time a user clicks fast. It's one of the most common production bugs.</p>
+<p>[LOST] <strong>If they're lost:</strong> "The simplest useEffect summary: (1) <code>[]</code> = run once on mount. (2) <code>[dep]</code> = run when dep changes. (3) Return a cleanup function. (4) Always handle loading + error states. That's 90% of what you need."</p>
+</blockquote>
+<hr />
+<h3>4. Code Walkthrough</h3>
+<blockquote>
+<p>[TIME] <strong>Pacing:</strong> 30 min (5 min basic -&gt; 8 min loading/error -&gt; 10 min AbortController -&gt; 7 min custom hook)</p>
+<p>[SPEAK] <strong>Script:</strong> "Let's build a data-fetching component step by step. We'll start with the simplest effect, add loading and error states, then add cleanup with AbortController, and finally extract it into a reusable custom hook."</p>
+<p>[SLIDE] <strong>Slide:</strong> Show each step on its own slide. Step 1: basic effect (fetch on mount). Step 2: loading/error states. Step 3: AbortController cleanup. Step 4: custom <code>useFetch</code> hook.</p>
+<p>[TIP] <strong>Teaching Tip:</strong> <strong>Type each step live.</strong> Emphasize the progression: each step adds one thing. The AbortController step is the most important — it's what separates amateur from professional code. Show the "memory leak" warning that appears without cleanup.</p>
+<p>[BOARD] <strong>Whiteboard:</strong> Draw the effect lifecycle:
+<code>MOUNT: useEffect runs -&gt; fetch starts -&gt; loading = true
+FETCH: response arrives -&gt; data set -&gt; loading = false -&gt; re-render
+UPDATE: userId changes -&gt; cleanup (abort old) -&gt; new fetch starts
+UNMOUNT: cleanup (abort) -&gt; component removed</code></p>
+<p>[ENGAGE] <strong>Gen-Z:</strong> "Building a useFetch hook is like creating your own GCash API wrapper. You handle the request, the loading spinner, the error message, and the cleanup — all in one reusable package."<br />
+<strong>-&gt; Type-along:</strong> "Type the basic version first. Test it. Then add loading/error. Then AbortController. Then extract to useFetch. Each step should work before moving to the next."</p>
+<p>[Q&amp;A] <strong>Student Q:</strong> "Why do we need AbortController? Can't we just ignore the old response?"
+<strong>Short answer:</strong> No — the old response will still try to set state on an unmounted component.
+<strong>Real answer:</strong> Without AbortController, the old fetch still completes and tries to call <code>setUser()</code> or <code>setLoading()</code>. If the component has unmounted (user navigated away), React warns about "state update on unmounted component." AbortController actually cancels the network request, saving bandwidth and preventing the warning.
+<strong>The hidden question:</strong> "Does aborting cancel the server request?" -&gt; Yes, the browser sends a cancel signal. The server may still process it, but the browser won't wait for the response.</p>
+<p>[LOST] <strong>If they're lost:</strong> "Start with just the basic effect — fetch on mount with <code>[]</code>. Get that working. Then add loading state. Then error. Then AbortController. Then extract to useFetch. One layer at a time."</p>
+</blockquote>
+<hr />
+<h3>5. The "Industry Reality"</h3>
+<blockquote>
+<p>[SPEAK] <strong>Script:</strong> "Every data-fetching component at every company follows this exact pattern: loading state, error state, success state, cleanup on unmount. The <code>useFetch</code> custom hook you just built is the same pattern used in production libraries like <code>react-query</code> and <code>SWR</code>. The AbortController cleanup is what prevents the 'memory leak' warnings you see in React dev tools. TikTok's web app uses this exact pattern for every feed request."</p>
+<p>[SLIDE] <strong>Slide:</strong> Show the pattern as a universal template: <code>useFetch</code> -&gt; <code>{ data, loading, error }</code> -&gt; three UI states. Logos: react-query, SWR, Apollo Client.</p>
+<p>[TIP] <strong>Teaching Tip:</strong> Keep this to 5 minutes. Show them that the custom hook they built is the same pattern used by professional libraries — they've just built a mini react-query.</p>
+<p>[ENGAGE] <strong>Gen-Z:</strong> <strong>-&gt; Poll:</strong> "How many of you think you just built something that companies pay for?" (Hands.) "react-query is literally a more robust version of the useFetch hook you just wrote."</p>
+<p>[LOST] <strong>If they're lost:</strong> "You don't need to know react-query today. Just understand: the pattern you learned is the industry standard for data fetching."</p>
+</blockquote>
+<hr />
+<h3>6. Exercise</h3>
+<blockquote>
+<p>[TIME] <strong>Pacing:</strong> 55 min total (5 min setup -&gt; 40 min coding -&gt; 10 min share)</p>
+<p>[SPEAK] <strong>Script:</strong> "Build a data-fetching dashboard using your useFetch custom hook. Fetch posts and users from JSONPlaceholder in parallel, show loading/error states, add a refresh button, and a search filter."</p>
+<p>[SLIDE] <strong>Slide:</strong> Exercise checklist:
+- [ ] Create <code>useFetch</code> custom hook
+- [ ] Fetch posts from <code>/posts</code> and users from <code>/users</code>
+- [ ] Both fetch in parallel on mount
+- [ ] Loading spinners while data loads
+- [ ] Error messages if fetch fails (test with bad URL)
+- [ ] "Refresh" button that re-fetches
+- [ ] Search/filter input for posts by title (client-side)
+- [ ] Post detail page with URL params</p>
+<p>[TIP] <strong>Teaching Tip:</strong> The search filter (requirement 6) and post detail page (requirement 7) are stretch goals. The core is the useFetch hook + dashboard. Students who finish early can tackle the extras.</p>
+<p>[ENGAGE] <strong>Gen-Z:</strong> <strong>-&gt; Pair up:</strong> "One person builds the useFetch hook, the other builds the dashboard UI. Then combine and add the search filter together."</p>
+<p>[LOST] <strong>If they're lost:</strong> "Start with useFetch. Get it working with one endpoint. Then add the second. Then loading/error UI. Then refresh. Then search. One feature at a time."</p>
+</blockquote>
+<hr />
+<h3>7. AI Integration Note</h3>
+<blockquote>
+<p>[TIME] <strong>Pacing:</strong> 10 min (5 min demo -&gt; 5 min try)</p>
+<p>[SPEAK] <strong>Script:</strong> "This week, ask AI to generate a useFetch hook, then audit its dependency array and cleanup function. Ask 'What happens if the URL changes rapidly?' and 'Does this handle race conditions?'"</p>
+<p>[SLIDE] <strong>Slide:</strong> AI usage guide:
+| [OK] Allowed | [NO] Not Allowed |
+|-----------|--------------|
+| "Generate a useFetch hook" | "Write my dependency array" |
+| "Does this handle race conditions?" | "Fix my infinite re-render loop" |</p>
+<p>[TIP] <strong>Teaching Tip:</strong> Point out the common AI mistakes: missing cleanup (no AbortController), fetch inside component body (not in useEffect), wrong dependency array, missing loading reset. Teach students to audit AI's effect logic.</p>
+<p>[ENGAGE] <strong>Gen-Z:</strong> "AI writes useEffect code fast but often forgets the cleanup. It's like ordering GrabFood without checking if the restaurant is still open — looks fine until you realize nothing's coming."</p>
+</blockquote>
+<hr />
+<h3>8. Debugging / "Watch Out For" Section</h3>
+<blockquote>
+<p>[TIME] <strong>Pacing:</strong> 15 min (5 min common errors -&gt; 5 min group debug -&gt; 5 min Q&amp;A)</p>
+<p>[SPEAK] <strong>Script:</strong> "Here are the useEffect errors and mental model traps you'll hit this week. The infinite re-render loop alone will save you hours of debugging."</p>
+<p>[SLIDE] <strong>Slide:</strong> Error cards:
+<code>+--------------------------------------+
+| "Can't perform state update on       |
+| unmounted component"                 |
+| Effect runs after component removed  |
+| Fix: cleanup function with AbortCtrl |
++--------------------------------------+
++--------------------------------------+
+| "Infinite re-render loop"            |
+| Dependency changes every render      |
+| Fix: stabilize dependency or move    |
+| inside effect                        |
++--------------------------------------+</code></p>
+<p>[ENGAGE] <strong>Gen-Z:</strong> "The infinite loop is like your phone stuck in a boot loop — it restarts, which triggers the restart, which triggers the restart. Check your dependency array: is something changing every render?"</p>
+<p>[Q&amp;A] <strong>Student Q:</strong> "Why does <code>useEffect</code> with <code>setInterval</code> always log the same value?"
+<strong>Short answer:</strong> Because the interval captures the value from when the effect was created.
+<strong>Real answer:</strong> With <code>[]</code> as the dependency array, the effect runs once. The <code>setInterval</code> callback captures <code>count</code> at that moment (0). Even though <code>count</code> changes on re-renders, the interval still references the original 0. Fix: use functional updates <code>setCount(c =&gt; c + 1)</code> or add <code>count</code> to the dependency array (but then you need to clear and reset the interval each time).
+<strong>The hidden question:</strong> "Which fix is better?" -&gt; Functional updates are cleaner for counters. Dependency array changes are better when you actually need the current value.</p>
+<p>[LOST] <strong>If they're lost:</strong> "The #1 issue: infinite re-render loops. If your app freezes, check your dependency array. Is it an object or array created inline? That creates a new reference every render. Move it outside the component or use <code>useMemo</code>."</p>
+</blockquote>
+<hr />
+<h3>Teaching Script</h3>
+<p>This week's annotations cover: pacing table at top, inline annotations per section, and this summary. The core arc is: basic effect -&gt; loading/error -&gt; AbortController -&gt; custom hook. The dependency array is the most important concept — draw it on the whiteboard every time. The stale closure + infinite loop are the two most common bugs. Emphasize: the useFetch pattern they build is the same pattern used by react-query and SWR in production.</p>
+<hr />
+</body></html>

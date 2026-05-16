@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Web Systems Reader</title>
+<script src="react.min.js"></script>
+<script src="react-dom.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#fafafa;--fg:#1a1a1a;--muted:#64748b;--border:#e2e8f0;--accent:#2563eb;--accent-hover:#1d4ed8;--card:#fff;--code-bg:#eef2ff;--pre-bg:#1e293b;--pre-fg:#e2e8f0;--quote-bg:#f1f5f9;--quote-border:#2563eb;--th-bg:#2563eb;--th-fg:#fff;--td-border:#cbd5e1;--tr-alt:#f8fafc;--sidebar-bg:#1e293b;--sidebar-fg:#e2e8f0;--sidebar-hover:#334155;--sidebar-active:#2563eb;--header-bg:#fff;--header-border:#e2e8f0}
+[data-theme=sepia]{--bg:#fbf7f0;--fg:#3b2f1a;--muted:#8b7d6b;--border:#d4c9b8;--card:#f5efe6;--code-bg:#ede4d8;--pre-bg:#2c2418;--pre-fg:#e8ddd0;--quote-bg:#f0e8dc;--quote-border:#a67c4e;--th-bg:#8b6914;--th-fg:#fff;--td-border:#d4c9b8;--tr-alt:#f5efe6;--sidebar-bg:#2c2418;--sidebar-fg:#e8ddd0;--sidebar-hover:#4a3d2c;--sidebar-active:#a67c4e;--header-bg:#f5efe6;--header-border:#d4c9b8}
+[data-theme=dark]{--bg:#0f172a;--fg:#e2e8f0;--muted:#94a3b8;--border:#334155;--card:#1e293b;--code-bg:#1e293b;--pre-bg:#0f172a;--pre-fg:#e2e8f0;--quote-bg:#1e293b;--quote-border:#3b82f6;--th-bg:#1e40af;--th-fg:#fff;--td-border:#334155;--tr-alt:#1e293b;--sidebar-bg:#0f172a;--sidebar-fg:#e2e8f0;--sidebar-hover:#1e293b;--sidebar-active:#3b82f6;--header-bg:#1e293b;--header-border:#334155}
+body{background:var(--bg);color:var(--fg);font-family:'Segoe UI',system-ui,Arial,sans-serif;line-height:1.7;overflow:hidden;height:100vh}
+#root{height:100vh;display:flex;flex-direction:column}
+.header{background:var(--header-bg);border-bottom:1px solid var(--header-border);padding:0 1em;height:52px;display:flex;align-items:center;gap:.75em;flex-shrink:0;z-index:10}
+.header .menu-btn{background:none;border:none;color:var(--fg);font-size:1.3em;cursor:pointer;padding:.3em .5em;border-radius:4px}
+.header .menu-btn:hover{background:var(--border)}
+.header .title{font-size:.95em;font-weight:600;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.header .nav-btn{background:none;border:1px solid var(--border);color:var(--fg);padding:.3em .7em;border-radius:4px;cursor:pointer;font-size:.85em}
+.header .nav-btn:disabled{opacity:.3;cursor:default}
+.header .nav-btn:hover:not(:disabled){background:var(--border)}
+.header .meta{font-size:.75em;color:var(--muted);white-space:nowrap}
+.header .ctrl-btn{background:none;border:1px solid var(--border);color:var(--muted);padding:.2em .5em;border-radius:4px;cursor:pointer;font-size:.75em}
+.header .ctrl-btn:hover{background:var(--border);color:var(--fg)}
+.reader{display:flex;flex:1;overflow:hidden;position:relative}
+.sidebar{width:300px;background:var(--sidebar-bg);color:var(--sidebar-fg);overflow-y:auto;flex-shrink:0;border-right:1px solid var(--header-border);transition:margin-left .25s}
+.sidebar.closed{margin-left:-300px}
+.sidebar hdr{padding:1em;border-bottom:1px solid rgba(255,255,255,.1);font-size:1.1em;font-weight:700}
+.sidebar-sec{padding:.5em 0}
+.sidebar-sec h3{padding:.5em 1em .3em;font-size:.8em;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);cursor:pointer;display:flex;align-items:center;gap:.4em;user-select:none}
+.sidebar-sec h3:hover{color:var(--sidebar-fg)}
+.sidebar-sec h3 .arr{font-size:.7em;transition:transform .2s;display:inline-block}
+.sidebar-sec h3 .arr.op{transform:rotate(90deg)}
+.sidebar-itm{padding:.35em 1em .35em 2em;font-size:.85em;cursor:pointer;color:var(--sidebar-fg);opacity:.75;border-left:3px solid transparent;transition:all .15s}
+.sidebar-itm:hover{opacity:1;background:var(--sidebar-hover)}
+.sidebar-itm.act{opacity:1;border-left-color:var(--sidebar-active);background:var(--sidebar-hover);font-weight:600}
+.cont{flex:1;overflow-y:auto;padding:2em 3em;background:var(--bg)}
+.cont-in{max-width:800px;margin:0 auto;min-height:100%}
+.cont h1{border-bottom:2px solid var(--accent);padding-bottom:.3em;margin-top:1.5em;color:var(--fg);font-size:1.8em}
+.cont h2{border-bottom:1px solid var(--border);padding-bottom:.2em;margin-top:1.5em;color:var(--fg);font-size:1.4em}
+.cont h3{margin-top:1.3em;color:var(--fg);font-size:1.15em}
+.cont a{color:var(--accent)}
+.cont code{background:var(--code-bg);padding:.15em .35em;border-radius:4px;font-size:.88em;color:var(--fg)}
+.cont pre{background:var(--pre-bg);color:var(--pre-fg);padding:1em;border-radius:6px;overflow-x:auto;margin:1em 0;font-size:.88em;line-height:1.5}
+.cont pre code{background:none;padding:0;color:inherit}
+.cont blockquote{border-left:4px solid var(--quote-border);margin:1em 0;padding:.5em 1em;background:var(--quote-bg);border-radius:0 6px 6px 0;color:var(--fg)}
+.cont table{border-collapse:collapse;width:100%;margin:1em 0;font-size:.9em}
+.cont th,.cont td{border:1px solid var(--td-border);padding:.5em .75em;text-align:left}
+.cont th{background:var(--th-bg);color:var(--th-fg);font-weight:600}
+.cont tr:nth-child(even){background:var(--tr-alt)}
+.cont hr{border:none;border-top:2px solid var(--border);margin:2em 0}
+.cont p{margin:0 0 1em}
+.cont ul,.cont ol{padding-left:1.5em;margin:0 0 1em}
+.cont li{margin:.3em 0}
+.cont nav{display:none}
+.loading{display:flex;align-items:center;justify-content:center;height:50vh;color:var(--muted);font-size:1.1em}
+.err{color:#ef4444;text-align:center;padding:3em}
+.sidebar::-webkit-scrollbar,.cont::-webkit-scrollbar{width:6px}
+.sidebar::-webkit-scrollbar-track{background:transparent}
+.sidebar::-webkit-scrollbar-thumb{background:var(--sidebar-hover);border-radius:3px}
+.cont::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+@media(max-width:768px){
+  .sidebar{position:fixed;top:52px;left:0;bottom:0;z-index:20;width:280px}
+  .sidebar.closed{margin-left:-280px}
+  .cont{padding:1.5em 1em}
+}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script>
+const{createElement:h,useState,useEffect,useRef,useCallback,useMemo}=React;
+
+const DATA=[
+{id:'e2',title:'Elective 2: Building Web Products',items:[
+  {t:'Syllabus',f:'elective-2-building-web-products.htm'},
+  {t:'Week 1: C# Translation Bootcamp',f:'elective-2/week-01-csharp-translation-bootcamp.htm'},
+  {t:'Week 2: Interfaces & DI Mental Model',f:'elective-2/week-02-interfaces-and-di-mental-model.htm'},
+  {t:'Week 3: HTTP & The Web',f:'elective-2/week-03-http-and-the-web.htm'},
+  {t:'Week 4: MVC Big Picture',f:'elective-2/week-04-mvc-big-picture.htm'},
+  {t:'Week 5: Routing Deep-Dive',f:'elective-2/week-05-routing-deep-dive.htm'},
+  {t:'Week 6: Controllers & Action Results',f:'elective-2/week-06-controllers-and-action-results.htm'},
+  {t:'Week 7: Views & Layouts',f:'elective-2/week-07-views-and-layouts.htm'},
+  {t:'Week 8: Model Binding & Validation',f:'elective-2/week-08-model-binding-and-validation.htm'},
+  {t:'Week 9: EF Core Fundamentals',f:'elective-2/week-09-ef-core-fundamentals.htm'},
+  {t:'Week 10: Relationships & Data Display',f:'elective-2/week-10-relationships-and-data-display.htm'},
+  {t:'Week 11: Consuming APIs with HttpClient',f:'elective-2/week-11-consuming-apis-with-httpclient.htm'},
+  {t:'Week 12: Mini-Capstone Checkpoint',f:'elective-2/week-12-mini-capstone-checkpoint.htm'},
+  {t:'Week 13: Authentication & Authorization',f:'elective-2/week-13-authentication-and-authorization.htm'},
+  {t:'Week 14: Security Fundamentals',f:'elective-2/week-14-security-fundamentals.htm'},
+  {t:'Week 15: Capstone Sprint',f:'elective-2/week-15-capstone-sprint.htm'},
+  {t:'Week 16: Capstone Final',f:'elective-2/week-16-capstone-final-deploy-and-present.htm'},
+  {t:'Full Discussions',f:'elective-2-discussions.htm'},
+]},
+{id:'e3',title:'Elective 3: Production-Grade Products',items:[
+  {t:'Syllabus',f:'elective-3-production-grade-products.htm'},
+  {t:'Week 1: Modern JavaScript Review',f:'elective-3/week-01-modern-javascript-review.htm'},
+  {t:'Week 2: Async JavaScript Deep-Dive',f:'elective-3/week-02-async-javascript-deep-dive.htm'},
+  {t:'Week 3: TypeScript Essentials',f:'elective-3/week-03-typescript-essentials.htm'},
+  {t:'Week 4: Dev Tooling & Workflow',f:'elective-3/week-04-dev-tooling-and-workflow.htm'},
+  {t:'Week 5: Component Thinking in Vanilla JS',f:'elective-3/week-05-component-thinking-in-vanilla-js.htm'},
+  {t:'Week 6: React Fundamentals',f:'elective-3/week-06-react-fundamentals.htm'},
+  {t:'Week 7: Effects & Data Fetching',f:'elective-3/week-07-effects-and-data-fetching.htm'},
+  {t:'Week 8: React Router & SPA Concepts',f:'elective-3/week-08-react-router-and-spa-concepts.htm'},
+  {t:'Week 9: API Design Philosophy',f:'elective-3/week-09-api-design-philosophy.htm'},
+  {t:'Week 10: ASP.NET Core Web API',f:'elective-3/week-10-aspnet-core-web-api.htm'},
+  {t:'Week 11: Frontend-Backend Integration',f:'elective-3/week-11-frontend-backend-integration.htm'},
+  {t:'Week 12: API Versioning & Documentation',f:'elective-3/week-12-api-versioning-and-documentation.htm'},
+  {t:'Week 13: Auth Deep-Dive',f:'elective-3/week-13-auth-deep-dive.htm'},
+  {t:'Week 14: Testing',f:'elective-3/week-14-testing.htm'},
+  {t:'Week 15: CI/CD & Deployment',f:'elective-3/week-15-ci-cd-and-deployment.htm'},
+  {t:'Week 16: Capstone Final',f:'elective-3/week-16-capstone-final.htm'},
+  {t:'Full Discussions',f:'elective-3-discussions.htm'},
+]},
+{id:'appx',title:'Appendices',items:[
+  {t:'Teaching Script Format',f:'teaching-script-format.htm'},
+]},
+];
+const ALL=DATA.flatMap(s=>s.items);
+const THEMES=['light','sepia','dark'];
+const TICONS={light:'Light',sepia:'Sepia',dark:'Dark'};
+
+function Sidebar({sections,idx,onSel,open}){
+  const[openSec,setOpen]=useState(()=>{const o={};sections.forEach((_,i)=>{o[i]=true});return o});
+  const toggle=i=>setOpen(p=>({...p,[i]:!p[i]}));
+  let gi=0;
+  return h('div',{className:'sidebar'+(open?'':' closed')},
+    h('hdr',null,'[TOC]'),
+    sections.map((sec,si)=>{
+      const st=gi;gi+=sec.items.length;
+      return h('div',{key:sec.id,className:'sidebar-sec'},
+        h('h3',{onClick:()=>toggle(si)},
+          h('span',{className:'arr'+(openSec[si]?' op':'')},'>'),
+          sec.title
+        ),
+        openSec[si]&&sec.items.map((item,ii)=>{
+          const i=st+ii;
+          return h('div',{key:i,className:'sidebar-itm'+(i===idx?' act':''),onClick:()=>onSel(i)},item.t);
+        })
+      );
+    })
+  );
+}
+
+function App(){
+  const saved=useMemo(()=>{try{return JSON.parse(localStorage.getItem('rs')||'{}')}catch{return{}}},[]);
+  const[idx,setIdx]=useState(typeof saved.idx==='number'?saved.idx:0);
+  const[html,setHtml]=useState(null);
+  const[loading,setLoading]=useState(true);
+  const[err,setErr]=useState(null);
+  const[side,setSide]=useState(true);
+  const[theme,setTheme]=useState(saved.theme||'light');
+  const[fs,setFs]=useState(saved.fs||100);
+  const contRef=useRef(null);
+
+  const load=useCallback(async(i)=>{
+    const it=ALL[i];if(!it)return;
+    setLoading(true);setErr(null);setHtml(null);
+    try{
+      const r=await fetch(it.f);
+      if(!r.ok)throw new Error('HTTP '+r.status);
+      const txt=await r.text();
+      const d=new DOMParser().parseFromString(txt,'text/html');
+      const b=d.querySelector('body');
+      setHtml(b?b.innerHTML:'<p>No content.</p>');
+    }catch(e){setErr('Failed: '+e.message)}
+    finally{setLoading(false)}
+  },[]);
+
+  useEffect(()=>{load(idx)},[idx,load]);
+  useEffect(()=>{try{localStorage.setItem('rs',JSON.stringify({idx,theme,fs}))}catch{}},[idx,theme,fs]);
+  useEffect(()=>{document.documentElement.setAttribute('data-theme',theme)},[theme]);
+  useEffect(()=>{if(contRef.current)contRef.current.scrollTop=0},[idx]);
+
+  const go=n=>{if(n>=0&&n<ALL.length)setIdx(n)};
+  const it=ALL[idx];
+
+  return[
+    h('div',{className:'header',key:'h'},
+      h('button',{className:'menu-btn',onClick:()=>setSide(p=>!p)},'='),
+      h('span',{className:'title'},it?it.t:''),
+      h('span',{className:'meta'},(idx+1)+'/'+ALL.length),
+      h('button',{className:'ctrl-btn',onClick:()=>setFs(p=>Math.max(80,p-10))},'A-'),
+      h('button',{className:'ctrl-btn',onClick:()=>setFs(p=>Math.min(140,p+10))},'A+'),
+      h('button',{className:'ctrl-btn',onClick:()=>setTheme(p=>THEMES[(THEMES.indexOf(p)+1)%THEMES.length])},TICONS[theme]),
+      h('button',{className:'nav-btn',disabled:idx===0,onClick:()=>go(idx-1)},'<'),
+      h('button',{className:'nav-btn',disabled:idx>=ALL.length-1,onClick:()=>go(idx+1)},'>'),
+    ),
+    h('div',{className:'reader',key:'r'},
+      h(Sidebar,{sections:DATA,idx,onSel:i=>go(i),open:side}),
+      h('div',{className:'cont',ref:contRef},
+        loading?h('div',{className:'loading'},'Loading...'):
+        err?h('div',{className:'err'},h('h2',null,'Error'),h('p',null,err)):
+        html?h('div',{className:'cont-in',style:{fontSize:fs+'%'},dangerouslySetInnerHTML:{__html:html}}):
+        null
+      )
+    )
+  ];
+}
+
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowLeft'){const b=document.querySelector('.nav-btn:first-of-type');if(b&&!b.disabled)b.click()}
+  if(e.key==='ArrowRight'){const b=document.querySelector('.nav-btn:last-of-type');if(b&&!b.disabled)b.click()}
+});
+
+ReactDOM.createRoot(document.getElementById('root')).render(h(App));
+</script>
+</body>
+</html>

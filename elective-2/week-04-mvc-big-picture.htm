@@ -1,0 +1,221 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>elective-2\week-04-mvc-big-picture.md</title><style>
+body { font-family: 'Segoe UI', Arial, sans-serif; max-width: 960px; margin: 2em auto; padding: 0 1.5em; line-height: 1.7; color: #1a1a1a; background: #fafafa; }
+h1 { border-bottom: 2px solid #2563eb; padding-bottom: .3em; margin-top: 1.5em; color: #1e3a5f; }
+h2 { border-bottom: 1px solid #cbd5e1; padding-bottom: .2em; margin-top: 1.5em; color: #1e3a5f; }
+h3 { margin-top: 1.3em; color: #334155; }
+a { color: #2563eb; }
+code { background: #eef2ff; padding: .15em .35em; border-radius: 4px; font-size: .9em; }
+pre { background: #1e293b; color: #e2e8f0; padding: 1em; border-radius: 6px; overflow-x: auto; }
+pre code { background: none; padding: 0; color: inherit; }
+blockquote { border-left: 4px solid #2563eb; margin: 1em 0; padding: .5em 1em; background: #f1f5f9; border-radius: 0 6px 6px 0; }
+table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+th, td { border: 1px solid #cbd5e1; padding: .5em .75em; text-align: left; }
+th { background: #2563eb; color: #fff; }
+tr:nth-child(even) { background: #f8fafc; }
+hr { border: none; border-top: 2px solid #e2e8f0; margin: 2em 0; }
+</style></head><body>
+<nav><a href="index.htm">Home</a></nav>
+<h2>Week 4: MVC Big Picture</h2>
+<blockquote>
+<p>[TIME] <strong>Session Pacing (180 min)</strong></p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Block</th>
+<th>Time</th>
+<th>Format</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Hook + Analogy</td>
+<td>15 min</td>
+<td>Lecture + Whiteboard</td>
+</tr>
+<tr>
+<td>Concept Discussion</td>
+<td>25 min</td>
+<td>Lecture + Slides + Pipeline Diagram</td>
+</tr>
+<tr>
+<td>Code Walkthrough</td>
+<td>30 min</td>
+<td>Live Code (scaffold + trace)</td>
+</tr>
+<tr>
+<td>Industry Reality</td>
+<td>10 min</td>
+<td>Lecture + Discussion</td>
+</tr>
+<tr>
+<td>Break</td>
+<td>10 min</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Exercise</td>
+<td>55 min</td>
+<td>Lab (solo or pairs)</td>
+</tr>
+<tr>
+<td>AI Integration</td>
+<td>10 min</td>
+<td>Demo + Prompt Walkthrough</td>
+</tr>
+<tr>
+<td>Debugging + Wrap</td>
+<td>15 min</td>
+<td>Group Debug + Q&amp;A</td>
+</tr>
+<tr>
+<td>Buffer</td>
+<td>10 min</td>
+<td>Overflow / Stretch discussion</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>[TIP] <strong>Teaching Tip (Week 4 strategy):</strong> This is the first time students build a real web app. The MVC pattern will feel abstract until they see it working. Scaffold the project live, then trace the pipeline step by step. The "aha" moment is when they visit a URL and see their own HTML appear.</p>
+</blockquote>
+<hr />
+<h3>The Hook</h3>
+<blockquote>
+<p>[SPEAK] <strong>Script:</strong> "You know how Grab works? You open the app, see a map, order food, track delivery? That's MVC. And now you're going to build it. Well, not Grab. But the architecture behind it."</p>
+<p>[SLIDE] <strong>Slide:</strong> Title: "You Use MVC Every Day"<br />
+Screenshots of Grab, Foodpanda, and Shopee — all labeled "Built on MVC architecture."</p>
+<p>[TIP] <strong>Teaching Tip:</strong> Connect MVC to apps they use daily. Filipino students know Grab and Foodpanda well. This makes the abstract pattern feel relevant and achievable.</p>
+<p>[ENGAGE] <strong>Gen-Z:</strong> "Every app you use — Grab, Foodpanda, Shopee, even GCash — they all use MVC. You're not learning some academic concept. You're learning how the apps you use every day are built."<br />
+<strong>-&gt; Poll:</strong> "Who here has ordered from Grab or Foodpanda this week?" (Most hands.) "That's MVC in action."</p>
+<p>[LOST] <strong>If they're lost:</strong> "MVC is just a way of organizing code so it doesn't become a mess. Think of it like having separate folders for photos, documents, and music on your phone. MVC does that for web apps."</p>
+</blockquote>
+<hr />
+<h3>The Analogy</h3>
+<blockquote>
+<p>[SPEAK] <strong>Script:</strong> "MVC is a restaurant with a really good system. The menu tells you what's available. The waiter takes your order. The kitchen cooks the food. The plating makes it look good. The customer never goes into the kitchen. The waiter never cooks. The chef never talks to customers."</p>
+<p>[BOARD] <strong>Whiteboard:</strong> Draw the restaurant MVC map:
+<code>Customer (Browser)
+    v reads
+Menu (Route: /products/details/5)
+    v orders
+Waiter (Controller: ProductsController.Details)
+    v requests
+Kitchen (Model: Get product #5 from DB)
+    v returns
+Plating (View: .cshtml template -&gt; HTML)
+    v serves
+Customer sees the page</code></p>
+<p>[TIP] <strong>Teaching Tip:</strong> The restaurant analogy is perfect for MVC because it maps 1:1. Emphasize the separation: "The waiter NEVER cooks. The controller NEVER does database work." This is the core MVC principle.</p>
+<p>[ENGAGE] <strong>Gen-Z:</strong> "MVC is like a group project where everyone has a clear role. Model = the researcher (gets the data). View = the designer (makes it look good). Controller = the team leader (coordinates everything). When roles are clear, the project works. When they're not — chaos."<br />
+<strong>-&gt; Turn to your neighbor:</strong> "In the restaurant analogy, what happens if the waiter starts cooking? What breaks? 10 seconds, go!"</p>
+<p>[LOST] <strong>If they're lost:</strong> "Forget MVC for a second. Think about a website. You type a URL. Something figures out what page you want. That something grabs the data. Then it puts the data into a template. Then sends you the page. MVC is just names for those steps."</p>
+</blockquote>
+<hr />
+<h3>Concept Discussion</h3>
+<blockquote>
+<p>[TIME] <strong>Pacing:</strong> 25 min total (10 min pipeline flow -&gt; 8 min file structure -&gt; 7 min key insights)</p>
+<p>[SPEAK] <strong>Script:</strong> "Here's the entire MVC request flow in seven steps. This is the backbone of every web app you'll build this semester. Trace it with me."</p>
+<p>[SLIDE] <strong>Slide:</strong> Animated pipeline diagram showing each step: Browser -&gt; URL -&gt; Route -&gt; Controller -&gt; Model -&gt; View -&gt; HTML -&gt; Browser. Reveal one step at a time.</p>
+<p>[TIP] <strong>Teaching Tip:</strong> The key insight is "Controller is the middleman." Students will want to put business logic in the controller. Resist this urge early: "The controller delegates. It doesn't do real work."</p>
+<p>[ASK] <strong>Ask the class:</strong> "When you visit <code>/products/details/5</code>, which part figures out that 'products' means ProductsController?" (Answer: Routing.)</p>
+<p>[ENGAGE] <strong>Gen-Z:</strong> "The MVC pipeline is like a GrabFood order. You browse (Route), order (Controller), kitchen cooks (Model), food is plated (View), delivered to you (HTML). Each step has one job."<br />
+<strong>-&gt; Phone moment:</strong> "Open GrabFood. Think about each screen you see. The menu list? That's a View. The restaurant data? That's a Model. The app figuring out what to show? That's a Controller."</p>
+<p>[Q&amp;A] <strong>Student Q:</strong> "Why can't the controller just do everything? Why separate Model and View?"
+<strong>Short answer:</strong> You can, but it becomes unmaintable fast.
+<strong>Real answer:</strong> When the controller does everything, you get "fat controllers" — 500-line methods that mix database queries, business logic, and HTML generation. MVC separation means you can change the database without touching the view, or redesign the view without touching the model.
+<strong>The hidden question:</strong> "Isn't this over-engineering for a simple app?" -&gt; Maybe for 10 lines. Not for 10,000.</p>
+<p>[Q&amp;A] <strong>Student Q:</strong> "What's Razor? Is it a programming language?"
+<strong>Short answer:</strong> It's a template engine, not a language.
+<strong>Real answer:</strong> Razor lets you mix C# code with HTML in .cshtml files. The <code>@</code> symbol tells Razor "this is C#." It processes the template and outputs pure HTML.
+<strong>The hidden question:</strong> "Do I need to learn a new language?" -&gt; No. It's just HTML with C# sprinkled in.</p>
+<p>[LOST] <strong>If they're lost:</strong> "MVC in three sentences: (1) URL comes in. (2) Controller handles it and gets data from Model. (3) Controller sends data to View, which makes HTML. That's it. Everything else is details."</p>
+</blockquote>
+<hr />
+<h3>Code Walkthrough</h3>
+<blockquote>
+<p>[TIME] <strong>Pacing:</strong> 30 min (10 min scaffold -&gt; 10 min Program.cs -&gt; 10 min controller + view + trace)</p>
+<p>[SPEAK] <strong>Script:</strong> "Let's scaffold an MVC project from scratch and trace exactly what happens when a request comes in. Watch how the pieces connect."</p>
+<p>[SLIDE] <strong>Slide:</strong> Show the project file structure first, then reveal Program.cs, then the controller, then the view. Each on its own slide.</p>
+<p>[TIP] <strong>Teaching Tip:</strong> Scaffold the project live with <code>dotnet new mvc</code>. Then open each file and explain its role. The most important file is Program.cs — it's where MVC is configured. Trace the full pipeline for <code>GET /</code> step by step.</p>
+<p>[BOARD] <strong>Whiteboard:</strong> Draw the route matching:
+<code>URL: /
+Pattern: {controller=Home}/{action=Index}/{id?}
+Match: controller=Home (default), action=Index (default), id=null
+Result: HomeController.Index() runs</code></p>
+<p>[ENGAGE] <strong>Gen-Z:</strong> "Scaffolding a project is like using a template on Canva. You don't start from a blank page — you start with a structure and customize it. <code>dotnet new mvc</code> is your template."<br />
+<strong>-&gt; Type-along:</strong> "Run <code>dotnet new mvc -n HelloMvc</code> with me. Then <code>cd HelloMvc</code>. Then <code>dotnet run</code>. Watch it compile and open the browser."</p>
+<p>[Q&amp;A] <strong>Student Q:</strong> "What does <code>AddControllersWithViews()</code> actually do?"
+<strong>Short answer:</strong> It tells ASP.NET Core to set up the MVC pipeline.
+<strong>Real answer:</strong> It registers the services needed for controllers, views, model binding, and routing. Without it, ASP.NET doesn't know how to handle MVC requests.
+<strong>The hidden question:</strong> "What if I forget this line?" -&gt; Your controllers won't work. You'll get 404s everywhere.</p>
+<p>[LOST] <strong>If they're lost:</strong> "Let me show you the simplest MVC app possible. One controller, one action, one view. Three files. That's all you need to start."</p>
+</blockquote>
+<hr />
+<h3>The "Why Should I Care?"</h3>
+<blockquote>
+<p>[SPEAK] <strong>Script:</strong> "MVC is the dominant web architecture pattern. Every major framework uses it or a variant. Learn it once, apply it everywhere."</p>
+<p>[SLIDE] <strong>Slide:</strong> Logos of ASP.NET Core MVC, Ruby on Rails, Django, Laravel, Spring MVC — all labeled "Uses MVC."</p>
+<p>[TIP] <strong>Teaching Tip:</strong> This section should be 5 minutes max. Show them that MVC is transferable knowledge. If they learn it in C#, they can apply it to Python, Ruby, Java, etc.</p>
+<p>[ENGAGE] <strong>Gen-Z:</strong> <strong>-&gt; Poll:</strong> "How many of you plan to work with web apps after graduation?" (Most hands.) "MVC is the most common pattern you'll encounter. Learning it now gives you a head start."</p>
+<p>[LOST] <strong>If they're lost:</strong> "You don't need to love MVC today. Just understand: it organizes code. That's enough for now."</p>
+</blockquote>
+<hr />
+<h3>Exercise: Hello MVC</h3>
+<blockquote>
+<p>[TIME] <strong>Pacing:</strong> 55 min total (5 min setup -&gt; 40 min coding -&gt; 10 min share)</p>
+<p>[SPEAK] <strong>Script:</strong> "Create a new MVC project. Add a ShopController with two actions. Create the views. Run it. Visit the routes. You'll have your first working web app."</p>
+<p>[SLIDE] <strong>Slide:</strong> Exercise checklist:
+- [ ] <code>dotnet new mvc -n HelloMvc</code>
+- [ ] Examine all folders and files
+- [ ] Create <code>ShopController</code> with <code>Index()</code> and <code>Product(int id)</code>
+- [ ] Create views in <code>Views/Shop/</code>
+- [ ] Run and visit both routes</p>
+<p>[TIP] <strong>Teaching Tip:</strong> The first 15 minutes will be setup-heavy. Circulate and help with <code>dotnet</code> commands. The "aha" moment is when they visit <code>/shop/product/5</code> and see their own dynamic content.</p>
+<p>[ENGAGE] <strong>Gen-Z:</strong> <strong>-&gt; Pair up:</strong> "One person creates the controller, the other creates the views. Then swap. You'll learn faster by seeing both sides."</p>
+<p>[LOST] <strong>If they're lost:</strong> "Start with just the <code>Index()</code> action. Get that working first. Then add <code>Product(int id)</code>. Don't try to build everything at once."</p>
+</blockquote>
+<hr />
+<h3>AI Integration Note</h3>
+<blockquote>
+<p>[TIME] <strong>Pacing:</strong> 10 min (5 min demo -&gt; 5 min try)</p>
+<p>[SPEAK] <strong>Script:</strong> "This week, you can ask AI to explain MVC concepts or debug routing issues. You cannot ask it to generate your controllers or views."</p>
+<p>[SLIDE] <strong>Slide:</strong> Allowed vs Not Allowed:
+| [OK] Allowed | [NO] Not Allowed |
+|-----------|--------------|
+| "Explain what app.UseRouting() does" | "Generate my ShopController" |
+| "Why is my view not found?" | "Write all my views for me" |</p>
+<p>[TIP] <strong>Teaching Tip:</strong> The scaffolded project has a lot of generated code. Encourage students to ask AI to explain specific lines rather than generating new code.</p>
+<p>[ENGAGE] <strong>Gen-Z:</strong> "AI is your 'code-senpai' for MVC concepts. Ask it to explain the pipeline, not to build your app."</p>
+</blockquote>
+<hr />
+<h3>Debugging / "Watch Out For"</h3>
+<blockquote>
+<p>[TIME] <strong>Pacing:</strong> 15 min (5 min common errors -&gt; 5 min group debug -&gt; 5 min Q&amp;A)</p>
+<p>[SPEAK] <strong>Script:</strong> "Here are the MVC errors you'll see this week. Most of them are naming or path issues."</p>
+<p>[SLIDE] <strong>Slide:</strong> Error cards:
+<code>+------------------------------------------+
+| 404 on a route that should work          |
+| Check: Controller name needs "Controller"|
+| suffix. Action method name must match.   |
++------------------------------------------+
++------------------------------------------+
+| "The view 'Index' was not found"         |
+| Path must be: Views/{Controller}/{Action}|
+| .cshtml. Case matters on Linux/Mac.      |
++------------------------------------------+</code></p>
+<p>[ENGAGE] <strong>Gen-Z:</strong> "A 404 on your own route is like giving someone your address but they go to the wrong house. Check the address (route), check the house name (controller), check the room (action)."</p>
+<p>[Q&amp;A] <strong>Student Q:</strong> "Why does the controller need 'Controller' at the end of the name?"
+<strong>Short answer:</strong> It's a convention that ASP.NET uses to find controllers.
+<strong>Real answer:</strong> The routing system looks for classes ending in <code>Controller</code>. <code>ShopController</code> maps to <code>/shop</code>. <code>Shop</code> alone won't be found. It's how ASP.NET discovers controllers automatically.
+<strong>The hidden question:</strong> "Can I change this convention?" -&gt; Yes, but don't. It's standard for a reason.</p>
+<p>[LOST] <strong>If they're lost:</strong> "The two things to check first: (1) Does your controller name end with 'Controller'? (2) Is your view file in the right folder? Those two fix 90% of MVC errors."</p>
+</blockquote>
+<hr />
+<h3>Teaching Script</h3>
+<p>This week's annotations cover: pacing table at top, inline annotations per section, and this summary. The scaffold-and-trace approach is key — students need to see the full pipeline working end-to-end.</p>
+<hr />
+<h2>TERM 2: MIDTERM — ASP.NET Core MVC (The Hard Part)</h2>
+<hr />
+</body></html>

@@ -1,0 +1,215 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>elective-3\week-03-typescript-essentials.md</title><style>
+body { font-family: 'Segoe UI', Arial, sans-serif; max-width: 960px; margin: 2em auto; padding: 0 1.5em; line-height: 1.7; color: #1a1a1a; background: #fafafa; }
+h1 { border-bottom: 2px solid #2563eb; padding-bottom: .3em; margin-top: 1.5em; color: #1e3a5f; }
+h2 { border-bottom: 1px solid #cbd5e1; padding-bottom: .2em; margin-top: 1.5em; color: #1e3a5f; }
+h3 { margin-top: 1.3em; color: #334155; }
+a { color: #2563eb; }
+code { background: #eef2ff; padding: .15em .35em; border-radius: 4px; font-size: .9em; }
+pre { background: #1e293b; color: #e2e8f0; padding: 1em; border-radius: 6px; overflow-x: auto; }
+pre code { background: none; padding: 0; color: inherit; }
+blockquote { border-left: 4px solid #2563eb; margin: 1em 0; padding: .5em 1em; background: #f1f5f9; border-radius: 0 6px 6px 0; }
+table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+th, td { border: 1px solid #cbd5e1; padding: .5em .75em; text-align: left; }
+th { background: #2563eb; color: #fff; }
+tr:nth-child(even) { background: #f8fafc; }
+hr { border: none; border-top: 2px solid #e2e8f0; margin: 2em 0; }
+</style></head><body>
+<nav><a href="index.htm">Home</a></nav>
+<h2>Week 3: TypeScript Essentials</h2>
+<blockquote>
+<p>[TIME] <strong>Session Pacing (180 min)</strong></p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Block</th>
+<th>Time</th>
+<th>Format</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Hook + Analogy</td>
+<td>15 min</td>
+<td>Lecture + Whiteboard</td>
+</tr>
+<tr>
+<td>Concept Discussion</td>
+<td>25 min</td>
+<td>Lecture + Slides + Type Comparison</td>
+</tr>
+<tr>
+<td>Code Walkthrough</td>
+<td>30 min</td>
+<td>Live Code (progressive typing)</td>
+</tr>
+<tr>
+<td>Industry Reality</td>
+<td>10 min</td>
+<td>Lecture + Discussion</td>
+</tr>
+<tr>
+<td>Break</td>
+<td>10 min</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Exercise</td>
+<td>55 min</td>
+<td>Lab (solo or pairs)</td>
+</tr>
+<tr>
+<td>AI Integration</td>
+<td>10 min</td>
+<td>Demo + Prompt Walkthrough</td>
+</tr>
+<tr>
+<td>Debugging + Wrap</td>
+<td>15 min</td>
+<td>Group Debug + Q&amp;A</td>
+</tr>
+<tr>
+<td>Buffer</td>
+<td>10 min</td>
+<td>Overflow / Stretch discussion</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>[TIP] <strong>Teaching Tip (Week 3 strategy):</strong> TypeScript feels like extra work to students who are used to JavaScript's freedom. Frame it as "free bug detection" not "extra rules." The progressive typing approach (JS -&gt; add types step by step) is key — don't start with a fully typed file.</p>
+</blockquote>
+<hr />
+<h3>1. The Hook</h3>
+<blockquote>
+<p>[SPEAK] <strong>Script:</strong> "TypeScript is what stops you from pushing a bug to production where a user's age is <code>undefined</code> and your app crashes trying to calculate their birth year. JavaScript would let that slide silently. TypeScript catches it before you even run the code."</p>
+<p>[SLIDE] <strong>Slide:</strong> Title: "The Bug That TypeScript Caught"<br />
+Left: JavaScript code with <code>user.age + 1</code> where <code>age</code> is undefined -&gt; crash. Right: Same code in TypeScript -&gt; red underline error before running.</p>
+<p>[TIP] <strong>Teaching Tip:</strong> This hook works because every student has experienced a runtime type bug. Make it personal: "Raise your hand if you've had a bug where a variable was the wrong type."</p>
+<p>[ENGAGE] <strong>Gen-Z:</strong> "TypeScript is like having a bouncer at the door of your code. JavaScript lets anyone in — even <code>undefined</code> wearing a fake ID. TypeScript checks IDs at the door."<br />
+<strong>-&gt; Poll:</strong> "How many of you have pushed code that crashed because a variable was <code>undefined</code>?" (Most hands.) "TypeScript prevents that."</p>
+<p>[LOST] <strong>If they're lost:</strong> "TypeScript is JavaScript with a safety net. You write the same code, but TypeScript checks for type mistakes before you run it."</p>
+</blockquote>
+<hr />
+<h3>2. The Analogy</h3>
+<blockquote>
+<p>[SPEAK] <strong>Script:</strong> "JavaScript is like writing an essay without spellcheck. You can write anything, and it won't complain until someone reads it and finds mistakes. TypeScript is like spellcheck + grammar check + a fact-checker. It catches mistakes while you're typing, not after you've published."</p>
+<p>[BOARD] <strong>Whiteboard:</strong> Draw the comparison:
+<code>JavaScript: Write -&gt; Run -&gt; Crash -&gt; Fix -&gt; Repeat
+TypeScript: Write -&gt; Type Check -&gt; Fix -&gt; Run -&gt; Works</code></p>
+<p>[TIP] <strong>Teaching Tip:</strong> The spellcheck analogy is universal. Emphasize: TypeScript doesn't change how your code RUNS — it checks your code BEFORE it runs. The types disappear in the output.</p>
+<p>[ENGAGE] <strong>Gen-Z:</strong> "TypeScript is like autocorrect on your phone, but for code. It won't let you send 'the user's email is 42' because 42 isn't a string. It catches it before you hit send (deploy)."<br />
+<strong>-&gt; Turn to your neighbor:</strong> "Explain TypeScript to someone who only knows JavaScript in 15 seconds. Go!"</p>
+<p>[LOST] <strong>If they're lost:</strong> "Forget the analogy. TypeScript = JavaScript + types. You write types, TypeScript checks them, then removes them and gives you regular JavaScript. That's it."</p>
+</blockquote>
+<hr />
+<h3>3. Concept Discussion</h3>
+<blockquote>
+<p>[TIME] <strong>Pacing:</strong> 25 min total (5 min types vs interfaces -&gt; 5 min any vs unknown -&gt; 4 min union types -&gt; 4 min optional chaining -&gt; 4 min generics -&gt; 3 min compilation)</p>
+<p>[SPEAK] <strong>Script:</strong> "TypeScript adds a compile-time type layer that catches errors before execution. Let me show you the key concepts you'll use every day."</p>
+<p>[SLIDE] <strong>Slide:</strong> Show one concept at a time. For each: (1) the concept, (2) a code example, (3) what error it prevents. Don't show all concepts at once.</p>
+<p>[TIP] <strong>Teaching Tip:</strong> Spend the most time on <code>any</code> vs <code>unknown</code> — this is where students make the most mistakes. Emphasize: "Always prefer <code>unknown</code> over <code>any</code>." For generics, keep it simple — show one clear example, don't go deep into advanced patterns.</p>
+<p>[ASK] <strong>Ask the class:</strong> "What's the difference between <code>type</code> and <code>interface</code>?" (Answer: Both describe object shapes, but <code>interface</code> is extendable and <code>type</code> is more flexible. Use <code>interface</code> for objects, <code>type</code> for everything else.)</p>
+<p>[ENGAGE] <strong>Gen-Z:</strong> "<code>any</code> is like saying 'IDK, just let it through' — it disables all safety. <code>unknown</code> is like saying 'I don't know yet, but check before using.' Always use <code>unknown</code> — it's the responsible choice."<br />
+<strong>-&gt; Phone moment:</strong> "Open VS Code. Create a new .ts file. Type <code>let x: string = 42</code>. See the red underline? That's TypeScript catching a bug before you run it."</p>
+<p>[Q&amp;A] <strong>Student Q:</strong> "Why not just use <code>any</code> everywhere? It's easier."
+<strong>Short answer:</strong> Because it defeats the entire purpose of TypeScript.
+<strong>Real answer:</strong> <code>any</code> means "don't check this type." If you use <code>any</code> everywhere, you're just writing JavaScript with extra steps. The value of TypeScript is catching type errors — <code>any</code> bypasses that.
+<strong>The hidden question:</strong> "Is TypeScript worth the extra effort?" -&gt; Yes. The time you save debugging type errors far exceeds the time spent writing types.</p>
+<p>[Q&amp;A] <strong>Student Q:</strong> "What are generics? They look confusing."
+<strong>Short answer:</strong> Generics are type variables — placeholders for types.
+<strong>Real answer:</strong> <code>&lt;T&gt;</code> means "this type will be determined when you use it." Like a function parameter, but for types. <code>ApiResponse&lt;User&gt;</code> means "an API response where the data is a User." <code>ApiResponse&lt;string[]&gt;</code> means "an API response where the data is an array of strings."
+<strong>The hidden question:</strong> "Do I need to understand this now?" -&gt; Just the basics. You'll use generics more as you build larger apps.</p>
+<p>[LOST] <strong>If they're lost:</strong> "The simplest TypeScript summary: (1) <code>interface</code> describes object shapes. (2) <code>type</code> describes everything else. (3) <code>const</code> &gt; <code>let</code> &gt; <code>var</code>. (4) <code>unknown</code> &gt; <code>any</code>. (5) Types disappear at runtime."</p>
+</blockquote>
+<hr />
+<h3>4. Code Walkthrough</h3>
+<blockquote>
+<p>[TIME] <strong>Pacing:</strong> 30 min (5 min show untyped JS -&gt; 20 min progressive typing -&gt; 5 min generics demo)</p>
+<p>[SPEAK] <strong>Script:</strong> "Let's take a JavaScript function and progressively add TypeScript types. Watch how each step catches more errors."</p>
+<p>[SLIDE] <strong>Slide:</strong> Show each step on its own slide. Step 1: untyped JS. Step 2: basic types. Step 3: optional properties. Step 4: union types. Step 5: generics.</p>
+<p>[TIP] <strong>Teaching Tip:</strong> <strong>Type each step live.</strong> Start with the untyped JS version, run it with bad input to show it accepts anything. Then add types step by step, showing how TypeScript catches errors at each stage.</p>
+<p>[BOARD] <strong>Whiteboard:</strong> Draw the progressive typing flow:
+<code>JS: function createUser(name, email, age) -&gt; accepts anything
++ types: (name: string, email: string, age: number) -&gt; catches wrong types
++ optional: age?: number -&gt; allows calling without age
++ union: role: "admin" | "user" -&gt; restricts to valid values
++ generics: ApiResponse&lt;T&gt; -&gt; reusable for any data type</code></p>
+<p>[ENGAGE] <strong>Gen-Z:</strong> "Progressive typing is like leveling up in a game. Level 1: basic types. Level 2: optional properties. Level 3: union types. Level 4: generics. Each level catches more bugs."<br />
+<strong>-&gt; Type-along:</strong> "Type the untyped version first. Then add types with me, step by step. Run <code>npx tsc</code> after each step to see what errors TypeScript catches."</p>
+<p>[Q&amp;A] <strong>Student Q:</strong> "Why does <code>createUser(42, true, 'Alice')</code> give an error about 'number' not assignable to 'string'?"
+<strong>Short answer:</strong> Because the first parameter is typed as <code>string</code>, but you passed <code>42</code> (a number).
+<strong>Real answer:</strong> TypeScript checks each argument against its declared type. <code>name: string</code> means the first argument must be a string. <code>42</code> is a number. TypeScript catches this mismatch before you run the code.
+<strong>The hidden question:</strong> "Can I disable this check?" -&gt; Yes, with <code>any</code> or <code>as any</code>. But don't.</p>
+<p>[LOST] <strong>If they're lost:</strong> "Start with just the interface and basic types. Get that working. Then add optional properties. Then union types. Then generics. One step at a time."</p>
+</blockquote>
+<hr />
+<h3>5. The "Industry Reality"</h3>
+<blockquote>
+<p>[SPEAK] <strong>Script:</strong> "Slack's desktop app is built with TypeScript. When they migrated from JavaScript, they found 38% more bugs during development and reduced production errors by 15%. VS Code? Written in TypeScript. Every new React project defaults to TypeScript."</p>
+<p>[SLIDE] <strong>Slide:</strong> Stats: "38% more bugs caught during development. 15% fewer production errors." Logos: Slack, VS Code, Airbnb, Google.</p>
+<p>[TIP] <strong>Teaching Tip:</strong> Keep this to 5 minutes. Show them that TypeScript isn't optional in 2026 — it's the industry standard.</p>
+<p>[ENGAGE] <strong>Gen-Z:</strong> <strong>-&gt; Poll:</strong> "How many of you have seen 'TypeScript' in a job posting?" (Show a real JobStreet or LinkedIn screenshot if hands are low.)</p>
+<p>[LOST] <strong>If they're lost:</strong> "You don't need to love TypeScript today. Just understand: it's the industry standard. Learning it now gives you an edge."</p>
+</blockquote>
+<hr />
+<h3>6. Exercise</h3>
+<blockquote>
+<p>[TIME] <strong>Pacing:</strong> 55 min total (5 min setup -&gt; 40 min coding -&gt; 10 min share)</p>
+<p>[SPEAK] <strong>Script:</strong> "Convert this JavaScript product project to TypeScript. Create interfaces, type all functions, add union types, handle undefined returns, and set up strict mode."</p>
+<p>[SLIDE] <strong>Slide:</strong> Exercise checklist:
+- [ ] Create <code>Product</code> interface
+- [ ] Type all function parameters and return types
+- [ ] Use union type for <code>category</code>
+- [ ] Handle <code>getProductById</code> returning <code>undefined</code>
+- [ ] Create generic <code>ApiResponse&lt;T&gt;</code> wrapper
+- [ ] Set up <code>tsconfig.json</code> with strict mode
+- [ ] Fix all strict mode errors</p>
+<p>[TIP] <strong>Teaching Tip:</strong> The <code>undefined</code> handling (requirement 4) and strict mode setup (requirement 6) are the hardest parts. Students will struggle with <code>Product | undefined</code> return types. Circulate and help.</p>
+<p>[ENGAGE] <strong>Gen-Z:</strong> <strong>-&gt; Pair up:</strong> "One person handles the data types, the other handles the function types. Then combine. It's like a collab — each person owns their part."</p>
+<p>[LOST] <strong>If they're lost:</strong> "Start with the <code>Product</code> interface. Then type one function. Then another. Don't try to type everything at once."</p>
+</blockquote>
+<hr />
+<h3>7. AI Integration Note</h3>
+<blockquote>
+<p>[TIME] <strong>Pacing:</strong> 10 min (5 min demo -&gt; 5 min try)</p>
+<p>[SPEAK] <strong>Script:</strong> "This week, paste JavaScript code into AI and ask it to add TypeScript types. Then review every type it suggests. Ask yourself: 'Would <code>unknown</code> be safer here?' Never let AI define your domain types without reviewing them."</p>
+<p>[SLIDE] <strong>Slide:</strong> AI usage guide:
+| [OK] Allowed | [NO] Not Allowed |
+|-----------|--------------|
+| "Add TypeScript types to this JS code" | "Define my domain types for me" |
+| "Why did you use <code>any</code> here?" | "Fix all my TypeScript errors" |</p>
+<p>[TIP] <strong>Teaching Tip:</strong> Point out the common AI mistakes: overusing <code>any</code>, generating overly complex generics, forgetting <code>undefined</code> returns. Teach students to question AI's type choices.</p>
+<p>[ENGAGE] <strong>Gen-Z:</strong> "AI is great at adding types but sometimes lazy — it'll use <code>any</code> to silence errors. Always review its suggestions."</p>
+</blockquote>
+<hr />
+<h3>8. Debugging / "Watch Out For" Section</h3>
+<blockquote>
+<p>[TIME] <strong>Pacing:</strong> 15 min (5 min common errors -&gt; 5 min group debug -&gt; 5 min Q&amp;A)</p>
+<p>[SPEAK] <strong>Script:</strong> "Here are the TypeScript errors you'll see this week. Each one is TypeScript catching a potential bug for free."</p>
+<p>[SLIDE] <strong>Slide:</strong> Error cards:
+<code>+--------------------------------------+
+| "Property 'X' does not exist on      |
+| type 'Y'"                            |
+| You're accessing a property TS doesn't|
+| know about. Add it to the interface. |
++--------------------------------------+
++--------------------------------------+
+| "Type 'undefined' is not assignable  |
+| to type 'X'"                         |
+| A function might return undefined.   |
+| Common with .find() and optional props|
++--------------------------------------+</code></p>
+<p>[ENGAGE] <strong>Gen-Z:</strong> "TypeScript errors are like your phone warning you before you send a risky text. It's not stopping you — it's giving you a chance to fix it first."</p>
+<p>[Q&amp;A] <strong>Student Q:</strong> "TypeScript types don't exist at runtime? So they don't actually protect me?"
+<strong>Short answer:</strong> They protect you at development time, not runtime.
+<strong>Real answer:</strong> TypeScript catches type errors BEFORE you run the code. At runtime, the types are gone — it's just JavaScript. If the API returns wrong data at runtime, TypeScript won't catch it. For runtime validation, use a library like Zod.
+<strong>The hidden question:</strong> "So TypeScript isn't a silver bullet?" -&gt; Correct. It catches development-time type errors, not runtime data issues.</p>
+<p>[LOST] <strong>If they're lost:</strong> "The #1 TypeScript issue: 'Property does not exist on type.' Fix: add the property to your interface. That solves 80% of TypeScript errors."</p>
+</blockquote>
+<hr />
+<h3>Teaching Script</h3>
+<p>This week's annotations cover: pacing table at top, inline annotations per section, and this summary. The progressive typing approach is key — start with untyped JS and add types step by step.</p>
+<hr />
+</body></html>

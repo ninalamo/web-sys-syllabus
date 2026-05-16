@@ -1,0 +1,229 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>elective-2\week-09-ef-core-fundamentals.md</title><style>
+body { font-family: 'Segoe UI', Arial, sans-serif; max-width: 960px; margin: 2em auto; padding: 0 1.5em; line-height: 1.7; color: #1a1a1a; background: #fafafa; }
+h1 { border-bottom: 2px solid #2563eb; padding-bottom: .3em; margin-top: 1.5em; color: #1e3a5f; }
+h2 { border-bottom: 1px solid #cbd5e1; padding-bottom: .2em; margin-top: 1.5em; color: #1e3a5f; }
+h3 { margin-top: 1.3em; color: #334155; }
+a { color: #2563eb; }
+code { background: #eef2ff; padding: .15em .35em; border-radius: 4px; font-size: .9em; }
+pre { background: #1e293b; color: #e2e8f0; padding: 1em; border-radius: 6px; overflow-x: auto; }
+pre code { background: none; padding: 0; color: inherit; }
+blockquote { border-left: 4px solid #2563eb; margin: 1em 0; padding: .5em 1em; background: #f1f5f9; border-radius: 0 6px 6px 0; }
+table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+th, td { border: 1px solid #cbd5e1; padding: .5em .75em; text-align: left; }
+th { background: #2563eb; color: #fff; }
+tr:nth-child(even) { background: #f8fafc; }
+hr { border: none; border-top: 2px solid #e2e8f0; margin: 2em 0; }
+</style></head><body>
+<nav><a href="index.htm">Home</a></nav>
+<h2>Week 9: EF Core Fundamentals</h2>
+<blockquote>
+<p>[TIME] <strong>Session Pacing (180 min)</strong></p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Block</th>
+<th>Time</th>
+<th>Format</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Hook + Analogy</td>
+<td>15 min</td>
+<td>Lecture + Whiteboard</td>
+</tr>
+<tr>
+<td>Concept Discussion</td>
+<td>25 min</td>
+<td>Lecture + Slides + Code Comparison</td>
+</tr>
+<tr>
+<td>Code Walkthrough</td>
+<td>35 min</td>
+<td>Live Code (instructor + students type)</td>
+</tr>
+<tr>
+<td>Industry Reality</td>
+<td>10 min</td>
+<td>Lecture + Discussion</td>
+</tr>
+<tr>
+<td>Break</td>
+<td>10 min</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Exercise</td>
+<td>55 min</td>
+<td>Lab (solo or pairs)</td>
+</tr>
+<tr>
+<td>AI Integration</td>
+<td>10 min</td>
+<td>Demo + Prompt Walkthrough</td>
+</tr>
+<tr>
+<td>Debugging + Wrap</td>
+<td>15 min</td>
+<td>Group Debug + Q&amp;A</td>
+</tr>
+<tr>
+<td>Buffer</td>
+<td>5 min</td>
+<td>Overflow</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>[TIP] <strong>Teaching Tip (Week 9 strategy):</strong> This is the first time students touch a real database. The magic of "I wrote C# and it made a table!" is powerful — but migrations will confuse them. Go slow on <code>dotnet ef migrations add</code> and <code>dotnet ef database update</code>. Have them run these commands themselves, not just watch you. The "aha" moment is when they see data persist after restarting the app.</p>
+</blockquote>
+<hr />
+<h3>The Hook</h3>
+<blockquote>
+<p>[SPEAK] <strong>Script:</strong> "Remember writing SQL queries in VB? String concatenation, SQL injection vulnerabilities, crying at 2 AM because you forgot a comma? We're never doing that again. Entity Framework Core writes the SQL for you. You just write C#."</p>
+<p>[SLIDE] <strong>Slide:</strong> Title: "Never Write SQL Again"<br />
+Left: A messy VB SQL string with concatenation, labeled "The Old Way."<br />
+Right: Clean C# LINQ query, labeled "The EF Core Way."<br />
+Subtitle: "Same database. Zero SQL strings. One happier you."</p>
+<p>[TIP] <strong>Teaching Tip:</strong> Read the hook with relief, not mockery. Some students actually liked writing SQL. Frame EF Core as a productivity upgrade, not a replacement for understanding databases.</p>
+<p>[ENGAGE] <strong>Gen-Z:</strong> "EF Core is like autocorrect but for databases. You type what you want in C#, and it figures out the SQL. Except unlike autocorrect, it actually gets it right."<br />
+<strong>-&gt; Poll:</strong> "Raise your hand if you've ever gotten a SQL syntax error because of a missing quote. Today that ends."</p>
+<p>[LOST] <strong>If they're lost:</strong> "If you've never written SQL before, even better. You're learning the modern way from day one. EF Core is how most .NET developers interact with databases."</p>
+</blockquote>
+<hr />
+<h3>The Analogy</h3>
+<blockquote>
+<p>[SPEAK] <strong>Script:</strong> "An ORM is like Google Drive for your data. You don't care <em>how</em> Google stores your files — you just open the folder, drag files in, and search for them. EF Core is Google Drive for your C# objects. It saves them to a database without you writing <code>INSERT INTO</code> or <code>SELECT * FROM</code>."</p>
+<p>[BOARD] <strong>Whiteboard:</strong> Draw the ORM translation layer:
+<code>C# Objects                    Database Tables
++-----------------+           +-----------------+
+| Product class   |  &lt;-EF-&gt;    | Products table   |
+| .Name property  |  &lt;-EF-&gt;    | Name column      |
+| .Price property |  &lt;-EF-&gt;    | Price column     |
+| List&lt;Product&gt;   |  &lt;-EF-&gt;    | SELECT * query   |
++-----------------+           +-----------------+</code>
+Label the middle arrow: "EF Core translates automatically."</p>
+<p>[TIP] <strong>Teaching Tip:</strong> The Google Drive analogy works for most students. For those who don't use Drive, add: "Or like GCash — you don't care how the money is stored in their servers, you just see your balance and send money."</p>
+<p>[ENGAGE] <strong>Gen-Z:</strong> <strong>-&gt; Turn to your neighbor:</strong> "If EF Core is Google Drive for data, what's the 'folder'? What's the 'file'? 10 seconds, go!" (Answer: Folder = table, File = row/record.)</p>
+<p>[LOST] <strong>If they're lost:</strong> "Think of it like a translator at the UN. You speak C#. The database speaks SQL. EF Core is the translator in the middle. You say 'give me all products' in C#, EF Core says 'SELECT * FROM Products' to the database."</p>
+</blockquote>
+<hr />
+<h3>Concept Discussion</h3>
+<blockquote>
+<p>[TIME] <strong>Pacing:</strong> 25 min total (8 min ORM concept -&gt; 7 min DbContext -&gt; 5 min migrations -&gt; 5 min CRUD)</p>
+<p>[SPEAK] <strong>Script:</strong> "Here's the entire EF Core mental model in four parts: ORM translates, DbContext connects, migrations version-control your database, and CRUD is how you interact with data. Let's go through each one."</p>
+<p>[SLIDE] <strong>Slide:</strong> Show the C# class -&gt; SQL table mapping first. Reveal one property at a time: <code>int Id</code> -&gt; <code>Id int PRIMARY KEY IDENTITY</code>, <code>string Name</code> -&gt; <code>Name nvarchar(max)</code>, <code>decimal Price</code> -&gt; <code>Price decimal(18,2)</code>.</p>
+<p>[TIP] <strong>Teaching Tip:</strong> The most important concept this week is <strong><code>DbSet&lt;T&gt;</code> as a "database-connected List<T>."</strong> Students already know <code>List&lt;T&gt;</code> — build on that. Emphasize: "You query it like a List, but the data lives in a database." For migrations, stress: "Migrations are version control for your database schema. Like git, but for tables."</p>
+<p>[ASK] <strong>Ask the class:</strong> "If I add a new property to my Product class — how does the database know about it?" (Answer: You create a new migration and apply it.)</p>
+<p>[ENGAGE] <strong>Gen-Z:</strong> "DbContext is like your GCash app. It's your connection to your money (database). You don't touch the bank vault directly — you go through the app. <code>DbSet&lt;Product&gt;</code> is like your transaction history — a list that's connected to the real data."<br />
+<strong>-&gt; Phone moment:</strong> "Think about how your phone apps store data. They don't save to files — they save to databases. EF Core is how your C# code talks to those databases."</p>
+<p>[Q&amp;A] <strong>Student Q:</strong> "Do I still need to learn SQL?"
+<strong>Short answer:</strong> Yes, eventually.
+<strong>Real answer:</strong> EF Core handles 90% of what you'll do. But when something goes wrong — slow queries, complex joins — you need to read the SQL EF generates. You don't write it daily, but you need to understand it.
+<strong>The hidden question:</strong> "Can I skip SQL entirely?" -&gt; Not if you want to be a senior developer. But you can start with EF Core and learn SQL as needed.</p>
+<p>[Q&amp;A] <strong>Student Q:</strong> "What's the difference between <code>Find()</code> and <code>Where()</code>?"
+<strong>Short answer:</strong> <code>Find()</code> gets one record by primary key. <code>Where()</code> filters by any condition.
+<strong>Real answer:</strong> <code>Find(1)</code> generates <code>SELECT ... WHERE Id = 1</code> and checks the local cache first. <code>Where(p =&gt; p.Price &lt; 50)</code> generates <code>SELECT ... WHERE Price &lt; 50</code> and always hits the database.
+<strong>The hidden question:</strong> "Which is faster?" -&gt; <code>Find()</code> for single records by ID. <code>Where()</code> for everything else.</p>
+<p>[LOST] <strong>If they're lost:</strong> "Forget the technical terms. The flow is: (1) Define a class. (2) Add it as a DbSet in DbContext. (3) Run a migration. (4) Now you can add, read, update, and delete records using C# only. That's it."</p>
+</blockquote>
+<hr />
+<h3>Code Walkthrough</h3>
+<blockquote>
+<p>[TIME] <strong>Pacing:</strong> 35 min (5 min packages -&gt; 10 min models + DbContext -&gt; 5 min Program.cs -&gt; 5 min migrations -&gt; 10 min controller)</p>
+<p>[SPEAK] <strong>Script:</strong> "Let's set up EF Core from scratch. Watch how each piece connects — the model, the DbContext, the connection string, the migration, and finally the controller that uses it all."</p>
+<p>[SLIDE] <strong>Slide:</strong> Show the setup steps one at a time: (1) packages, (2) models, (3) DbContext, (4) Program.cs registration, (5) migration commands, (6) controller. Don't show everything at once.</p>
+<p>[TIP] <strong>Teaching Tip:</strong> <strong>Type this live, don't paste.</strong> When you run <code>dotnet ef migrations add InitialCreate</code>, pause and explain: "This command compares your models to the last migration and generates a C# file describing what changed." Then run <code>dotnet ef database update</code> and say: "This applies the migration to the actual database." Make the deliberate mistake of forgetting <code>UseSqlServer()</code> — let it fail, then fix it.</p>
+<p>[BOARD] <strong>Whiteboard:</strong> Draw the full data flow:
+<code>Controller -&gt; AppDbContext -&gt; SQL Server
+     v            v
+  Product     DbSet&lt;Product&gt;
+     v            v
+  .Add()     .SaveChanges() -&gt; INSERT INTO Products
+  .ToList()  db.Products    -&gt; SELECT * FROM Products
+  .Find(1)   db.Products    -&gt; SELECT ... WHERE Id = 1</code></p>
+<p>[ENGAGE] <strong>Gen-Z:</strong> <strong>-&gt; Type-along:</strong> "Install the packages with me. Then create the models. Then the DbContext. Run the migration. Watch the database get created. This is the moment your code becomes persistent."</p>
+<p>[Q&amp;A] <strong>Student Q:</strong> "What's <code>(localdb)\MSSQLLocalDB</code>?"
+<strong>Short answer:</strong> It's a lightweight SQL Server that comes with Visual Studio.
+<strong>Real answer:</strong> LocalDB is a developer-friendly version of SQL Server. It runs on-demand, doesn't need a service, and stores files in your user folder. Perfect for development. In production, you'd use a real SQL Server instance.
+<strong>The hidden question:</strong> "Do I need to install SQL Server separately?" -&gt; No. LocalDB comes with Visual Studio.</p>
+<p>[LOST] <strong>If they're lost:</strong> "Let's do the absolute minimum: one model, one DbSet, one migration. Get that working. Then add the controller. Don't try to set up everything at once."</p>
+</blockquote>
+<hr />
+<h3>The "Why Should I Care?"</h3>
+<blockquote>
+<p>[SPEAK] <strong>Script:</strong> "EF Core is used by 70%+ of .NET web apps. It's not optional — it's the standard. Companies pick .NET precisely because EF Core makes database work so smooth. Without it, you're writing SQL strings, managing connections manually, and debugging 'string or binary data would be truncated' at 11 PM."</p>
+<p>[SLIDE] <strong>Slide:</strong> Screenshot of a real job posting for ".NET Developer" highlighting "Entity Framework" or "EF Core" in the requirements. Bonus: show a job posting from a Philippine company.</p>
+<p>[TIP] <strong>Teaching Tip:</strong> Keep this to 5 minutes. The goal is motivation. Connect it to their future: "Every .NET job you apply for will mention EF Core. Learning it now means you're already ahead."</p>
+<p>[ENGAGE] <strong>Gen-Z:</strong> <strong>-&gt; Poll:</strong> "How many of you have seen 'Entity Framework' in a job posting?" (Show a real JobStreet screenshot if hands are low.) "That's your future self thanking you for paying attention today."</p>
+<p>[LOST] <strong>If they're lost:</strong> "You don't need to master EF Core today. Just understand: it lets you work with databases using C# instead of SQL. That's the core idea. Everything else is details."</p>
+</blockquote>
+<hr />
+<h3>Exercise: First Migration + Seed Data</h3>
+<blockquote>
+<p>[TIME] <strong>Pacing:</strong> 55 min total (5 min setup -&gt; 40 min coding -&gt; 10 min share)</p>
+<p>[SPEAK] <strong>Script:</strong> "Create a new MVC project, set up EF Core, define a Product model, create your first migration, seed some data, and display it on a page. You have 40 minutes."</p>
+<p>[SLIDE] <strong>Slide:</strong> Exercise checklist:
+- [ ] Create ASP.NET Core MVC project
+- [ ] Add EF Core SQL Server packages
+- [ ] Define <code>Product</code> model (Id, Name, Price, StockQuantity, CreatedAt)
+- [ ] Create <code>AppDbContext</code> with <code>DbSet&lt;Product&gt;</code>
+- [ ] Register DbContext in <code>Program.cs</code>
+- [ ] Create and apply first migration
+- [ ] Add seed data (5 products)
+- [ ] Create <code>ProductsController</code> with <code>Index</code> action
+- [ ] Run and verify products appear on page</p>
+<p>[TIP] <strong>Teaching Tip:</strong> Circulate during the first 15 minutes — migration setup is where students get stuck. The "aha" moment is when they run the app and see seeded data on the page for the first time. Walk around and celebrate that moment.</p>
+<p>[ENGAGE] <strong>Gen-Z:</strong> <strong>-&gt; Pair up:</strong> "One person handles the models and DbContext, the other handles the migration and controller. Then combine and test together."</p>
+<p>[ASK] <strong>Mid-exercise check-in (at 20 min):</strong> "How many have the migration applied?" (Show of hands.) "How many see data on the page?" "If neither, let's do a quick group debug."</p>
+<p>[LOST] <strong>If they're lost:</strong> "Start with just the model and DbContext. Get those compiling. Then try the migration command. If it fails, run <code>dotnet build</code> first. Then add the seed data. Finally the controller. One step at a time."</p>
+</blockquote>
+<hr />
+<h3>AI Integration Note</h3>
+<blockquote>
+<p>[TIME] <strong>Pacing:</strong> 10 min (5 min demo -&gt; 5 min try)</p>
+<p>[SPEAK] <strong>Script:</strong> "This week marks a policy shift: AI is now your pair programmer. You can ask it to generate DbContext code, seed data, and migration help. But for every line AI generates, you must add a comment explaining what it does. This proves you understand it."</p>
+<p>[SLIDE] <strong>Slide:</strong> Allowed vs Not Allowed:
+| [OK] Allowed | [NO] Not Allowed |
+|-----------|--------------|
+| "Generate an EF Core DbContext for Product and Category" | "Build my entire exercise" |
+| "Write seed data for 5 products" (then comment every line) | "Do my migration for me" |</p>
+<p>[TIP] <strong>Teaching Tip:</strong> Demonstrate the comment requirement. Show AI-generated code, then walk through adding line-by-line comments. "This line registers the DbContext. This line defines the connection string. This line creates a DbSet." The comments are the learning.</p>
+<p>[ENGAGE] <strong>Gen-Z:</strong> "AI is your 'pair programmer' now — it writes code, you explain it. If you can't explain what a line does, you didn't learn anything. The comments are your proof of understanding."</p>
+<p>[LOST] <strong>If they're lost:</strong> "Start by asking AI to explain concepts, not generate code. 'What does DbSet<Product> mean?' 'What does SaveChanges() do?' Build understanding first, then use AI for code."</p>
+</blockquote>
+<hr />
+<h3>Debugging / "Watch Out For"</h3>
+<blockquote>
+<p>[TIME] <strong>Pacing:</strong> 15 min (5 min common errors -&gt; 5 min group debug -&gt; 5 min Q&amp;A)</p>
+<p>[SPEAK] <strong>Script:</strong> "Here are the EF Core errors you WILL see this week. Let's go through them so you don't spend 20 minutes Googling."</p>
+<p>[SLIDE] <strong>Slide:</strong> Error cards:
+<code>+------------------------------------------+
+| "Cannot add migration"                   |
+| Run dotnet restore first.                |
+| Make sure the project builds.            |
++------------------------------------------+
++------------------------------------------+
+| "No database provider configured"        |
+| You forgot UseSqlServer() in Program.cs  |
++------------------------------------------+
++------------------------------------------+
+| "Invalid object name 'Products'"         |
+| You haven't run dotnet ef database update|
++------------------------------------------+</code></p>
+<p>[ENGAGE] <strong>Gen-Z:</strong> "'Cannot add migration' is like trying to save a file in a folder that doesn't exist. Run <code>dotnet restore</code> first — it's like refreshing your project's dependencies."</p>
+<p>[Q&amp;A] <strong>Student Q:</strong> "What does 'migrations out of sync' mean?"
+<strong>Short answer:</strong> Your code has migrations your database doesn't know about.
+<strong>Real answer:</strong> If a teammate adds a migration and you pull their code, your database is behind. Run <code>dotnet ef database update</code> to catch up. It's like <code>git pull</code> but for your database schema.
+<strong>The hidden question:</strong> "How do I avoid this?" -&gt; Always run migrations after pulling code from teammates.</p>
+<p>[LOST] <strong>If they're lost:</strong> "The three things to check first: (1) Does the project build? (2) Did you call <code>UseSqlServer()</code>? (3) Did you run <code>dotnet ef database update</code>? Those fix 90% of EF Core errors this week."</p>
+<p>[TIP] <strong>Teaching Tip:</strong> End with one action item: "If you only remember one thing: <code>dotnet ef migrations add</code> creates the migration file. <code>dotnet ef database update</code> applies it. You need both."</p>
+</blockquote>
+<hr />
+<h3>Teaching Script</h3>
+<p>This week's annotations cover: pacing table at top, inline annotations per section ([SPEAK] Script, [SLIDE] Slide, [BOARD] Whiteboard, [TIP] Teaching Tip, [ENGAGE] Gen-Z, [Q&amp;A] Student Q, [LOST] If they're lost), and this summary. The key mental model is "DbSet = database-connected List." The #1 pitfall is forgetting to run migrations — emphasize <code>dotnet ef migrations add</code> followed by <code>dotnet ef database update</code> as a two-step process. Have students run these commands themselves, not just watch. The "aha" moment is seeing seeded data persist on the page after restarting the app.</p>
+<hr />
+</body></html>

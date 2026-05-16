@@ -1,0 +1,228 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>elective-3\week-02-async-javascript-deep-dive.md</title><style>
+body { font-family: 'Segoe UI', Arial, sans-serif; max-width: 960px; margin: 2em auto; padding: 0 1.5em; line-height: 1.7; color: #1a1a1a; background: #fafafa; }
+h1 { border-bottom: 2px solid #2563eb; padding-bottom: .3em; margin-top: 1.5em; color: #1e3a5f; }
+h2 { border-bottom: 1px solid #cbd5e1; padding-bottom: .2em; margin-top: 1.5em; color: #1e3a5f; }
+h3 { margin-top: 1.3em; color: #334155; }
+a { color: #2563eb; }
+code { background: #eef2ff; padding: .15em .35em; border-radius: 4px; font-size: .9em; }
+pre { background: #1e293b; color: #e2e8f0; padding: 1em; border-radius: 6px; overflow-x: auto; }
+pre code { background: none; padding: 0; color: inherit; }
+blockquote { border-left: 4px solid #2563eb; margin: 1em 0; padding: .5em 1em; background: #f1f5f9; border-radius: 0 6px 6px 0; }
+table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+th, td { border: 1px solid #cbd5e1; padding: .5em .75em; text-align: left; }
+th { background: #2563eb; color: #fff; }
+tr:nth-child(even) { background: #f8fafc; }
+hr { border: none; border-top: 2px solid #e2e8f0; margin: 2em 0; }
+</style></head><body>
+<nav><a href="index.htm">Home</a></nav>
+<h2>Week 2: Async JavaScript Deep-Dive</h2>
+<blockquote>
+<p>[TIME] <strong>Session Pacing (180 min)</strong></p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Block</th>
+<th>Time</th>
+<th>Format</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Hook + Analogy</td>
+<td>15 min</td>
+<td>Lecture + Whiteboard</td>
+</tr>
+<tr>
+<td>Concept Discussion</td>
+<td>25 min</td>
+<td>Lecture + Slides + Event Loop Diagram</td>
+</tr>
+<tr>
+<td>Code Walkthrough</td>
+<td>30 min</td>
+<td>Live Code (fetch + async/await)</td>
+</tr>
+<tr>
+<td>Industry Reality</td>
+<td>10 min</td>
+<td>Lecture + Discussion</td>
+</tr>
+<tr>
+<td>Break</td>
+<td>10 min</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Exercise</td>
+<td>55 min</td>
+<td>Lab (solo or pairs)</td>
+</tr>
+<tr>
+<td>AI Integration</td>
+<td>10 min</td>
+<td>Demo + Prompt Walkthrough</td>
+</tr>
+<tr>
+<td>Debugging + Wrap</td>
+<td>15 min</td>
+<td>Group Debug + Q&amp;A</td>
+</tr>
+<tr>
+<td>Buffer</td>
+<td>10 min</td>
+<td>Overflow / Stretch discussion</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>[TIP] <strong>Teaching Tip (Week 2 strategy):</strong> Async is the hardest concept in the JavaScript curriculum. Students think synchronously by default. Use the restaurant buzzer analogy repeatedly. The event loop diagram is essential — draw it on the whiteboard and reference it throughout.</p>
+</blockquote>
+<hr />
+<h3>1. The Hook</h3>
+<blockquote>
+<p>[SPEAK] <strong>Script:</strong> "Every time you open Instagram and see your feed load, then your stories load a second later, then your suggested accounts appear — that's async JavaScript. Your browser didn't freeze while waiting for the server. If async didn't exist, every app would lock up for seconds every time it talked to a server."</p>
+<p>[SLIDE] <strong>Slide:</strong> Title: "What If the Internet Was Synchronous?"<br />
+A loading screen that says "Please wait 8 seconds for your feed to load..." with a spinning wheel. Subtitle: "This is what the web would look like without async."</p>
+<p>[TIP] <strong>Teaching Tip:</strong> Make the problem visceral. Ask students to imagine waiting 8 seconds every time they tap anything. They'll immediately understand why async matters.</p>
+<p>[ENGAGE] <strong>Gen-Z:</strong> "Async is why TikTok feels instant. Without it, every swipe would freeze your phone for 3 seconds while it loads the next video. You'd have uninstalled TikTok on day one."<br />
+<strong>-&gt; Phone moment:</strong> "Open any app right now. Watch how content loads in pieces — text first, then images, then videos. That's async working behind the scenes."</p>
+<p>[LOST] <strong>If they're lost:</strong> "Async just means 'don't wait.' Instead of stopping everything while you wait for data, you keep doing other stuff and come back when the data arrives."</p>
+</blockquote>
+<hr />
+<h3>2. The Analogy</h3>
+<blockquote>
+<p>[SPEAK] <strong>Script:</strong> "Imagine you're at a fast-food restaurant. Synchronous is standing at the counter, ordering, and waiting there until your food is made — nobody behind you can order. Asynchronous is ordering, getting a buzzer, and sitting down. The restaurant keeps serving other customers while your food is being prepared."</p>
+<p>[BOARD] <strong>Whiteboard:</strong> Draw the restaurant comparison:
+```
+SYNCHRONOUS:
+Customer 1 -&gt; orders -&gt; WAITS -&gt; gets food -&gt; leaves
+Customer 2 -&gt; orders -&gt; WAITS -&gt; gets food -&gt; leaves
+(Total: 20 minutes for 2 customers)</p>
+<p>ASYNCHRONOUS:
+Customer 1 -&gt; orders -&gt; gets buzzer #1 -&gt; sits
+Customer 2 -&gt; orders -&gt; gets buzzer #2 -&gt; sits
+Buzzer #1 rings -&gt; Customer 1 gets food
+Buzzer #2 rings -&gt; Customer 2 gets food
+(Total: 10 minutes for 2 customers)
+```</p>
+<p>[TIP] <strong>Teaching Tip:</strong> The buzzer analogy is perfect for promises. The buzzer number = the promise. When it rings = the promise resolves. If the kitchen runs out = the promise rejects.</p>
+<p>[ENGAGE] <strong>Gen-Z:</strong> "The buzzer is your promise. While you're waiting, you can scroll TikTok (other code runs). When the buzzer rings (.then()), you go get your food. If they say 'out of stock' (.catch()), you deal with it."<br />
+<strong>-&gt; Turn to your neighbor:</strong> "In the restaurant analogy, what's the event loop? What's the call stack? 15 seconds, discuss!"</p>
+<p>[LOST] <strong>If they're lost:</strong> "Forget the technical terms. Async = order food, get a buzzer, sit down. Sync = order food, stand at the counter, wait. Which would you prefer?"</p>
+</blockquote>
+<hr />
+<h3>3. Concept Discussion</h3>
+<blockquote>
+<p>[TIME] <strong>Pacing:</strong> 25 min total (8 min event loop -&gt; 5 min callbacks -&gt; 5 min promises -&gt; 5 min async/await -&gt; 2 min Promise.all)</p>
+<p>[SPEAK] <strong>Script:</strong> "JavaScript runs on a single thread — it can only do one thing at a time. Async lets JS say 'I'll come back to this later' and keep doing other work. Here's how it works."</p>
+<p>[SLIDE] <strong>Slide:</strong> Event Loop diagram: Call Stack -&gt; Web APIs -&gt; Callback Queue -&gt; Event Loop -&gt; Call Stack. Animate the flow with a real example: <code>setTimeout(() =&gt; console.log('done'), 0)</code>.</p>
+<p>[TIP] <strong>Teaching Tip:</strong> The event loop is abstract. Draw it on the whiteboard and walk through a concrete example step by step. Students need to SEE the flow, not just hear about it.</p>
+<p>[ASK] <strong>Ask the class:</strong> "What do you think happens when you run <code>setTimeout(() =&gt; console.log('done'), 0)</code>? Does it log immediately?" (Answer: No — it goes to the callback queue and waits for the call stack to be empty.)</p>
+<p>[ENGAGE] <strong>Gen-Z:</strong> "The event loop is like a Grab driver. It checks: 'Is the current ride done? Yes? Okay, pick up the next passenger from the queue.' It never stops cycling."<br />
+<strong>-&gt; Phone moment:</strong> "Open your browser console. Type: <code>console.log('A'); setTimeout(() =&gt; console.log('B'), 0); console.log('C')</code>. What order do they print? A, C, B — not A, B, C. That's the event loop in action."</p>
+<p>[Q&amp;A] <strong>Student Q:</strong> "Why use async/await instead of .then()? They do the same thing."
+<strong>Short answer:</strong> async/await is easier to read and debug.
+<strong>Real answer:</strong> <code>.then()</code> chains get hard to follow, especially with error handling. async/await looks like regular synchronous code, making it easier to reason about. Under the hood, they're identical.
+<strong>The hidden question:</strong> "Which one should I use?" -&gt; async/await in new code. <code>.then()</code> when working with legacy code.</p>
+<p>[Q&amp;A] <strong>Student Q:</strong> "What's the difference between <code>Promise.all()</code> and <code>Promise.allSettled()</code>?"
+<strong>Short answer:</strong> <code>Promise.all()</code> fails if ANY promise fails. <code>Promise.allSettled()</code> waits for ALL regardless.
+<strong>Real answer:</strong> Use <code>Promise.all()</code> when you need ALL results (if one fails, the whole thing is useless). Use <code>Promise.allSettled()</code> when partial results are okay (like fetching 5 posts — if one fails, you still want the other 4).
+<strong>The hidden question:</strong> "When would I use each?" -&gt; <code>Promise.all()</code> for dependencies (need all data). <code>Promise.allSettled()</code> for independent items (some data is better than none).</p>
+<p>[LOST] <strong>If they're lost:</strong> "The simplest summary: (1) <code>fetch()</code> returns a promise. (2) <code>await</code> waits for it. (3) <code>try/catch</code> handles errors. That's 90% of what you need."</p>
+</blockquote>
+<hr />
+<h3>4. Code Walkthrough</h3>
+<blockquote>
+<p>[TIME] <strong>Pacing:</strong> 30 min (5 min raw fetch -&gt; 8 min .then() chain -&gt; 10 min async/await -&gt; 7 min Promise.all)</p>
+<p>[SPEAK] <strong>Script:</strong> "Let's build a data fetcher step by step. We'll start with raw fetch, then chain .then(), then upgrade to async/await, then do parallel requests."</p>
+<p>[SLIDE] <strong>Slide:</strong> Show each step on its own slide. Step 1: raw fetch (shows Promise pending). Step 2: .then() chain. Step 3: async/await. Step 4: Promise.all.</p>
+<p>[TIP] <strong>Teaching Tip:</strong> Emphasize the <code>fetch</code> gotcha: it doesn't throw on 404/500. Students MUST check <code>response.ok</code>. This is the #1 async bug they'll encounter.</p>
+<p>[BOARD] <strong>Whiteboard:</strong> Draw the async/await flow:
+<code>async function fetchUsers() {
+  try {
+    await fetch() -&gt; wait for response
+    check response.ok -&gt; if not, throw error
+    await response.json() -&gt; wait for parsed data
+    return data
+  } catch (error) {
+    handle error
+  }
+}</code></p>
+<p>[ENGAGE] <strong>Gen-Z:</strong> "async/await is like ordering on GrabFood. You place the order (fetch), wait for it to arrive (await), and if something goes wrong, Grab customer service handles it (catch)."<br />
+<strong>-&gt; Type-along:</strong> "Type the async/await version with me. This is what you'll actually write in production. The .then() version is just for understanding."</p>
+<p>[Q&amp;A] <strong>Student Q:</strong> "Why does <code>console.log(response)</code> show <code>Promise { &lt;pending&gt; }</code>?"
+<strong>Short answer:</strong> Because fetch returns immediately — the data hasn't arrived yet.
+<strong>Real answer:</strong> <code>fetch()</code> starts the request and returns a Promise. The Promise is pending until the server responds. <code>console.log</code> runs before the response arrives, so you see the pending state.
+<strong>The hidden question:</strong> "How do I get the actual data?" -&gt; Use <code>await</code> or <code>.then()</code>.</p>
+<p>[LOST] <strong>If they're lost:</strong> "Start with just the async/await pattern. Forget .then() for now. The pattern is: <code>async</code> function, <code>await</code> the fetch, <code>try/catch</code> for errors. That's it."</p>
+</blockquote>
+<hr />
+<h3>5. The "Industry Reality"</h3>
+<blockquote>
+<p>[SPEAK] <strong>Script:</strong> "The Instagram web app makes 15+ parallel API calls when you load your feed. They use <code>Promise.all()</code> to fetch everything simultaneously. If they did these sequentially, your feed would take 5+ seconds to load."</p>
+<p>[SLIDE] <strong>Slide:</strong> Timeline comparison: Sequential (5+ seconds) vs Parallel (under 1 second) for loading a social media feed.</p>
+<p>[TIP] <strong>Teaching Tip:</strong> Keep this to 5 minutes. Show them that async isn't academic — it's the reason modern apps feel fast.</p>
+<p>[ENGAGE] <strong>Gen-Z:</strong> <strong>-&gt; Poll:</strong> "How many of you get annoyed when an app takes more than 2 seconds to load?" (All hands.) "Async is what keeps apps under that 2-second threshold."</p>
+<p>[LOST] <strong>If they're lost:</strong> "You don't need to understand Instagram's architecture. Just know: parallel requests = faster apps. That's why <code>Promise.all()</code> exists."</p>
+</blockquote>
+<hr />
+<h3>6. Exercise</h3>
+<blockquote>
+<p>[TIME] <strong>Pacing:</strong> 55 min total (5 min setup -&gt; 40 min coding -&gt; 10 min share)</p>
+<p>[SPEAK] <strong>Script:</strong> "Build an async data fetcher using JSONPlaceholder. Fetch posts, then fetch comments for each post in parallel. Add error handling, loading states, and compare parallel vs sequential performance."</p>
+<p>[SLIDE] <strong>Slide:</strong> Exercise checklist:
+- [ ] Fetch posts from <code>/posts</code>
+- [ ] Fetch comments for first 5 posts in parallel
+- [ ] Return <code>{ post, comments }</code> objects
+- [ ] Add <code>try/catch</code> error handling
+- [ ] Simulate loading state
+- [ ] Compare parallel vs sequential timing</p>
+<p>[TIP] <strong>Teaching Tip:</strong> The timing comparison (requirement 5) is the "aha" moment. Students will see that parallel is significantly faster. Make sure they actually measure and log the times.</p>
+<p>[ENGAGE] <strong>Gen-Z:</strong> <strong>-&gt; Pair up:</strong> "One person writes the sequential version, the other writes the parallel version. Then compare times. The difference will surprise you."</p>
+<p>[LOST] <strong>If they're lost:</strong> "Start with just fetching posts. Get that working. Then add comments for one post. Then use <code>Promise.all()</code> for all five. Build incrementally."</p>
+</blockquote>
+<hr />
+<h3>7. AI Integration Note</h3>
+<blockquote>
+<p>[TIME] <strong>Pacing:</strong> 10 min (5 min demo -&gt; 5 min try)</p>
+<p>[SPEAK] <strong>Script:</strong> "This week, ask AI to generate async code, then trace through it manually. Write down the order you think things will execute, then run it and compare. Never let AI handle your error boundaries."</p>
+<p>[SLIDE] <strong>Slide:</strong> AI usage guide:
+| [OK] Allowed | [NO] Not Allowed |
+|-----------|--------------|
+| "Generate async fetch code" | "Handle all my error boundaries" |
+| "Explain the event loop" | "Write my Promise.all logic" |</p>
+<p>[TIP] <strong>Teaching Tip:</strong> Point out the common AI mistakes: forgetting <code>response.ok</code> check, suggesting <code>Promise.all()</code> when <code>Promise.allSettled()</code> is needed, missing error handling.</p>
+<p>[ENGAGE] <strong>Gen-Z:</strong> "AI is great at writing async code but terrible at understanding YOUR error handling needs. Always review what it generates."</p>
+</blockquote>
+<hr />
+<h3>8. Debugging / "Watch Out For" Section</h3>
+<blockquote>
+<p>[TIME] <strong>Pacing:</strong> 15 min (5 min common errors -&gt; 5 min group debug -&gt; 5 min Q&amp;A)</p>
+<p>[SPEAK] <strong>Script:</strong> "Here are the async errors and mental model traps you'll hit. The fetch gotcha alone will save you hours of debugging."</p>
+<p>[SLIDE] <strong>Slide:</strong> Error cards:
+<code>+--------------------------------------+
+| "Cannot read properties of undefined"|
+| Calling .json() on wrong variable    |
+| Fix: check your fetch URL and chain  |
++--------------------------------------+
++--------------------------------------+
+| Infinite loading / promise never     |
+| resolves                             |
+| Fix: check for missing return in     |
+| .then() or await outside async       |
++--------------------------------------+</code></p>
+<p>[ENGAGE] <strong>Gen-Z:</strong> "The fetch gotcha is like ordering food and assuming it's ready because the app said 'order placed.' You still need to check if the restaurant actually accepted it (<code>response.ok</code>)."</p>
+<p>[Q&amp;A] <strong>Student Q:</strong> "Why doesn't <code>fetch()</code> throw an error on 404?"
+<strong>Short answer:</strong> Because 404 is a valid HTTP response — the server responded, just with "not found."
+<strong>Real answer:</strong> <code>fetch()</code> only throws on network errors (no internet, server down). A 404 means the server IS working — it's telling you the resource doesn't exist. You need to check <code>response.ok</code> yourself.
+<strong>The hidden question:</strong> "That seems like a bad design." -&gt; It's by design. HTTP status codes are information, not errors.</p>
+<p>[LOST] <strong>If they're lost:</strong> "The golden rule: always check <code>response.ok</code> after <code>await fetch()</code>. If it's false, throw an error. This prevents 90% of async bugs."</p>
+</blockquote>
+<hr />
+<h3>Teaching Script</h3>
+<p>This week's annotations cover: pacing table at top, inline annotations per section, and this summary. The event loop diagram and fetch gotcha are the two most important teaching points.</p>
+<hr />
+</body></html>

@@ -1,0 +1,232 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>elective-2\week-10-relationships-and-data-display.md</title><style>
+body { font-family: 'Segoe UI', Arial, sans-serif; max-width: 960px; margin: 2em auto; padding: 0 1.5em; line-height: 1.7; color: #1a1a1a; background: #fafafa; }
+h1 { border-bottom: 2px solid #2563eb; padding-bottom: .3em; margin-top: 1.5em; color: #1e3a5f; }
+h2 { border-bottom: 1px solid #cbd5e1; padding-bottom: .2em; margin-top: 1.5em; color: #1e3a5f; }
+h3 { margin-top: 1.3em; color: #334155; }
+a { color: #2563eb; }
+code { background: #eef2ff; padding: .15em .35em; border-radius: 4px; font-size: .9em; }
+pre { background: #1e293b; color: #e2e8f0; padding: 1em; border-radius: 6px; overflow-x: auto; }
+pre code { background: none; padding: 0; color: inherit; }
+blockquote { border-left: 4px solid #2563eb; margin: 1em 0; padding: .5em 1em; background: #f1f5f9; border-radius: 0 6px 6px 0; }
+table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+th, td { border: 1px solid #cbd5e1; padding: .5em .75em; text-align: left; }
+th { background: #2563eb; color: #fff; }
+tr:nth-child(even) { background: #f8fafc; }
+hr { border: none; border-top: 2px solid #e2e8f0; margin: 2em 0; }
+</style></head><body>
+<nav><a href="index.htm">Home</a></nav>
+<h2>Week 10: Relationships &amp; Data Display</h2>
+<blockquote>
+<p>[TIME] <strong>Session Pacing (180 min)</strong></p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Block</th>
+<th>Time</th>
+<th>Format</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Hook + Analogy</td>
+<td>15 min</td>
+<td>Lecture + Whiteboard</td>
+</tr>
+<tr>
+<td>Concept Discussion</td>
+<td>25 min</td>
+<td>Lecture + Slides + Code Comparison</td>
+</tr>
+<tr>
+<td>Code Walkthrough</td>
+<td>35 min</td>
+<td>Live Code (instructor + students type)</td>
+</tr>
+<tr>
+<td>Industry Reality</td>
+<td>10 min</td>
+<td>Lecture + Discussion</td>
+</tr>
+<tr>
+<td>Break</td>
+<td>10 min</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Exercise</td>
+<td>55 min</td>
+<td>Lab (solo or pairs)</td>
+</tr>
+<tr>
+<td>AI Integration</td>
+<td>10 min</td>
+<td>Demo + Prompt Walkthrough</td>
+</tr>
+<tr>
+<td>Debugging + Wrap</td>
+<td>15 min</td>
+<td>Group Debug + Q&amp;A</td>
+</tr>
+<tr>
+<td>Buffer</td>
+<td>5 min</td>
+<td>Overflow</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>[TIP] <strong>Teaching Tip (Week 10 strategy):</strong> This is the hardest EF Core week. Navigation properties, <code>.Include()</code>, the N+1 problem, and async all hit at once. The N+1 problem is invisible with small datasets — you MUST show them the difference between 1 query and 101 queries. Use the whiteboard to draw the JOIN. Students will get <code>NullReferenceException</code> constantly because they forget <code>.Include()</code> — normalize this error as a learning moment.</p>
+</blockquote>
+<hr />
+<h3>The Hook</h3>
+<blockquote>
+<p>[SPEAK] <strong>Script:</strong> "One-to-many relationships. Sounds like something from your ex's Tinder settings. But in web apps, it's how products belong to categories, orders have items, and users write reviews. Without relationships, your data is just a bunch of lonely tables."</p>
+<p>[SLIDE] <strong>Slide:</strong> Title: "Your Data Is Lonely"<br />
+Left: Two separate tables (Products, Categories) with no connecting line, labeled "No Relationships."<br />
+Right: Same tables connected by a line from CategoryId to Id, labeled "With Relationships."<br />
+Subtitle: "Today we connect the dots."</p>
+<p>[TIP] <strong>Teaching Tip:</strong> The Tinder joke gets a laugh — use it to transition into the real concept. Then immediately show a real-world example: Shopee product pages where each product shows its category.</p>
+<p>[ENGAGE] <strong>Gen-Z:</strong> "Think about Shopee. Every product has a category. Every order has items. Every review has a user. None of these exist in isolation. Relationships are what make a database useful instead of just a bunch of spreadsheets."<br />
+<strong>-&gt; Poll:</strong> "Raise your hand if you've ever seen a product page that shows the category name. That's a relationship working."</p>
+<p>[LOST] <strong>If they're lost:</strong> "Forget the term 'one-to-many' for a second. Think: one category has many products. One author has many books. That's it. We're just learning how to code that connection."</p>
+</blockquote>
+<hr />
+<h3>The Analogy</h3>
+<blockquote>
+<p>[SPEAK] <strong>Script:</strong> "Spotify playlists. A Playlist has many Songs. A Song belongs to one Playlist. When you open a playlist, Spotify's gotta load 50 songs at once. Without navigation properties, they'd have to run 51 separate queries — one for the playlist, 50 for each song. That's the N+1 problem."</p>
+<p>[BOARD] <strong>Whiteboard:</strong> Draw the N+1 problem visually:
+```
+BAD (N+1 queries):
+Query 1: SELECT * FROM Playlists          &lt;- 1 query
+Query 2: SELECT * FROM Songs WHERE PlaylistId = 1  &lt;- N queries
+Query 3: SELECT * FROM Songs WHERE PlaylistId = 2
+Query 4: SELECT * FROM Songs WHERE PlaylistId = 3
+... (50 more)</p>
+<p>GOOD (1 query with JOIN):
+SELECT * FROM Playlists
+LEFT JOIN Songs ON Playlists.Id = Songs.PlaylistId  &lt;- 1 query
+```</p>
+<p>[TIP] <strong>Teaching Tip:</strong> The Spotify analogy is perfect for Filipino students — almost all use Spotify. Emphasize the key insight: <strong>without <code>.Include()</code>, navigation properties are null.</strong> This is the #1 source of errors this week.</p>
+<p>[ENGAGE] <strong>Gen-Z:</strong> <strong>-&gt; Turn to your neighbor:</strong> "If you open a Spotify playlist with 50 songs and the app runs 51 queries — why is that bad? 10 seconds, go!" (Answer: Slow. Each query takes time. 51 queries = 51 round trips to the server.)</p>
+<p>[LOST] <strong>If they're lost:</strong> "Think of it like ordering from a menu. Bad way: order one item, wait, order another, wait, repeat 50 times. Good way: order everything at once. <code>.Include()</code> is ordering everything at once."</p>
+</blockquote>
+<hr />
+<h3>Concept Discussion</h3>
+<blockquote>
+<p>[TIME] <strong>Pacing:</strong> 25 min total (8 min navigation properties -&gt; 8 min Include/Eager Loading -&gt; 5 min N+1 -&gt; 4 min async)</p>
+<p>[SPEAK] <strong>Script:</strong> "Here's the entire relationships mental model: navigation properties connect tables, <code>.Include()</code> loads related data in one query, the N+1 problem is what happens when you don't use Include, and async keeps your app from freezing. Let's go through each."</p>
+<p>[SLIDE] <strong>Slide:</strong> Show the Category and Product models side by side. Highlight <code>List&lt;Product&gt;</code> in Category and <code>Category Category</code> in Product. Then reveal the foreign key <code>CategoryId</code> — this is the glue.</p>
+<p>[TIP] <strong>Teaching Tip:</strong> The most important concept: <strong>EF Core figures out relationships from naming conventions.</strong> <code>CategoryId</code> + <code>Category</code> navigation property = EF knows it's a foreign key. Emphasize: "Name your foreign key <code>{ClassName}Id</code> and EF does the rest." For <code>.Include()</code>, stress: "Without it, the navigation property is null. Always."</p>
+<p>[ASK] <strong>Ask the class:</strong> "If I query <code>db.Products.ToList()</code> — what is <code>product.Category</code> for each product?" (Pause. Answer: null. Because we didn't use <code>.Include()</code>.)</p>
+<p>[ENGAGE] <strong>Gen-Z:</strong> "Navigation properties are like following someone on Instagram. You have a link to their profile (the related data), but you don't automatically load their entire feed — you have to click (<code>.Include()</code>) to see it."<br />
+<strong>-&gt; Phone moment:</strong> "Think about how Facebook loads a post with comments. The post loads first, then comments load. That's eager loading — everything in one go."</p>
+<p>[Q&amp;A] <strong>Student Q:</strong> "Why do I need both <code>CategoryId</code> and <code>Category Category</code>? Isn't one enough?"
+<strong>Short answer:</strong> <code>CategoryId</code> is the actual foreign key. <code>Category</code> is the navigation property for convenience.
+<strong>Real answer:</strong> You could have just <code>CategoryId</code> and manually query the category. But <code>Category</code> lets you write <code>product.Category.Name</code> instead of a separate query. EF Core uses both to understand the relationship.
+<strong>The hidden question:</strong> "Can I skip the navigation property?" -&gt; Yes, but your code will be uglier.</p>
+<p>[Q&amp;A] <strong>Student Q:</strong> "What's the difference between async and sync for database calls?"
+<strong>Short answer:</strong> Async doesn't block the thread while waiting for the database.
+<strong>Real answer:</strong> In a web app, each request gets a thread. If you block it waiting for the database, that thread can't handle other requests. Async frees the thread to do other work. With 100 concurrent users, async matters a lot.
+<strong>The hidden question:</strong> "Is it that important?" -&gt; For a class project, no. For production, yes.</p>
+<p>[LOST] <strong>If they're lost:</strong> "Forget async for now. Focus on this: (1) Define navigation properties in your models. (2) Use <code>.Include()</code> when you need related data. (3) Without Include, navigation properties are null. That's the core."</p>
+</blockquote>
+<hr />
+<h3>Code Walkthrough</h3>
+<blockquote>
+<p>[TIME] <strong>Pacing:</strong> 35 min (10 min models + relationships -&gt; 10 min controller with Include -&gt; 10 min view with nested loops -&gt; 5 min SQL comparison)</p>
+<p>[SPEAK] <strong>Script:</strong> "Let's build a store that displays categories with their products. Watch how <code>.Include()</code> loads everything in one query, and how the view loops through categories and then products inside each category."</p>
+<p>[SLIDE] <strong>Slide:</strong> Show the StoreController first — highlight <code>.Include(c =&gt; c.Products)</code>. Then show the View — highlight the nested <code>@foreach</code> loops. Finally show the generated SQL — one LEFT JOIN query.</p>
+<p>[TIP] <strong>Teaching Tip:</strong> <strong>Type this live.</strong> After typing the controller, run the app and show the output. Then open the SQL Server output window and show the generated query. Say: "See? One query. Not N+1. EF Core generated a LEFT JOIN for us." This visual proof is powerful.</p>
+<p>[BOARD] <strong>Whiteboard:</strong> Draw the query flow:
+<code>_db.Categories.Include(c =&gt; c.Products)
+      v
+SELECT c.*, p.*
+FROM Categories c
+LEFT JOIN Products p ON c.Id = p.CategoryId
+      v
+EF maps results back to:
+  Category { Products: [Product, Product, ...] }
+  Category { Products: [Product, ...] }</code></p>
+<p>[ENGAGE] <strong>Gen-Z:</strong> <strong>-&gt; Type-along:</strong> "Type the controller with me. Notice the <code>.Include()</code>. Then type the view — nested foreach loops. Run it. See categories with their products grouped. That's relationships working."</p>
+<p>[Q&amp;A] <strong>Student Q:</strong> "Why does the view use <code>category.Products.Count</code> — isn't that another query?"
+<strong>Short answer:</strong> No — because we used <code>.Include()</code>, the products are already loaded.
+<strong>Real answer:</strong> <code>.Include(c =&gt; c.Products)</code> loads all products for all categories in one query. <code>category.Products.Count</code> just counts the in-memory list. Zero additional database calls.
+<strong>The hidden question:</strong> "How do I know it's not making extra queries?" -&gt; Check the SQL output window. You'll see only one query.</p>
+<p>[LOST] <strong>If they're lost:</strong> "Let's do the simplest relationship first: just the controller with <code>.Include()</code>. Get that working. Then add the view. Don't try to build everything at once."</p>
+</blockquote>
+<hr />
+<h3>The "Why Should I Care?"</h3>
+<blockquote>
+<p>[SPEAK] <strong>Script:</strong> "The N+1 problem takes down production apps. It works fine with 10 categories — 11 queries, 20ms. Then crashes with 10,000 categories — 10,001 queries, 30 seconds. Companies have pushed hotfixes at 2 AM for this exact issue. Learning <code>.Include()</code> now saves you from that 2 AM call."</p>
+<p>[SLIDE] <strong>Slide:</strong> A timeline visualization: "10 categories = 20ms [OK]" -&gt; "100 categories = 200ms [OK]" -&gt; "10,000 categories = 30 seconds [NO]" -&gt; "With Include: 10,000 categories = 50ms [OK]"</p>
+<p>[TIP] <strong>Teaching Tip:</strong> Keep this to 5 minutes. The 2 AM hotfix story is memorable — students will remember it when they write their first <code>.Include()</code>.</p>
+<p>[ENGAGE] <strong>Gen-Z:</strong> <strong>-&gt; Poll:</strong> "How many of you have had an app that was fast at first but got slower as you added more data?" (Some hands.) "That might be the N+1 problem. Today you learned how to fix it."</p>
+<p>[LOST] <strong>If they're lost:</strong> "You don't need to understand performance tuning today. Just remember: use <code>.Include()</code> when you need related data. That prevents the N+1 problem. That's enough for now."</p>
+</blockquote>
+<hr />
+<h3>Exercise: Data-Driven Page with Related Data</h3>
+<blockquote>
+<p>[TIME] <strong>Pacing:</strong> 55 min total (5 min setup -&gt; 40 min coding -&gt; 10 min share)</p>
+<p>[SPEAK] <strong>Script:</strong> "Build an author-book system. Authors have books. Display authors with their book counts. Show author details with all their books. You have 40 minutes."</p>
+<p>[SLIDE] <strong>Slide:</strong> Exercise checklist:
+- [ ] Create models: <code>Author</code> (Id, Name, Bio) and <code>Book</code> (Id, Title, Price, Genre, AuthorId, Author)
+- [ ] Create <code>AppDbContext</code> with DbSets
+- [ ] Seed data: 3 authors, 3-5 books each
+- [ ] Create <code>AuthorsController</code> with <code>Index</code> and <code>Details/{id}</code>
+- [ ] <code>Index</code> — list all authors with book counts
+- [ ] <code>Details</code> — show author info + all their books (use <code>.Include()</code>)
+- [ ] Create views that display related data
+- [ ] Stretch: "Books by Genre" page with <code>.Where()</code>
+- [ ] Stretch: async everywhere</p>
+<p>[TIP] <strong>Teaching Tip:</strong> Circulate during the first 15 minutes — students will get stuck on the model relationships and <code>.Include()</code> syntax. The "aha" moment is when they see the book count on the author listing page.</p>
+<p>[ENGAGE] <strong>Gen-Z:</strong> <strong>-&gt; Pair up:</strong> "One person builds the models and seed data, the other builds the controller and views. Then combine and test together."</p>
+<p>[ASK] <strong>Mid-exercise check-in (at 20 min):</strong> "How many have the seed data working?" (Show of hands.) "How many see book counts on the author page?" "If neither, let's do a quick group debug."</p>
+<p>[LOST] <strong>If they're lost:</strong> "Start with just the models. Get Author and Book with the right properties. Then add the DbSet. Then seed data. Then the controller with <code>.Include()</code>. One step at a time."</p>
+</blockquote>
+<hr />
+<h3>AI Integration Note</h3>
+<blockquote>
+<p>[TIME] <strong>Pacing:</strong> 10 min (5 min demo -&gt; 5 min try)</p>
+<p>[SPEAK] <strong>Script:</strong> "This week, AI can generate Include statements, navigation properties, and LINQ queries. But you must comment every generated line. Show me you understand what <code>.Include(a =&gt; a.Books)</code> actually does."</p>
+<p>[SLIDE] <strong>Slide:</strong> Prompt template:
+"I have Author and Book models. Generate the Include query to show an author with all their books. Here are my models [paste]." Then comment each line.</p>
+<p>[TIP] <strong>Teaching Tip:</strong> Demonstrate asking AI for an Include query, then walk through adding comments. "This line starts the query on the Authors table. This line tells EF to also load the Books for each author. This line executes the query and returns a list."</p>
+<p>[ENGAGE] <strong>Gen-Z:</strong> "AI is your 'LINQ tutor' — it generates the query, you explain it. If you can't explain why <code>.Include()</code> is there, you didn't learn."</p>
+<p>[LOST] <strong>If they're lost:</strong> "Start by asking AI to explain concepts: 'What does .Include() do?' 'What's the N+1 problem?' Build understanding first, then use AI for code."</p>
+</blockquote>
+<hr />
+<h3>Debugging / "Watch Out For"</h3>
+<blockquote>
+<p>[TIME] <strong>Pacing:</strong> 15 min (5 min common errors -&gt; 5 min group debug -&gt; 5 min Q&amp;A)</p>
+<p>[SPEAK] <strong>Script:</strong> "Here are the relationship errors you WILL see this week. Most of them are 'forgot Include' or 'forgot await.'"</p>
+<p>[SLIDE] <strong>Slide:</strong> Error cards:
+<code>+------------------------------------------+
+| NullReferenceException on                |
+| product.Category.Name                    |
+| You forgot .Include(p =&gt; p.Category)     |
++------------------------------------------+
++------------------------------------------+
+| "A possible object cycle was detected"   |
+| JSON loops: Category-&gt;Products-&gt;Category   |
+| Fix: configure JSON to ignore cycles     |
++------------------------------------------+
++------------------------------------------+
+| Async method returns Task, not data      |
+| You forgot await                         |
++------------------------------------------+</code></p>
+<p>[ENGAGE] <strong>Gen-Z:</strong> "NullReferenceException on a navigation property is like clicking an Instagram link that goes nowhere. The link exists (the property), but you didn't load the page (.Include())."</p>
+<p>[Q&amp;A] <strong>Student Q:</strong> "Why does my app work fine with 10 records but feel slow with 100?"
+<strong>Short answer:</strong> You might have the N+1 problem.
+<strong>Real answer:</strong> With 10 records, N+1 = 11 queries — fast enough to not notice. With 100 records, N+1 = 101 queries — noticeable lag. Check the SQL output window to see how many queries are running.
+<strong>The hidden question:</strong> "How do I check?" -&gt; Look at the Visual Studio Output window while the app runs. Count the SELECT statements.</p>
+<p>[LOST] <strong>If they're lost:</strong> "The two things to check first: (1) Are you using <code>.Include()</code> for every navigation property you access? (2) Are you using <code>await</code> on every async method? Those fix 90% of this week's errors."</p>
+<p>[TIP] <strong>Teaching Tip:</strong> End with one action item: "If you only remember one thing: if you access a navigation property, you MUST use <code>.Include()</code>. Without it, it's null."</p>
+</blockquote>
+<hr />
+<h3>Teaching Script</h3>
+<p>This week's annotations cover: pacing table at top, inline annotations per section ([SPEAK] Script, [SLIDE] Slide, [BOARD] Whiteboard, [TIP] Teaching Tip, [ENGAGE] Gen-Z, [Q&amp;A] Student Q, [LOST] If they're lost), and this summary. The N+1 problem is the core concept — show the visual difference between 1 query and N+1 queries. The #1 error is <code>NullReferenceException</code> from missing <code>.Include()</code> — normalize it as the expected learning curve. Use the Spotify playlist analogy repeatedly. Async is secondary; focus on relationships first.</p>
+<hr />
+</body></html>

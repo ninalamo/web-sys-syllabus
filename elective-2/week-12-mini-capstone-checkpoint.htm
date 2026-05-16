@@ -1,0 +1,235 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>elective-2\week-12-mini-capstone-checkpoint.md</title><style>
+body { font-family: 'Segoe UI', Arial, sans-serif; max-width: 960px; margin: 2em auto; padding: 0 1.5em; line-height: 1.7; color: #1a1a1a; background: #fafafa; }
+h1 { border-bottom: 2px solid #2563eb; padding-bottom: .3em; margin-top: 1.5em; color: #1e3a5f; }
+h2 { border-bottom: 1px solid #cbd5e1; padding-bottom: .2em; margin-top: 1.5em; color: #1e3a5f; }
+h3 { margin-top: 1.3em; color: #334155; }
+a { color: #2563eb; }
+code { background: #eef2ff; padding: .15em .35em; border-radius: 4px; font-size: .9em; }
+pre { background: #1e293b; color: #e2e8f0; padding: 1em; border-radius: 6px; overflow-x: auto; }
+pre code { background: none; padding: 0; color: inherit; }
+blockquote { border-left: 4px solid #2563eb; margin: 1em 0; padding: .5em 1em; background: #f1f5f9; border-radius: 0 6px 6px 0; }
+table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+th, td { border: 1px solid #cbd5e1; padding: .5em .75em; text-align: left; }
+th { background: #2563eb; color: #fff; }
+tr:nth-child(even) { background: #f8fafc; }
+hr { border: none; border-top: 2px solid #e2e8f0; margin: 2em 0; }
+</style></head><body>
+<nav><a href="index.htm">Home</a></nav>
+<h2>Week 12: Mini-Capstone Checkpoint</h2>
+<blockquote>
+<p>[TIME] <strong>Session Pacing (180 min)</strong></p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Block</th>
+<th>Time</th>
+<th>Format</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Hook + Analogy</td>
+<td>15 min</td>
+<td>Lecture + Whiteboard</td>
+</tr>
+<tr>
+<td>Concept Discussion</td>
+<td>25 min</td>
+<td>Lecture + Slides + Architecture Diagram</td>
+</tr>
+<tr>
+<td>Code Walkthrough</td>
+<td>35 min</td>
+<td>Live Code (instructor + students type)</td>
+</tr>
+<tr>
+<td>Industry Reality</td>
+<td>10 min</td>
+<td>Lecture + Discussion</td>
+</tr>
+<tr>
+<td>Break</td>
+<td>10 min</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Exercise</td>
+<td>60 min</td>
+<td>Lab (mini-capstone build session)</td>
+</tr>
+<tr>
+<td>AI Integration</td>
+<td>10 min</td>
+<td>Demo + Prompt Walkthrough</td>
+</tr>
+<tr>
+<td>Debugging + Wrap</td>
+<td>10 min</td>
+<td>Group Debug + Q&amp;A</td>
+</tr>
+<tr>
+<td>Buffer</td>
+<td>5 min</td>
+<td>Overflow</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>[TIP] <strong>Teaching Tip (Week 12 strategy):</strong> This is not a teaching week — it's a building week. Students should spend most of their time coding, not listening. Keep lectures short. The service layer is the new concept — everything else is review. Walk around constantly. This week reveals who actually learned the material and who has been coasting. Be supportive but honest: "If you can't wire up DI by now, you need to review Weeks 2 and 9."</p>
+</blockquote>
+<hr />
+<h3>The Hook</h3>
+<blockquote>
+<p>[SPEAK] <strong>Script:</strong> "Everything you've learned this semester — MVC, routing, models, validation, EF Core, APIs — it all comes together this week. You're not writing exercises anymore. You're building a real app. Scared? Good. That means it matters."</p>
+<p>[SLIDE] <strong>Slide:</strong> Title: "This Is Where It All Comes Together"<br />
+A puzzle visualization: pieces labeled "MVC," "Routing," "EF Core," "APIs," "Validation" clicking together into a complete app screenshot.<br />
+Subtitle: "Week 12: The pieces connect."</p>
+<p>[TIP] <strong>Teaching Tip:</strong> Deliver this with energy but also warmth. Some students are genuinely anxious about building something from scratch. Acknowledge it: "It's okay to be nervous. You have all the pieces. Today we just put them together."</p>
+<p>[ENGAGE] <strong>Gen-Z:</strong> "This is like the final boss level. You've been grinding XP all semester — leveling up your MVC skills, unlocking EF Core, mastering APIs. Now you face the boss: build a real app. You have all the skills. You just need to combine them."<br />
+<strong>-&gt; Poll:</strong> "Raise your hand if you're nervous about building something from scratch. Good. That means you care. Now let's do it."</p>
+<p>[LOST] <strong>If they're lost:</strong> "Don't panic. This isn't a test. It's a checkpoint. You'll build something small but complete. If you can do a controller, a model, a view, and a database query — you can do this."</p>
+</blockquote>
+<hr />
+<h3>The Analogy</h3>
+<blockquote>
+<p>[SPEAK] <strong>Script:</strong> "You've been training for a sport all semester. Week 1 you learned to hold the racket. Week 5 you learned to serve. Week 9 you learned the rules. This week you play your first real match. You'll make mistakes. You'll drop the ball. But you'll also see how everything connects, and that's the point."</p>
+<p>[BOARD] <strong>Whiteboard:</strong> Draw the full architecture diagram:
+<code>Browser (User visits /tasks)
+    v
+Controller (TaskController.Index)
+    v                    v
+Service (ITaskService)   Service (IWeatherService)
+    v                    v
+DbContext (Database)     HttpClient (External API)
+    v                    v
+Task data                Weather data
+    v                    v
+        ViewModel (combined)
+            v
+        View (HTML rendered)</code></p>
+<p>[TIP] <strong>Teaching Tip:</strong> This diagram is the most important visual of the entire term. Draw it slowly. Point to each layer. Say: "This is what a real .NET app looks like. Not a toy. A real app." Leave it on the board for the entire session.</p>
+<p>[ENGAGE] <strong>Gen-Z:</strong> <strong>-&gt; Turn to your neighbor:</strong> "Point to the diagram. If the database is down, which layer breaks first? If the API is slow, which layer feels it? 10 seconds, go!" (Database down -&gt; Service layer. API slow -&gt; Service layer -&gt; Controller waits.)</p>
+<p>[LOST] <strong>If they're lost:</strong> "Think of it like a restaurant chain. The customer (browser) talks to the manager (controller). The manager tells the kitchen (service) what to make. The kitchen gets ingredients from the fridge (database) and from suppliers (APIs). Each layer has one job."</p>
+</blockquote>
+<hr />
+<h3>Concept Discussion</h3>
+<blockquote>
+<p>[TIME] <strong>Pacing:</strong> 25 min total (10 min service layer -&gt; 8 min separation of concerns -&gt; 7 min integration patterns)</p>
+<p>[SPEAK] <strong>Script:</strong> "The service layer is the new concept this week. It's a class that sits between your controller and your data. Controllers handle HTTP. Services handle business logic. This separation is what separates toy apps from production apps."</p>
+<p>[SLIDE] <strong>Slide:</strong> Show the controller vs service comparison side by side. Left: a fat controller doing database work, validation, and API calls (labeled "Bad"). Right: a thin controller delegating to services (labeled "Good").</p>
+<p>[TIP] <strong>Teaching Tip:</strong> The service layer is a conceptual leap. Students will ask "why not just put it in the controller?" Answer: "You can. But when your controller is 200 lines long and you need the same logic in another controller, you'll wish you had a service." Show them a real-world example: a UserController and an AdminController both needing the same user lookup logic.</p>
+<p>[ASK] <strong>Ask the class:</strong> "If I need to get all tasks in two different controllers — do I copy-paste the database query, or do I put it in a service?" (Answer: Service. DRY — Don't Repeat Yourself.)</p>
+<p>[ENGAGE] <strong>Gen-Z:</strong> "The service layer is like having a group chat for your app's logic. Instead of every controller doing its own thing, they all ask the service. The service is the group admin — it knows the rules and coordinates everything."<br />
+<strong>-&gt; Phone moment:</strong> "Think about how GCash works. The app (controller) doesn't talk to the bank directly. It goes through GCash's backend service. That service handles the logic, security, and database. Same pattern."</p>
+<p>[Q&amp;A] <strong>Student Q:</strong> "Do I need a service for every model?"
+<strong>Short answer:</strong> No. Start with services for complex logic.
+<strong>Real answer:</strong> Simple CRUD (create, read, update, delete) can stay in controllers. Services are for when you have business rules, multiple data sources, or shared logic. Don't over-engineer a class project.
+<strong>The hidden question:</strong> "How do I know when it's complex enough?" -&gt; If the controller method is more than 15 lines, consider a service.</p>
+<p>[Q&amp;A] <strong>Student Q:</strong> "What's the difference between a service and a repository?"
+<strong>Short answer:</strong> A repository is just data access. A service is business logic + data access.
+<strong>Real answer:</strong> A repository wraps DbContext operations (GetAll, GetById, Add, Update, Delete). A service uses repositories (or DbContext directly) plus adds business rules: "A task can only be completed if it's not overdue." For this course, skip the repository layer — services talking directly to DbContext is fine.
+<strong>The hidden question:</strong> "Which pattern should I use for my capstone?" -&gt; Service + DbContext directly. Keep it simple.</p>
+<p>[LOST] <strong>If they're lost:</strong> "Forget the architecture patterns for a second. The service layer is just a class that does the real work. The controller asks the service to do things. That's it. Start there. Refine later."</p>
+</blockquote>
+<hr />
+<h3>Code Walkthrough</h3>
+<blockquote>
+<p>[TIME] <strong>Pacing:</strong> 35 min (5 min model -&gt; 10 min service interface + implementation -&gt; 10 min controller with DI -&gt; 10 min wiring + test)</p>
+<p>[SPEAK] <strong>Script:</strong> "Let's build a Task Manager with a weather feature. Watch how the controller delegates to two services — one for database tasks, one for API weather data. Everything connects through dependency injection."</p>
+<p>[SLIDE] <strong>Slide:</strong> Show the TaskItem model first. Then the ITaskService interface. Then the TaskService implementation. Then the controller. Finally Program.cs registration. Reveal one piece at a time.</p>
+<p>[TIP] <strong>Teaching Tip:</strong> <strong>Type this live.</strong> After typing the service, pause: "This is where the real work happens — not in the controller." After typing the controller, emphasize: "Look how thin this controller is. It just delegates. That's the goal." In Program.cs, highlight: "This one line wires everything together: <code>AddScoped&lt;ITaskService, TaskService&gt;()</code>."</p>
+<p>[BOARD] <strong>Whiteboard:</strong> Trace the full request flow:
+<code>GET /task
+  v
+TaskController.Index()
+  v
+_taskService.GetAllAsync() -&gt; db.Tasks.Include(t =&gt; t.Category).ToListAsync()
+_weatherService.GetCurrentWeatherAsync() -&gt; HttpClient -&gt; API -&gt; JSON -&gt; C# object
+  v
+Combine into TaskDashboardViewModel
+  v
+return View(model) -&gt; renders HTML</code></p>
+<p>[ENGAGE] <strong>Gen-Z:</strong> <strong>-&gt; Type-along:</strong> "Build the service with me. Interface first, then implementation. Then the controller. Then wire it up in Program.cs. Run it. See tasks and weather on the same page. That's integration."</p>
+<p>[Q&amp;A] <strong>Student Q:</strong> "Why use an interface for the service? Why not just the class?"
+<strong>Short answer:</strong> Interfaces make your code testable and swappable.
+<strong>Real answer:</strong> With an interface, you can swap implementations (e.g., a fake service for testing). DI containers register interfaces to implementations. It's the same DI pattern from Week 2 — now applied to services.
+<strong>The hidden question:</strong> "Is this overkill for a class project?" -&gt; Maybe. But it's the industry standard. Practice it now.</p>
+<p>[LOST] <strong>If they're lost:</strong> "Start with just the service and controller for tasks. Skip the weather API for now. Get the database part working. Then add the API service. One layer at a time."</p>
+</blockquote>
+<hr />
+<h3>The "Why Should I Care?"</h3>
+<blockquote>
+<p>[SPEAK] <strong>Script:</strong> "This is the architecture used by 90% of production .NET apps. Controllers that just delegate. Services that contain real logic. DbContext for data access. ViewModels for display. When you interview for a job, you'll describe exactly this pattern. When you build your capstone, you'll use exactly this pattern."</p>
+<p>[SLIDE] <strong>Slide:</strong> A real company's architecture diagram (simplified). Label each layer: "This is what Microsoft, Accenture, and local .NET shops use. Same pattern. Different scale."</p>
+<p>[TIP] <strong>Teaching Tip:</strong> Keep this to 5 minutes. Connect it directly to their capstone and job interviews: "When an interviewer asks 'describe your project architecture,' you'll say: controllers delegate to services, services use EF Core for data and HttpClient for APIs. That answer gets you hired."</p>
+<p>[ENGAGE] <strong>Gen-Z:</strong> <strong>-&gt; Poll:</strong> "How many of you want to work at a company that builds real software, not just class projects?" (Most hands.) "This architecture is how real software is built. Learning it now gives you a head start."</p>
+<p>[LOST] <strong>If they're lost:</strong> "You don't need to understand enterprise architecture today. Just know: thin controllers, fat services. That's the pattern. Everything else builds on it."</p>
+</blockquote>
+<hr />
+<h3>Exercise: Integrated App</h3>
+<blockquote>
+<p>[TIME] <strong>Pacing:</strong> 60 min total (5 min setup -&gt; 50 min build -&gt; 5 min quick share)</p>
+<p>[SPEAK] <strong>Script:</strong> "Choose one: Task Manager with Weather, or Book Blog with GitHub Stats. Build it from scratch. Use everything you've learned. You have 50 minutes. I'll be walking around helping."</p>
+<p>[SLIDE] <strong>Slide:</strong> Exercise requirements checklist:
+- [ ] ASP.NET Core MVC project
+- [ ] EF Core with SQL Server (at least 2 related tables)
+- [ ] At least one external API integration
+- [ ] Service layer (interface + implementation)
+- [ ] DI wired up in <code>Program.cs</code>
+- [ ] Multiple views with layout
+- [ ] Form validation on at least one page
+- [ ] Architecture diagram (text is fine)</p>
+<p>[TIP] <strong>Teaching Tip:</strong> This is a build session, not a lecture. Walk around constantly. The first 15 minutes will be setup-heavy — help students scaffold the project, create folders, and register services. The "aha" moment is when they see data from both the database and an API on the same page.</p>
+<p>[ENGAGE] <strong>Gen-Z:</strong> <strong>-&gt; Work in pairs or solo:</strong> "This is your mini-capstone. Treat it like a real project. Plan first, then code. Draw your architecture diagram before you write a single line."</p>
+<p>[ASK] <strong>Mid-exercise check-in (at 25 min):</strong> "How many have the database working?" (Show of hands.) "How many have the API working?" "How many have both on the same page?" "If you're stuck, raise your hand — I'll come over."</p>
+<p>[LOST] <strong>If they're lost:</strong> "Start with the database part. Get EF Core working with one model. Then add the second model with a relationship. Then add the service layer. Then the API. Then combine. Don't try to build everything at once."</p>
+</blockquote>
+<hr />
+<h3>AI Integration Note</h3>
+<blockquote>
+<p>[TIME] <strong>Pacing:</strong> 10 min (5 min demo -&gt; 5 min try)</p>
+<p>[SPEAK] <strong>Script:</strong> "This week, AI is your full pair programmer. Architecture suggestions, service layer code, integration patterns — all allowed. But comment every AI-generated line. And be ready to explain your choices."</p>
+<p>[SLIDE] <strong>Slide:</strong> Prompt template:
+"Here's my architecture plan [describe]. Generate the service layer code for feature X. I need an interface and implementation."</p>
+<p>[TIP] <strong>Teaching Tip:</strong> Demonstrate a full AI-assisted workflow: (1) Describe the architecture to AI, (2) Get service code, (3) Add comments, (4) Wire up DI, (5) Test. Emphasize: "AI generates the code, but YOU understand it. That's the difference between using AI and being used by it."</p>
+<p>[ENGAGE] <strong>Gen-Z:</strong> "AI is your 'senior developer' this week — it suggests architecture, writes boilerplate, and catches mistakes. But you're still the one who ships the code. If you can't explain it, you can't defend it."</p>
+<p>[LOST] <strong>If they're lost:</strong> "Start by asking AI to help you plan: 'I want to build a Task Manager with weather. What folders and files do I need?' Then ask for code. Planning first prevents chaos."</p>
+</blockquote>
+<hr />
+<h3>Debugging / "Watch Out For"</h3>
+<blockquote>
+<p>[TIME] <strong>Pacing:</strong> 10 min (5 min common errors -&gt; 5 min group debug)</p>
+<p>[SPEAK] <strong>Script:</strong> "Here are the integration errors you'll see this week. Most are DI registration issues or circular dependencies."</p>
+<p>[SLIDE] <strong>Slide:</strong> Error cards:
+<code>+------------------------------------------+
+| "Unable to resolve service for type      |
+| 'ITaskService'"                          |
+| You forgot AddScoped in Program.cs       |
++------------------------------------------+
++------------------------------------------+
+| Circular dependency detected             |
+| ServiceA -&gt; ServiceB -&gt; ServiceA           |
+| Fix: break the cycle with an interface   |
++------------------------------------------+
++------------------------------------------+
+| API call in a foreach loop               |
+| Slow. Use Task.WhenAll instead           |
++------------------------------------------+</code></p>
+<p>[ENGAGE] <strong>Gen-Z:</strong> "'Unable to resolve service' is like calling someone who didn't save your number. You're trying to use a service that was never registered. Fix: <code>AddScoped&lt;ITaskService, TaskService&gt;()</code> in Program.cs."</p>
+<p>[Q&amp;A] <strong>Student Q:</strong> "My app works but it's really slow when loading the page."
+<strong>Short answer:</strong> You might be making API calls sequentially or in a loop.
+<strong>Real answer:</strong> If you call APIs one after another, each one waits for the previous. Use <code>Task.WhenAll</code> to call them in parallel. Also check: are you using <code>.Include()</code> for database queries? Without it, you might have the N+1 problem.
+<strong>The hidden question:</strong> "How do I check?" -&gt; Add <code>Console.WriteLine</code> before and after each API call to see the timing.</p>
+<p>[LOST] <strong>If they're lost:</strong> "The two things to check first: (1) Is every service registered in Program.cs? (2) Does your controller constructor match the registered services? Those fix 90% of integration errors."</p>
+<p>[TIP] <strong>Teaching Tip:</strong> End with one action item: "If you only remember one thing: every service you use in a constructor MUST be registered in Program.cs with <code>AddScoped&lt;TInterface, TImplementation&gt;()</code>."</p>
+</blockquote>
+<hr />
+<h3>Teaching Script</h3>
+<p>This week's annotations cover: pacing table at top, inline annotations per section ([SPEAK] Script, [SLIDE] Slide, [BOARD] Whiteboard, [TIP] Teaching Tip, [ENGAGE] Gen-Z, [Q&amp;A] Student Q, [LOST] If they're lost), and this summary. This is a build week — keep lectures short, walk around constantly. The service layer is the new concept — everything else is review from Weeks 2-11. The architecture diagram on the whiteboard should stay up the entire session. The #1 error is unregistered services — drill <code>AddScoped&lt;TInterface, TImplementation&gt;()</code>. Be supportive: students are nervous about building from scratch. Celebrate small wins: "Your first API call worked? That's huge."</p>
+<hr />
+<h2>TERM 4: FINALS — User Interaction + Security + Capstone</h2>
+<hr />
+</body></html>

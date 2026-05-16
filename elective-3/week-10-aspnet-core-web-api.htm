@@ -1,0 +1,232 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>elective-3\week-10-aspnet-core-web-api.md</title><style>
+body { font-family: 'Segoe UI', Arial, sans-serif; max-width: 960px; margin: 2em auto; padding: 0 1.5em; line-height: 1.7; color: #1a1a1a; background: #fafafa; }
+h1 { border-bottom: 2px solid #2563eb; padding-bottom: .3em; margin-top: 1.5em; color: #1e3a5f; }
+h2 { border-bottom: 1px solid #cbd5e1; padding-bottom: .2em; margin-top: 1.5em; color: #1e3a5f; }
+h3 { margin-top: 1.3em; color: #334155; }
+a { color: #2563eb; }
+code { background: #eef2ff; padding: .15em .35em; border-radius: 4px; font-size: .9em; }
+pre { background: #1e293b; color: #e2e8f0; padding: 1em; border-radius: 6px; overflow-x: auto; }
+pre code { background: none; padding: 0; color: inherit; }
+blockquote { border-left: 4px solid #2563eb; margin: 1em 0; padding: .5em 1em; background: #f1f5f9; border-radius: 0 6px 6px 0; }
+table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+th, td { border: 1px solid #cbd5e1; padding: .5em .75em; text-align: left; }
+th { background: #2563eb; color: #fff; }
+tr:nth-child(even) { background: #f8fafc; }
+hr { border: none; border-top: 2px solid #e2e8f0; margin: 2em 0; }
+</style></head><body>
+<nav><a href="index.htm">Home</a></nav>
+<h2>Week 10: ASP.NET Core Web API</h2>
+<blockquote>
+<p>[TIME] <strong>Session Pacing (180 min)</strong></p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Block</th>
+<th>Time</th>
+<th>Format</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Hook + Analogy</td>
+<td>15 min</td>
+<td>Lecture + Whiteboard</td>
+</tr>
+<tr>
+<td>Concept Discussion</td>
+<td>25 min</td>
+<td>Lecture + Slides + Controller Architecture Diagram</td>
+</tr>
+<tr>
+<td>Code Walkthrough</td>
+<td>30 min</td>
+<td>Live Code (model -&gt; controller -&gt; Program.cs)</td>
+</tr>
+<tr>
+<td>Industry Reality</td>
+<td>10 min</td>
+<td>Lecture + Discussion</td>
+</tr>
+<tr>
+<td>Break</td>
+<td>10 min</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Exercise</td>
+<td>55 min</td>
+<td>Lab (solo or pairs)</td>
+</tr>
+<tr>
+<td>AI Integration</td>
+<td>10 min</td>
+<td>Demo + Prompt Walkthrough</td>
+</tr>
+<tr>
+<td>Debugging + Wrap</td>
+<td>15 min</td>
+<td>Group Debug + Q&amp;A</td>
+</tr>
+<tr>
+<td>Buffer</td>
+<td>10 min</td>
+<td>Overflow / Stretch discussion</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>[TIP] <strong>Teaching Tip (Week 10 strategy):</strong> This is the "contract to code" week. Students take their Week 9 OpenAPI spec and implement it in C#. The drive-through restaurant analogy is essential — controller = order taker, service = kitchen, database = pantry. Build progressively: model -&gt; controller -&gt; Program.cs. Emphasize: <code>[ApiController]</code> does automatic validation, <code>CreatedAtAction</code> returns 201 with Location header, and Swagger is auto-generated from attributes. Don't let students skip the service layer — controllers should be thin.</p>
+</blockquote>
+<h3>1. The Hook</h3>
+<blockquote>
+<p>[SPEAK] <strong>Script:</strong> "You designed your API contract last week. Now it's time to actually build it. ASP.NET Core is what runs the backend of Stack Overflow, Microsoft's own services, and thousands of enterprise applications. It's fast, it's type-safe (C#), and it has built-in support for everything you need: routing, validation, documentation, and dependency injection. You're going to take your OpenAPI spec and turn it into a working API that your React frontend can actually talk to."</p>
+<p>[SLIDE] <strong>Slide:</strong> Title: "From Spec to Working API"<br />
+Left: Week 9's OpenAPI YAML spec. Right: Running Swagger UI with green checkmarks. Arrow between them: "This week."</p>
+<p>[TIP] <strong>Teaching Tip:</strong> Make the connection explicit: "Everything you designed last week becomes real code this week." Show the OpenAPI spec next to the Swagger UI to create visual continuity.</p>
+<p>[ENGAGE] <strong>Gen-Z:</strong> "Last week you designed the blueprint. This week you're building the house. ASP.NET Core is like your construction crew — it handles the heavy lifting (routing, validation, serialization) so you can focus on the business logic."<br />
+<strong>-&gt; Phone moment:</strong> "Open a browser and go to any API's Swagger UI. See how you can test every endpoint right there? That's what you're building this week — your OWN Swagger UI."</p>
+<p>[LOST] <strong>If they're lost:</strong> "Don't worry if C# is new. The concepts are the same as JavaScript — classes, functions, async/await. The syntax is different but the logic is familiar."</p>
+</blockquote>
+<hr />
+<h3>2. The Analogy</h3>
+<blockquote>
+<p>[SPEAK] <strong>Script:</strong> "Building a Web API is like setting up a drive-through restaurant. The OpenAPI spec is your menu board. The controller is the order taker — it receives requests, validates them, and passes them to the kitchen. The service layer is the kitchen — it does the actual work (cooking = business logic). The database is the pantry — where ingredients (data) are stored. <code>[ApiController]</code> is the health inspector — it enforces rules automatically (model validation, consistent error responses)."</p>
+<p>[BOARD] <strong>Whiteboard:</strong> Draw the drive-through comparison:
+```
+CUSTOMER (Frontend/React)
+  v sends HTTP request
+ORDER TAKER (Controller)
+  v validates order, passes to kitchen
+KITCHEN (Service Layer)
+  v business logic, data processing
+PANTRY (Database)
+  v stores/retrieves data
+  ^
+CUSTOMER gets response (JSON)</p>
+<p>[ApiController] = Health Inspector
+  -&gt; auto-validates, returns consistent errors
+```</p>
+<p>[TIP] <strong>Teaching Tip:</strong> The drive-through analogy maps perfectly: controller = order taker (thin, just routes), service = kitchen (does the work), database = pantry (stores data). Emphasize: the controller should NOT do the cooking — that's the service layer's job.</p>
+<p>[ENGAGE] <strong>Gen-Z:</strong> "The controller is like your Grab driver — it takes your order and delivers the response. But it doesn't cook the food. The service layer is the restaurant kitchen. If your driver starts cooking, something's wrong."<br />
+<strong>-&gt; Turn to your neighbor:</strong> "In the drive-through analogy, what happens if the order taker also tries to cook? 15 seconds, discuss!"</p>
+<p>[LOST] <strong>If they're lost:</strong> "Forget the analogy. Controller = receives request, calls service, returns response. Service = does the actual work. Database = stores data. Three layers, each does one thing."</p>
+</blockquote>
+<hr />
+<h3>3. Concept Discussion</h3>
+<blockquote>
+<p>[TIME] <strong>Pacing:</strong> 25 min total (5 min controllers -&gt; 5 min [ApiController] -&gt; 5 min attribute routing -&gt; 4 min content negotiation -&gt; 3 min ProblemDetails -&gt; 3 min Swagger)</p>
+<p>[SPEAK] <strong>Script:</strong> "You need a backend that can receive HTTP requests, process them, and return responses. ASP.NET Core provides a structured way to do this with controllers, routing, model binding, and built-in features like validation and documentation. Let me show you how each piece works."</p>
+<p>[SLIDE] <strong>Slide:</strong> Show one concept at a time. For each: (1) the concept, (2) a code snippet, (3) what happens without it. Don't show all concepts at once.</p>
+<p>[TIP] <strong>Teaching Tip:</strong> Spend the most time on <code>[ApiController]</code> and attribute routing — these are the biggest differences from other frameworks. Emphasize: <code>[ApiController]</code> automatically returns 400 for validation failures. Students love this because it's free validation.</p>
+<p>[ASK] <strong>Ask the class:</strong> "What does <code>[Route("api/[controller]")]</code> mean?" (<code>[controller]</code> is replaced with the class name minus "Controller", so <code>PostsController</code> -&gt; <code>/api/posts</code>.) "What does <code>[HttpGet("{id}")]</code> add to the route?" (<code>/api/posts/{id}</code>.)</p>
+<p>[ENGAGE] <strong>Gen-Z:</strong> "Content negotiation is like ordering at Jollibee — you say what you want, and they give it to you in the format you asked for. <code>Accept: application/json</code> -&gt; JSON response. <code>Accept: application/xml</code> -&gt; XML response. ASP.NET Core handles the translation automatically."<br />
+<strong>-&gt; Phone moment:</strong> "Open VS Code. Create a new ASP.NET Core project. Run <code>dotnet run</code>. Go to <code>/swagger</code> in your browser. See all your endpoints listed? That's Swagger auto-generated from your controller attributes."</p>
+<p>[Q&amp;A] <strong>Student Q:</strong> "Why do I need a service layer? Can't I just put the logic in the controller?"
+<strong>Short answer:</strong> You can, but it makes your code hard to test and maintain.
+<strong>Real answer:</strong> Controllers should be thin — they receive requests and return responses. Business logic belongs in services. If logic is in controllers, you can't unit test it without mocking HTTP. Services can be tested in isolation. Also, if multiple controllers need the same logic, you'd duplicate it. Services are reusable.
+<strong>The hidden question:</strong> "Is this really necessary for a small project?" -&gt; It's a habit. Build it now, and it scales naturally.</p>
+<p>[Q&amp;A] <strong>Student Q:</strong> "What's <code>ProblemDetails</code> and why should I use it?"
+<strong>Short answer:</strong> It's the standard error response format for HTTP APIs.
+<strong>Real answer:</strong> Instead of returning random error shapes (<code>{ error: "not found" }</code> vs <code>{ message: "404" }</code>), <code>ProblemDetails</code> gives a consistent structure: <code>type</code>, <code>title</code>, <code>status</code>, <code>detail</code>, <code>instance</code>. Every error looks the same. Frontend developers know exactly how to parse it. It's an IETF standard (RFC 7807).
+<strong>The hidden question:</strong> "Do I have to use it?" -&gt; No, but it's best practice and ASP.NET Core supports it out of the box.</p>
+<p>[LOST] <strong>If they're lost:</strong> "The simplest ASP.NET Core summary: (1) Controllers handle requests. (2) <code>[ApiController]</code> auto-validates. (3) Attribute routing maps URLs to methods. (4) Services do the work. (5) Swagger auto-generates docs. That's 90% of what you need."</p>
+</blockquote>
+<hr />
+<h3>4. Code Walkthrough</h3>
+<blockquote>
+<p>[TIME] <strong>Pacing:</strong> 30 min (5 min model -&gt; 15 min controller -&gt; 10 min Program.cs + Swagger)</p>
+<p>[SPEAK] <strong>Script:</strong> "Let's implement the blog API from Week 9's spec. We'll start with the model class, then the controller with all CRUD endpoints, then Program.cs with Swagger setup. Each step builds on the last."</p>
+<p>[SLIDE] <strong>Slide:</strong> Show each step on its own slide. Step 1: Post model with validation attributes. Step 2: PostsController with GET, POST, DELETE. Step 3: Program.cs with DI and Swagger.</p>
+<p>[TIP] <strong>Teaching Tip:</strong> <strong>Type each step live.</strong> For the controller, emphasize the progression: <code>GetAll</code> -&gt; <code>GetById</code> -&gt; <code>Create</code> -&gt; <code>Delete</code>. Point out each return type: <code>Ok()</code> = 200, <code>CreatedAtAction()</code> = 201, <code>NotFound()</code> = 404, <code>NoContent()</code> = 204.</p>
+<p>[BOARD] <strong>Whiteboard:</strong> Draw the request flow:
+<code>GET /api/posts/42
+  v
+PostsController.GetById(42)
+  v
+_postService.GetByIdAsync(42)
+  v
+Returns Post or null
+  v
+if null -&gt; NotFound() (404)
+if post -&gt; return post (200 + JSON)</code></p>
+<p>[ENGAGE] <strong>Gen-Z:</strong> "Building a controller is like assembling a Jollibee order station. Each endpoint is a different order type: GET = 'give me the menu', POST = 'I want to order', DELETE = 'cancel my order'. Each one has a specific response."<br />
+<strong>-&gt; Type-along:</strong> "Type the model first. Then the controller — one endpoint at a time. Test each one in Swagger before moving to the next. Don't write all four endpoints and then test."</p>
+<p>[Q&amp;A] <strong>Student Q:</strong> "Why does <code>CreatedAtAction</code> need <code>nameof(GetById)</code> and <code>new { id = post.Id }</code>?"
+<strong>Short answer:</strong> It generates the Location header URL by referencing another action.
+<strong>Real answer:</strong> <code>CreatedAtAction</code> needs to know which action handles the GET for the new resource (so it can build the URL). <code>nameof(GetById)</code> tells it "use the GetById method." <code>new { id = post.Id }</code> provides the route parameter values. The result is a Location header like <code>/api/posts/42</code>. This is the RESTful way to tell the client where the new resource lives.
+<strong>The hidden question:</strong> "Can I just return the ID?" -&gt; You could, but the Location header is the HTTP standard for resource creation.</p>
+<p>[LOST] <strong>If they're lost:</strong> "Start with just the model and the <code>GetAll</code> endpoint. Get it working in Swagger. Then add <code>GetById</code>. Then <code>Create</code>. Then <code>Delete</code>. One endpoint at a time."</p>
+</blockquote>
+<hr />
+<h3>5. The "Industry Reality"</h3>
+<blockquote>
+<p>[SPEAK] <strong>Script:</strong> "ASP.NET Core is one of the fastest web frameworks in existence. In the TechEmpower benchmarks, it consistently ranks in the top 5 for raw request throughput. Companies like Stack Overflow, Microsoft, and GoDaddy run ASP.NET Core in production handling millions of requests per second. The <code>[ApiController]</code> attribute and <code>ProblemDetails</code> response format are the same patterns used in Microsoft's own internal APIs."</p>
+<p>[SLIDE] <strong>Slide:</strong> TechEmpower benchmark chart showing ASP.NET Core in top 5. Logos: Stack Overflow, Microsoft, GoDaddy. Stat: "ASP.NET Core handles 2+ million requests/second on commodity hardware."</p>
+<p>[TIP] <strong>Teaching Tip:</strong> Keep this to 5 minutes. Show them that ASP.NET Core isn't academic — it's one of the fastest web frameworks in the world.</p>
+<p>[ENGAGE] <strong>Gen-Z:</strong> <strong>-&gt; Poll:</strong> "How many of you thought .NET was old and slow?" (Some hands.) "ASP.NET Core is actually faster than Node.js, Python, and most other frameworks. It's the same .NET that runs Xbox Live and Microsoft Azure."</p>
+<p>[LOST] <strong>If they're lost:</strong> "You don't need to know the benchmarks. Just understand: ASP.NET Core is fast, type-safe, and used by major companies. It's a solid choice for production APIs."</p>
+</blockquote>
+<hr />
+<h3>6. Exercise</h3>
+<blockquote>
+<p>[TIME] <strong>Pacing:</strong> 55 min total (5 min setup -&gt; 40 min implementation -&gt; 10 min share)</p>
+<p>[SPEAK] <strong>Script:</strong> "Implement your Week 9 OpenAPI spec as an ASP.NET Core Web API. Create model classes, controllers with proper HTTP methods, set up Swagger, and test every endpoint."</p>
+<p>[SLIDE] <strong>Slide:</strong> Exercise checklist:
+- [ ] <code>dotnet new webapi</code> — create project
+- [ ] Model classes for all schemas (Product, Category, Order, etc.)
+- [ ] Controllers for each resource with proper HTTP methods
+- [ ] <code>[ApiController]</code> and attribute routing on all controllers
+- [ ] <code>[ProducesResponseType]</code> attributes for documentation
+- [ ] Swagger UI setup
+- [ ] In-memory data store (<code>List&lt;T&gt;</code>) for now
+- [ ] Test every endpoint in Swagger UI
+- [ ] Verify model validation returns proper 400 errors</p>
+<p>[TIP] <strong>Teaching Tip:</strong> The <code>[ProducesResponseType]</code> attributes (requirement 5) and model validation testing (requirement 9) are where students struggle. Circulate and help with the <code>[Required]</code> attributes and testing with invalid data in Swagger.</p>
+<p>[ENGAGE] <strong>Gen-Z:</strong> <strong>-&gt; Pair up:</strong> "One person handles the models and controllers, the other handles Program.cs and Swagger setup. Then combine and test together. It's like a collab — each person owns their layer."</p>
+<p>[LOST] <strong>If they're lost:</strong> "Start with <code>dotnet new webapi</code>. Get the default template running. Then add your first model. Then your first controller with one endpoint. Test it in Swagger. Then add more endpoints. Build incrementally."</p>
+</blockquote>
+<hr />
+<h3>7. AI Integration Note</h3>
+<blockquote>
+<p>[TIME] <strong>Pacing:</strong> 10 min (5 min demo -&gt; 5 min try)</p>
+<p>[SPEAK] <strong>Script:</strong> "This week, ask AI to generate controller code from your OpenAPI spec, then verify every endpoint matches the contract. Ask 'Does this endpoint return the right status code?' and 'Is the response shape exactly what the spec says?'"</p>
+<p>[SLIDE] <strong>Slide:</strong> AI usage guide:
+| [OK] Allowed | [NO] Not Allowed |
+|-----------|--------------|
+| "Generate a controller from this OpenAPI spec" | "Write my service layer" |
+| "Does this endpoint return the right status code?" | "Do the entire exercise" |</p>
+<p>[TIP] <strong>Teaching Tip:</strong> Point out the common AI mistakes: returning 200 for create instead of 201, forgetting <code>CreatedAtAction</code>, putting business logic in controllers. Teach students to audit AI's controller code against their spec.</p>
+<p>[ENGAGE] <strong>Gen-Z:</strong> "AI writes controllers fast but often puts business logic where it doesn't belong. It's like a Grab driver who starts cooking your food — fast, but wrong. Always check: is the controller thin?"</p>
+</blockquote>
+<hr />
+<h3>8. Debugging / "Watch Out For" Section</h3>
+<blockquote>
+<p>[TIME] <strong>Pacing:</strong> 15 min (5 min common errors -&gt; 5 min group debug -&gt; 5 min Q&amp;A)</p>
+<p>[SPEAK] <strong>Script:</strong> "Here are the ASP.NET Core errors and mental model traps you'll hit this week. The 415 error alone will save you from a frustrating debugging session."</p>
+<p>[SLIDE] <strong>Slide:</strong> Error cards:
+<code>+--------------------------------------+
+| "415 Unsupported Media Type"         |
+| Missing Content-Type: application/json|
+| Fix: set Content-Type header in client|
++--------------------------------------+
++--------------------------------------+
+| "Swagger shows no endpoints"         |
+| Missing [ApiController] or           |
+| app.MapControllers()                 |
+| Fix: check controller setup          |
++--------------------------------------+</code></p>
+<p>[ENGAGE] <strong>Gen-Z:</strong> "The 415 error is like ordering on GrabFood without selecting a payment method. The restaurant knows you want food, but doesn't know how to process it. Set <code>Content-Type: application/json</code>."</p>
+<p>[Q&amp;A] <strong>Student Q:</strong> "What's the difference between <code>ActionResult&lt;T&gt;</code> and <code>IActionResult</code>?"
+<strong>Short answer:</strong> <code>ActionResult&lt;T&gt;</code> lets you return either data or an error status. <code>IActionResult</code> only returns status.
+<strong>Real answer:</strong> <code>ActionResult&lt;Post&gt;</code> means the endpoint can return a <code>Post</code> object (200) OR an error status like <code>NotFound()</code> (404). <code>IActionResult</code> means it only returns status codes — no data in the body. Use <code>ActionResult&lt;T&gt;</code> when the endpoint returns data. Use <code>IActionResult</code> when it only returns a status (like <code>NoContent()</code> for delete).
+<strong>The hidden question:</strong> "Which one should I use?" -&gt; <code>ActionResult&lt;T&gt;</code> for GET/POST. <code>IActionResult</code> for DELETE.</p>
+<p>[LOST] <strong>If they're lost:</strong> "The #1 issue: Swagger shows no endpoints. Check: (1) <code>[ApiController]</code> on the controller. (2) <code>app.MapControllers()</code> in Program.cs. (3) Controller is a public class inheriting from <code>ControllerBase</code>. That fixes 90% of Swagger issues."</p>
+</blockquote>
+<hr />
+<h3>Teaching Script</h3>
+<p>This week's annotations cover: pacing table at top, inline annotations per section, and this summary. The core arc is: OpenAPI spec -&gt; model -&gt; controller -&gt; Program.cs -&gt; Swagger. The drive-through analogy is the key mental model. The <code>[ApiController]</code> auto-validation and <code>CreatedAtAction</code> with Location header are the two most important teaching points. Emphasize: controllers should be thin, business logic belongs in services. The exercise ties Week 9's spec into working code — students should test every endpoint in Swagger UI before moving on. Common pitfalls: 415 errors (missing Content-Type), Swagger not showing endpoints, business logic in controllers.</p>
+<hr />
+</body></html>

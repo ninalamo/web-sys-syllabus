@@ -1,0 +1,230 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>elective-3\week-08-react-router-and-spa-concepts.md</title><style>
+body { font-family: 'Segoe UI', Arial, sans-serif; max-width: 960px; margin: 2em auto; padding: 0 1.5em; line-height: 1.7; color: #1a1a1a; background: #fafafa; }
+h1 { border-bottom: 2px solid #2563eb; padding-bottom: .3em; margin-top: 1.5em; color: #1e3a5f; }
+h2 { border-bottom: 1px solid #cbd5e1; padding-bottom: .2em; margin-top: 1.5em; color: #1e3a5f; }
+h3 { margin-top: 1.3em; color: #334155; }
+a { color: #2563eb; }
+code { background: #eef2ff; padding: .15em .35em; border-radius: 4px; font-size: .9em; }
+pre { background: #1e293b; color: #e2e8f0; padding: 1em; border-radius: 6px; overflow-x: auto; }
+pre code { background: none; padding: 0; color: inherit; }
+blockquote { border-left: 4px solid #2563eb; margin: 1em 0; padding: .5em 1em; background: #f1f5f9; border-radius: 0 6px 6px 0; }
+table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+th, td { border: 1px solid #cbd5e1; padding: .5em .75em; text-align: left; }
+th { background: #2563eb; color: #fff; }
+tr:nth-child(even) { background: #f8fafc; }
+hr { border: none; border-top: 2px solid #e2e8f0; margin: 2em 0; }
+</style></head><body>
+<nav><a href="index.htm">Home</a></nav>
+<h2>Week 8: React Router &amp; SPA Concepts</h2>
+<blockquote>
+<p>[TIME] <strong>Session Pacing (180 min)</strong></p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Block</th>
+<th>Time</th>
+<th>Format</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Hook + Analogy</td>
+<td>15 min</td>
+<td>Lecture + Whiteboard</td>
+</tr>
+<tr>
+<td>Concept Discussion</td>
+<td>25 min</td>
+<td>Lecture + Slides + Route Diagram</td>
+</tr>
+<tr>
+<td>Code Walkthrough</td>
+<td>30 min</td>
+<td>Live Code (basic routes -&gt; params -&gt; lazy -&gt; navigate)</td>
+</tr>
+<tr>
+<td>Industry Reality</td>
+<td>10 min</td>
+<td>Lecture + Discussion</td>
+</tr>
+<tr>
+<td>Break</td>
+<td>10 min</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Exercise</td>
+<td>55 min</td>
+<td>Lab (solo or pairs)</td>
+</tr>
+<tr>
+<td>AI Integration</td>
+<td>10 min</td>
+<td>Demo + Prompt Walkthrough</td>
+</tr>
+<tr>
+<td>Debugging + Wrap</td>
+<td>15 min</td>
+<td>Group Debug + Q&amp;A</td>
+</tr>
+<tr>
+<td>Buffer</td>
+<td>10 min</td>
+<td>Overflow / Stretch discussion</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>[TIP] <strong>Teaching Tip (Week 8 strategy):</strong> This week ties everything together — students build their first multi-page app. The hotel receptionist analogy is essential for understanding SPA vs MPA. Build routes progressively: basic -&gt; params -&gt; lazy -&gt; programmatic nav. The <code>&lt;Outlet /&gt;</code> for nested routes is the hardest concept — draw the layout tree on the whiteboard.</p>
+</blockquote>
+<hr />
+<h3>1. The Hook</h3>
+<blockquote>
+<p>[SPEAK] <strong>Script:</strong> "When you click from your Instagram profile to your feed, the page doesn't reload. The URL changes, the content changes, but the browser doesn't do a full page refresh. That's a Single Page Application (SPA) and it's powered by client-side routing. React Router is what makes this possible — it intercepts link clicks, changes the URL, and tells React which component to show, all without a page reload. Every modern web app you use is an SPA."</p>
+<p>[SLIDE] <strong>Slide:</strong> Title: "The Page That Never Reloads"<br />
+Video or GIF: Clicking between pages in an SPA — URL changes, content swaps, no loading spinner. Contrast with a traditional website that does a full page reload.</p>
+<p>[TIP] <strong>Teaching Tip:</strong> Make the contrast visceral. Show a traditional website reload (white flash, loading bar) vs an SPA transition (instant, smooth). Students need to FEEL the difference.</p>
+<p>[ENGAGE] <strong>Gen-Z:</strong> "SPAs are why switching from your TikTok For You to Following feels instant. Without client-side routing, every tab switch would be like reloading the whole app — imagine waiting 3 seconds every time you swipe."<br />
+<strong>-&gt; Phone moment:</strong> "Open Instagram on your browser (not the app). Click from your profile to a post. Watch the URL change but the page NOT reload. That's React Router (or similar) in action."</p>
+<p>[LOST] <strong>If they're lost:</strong> "An SPA is just a website that doesn't reload when you click links. The URL changes, the content changes, but the browser stays on the same page. That's it."</p>
+</blockquote>
+<hr />
+<h3>2. The Analogy</h3>
+<blockquote>
+<p>[SPEAK] <strong>Script:</strong> "Client-side routing is like a hotel with a smart receptionist. In a traditional website (server-side routing), every time you want a different room, you leave the building, go back to the front desk, and get a new key. In an SPA, the receptionist (React Router) is already inside. You say 'I want room 301' and they hand you the key without you leaving the building. The hallway (the browser) stays the same — only the room content changes."</p>
+<p>[BOARD] <strong>Whiteboard:</strong> Draw the hotel comparison:
+```
+TRADITIONAL (Server-side):
+You -&gt; Leave building -&gt; Front desk -&gt; New key -&gt; Enter room
+(Full page reload every time)</p>
+<p>SPA (Client-side):
+You -&gt; Tell receptionist -&gt; Get key -&gt; Enter room
+(No leaving, no reload)</p>
+<p>BrowserRouter = the building
+React Router  = the receptionist
+Routes        = the room directory
+<Link>        = telling the receptionist (not leaving)
+<a href>      = leaving the building (BAD!)
+```</p>
+<p>[TIP] <strong>Teaching Tip:</strong> The hotel analogy maps perfectly: BrowserRouter = building, React Router = receptionist, Routes = directory, Link = internal request, <code>&lt;a href&gt;</code> = leaving the building. Draw it and reference it throughout.</p>
+<p>[ENGAGE] <strong>Gen-Z:</strong> "The <code>&lt;Link&gt;</code> vs <code>&lt;a&gt;</code> difference is like using the internal hotel phone vs walking outside to call. <code>&lt;Link&gt;</code> stays inside the building (SPA). <code>&lt;a&gt;</code> leaves the building (full reload)."<br />
+<strong>-&gt; Turn to your neighbor:</strong> "In the hotel analogy, what's the difference between <code>&lt;Link&gt;</code> and <code>&lt;a href&gt;</code>? 15 seconds, discuss!"</p>
+<p>[LOST] <strong>If they're lost:</strong> "Forget the hotel. <code>&lt;Link&gt;</code> = change URL without reload. <code>&lt;a href&gt;</code> = full page reload. Always use <code>&lt;Link&gt;</code> in React."</p>
+</blockquote>
+<hr />
+<h3>3. Concept Discussion</h3>
+<blockquote>
+<p>[TIME] <strong>Pacing:</strong> 25 min total (5 min client vs server routing -&gt; 5 min react-router-dom -&gt; 4 min URL params -&gt; 4 min lazy loading -&gt; 4 min nested routes -&gt; 3 min programmatic navigation)</p>
+<p>[SPEAK] <strong>Script:</strong> "In a traditional website, every page change requires a full server request and page reload. This is slow and loses application state (scroll position, form data, open modals). SPAs keep the app loaded and swap content in place, making navigation instant. Let me show you how React Router makes this work."</p>
+<p>[SLIDE] <strong>Slide:</strong> Show one concept at a time. For each: (1) the concept, (2) a code example, (3) a visual diagram. Don't show all concepts at once.</p>
+<p>[TIP] <strong>Teaching Tip:</strong> Spend the most time on nested routes and <code>&lt;Outlet /&gt;</code> — this is the hardest concept. Draw a layout tree: DashboardLayout contains Outlet, which renders Posts or Posts/:id. Students need to SEE the nesting visually.</p>
+<p>[ASK] <strong>Ask the class:</strong> "What happens if you use <code>&lt;a href='/page'&gt;</code> in a React app?" (Full page reload — defeats the purpose of SPA.) "So what should you use instead?" (<code>&lt;Link to='/page'&gt;</code>.)</p>
+<p>[ENGAGE] <strong>Gen-Z:</strong> "URL params are like your Shopee order ID — <code>/orders/:orderId</code>. The <code>:orderId</code> part changes for each order, but the page structure stays the same. <code>/orders/ABC123</code> and <code>/orders/DEF456</code> use the same component with different data."<br />
+<strong>-&gt; Phone moment:</strong> "Look at any URL in your browser. Find the part that changes between pages — that's a URL param. <code>/users/42</code> -&gt; <code>42</code> is the param."</p>
+<p>[Q&amp;A] <strong>Student Q:</strong> "Why do I need lazy loading? My app is small."
+<strong>Short answer:</strong> You don't need it for small apps, but it's good practice.
+<strong>Real answer:</strong> Lazy loading splits your code into chunks. Instead of downloading 500KB upfront, you download 100KB for the home page, then fetch other chunks only when the user navigates to those pages. For small apps the difference is negligible, but it scales well.
+<strong>The hidden question:</strong> "Is it hard to add?" -&gt; No. Just wrap with <code>lazy()</code> and <code>Suspense</code>. Two lines of code.</p>
+<p>[Q&amp;A] <strong>Student Q:</strong> "What's <code>&lt;Outlet /&gt;</code> and why do I need it?"
+<strong>Short answer:</strong> It's a placeholder where child routes render inside a parent layout.
+<strong>Real answer:</strong> Without <code>&lt;Outlet /&gt;</code>, a parent route renders its content but has nowhere to put child routes. Think of it as a slot: the parent layout (sidebar, header) stays the same, and <code>&lt;Outlet /&gt;</code> is where the page-specific content appears. It's like a frame that holds different pictures.
+<strong>The hidden question:</strong> "Can I have multiple outlets?" -&gt; Yes, but that's advanced. One outlet per layout is the common pattern.</p>
+<p>[LOST] <strong>If they're lost:</strong> "The simplest routing summary: (1) <code>&lt;BrowserRouter&gt;</code> wraps everything. (2) <code>&lt;Routes&gt;</code> contains <code>&lt;Route&gt;</code> definitions. (3) <code>&lt;Link&gt;</code> navigates without reload. (4) <code>useParams</code> reads URL params. (5) <code>&lt;Outlet /&gt;</code> for nested layouts."</p>
+</blockquote>
+<hr />
+<h3>4. Code Walkthrough</h3>
+<blockquote>
+<p>[TIME] <strong>Pacing:</strong> 30 min (8 min basic routes -&gt; 7 min URL params -&gt; 8 min lazy loading -&gt; 7 min useNavigate)</p>
+<p>[SPEAK] <strong>Script:</strong> "Let's build a multi-page SPA step by step. We'll start with basic routes, add dynamic URL params, then lazy-load pages, and finally add programmatic navigation with useNavigate."</p>
+<p>[SLIDE] <strong>Slide:</strong> Show each step on its own slide. Step 1: basic routing (BrowserRouter, Routes, Route, Link). Step 2: URL params (useParams). Step 3: lazy loading (lazy + Suspense). Step 4: programmatic navigation (useNavigate).</p>
+<p>[TIP] <strong>Teaching Tip:</strong> <strong>Type each step live.</strong> For the lazy loading step, open the Network tab in DevTools to show that the chunk is only loaded when navigating to that route. This visual proof is powerful.</p>
+<p>[BOARD] <strong>Whiteboard:</strong> Draw the route tree:
+<code>&lt;BrowserRouter&gt;
+  +-- &lt;nav&gt; (always visible)
+  +-- &lt;Routes&gt;
+      +-- /        -&gt; &lt;Home /&gt;
+      +-- /about   -&gt; &lt;About /&gt;
+      +-- /users/:id -&gt; &lt;UserDetail /&gt; (uses useParams)
+      +-- *        -&gt; &lt;NotFound /&gt;</code></p>
+<p>[ENGAGE] <strong>Gen-Z:</strong> "Setting up routes is like building a Grab route map. Each <code>&lt;Route&gt;</code> is a destination. <code>&lt;Link&gt;</code> is tapping the destination. <code>useNavigate</code> is the driver taking you there programmatically."<br />
+<strong>-&gt; Type-along:</strong> "Type the basic routes first. Test each one by clicking. Then add params. Then lazy loading — watch the Network tab. Then useNavigate."</p>
+<p>[Q&amp;A] <strong>Student Q:</strong> "Why does <code>useNavigate</code> need to be inside BrowserRouter?"
+<strong>Short answer:</strong> Because it needs access to the routing context.
+<strong>Real answer:</strong> <code>useNavigate</code> (and all routing hooks) use React's Context API internally. They need to be inside a <code>&lt;BrowserRouter&gt;</code> to access the navigation history, current URL, and other routing state. If you use it outside, there's no router context to connect to — hence the error.
+<strong>The hidden question:</strong> "Can I put BrowserRouter anywhere?" -&gt; Yes, but typically at the top level of your app (in <code>main.jsx</code> or <code>App.jsx</code>).</p>
+<p>[LOST] <strong>If they're lost:</strong> "Start with just the basic routes — Home, About, Users. Get navigation working with <code>&lt;Link&gt;</code>. Then add the params route. Then lazy loading. Then useNavigate. One feature at a time."</p>
+</blockquote>
+<hr />
+<h3>5. The "Industry Reality"</h3>
+<blockquote>
+<p>[SPEAK] <strong>Script:</strong> "Every SPA you've ever used — Gmail, Google Docs, Figma, Notion, Discord — uses client-side routing. React Router is the most popular routing library for React, used by over 12 million projects. The lazy loading pattern you're learning is what makes apps like Figma load in 2 seconds instead of 15 — they only load the code for the feature you're currently using."</p>
+<p>[SLIDE] <strong>Slide:</strong> Logos: Gmail, Google Docs, Figma, Notion, Discord. Stat: "React Router: 12M+ weekly npm downloads." Show a Network tab screenshot with code-split chunks loading on demand.</p>
+<p>[TIP] <strong>Teaching Tip:</strong> Keep this to 5 minutes. Show them that routing isn't academic — it's what makes every modern web app feel fast.</p>
+<p>[ENGAGE] <strong>Gen-Z:</strong> <strong>-&gt; Poll:</strong> "How many of you have noticed that Gmail doesn't reload when you switch between Inbox, Sent, and Drafts?" (All hands.) "That's client-side routing. You just learned how it works."</p>
+<p>[LOST] <strong>If they're lost:</strong> "You don't need to know every SPA's architecture. Just understand: routing is what makes web apps feel like native apps."</p>
+</blockquote>
+<hr />
+<h3>6. Exercise</h3>
+<blockquote>
+<p>[TIME] <strong>Pacing:</strong> 55 min total (5 min setup -&gt; 40 min coding -&gt; 10 min share)</p>
+<p>[SPEAK] <strong>Script:</strong> "Build a multi-page SPA with at least 3 routes. Set up react-router-dom, create Home, Dashboard, and Post Detail pages, use lazy loading, and add a persistent navigation bar."</p>
+<p>[SLIDE] <strong>Slide:</strong> Exercise checklist:
+- [ ] Install and set up <code>react-router-dom</code>
+- [ ] <code>/</code> — Home page with welcome message + links
+- [ ] <code>/dashboard</code> — Dashboard (reuse Week 7 data-fetching)
+- [ ] <code>/dashboard/posts/:id</code> — Post detail (nested route)
+- [ ] <code>*</code> — 404 page for unmatched routes
+- [ ] <code>&lt;Link&gt;</code> for all navigation (no <code>&lt;a&gt;</code> tags)
+- [ ] <code>useNavigate</code> for programmatic navigation
+- [ ] Lazy-load dashboard and post detail with <code>Suspense</code>
+- [ ] Persistent nav bar on all pages (layout route)
+- [ ] Active link styling</p>
+<p>[TIP] <strong>Teaching Tip:</strong> The nested routes + <code>&lt;Outlet /&gt;</code> (dashboard layout) and active link styling are the hardest parts. Students will struggle with where to put the <code>&lt;Outlet /&gt;</code> and how to use <code>useLocation</code> for active styling. Circulate and help.</p>
+<p>[ENGAGE] <strong>Gen-Z:</strong> <strong>-&gt; Pair up:</strong> "One person handles the route setup (basic routes, params, lazy loading), the other handles the layout (persistent nav, active styling, nested routes). Then combine."</p>
+<p>[LOST] <strong>If they're lost:</strong> "Start with basic routes — Home, Dashboard, 404. Get <code>&lt;Link&gt;</code> navigation working. Then add the nested post detail route. Then lazy loading. Then active styling. Build incrementally."</p>
+</blockquote>
+<hr />
+<h3>7. AI Integration Note</h3>
+<blockquote>
+<p>[TIME] <strong>Pacing:</strong> 10 min (5 min demo -&gt; 5 min try)</p>
+<p>[SPEAK] <strong>Script:</strong> "This week, ask AI to generate routing setup code, then verify that every route has a proper fallback and error boundary. Ask 'What happens if the lazy-loaded component fails to load?'"</p>
+<p>[SLIDE] <strong>Slide:</strong> AI usage guide:
+| [OK] Allowed | [NO] Not Allowed |
+|-----------|--------------|
+| "Generate routing setup for React" | "Design my route structure" |
+| "What happens if lazy import fails?" | "Fix my nested routes" |</p>
+<p>[TIP] <strong>Teaching Tip:</strong> Point out the common AI mistakes: <code>&lt;a href&gt;</code> instead of <code>&lt;Link&gt;</code>, missing <code>Suspense</code> wrappers, no catch-all route, nested <code>BrowserRouter</code>. Teach students to audit AI's routing code for these specifically.</p>
+<p>[ENGAGE] <strong>Gen-Z:</strong> "AI will sometimes use <code>&lt;a href&gt;</code> because it's trained on old tutorials. Always check: is it using <code>&lt;Link&gt;</code>? If not, that's a full page reload — not what you want."</p>
+</blockquote>
+<hr />
+<h3>8. Debugging / "Watch Out For" Section</h3>
+<blockquote>
+<p>[TIME] <strong>Pacing:</strong> 15 min (5 min common errors -&gt; 5 min group debug -&gt; 5 min Q&amp;A)</p>
+<p>[SPEAK] <strong>Script:</strong> "Here are the routing errors and mental model traps you'll hit this week. The <code>&lt;a&gt;</code> vs <code>&lt;Link&gt;</code> mistake alone will save you from a frustrating debugging session."</p>
+<p>[SLIDE] <strong>Slide:</strong> Error cards:
+<code>+--------------------------------------+
+| "useNavigate() may be used only in   |
+| the context of a &lt;Router&gt; component" |
+| Hook used outside BrowserRouter      |
+| Fix: wrap component tree in Router   |
++--------------------------------------+
++--------------------------------------+
+| "Page reloads on navigation"         |
+| Used &lt;a href&gt; instead of &lt;Link&gt;      |
+| Fix: replace all &lt;a&gt; with &lt;Link&gt;     |
++--------------------------------------+</code></p>
+<p>[ENGAGE] <strong>Gen-Z:</strong> "Using <code>&lt;a href&gt;</code> in React is like ordering food on GrabFood by walking to the restaurant — you COULD do it, but you're missing the whole point of the app. Use <code>&lt;Link&gt;</code>."</p>
+<p>[Q&amp;A] <strong>Student Q:</strong> "Why does my lazy-loaded component show a blank screen?"
+<strong>Short answer:</strong> The import path is probably wrong.
+<strong>Real answer:</strong> When <code>lazy(() =&gt; import('./Settings'))</code> has a wrong path, the chunk fails to load. Suspense's fallback never appears because the error happens before the component tries to render. Check the Network tab in DevTools — you'll see a failed chunk load with a 404. Fix the import path and it works.
+<strong>The hidden question:</strong> "Why doesn't Suspense catch this error?" -&gt; Suspense catches loading delays, not import failures. Use an Error Boundary for that.</p>
+<p>[LOST] <strong>If they're lost:</strong> "The #1 issue: page reloads on navigation. If clicking a link causes a full page reload, you used <code>&lt;a href&gt;</code> instead of <code>&lt;Link to&gt;</code>. Replace all <code>&lt;a&gt;</code> tags with <code>&lt;Link&gt;</code> components."</p>
+</blockquote>
+<hr />
+<h3>Teaching Script</h3>
+<p>This week's annotations cover: pacing table at top, inline annotations per section, and this summary. The core arc is: basic routes -&gt; URL params -&gt; lazy loading -&gt; programmatic navigation. The hotel receptionist analogy is the key mental model. The <code>&lt;Outlet /&gt;</code> for nested routes and <code>&lt;Link&gt;</code> vs <code>&lt;a&gt;</code> are the two most important teaching points. The exercise ties together everything from Weeks 5-7 into a real multi-page SPA — this is the "wow" moment where students see how all the pieces connect.</p>
+<hr />
+</body></html>

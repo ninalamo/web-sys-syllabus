@@ -1,0 +1,472 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Restructure Plan: web-sys Split into Week Files</title><style>
+body { font-family: 'Segoe UI', Arial, sans-serif; max-width: 960px; margin: 2em auto; padding: 0 1.5em; line-height: 1.7; color: #1a1a1a; background: #fafafa; }
+h1 { border-bottom: 2px solid #2563eb; padding-bottom: .3em; margin-top: 1.5em; color: #1e3a5f; }
+h2 { border-bottom: 1px solid #cbd5e1; padding-bottom: .2em; margin-top: 1.5em; color: #1e3a5f; }
+h3 { margin-top: 1.3em; color: #334155; }
+a { color: #2563eb; }
+code { background: #eef2ff; padding: .15em .35em; border-radius: 4px; font-size: .9em; }
+pre { background: #1e293b; color: #e2e8f0; padding: 1em; border-radius: 6px; overflow-x: auto; }
+pre code { background: none; padding: 0; color: inherit; }
+blockquote { border-left: 4px solid #2563eb; margin: 1em 0; padding: .5em 1em; background: #f1f5f9; border-radius: 0 6px 6px 0; }
+table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+th, td { border: 1px solid #cbd5e1; padding: .5em .75em; text-align: left; }
+th { background: #2563eb; color: #fff; }
+tr:nth-child(even) { background: #f8fafc; }
+hr { border: none; border-top: 2px solid #e2e8f0; margin: 2em 0; }
+</style></head><body>
+<nav><a href="index.htm">Home</a></nav>
+<h1>Restructure Plan: web-sys Split into Week Files</h1>
+<h2>1. Target Folder Structure</h2>
+<pre class="codehilite"><code>web-sys/
++-- elective-2/                          &lt;- New folder
+|   +-- index.md                         &lt;- Mother file
+|   +-- week-01-csharp-translation-bootcamp.md
+|   +-- week-02-interfaces-and-di-mental-model.md
+|   +-- week-03-http-and-the-web.md
+|   +-- week-04-mvc-big-picture.md
+|   +-- week-05-routing-deep-dive.md
+|   +-- week-06-controllers-and-action-results.md
+|   +-- week-07-views-and-layouts.md
+|   +-- week-08-model-binding-and-validation.md
+|   +-- week-09-ef-core-fundamentals.md
+|   +-- week-10-relationships-and-data-display.md
+|   +-- week-11-consuming-apis-with-httpclient.md
+|   +-- week-12-mini-capstone-checkpoint.md
+|   +-- week-13-authentication-and-authorization.md
+|   +-- week-14-security-fundamentals.md
+|   +-- week-15-capstone-sprint.md
+|   +-- week-16-capstone-final-deploy-and-present.md
++-- elective-3/                          &lt;- New folder
+|   +-- index.md                         &lt;- Mother file
+|   +-- week-01-modern-javascript-review.md
+|   +-- week-02-async-javascript-deep-dive.md
+|   +-- week-03-typescript-essentials.md
+|   +-- week-04-dev-tooling-and-workflow.md
+|   +-- week-05-component-thinking-in-vanilla-js.md
+|   +-- week-06-react-fundamentals.md
+|   +-- week-07-effects-and-data-fetching.md
+|   +-- week-08-react-router-and-spa-concepts.md
+|   +-- week-09-api-design-philosophy.md
+|   +-- week-10-aspnet-core-web-api.md
+|   +-- week-11-frontend-backend-integration.md
+|   +-- week-12-api-versioning-and-documentation.md
+|   +-- week-13-auth-deep-dive.md
+|   +-- week-14-testing.md
+|   +-- week-15-ci-cd-and-deployment.md
+|   +-- week-16-capstone-final.md
++-- elective-2-building-web-products.md  &lt;- Keep original
++-- elective-2-discussions.md            &lt;- Keep original
++-- elective-3-production-grade-products.md &lt;- Keep original
++-- elective-3-discussions.md            &lt;- Keep original
++-- teaching-script-format.md           &lt;- Keep original
+</code></pre>
+
+<h2>2. File Naming — All 16 Weeks</h2>
+<h3>Elective 2 (source: <code>elective-2-discussions.md</code>)</h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Week Title</th>
+<th>Filename</th>
+<th>Start Line</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>01</td>
+<td>C# Translation Bootcamp</td>
+<td><code>week-01-csharp-translation-bootcamp.md</code></td>
+<td>9</td>
+</tr>
+<tr>
+<td>02</td>
+<td>Interfaces &amp; DI Mental Model</td>
+<td><code>week-02-interfaces-and-di-mental-model.md</code></td>
+<td>239</td>
+</tr>
+<tr>
+<td>03</td>
+<td>HTTP &amp; The Web</td>
+<td><code>week-03-http-and-the-web.md</code></td>
+<td>444</td>
+</tr>
+<tr>
+<td>04</td>
+<td>MVC Big Picture</td>
+<td><code>week-04-mvc-big-picture.md</code></td>
+<td>665</td>
+</tr>
+<tr>
+<td>05</td>
+<td>Routing Deep-Dive</td>
+<td><code>week-05-routing-deep-dive.md</code></td>
+<td>882</td>
+</tr>
+<tr>
+<td>06</td>
+<td>Controllers &amp; Action Results</td>
+<td><code>week-06-controllers-and-action-results.md</code></td>
+<td>1101</td>
+</tr>
+<tr>
+<td>07</td>
+<td>Views &amp; Layouts</td>
+<td><code>week-07-views-and-layouts.md</code></td>
+<td>1314</td>
+</tr>
+<tr>
+<td>08</td>
+<td>Model Binding &amp; Validation</td>
+<td><code>week-08-model-binding-and-validation.md</code></td>
+<td>1524</td>
+</tr>
+<tr>
+<td>09</td>
+<td>EF Core Fundamentals</td>
+<td><code>week-09-ef-core-fundamentals.md</code></td>
+<td>1740</td>
+</tr>
+<tr>
+<td>10</td>
+<td>Relationships &amp; Data Display</td>
+<td><code>week-10-relationships-and-data-display.md</code></td>
+<td>1966</td>
+</tr>
+<tr>
+<td>11</td>
+<td>Consuming APIs with HttpClient</td>
+<td><code>week-11-consuming-apis-with-httpclient.md</code></td>
+<td>2194</td>
+</tr>
+<tr>
+<td>12</td>
+<td>Mini-Capstone Checkpoint</td>
+<td><code>week-12-mini-capstone-checkpoint.md</code></td>
+<td>2418</td>
+</tr>
+<tr>
+<td>13</td>
+<td>Authentication &amp; Authorization</td>
+<td><code>week-13-authentication-and-authorization.md</code></td>
+<td>2652</td>
+</tr>
+<tr>
+<td>14</td>
+<td>Security Fundamentals</td>
+<td><code>week-14-security-fundamentals.md</code></td>
+<td>2873</td>
+</tr>
+<tr>
+<td>15</td>
+<td>Capstone Sprint</td>
+<td><code>week-15-capstone-sprint.md</code></td>
+<td>3105</td>
+</tr>
+<tr>
+<td>16</td>
+<td>Capstone Final — Deploy &amp; Present</td>
+<td><code>week-16-capstone-final-deploy-and-present.md</code></td>
+<td>3329</td>
+</tr>
+</tbody>
+</table>
+<h3>Elective 3 (source: <code>elective-3-discussions.md</code>)</h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Week Title</th>
+<th>Filename</th>
+<th>Start Line</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>01</td>
+<td>Modern JavaScript Review</td>
+<td><code>week-01-modern-javascript-review.md</code></td>
+<td>5</td>
+</tr>
+<tr>
+<td>02</td>
+<td>Async JavaScript Deep-Dive</td>
+<td><code>week-02-async-javascript-deep-dive.md</code></td>
+<td>216</td>
+</tr>
+<tr>
+<td>03</td>
+<td>TypeScript Essentials</td>
+<td><code>week-03-typescript-essentials.md</code></td>
+<td>437</td>
+</tr>
+<tr>
+<td>04</td>
+<td>Dev Tooling &amp; Workflow</td>
+<td><code>week-04-dev-tooling-and-workflow.md</code></td>
+<td>646</td>
+</tr>
+<tr>
+<td>05</td>
+<td>Component Thinking in Vanilla JS</td>
+<td><code>week-05-component-thinking-in-vanilla-js.md</code></td>
+<td>859</td>
+</tr>
+<tr>
+<td>06</td>
+<td>React Fundamentals</td>
+<td><code>week-06-react-fundamentals.md</code></td>
+<td>1076</td>
+</tr>
+<tr>
+<td>07</td>
+<td>Effects &amp; Data Fetching</td>
+<td><code>week-07-effects-and-data-fetching.md</code></td>
+<td>1297</td>
+</tr>
+<tr>
+<td>08</td>
+<td>React Router &amp; SPA Concepts</td>
+<td><code>week-08-react-router-and-spa-concepts.md</code></td>
+<td>1518</td>
+</tr>
+<tr>
+<td>09</td>
+<td>API Design Philosophy</td>
+<td><code>week-09-api-design-philosophy.md</code></td>
+<td>1742</td>
+</tr>
+<tr>
+<td>10</td>
+<td>ASP.NET Core Web API</td>
+<td><code>week-10-aspnet-core-web-api.md</code></td>
+<td>1962</td>
+</tr>
+<tr>
+<td>11</td>
+<td>Frontend-Backend Integration</td>
+<td><code>week-11-frontend-backend-integration.md</code></td>
+<td>2186</td>
+</tr>
+<tr>
+<td>12</td>
+<td>API Versioning &amp; Documentation</td>
+<td><code>week-12-api-versioning-and-documentation.md</code></td>
+<td>2410</td>
+</tr>
+<tr>
+<td>13</td>
+<td>Auth Deep-Dive</td>
+<td><code>week-13-auth-deep-dive.md</code></td>
+<td>2632</td>
+</tr>
+<tr>
+<td>14</td>
+<td>Testing</td>
+<td><code>week-14-testing.md</code></td>
+<td>2852</td>
+</tr>
+<tr>
+<td>15</td>
+<td>CI/CD &amp; Deployment</td>
+<td><code>week-15-ci-cd-and-deployment.md</code></td>
+<td>3071</td>
+</tr>
+<tr>
+<td>16</td>
+<td>Capstone Final</td>
+<td><code>week-16-capstone-final.md</code></td>
+<td>3290</td>
+</tr>
+</tbody>
+</table>
+<h2>3. Mother File (index.md) Content Template</h2>
+<h3><code>elective-2/index.md</code></h3>
+<pre class="codehilite"><code class="language-markdown"># Elective 2: Building Web Products — Full Lesson Content
+
+&gt; **Course:** C# for ASP.NET Core MVC — from VB.NET foundations to shipping a full-stack web product.
+
+## Term-by-Term Summary
+
+| Term | Weeks | Focus | Weight |
+|------|-------|-------|--------|
+| [Prelim — C# for MVC + Web Foundations](#prelim) | 1–4 | C# for MVC + Web Foundations | [GREEN] Familiar (VB-&gt;C# translation) |
+| [Midterm — ASP.NET Core MVC](#midterm) | 5–8 | ASP.NET Core MVC — the hard part | [RED] Hardest |
+| [PreFinals — Data &amp; Persistence + Consuming APIs](#prefinals) | 9–12 | Data &amp; Persistence + Consuming APIs | [YELLOW] Medium |
+| [Finals — User Interaction + Security + Capstone](#finals) | 13–16 | User Interaction + Security + Capstone | [YELLOW] Lighter + Integration |
+
+---
+
+## Prelim — C# for MVC + Web Foundations
+**Goal:** Translate VB.NET knowledge to C#, understand the web request lifecycle.
+
+| Week | Topic | Key Concepts |
+|------|-------|-------------|
+| [Week 1: C# Translation Bootcamp](week-01-csharp-translation-bootcamp.md) | C# syntax from VB | Types, properties, methods, classes, `var`, string interpolation, LINQ |
+| [Week 2: Interfaces &amp; DI Mental Model](week-02-interfaces-and-di-mental-model.md) | Interfaces, DI | Contract-based design, constructor injection, IoC container |
+| [Week 3: HTTP &amp; The Web](week-03-http-and-the-web.md) | Request/response lifecycle | HTTP methods, status codes, headers, statelessness |
+| [Week 4: MVC Big Picture](week-04-mvc-big-picture.md) | MVC architecture | Routing, controllers, views, models, `cshtml` |
+
+## Midterm — ASP.NET Core MVC (The Hard Part)
+**Goal:** Build multi-page SSR apps with routing, controllers, views, and real data flow.
+
+| Week | Topic | Key Concepts |
+|------|-------|-------------|
+| [Week 5: Routing Deep-Dive](week-05-routing-deep-dive.md) | Routing | Convention vs attribute routing, route parameters, constraints |
+| [Week 6: Controllers &amp; Action Results](week-06-controllers-and-action-results.md) | Action results | `IActionResult`, `View()`, `Redirect()`, `Json()`, `StatusCode()` |
+| [Week 7: Views &amp; Layouts](week-07-views-and-layouts.md) | Razor views | Layout pages, Partial Views, View Components, Tag Helpers |
+| [Week 8: Model Binding &amp; Validation](week-08-model-binding-and-validation.md) | Forms &amp; validation | Data annotations, `ModelState.IsValid`, anti-forgery |
+
+## PreFinals — Data &amp; Persistence + Consuming APIs
+**Goal:** Store and retrieve data, talk to external services.
+
+| Week | Topic | Key Concepts |
+|------|-------|-------------|
+| [Week 9: EF Core Fundamentals](week-09-ef-core-fundamentals.md) | ORM | DbContext, DbSet, migrations, CRUD with LINQ |
+| [Week 10: Relationships &amp; Data Display](week-10-relationships-and-data-display.md) | Related data | Navigation properties, eager/lazy loading, `Include()` |
+| [Week 11: Consuming APIs with HttpClient](week-11-consuming-apis-with-httpclient.md) | External APIs | `IHttpClientFactory`, JSON serialization, error handling |
+| [Week 12: Mini-Capstone Checkpoint](week-12-mini-capstone-checkpoint.md) | Integration project | DB + API integration, service layer |
+
+## Finals — User Interaction + Security + Capstone
+**Goal:** Polish, secure, deploy, and present.
+
+| Week | Topic | Key Concepts |
+|------|-------|-------------|
+| [Week 13: Authentication &amp; Authorization](week-13-authentication-and-authorization.md) | Auth | Cookie auth, `[Authorize]`, roles, Identity scaffold |
+| [Week 14: Security Fundamentals](week-14-security-fundamentals.md) | Security | XSS, SQL injection, CSRF, HTTPS, OWASP |
+| [Week 15: Capstone Sprint](week-15-capstone-sprint.md) | Build sprint | User stories, schema, routes, UI, auth |
+| [Week 16: Capstone Final — Deploy &amp; Present](week-16-capstone-final-deploy-and-present.md) | Ship | Deployment, polish, final presentations |
+
+---
+
+*Source: [elective-2-discussions.md](../elective-2-discussions.md) (full original)*
+</code></pre>
+
+<h3><code>elective-3/index.md</code></h3>
+<pre class="codehilite"><code class="language-markdown"># Elective 3: Production-Grade Products — Full Lesson Content
+
+&gt; **Course:** React + ASP.NET Core Web API — from modern JavaScript to shipping a production-grade full-stack application.
+
+## Term-by-Term Summary
+
+| Term | Weeks | Focus | Weight |
+|------|-------|-------|--------|
+| [Prelim — Modern JS / TypeScript + Dev Tooling](#prelim) | 1–4 | Modern JS / TypeScript + Dev Tooling | [GREEN] Warmup ramp |
+| [Midterm — Component Architecture (Vanilla -&gt; React)](#midterm) | 5–8 | Component Architecture (Vanilla -&gt; React) | [RED] Hardest |
+| [PreFinals — API as Product + Frontend-Backend Integration](#prefinals) | 9–12 | API as Product + Frontend-Backend Integration | [YELLOW] Medium |
+| [Finals — Identity &amp; Security + Testing/CI/CD + Capstone](#finals) | 13–16 | Identity &amp; Security + Testing/CI/CD + Capstone | [YELLOW] Medium + project |
+
+---
+
+## Prelim — Modern JS / TypeScript + Dev Tooling
+**Goal:** Ramp up from basic JavaScript to modern professional TypeScript with a proper toolchain.
+
+| Week | Topic | Key Concepts |
+|------|-------|-------------|
+| [Week 1: Modern JavaScript Review](week-01-modern-javascript-review.md) | ES6+ | `let/const`, arrow functions, destructuring, modules |
+| [Week 2: Async JavaScript Deep-Dive](week-02-async-javascript-deep-dive.md) | Async | Promises, async/await, `fetch()`, error handling |
+| [Week 3: TypeScript Essentials](week-03-typescript-essentials.md) | Types | Interfaces, generics, `any` vs `unknown`, tooling |
+| [Week 4: Dev Tooling &amp; Workflow](week-04-dev-tooling-and-workflow.md) | Toolchain | Vite, ESLint, Prettier, Git branching, PR workflow |
+
+## Midterm — Component Architecture (Vanilla -&gt; React)
+**Goal:** Understand component thinking by building from vanilla JS to a modern framework.
+
+| Week | Topic | Key Concepts |
+|------|-------|-------------|
+| [Week 5: Component Thinking in Vanilla JS](week-05-component-thinking-in-vanilla-js.md) | Components | Encapsulation, props, state, composition |
+| [Week 6: React Fundamentals](week-06-react-fundamentals.md) | React basics | JSX, functional components, props, `useState` |
+| [Week 7: Effects &amp; Data Fetching](week-07-effects-and-data-fetching.md) | Side effects | `useEffect`, dependency arrays, custom hooks |
+| [Week 8: React Router &amp; SPA Concepts](week-08-react-router-and-spa-concepts.md) | SPA routing | Client-side routing, lazy loading, code splitting |
+
+## PreFinals — API as Product + Frontend-Backend Integration
+**Goal:** Design, build, and consume professional-grade APIs.
+
+| Week | Topic | Key Concepts |
+|------|-------|-------------|
+| [Week 9: API Design Philosophy](week-09-api-design-philosophy.md) | REST design | Resource modeling, naming conventions, error contracts |
+| [Week 10: ASP.NET Core Web API](week-10-aspnet-core-web-api.md) | Web API | `[ApiController]`, content negotiation, Swagger |
+| [Week 11: Frontend-Backend Integration](week-11-frontend-backend-integration.md) | Full-stack | CORS, auth headers, token storage, `useContext` |
+| [Week 12: API Versioning &amp; Documentation](week-12-api-versioning-and-documentation.md) | API lifecycle | Versioning strategies, Swagger/OpenAPI, deprecation |
+
+## Finals — Identity &amp; Security + Testing/CI/CD + Capstone
+**Goal:** Production skills — secure, test, deploy, and present a full-stack application.
+
+| Week | Topic | Key Concepts |
+|------|-------|-------------|
+| [Week 13: Auth Deep-Dive](week-13-auth-deep-dive.md) | Auth | JWT, refresh tokens, OAuth2 flow, OpenID Connect |
+| [Week 14: Testing](week-14-testing.md) | Testing | Unit (xUnit), integration (WebApplicationFactory), E2E (Playwright) |
+| [Week 15: CI/CD &amp; Deployment](week-15-ci-cd-and-deployment.md) | DevOps | GitHub Actions, build -&gt; test -&gt; deploy pipeline |
+| [Week 16: Capstone Final](week-16-capstone-final.md) | Ship | Production-grade full-stack app, oral defense |
+
+---
+
+*Source: [elective-3-discussions.md](../elective-3-discussions.md) (full original)*
+</code></pre>
+
+<h2>4. Extraction Approach</h2>
+<h3>Tool: Use a Python script (or PowerShell script)</h3>
+<p><strong>Recommended approach:</strong> Write a Python script at <code>D:\loa\web-sys\split-weeks.py</code> that:</p>
+<ol>
+<li>Reads the source file line by line</li>
+<li>Detects week boundaries via regex: <code>^## Week \d+:</code></li>
+<li>Extracts the week title from the heading</li>
+<li>Derives the filename using the kebab-case conversion rules</li>
+<li>Writes each week's content (from its heading to the next week heading or end of file) to the appropriate file</li>
+</ol>
+<h3>Week boundary identification</h3>
+<ul>
+<li><strong>Start of a week:</strong> Line matching <code>^## Week \d+:</code></li>
+<li><strong>End of a week:</strong> Next <code>^## Week \d+:</code> line, OR next <code>^## TERM \d+:</code> line (E2 only), OR end of file</li>
+<li><strong>Week title:</strong> Extract text after <code>## Week N:</code> (e.g., <code>C# Translation Bootcamp</code>)</li>
+<li><strong>Content to include:</strong> Everything from the <code>## Week N:</code> heading line up to (but not including) the next week heading</li>
+</ul>
+<h3>Kebab-case conversion rules</h3>
+<pre class="codehilite"><code>Input: &quot;C# Translation Bootcamp&quot;
+-&gt; lowercase: &quot;c# translation bootcamp&quot;
+-&gt; replace # with sharp: &quot;csharp translation bootcamp&quot;
+-&gt; replace spaces/special with hyphens: &quot;csharp-translation-bootcamp&quot;
+-&gt; remove non-alphanumeric (keep a-z, 0-9, hyphens): &quot;csharp-translation-bootcamp&quot;
+-&gt; collapse multiple hyphens -&gt; single hyphen
+-&gt; trim leading/trailing hyphens
+-&gt; prefix with &quot;week-NN-&quot;
+</code></pre>
+
+<p><strong>Edge cases to handle:</strong>
+- <code>&amp;</code> -&gt; <code>and</code> (e.g., "HTTP &amp; The Web" -&gt; "http-and-the-web")
+- <code>#</code> -&gt; <code>sharp</code> (e.g., "C#" -&gt; "csharp") 
+- <code>/</code> -&gt; hyphen (e.g., "CI/CD &amp; Deployment" -&gt; "ci-cd-and-deployment")
+- <code>—</code> / <code>--</code> -&gt; hyphen (e.g., "Capstone Final — Deploy &amp; Present" -&gt; "capstone-final-deploy-and-present")
+- Non-alphanumeric characters -&gt; remove or convert
+- Collapse consecutive hyphens</p>
+<h3>Term headings (E2 discussions only)</h3>
+<p>The <code>elective-2-discussions.md</code> file has <code>## TERM N: TITLE</code> lines that serve as section breaks. These should <strong>not</strong> be extracted into week files. They exist only in the original. The mother file's term breakdown is sufficient.</p>
+<h3>Appendix sections</h3>
+<p>Both files have trailing appendices (AI Integration Guide, cross-cutting practices, etc.) after Week 16. These appendices should <strong>not</strong> be extracted into week files. Only the 16 week sections should be extracted. The content after the last <code>## Week 16:</code> heading is the appendix.</p>
+<h3>Validation after split</h3>
+<ul>
+<li>Count: exactly 16 files per folder (totalling 32 week files + 2 index files)</li>
+<li>Each file should start with <code>## Week N:</code> (the heading)</li>
+<li>Each file should end with a <code>---</code> separator before the footer (or E2's security checklist)</li>
+<li>Verify no week file is empty</li>
+<li>Verify original discussion files are unchanged</li>
+</ul>
+<h2>5. Execution Order</h2>
+<ol>
+<li>Create <code>elective-2/</code> and <code>elective-3/</code> directories</li>
+<li>Run split script to generate all 32 week files</li>
+<li>Verify week file count and content</li>
+<li>Create <code>elective-2/index.md</code> and <code>elective-3/index.md</code></li>
+<li>Validate that original files are untouched</li>
+<li>Clean up the script</li>
+</ol>
+<h2>6. Weekly File Footer</h2>
+<p>Each week file should end with a return-to-index link:</p>
+<pre class="codehilite"><code class="language-markdown">---
+
+*Source: [elective-2-discussions.md](../elective-2-discussions.md) — [Back to index](index.md)*
+</code></pre>
+
+<p>(For E3, use <code>elective-3-discussions.md</code> as the source.)</p>
+</body></html>

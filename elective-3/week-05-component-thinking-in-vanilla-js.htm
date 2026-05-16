@@ -1,0 +1,224 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>elective-3\week-05-component-thinking-in-vanilla-js.md</title><style>
+body { font-family: 'Segoe UI', Arial, sans-serif; max-width: 960px; margin: 2em auto; padding: 0 1.5em; line-height: 1.7; color: #1a1a1a; background: #fafafa; }
+h1 { border-bottom: 2px solid #2563eb; padding-bottom: .3em; margin-top: 1.5em; color: #1e3a5f; }
+h2 { border-bottom: 1px solid #cbd5e1; padding-bottom: .2em; margin-top: 1.5em; color: #1e3a5f; }
+h3 { margin-top: 1.3em; color: #334155; }
+a { color: #2563eb; }
+code { background: #eef2ff; padding: .15em .35em; border-radius: 4px; font-size: .9em; }
+pre { background: #1e293b; color: #e2e8f0; padding: 1em; border-radius: 6px; overflow-x: auto; }
+pre code { background: none; padding: 0; color: inherit; }
+blockquote { border-left: 4px solid #2563eb; margin: 1em 0; padding: .5em 1em; background: #f1f5f9; border-radius: 0 6px 6px 0; }
+table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+th, td { border: 1px solid #cbd5e1; padding: .5em .75em; text-align: left; }
+th { background: #2563eb; color: #fff; }
+tr:nth-child(even) { background: #f8fafc; }
+hr { border: none; border-top: 2px solid #e2e8f0; margin: 2em 0; }
+</style></head><body>
+<nav><a href="index.htm">Home</a></nav>
+<h2>Week 5: Component Thinking in Vanilla JS</h2>
+<blockquote>
+<p>[TIME] <strong>Session Pacing (180 min)</strong></p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Block</th>
+<th>Time</th>
+<th>Format</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Hook + Analogy</td>
+<td>15 min</td>
+<td>Lecture + Whiteboard</td>
+</tr>
+<tr>
+<td>Concept Discussion</td>
+<td>25 min</td>
+<td>Lecture + Slides + Component Diagram</td>
+</tr>
+<tr>
+<td>Code Walkthrough</td>
+<td>30 min</td>
+<td>Live Code (Button -&gt; Counter -&gt; Card)</td>
+</tr>
+<tr>
+<td>Industry Reality</td>
+<td>10 min</td>
+<td>Lecture + Discussion</td>
+</tr>
+<tr>
+<td>Break</td>
+<td>10 min</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Exercise</td>
+<td>55 min</td>
+<td>Lab (solo or pairs)</td>
+</tr>
+<tr>
+<td>AI Integration</td>
+<td>10 min</td>
+<td>Demo + Prompt Walkthrough</td>
+</tr>
+<tr>
+<td>Debugging + Wrap</td>
+<td>15 min</td>
+<td>Group Debug + Q&amp;A</td>
+</tr>
+<tr>
+<td>Buffer</td>
+<td>10 min</td>
+<td>Overflow / Stretch discussion</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>[TIP] <strong>Teaching Tip (Week 5 strategy):</strong> This is the bridge week — students move from "JS that manipulates DOM" to "JS that thinks in components." The vanilla JS approach is intentional: if they don't understand what React abstracts, they'll write bad React. Build the Button live, then the Counter, then Card. Emphasize: props = function arguments, state = closure variables, re-render = update existing DOM.</p>
+</blockquote>
+<hr />
+<h3>1. The Hook</h3>
+<blockquote>
+<p>[SPEAK] <strong>Script:</strong> "Every UI you interact with is made of components. The button you click to like a post? Component. The card showing that post? Component. The modal that pops up when you click 'share'? Component. Instagram's entire interface is just components nested inside components inside components. You've been using component-based UI your whole life — now you're going to build one from scratch without React, so you actually understand what React is doing under the hood."</p>
+<p>[SLIDE] <strong>Slide:</strong> Title: "You've Been Using Components Your Whole Life"<br />
+Screenshot of Instagram UI with colored boxes drawn around each component: Story circle, Post card, Like button, Comment section, Bottom nav. Label each one.</p>
+<p>[TIP] <strong>Teaching Tip:</strong> Make it visual. Show a real app and literally draw boxes around components. Students need to SEE that components are everywhere before they build one.</p>
+<p>[ENGAGE] <strong>Gen-Z:</strong> "Components are like your Shopee cart — each item is its own thing with its own price, quantity, and remove button. The cart just holds them together. That's composition."<br />
+<strong>-&gt; Phone moment:</strong> "Open any app right now. Point out 3 components you can see. The header is one. The feed card is another. The bottom nav is a third. That's component thinking."</p>
+<p>[LOST] <strong>If they're lost:</strong> "A component is just a function that returns a piece of UI. That's it. You already know functions. Now we're making them return DOM elements instead of numbers or strings."</p>
+</blockquote>
+<hr />
+<h3>2. The Analogy</h3>
+<blockquote>
+<p>[SPEAK] <strong>Script:</strong> "Think of components like LEGO bricks. Each brick is self-contained — it has its own shape, color, and way of connecting to other bricks. A 2x4 red brick doesn't care what it's connected to. You can snap it onto a baseplate, another brick, or a specialized piece. The brick's 'props' are its color and size (set from outside). Its 'state' is whether it's connected or not (changes over time). You compose complex structures by combining simple bricks — you don't carve a castle out of a single block of plastic."</p>
+<p>[BOARD] <strong>Whiteboard:</strong> Draw the LEGO comparison:
+```
+PROPS (from outside):    STATE (inside):
++-------------+          +-------------+
+|  color: red |          |  connected  |
+|  size: 2x4  |          |  position   |
+|  shape: std |          |  rotation   |
++-------------+          +-------------+</p>
+<p>COMPOSITION:
+[Castle] = [Wall] + [Tower] + [Gate]
+[Wall]   = [Brick] + [Brick] + [Brick]
+```</p>
+<p>[TIP] <strong>Teaching Tip:</strong> The LEGO analogy is perfect because it maps directly: props = brick properties you choose before building, state = what happens during play, composition = snapping bricks together.</p>
+<p>[ENGAGE] <strong>Gen-Z:</strong> "Props are like your Grab order — you choose the restaurant, the food, the address from outside. State is like your order status — it changes from 'preparing' to 'on the way' to 'delivered' while you wait."<br />
+<strong>-&gt; Turn to your neighbor:</strong> "In the LEGO analogy, what's the difference between props and state? 15 seconds, discuss!"</p>
+<p>[LOST] <strong>If they're lost:</strong> "Forget LEGO. Props = arguments passed to a function. State = variables inside a function that change. That's the whole thing."</p>
+</blockquote>
+<hr />
+<h3>3. Concept Discussion</h3>
+<blockquote>
+<p>[TIME] <strong>Pacing:</strong> 25 min total (5 min encapsulation -&gt; 5 min props -&gt; 5 min state -&gt; 4 min composition -&gt; 3 min lifecycle -&gt; 3 min re-rendering)</p>
+<p>[SPEAK] <strong>Script:</strong> "Before components, you wrote UI as one giant HTML file with scattered JavaScript. Change one thing, break three others. Components solve this by encapsulating HTML, CSS, and JavaScript into reusable, isolated units. Let me show you the core concepts."</p>
+<p>[SLIDE] <strong>Slide:</strong> Show one concept at a time. For each: (1) the concept, (2) a visual diagram, (3) why it matters. Don't show all concepts at once — cognitive overload.</p>
+<p>[TIP] <strong>Teaching Tip:</strong> Spend the most time on props vs state — this is the foundation for React. Students will confuse these constantly. Emphasize: props come from outside (read-only), state lives inside (changeable).</p>
+<p>[ASK] <strong>Ask the class:</strong> "If a Button component needs to know its label and color, are those props or state?" (Props — they're set from outside.) "If a Counter needs to track its current number, is that props or state?" (State — it changes inside the component.)</p>
+<p>[ENGAGE] <strong>Gen-Z:</strong> "Encapsulation is like your GCash PIN — nobody outside can see it or change it. The component keeps its own secrets."<br />
+<strong>-&gt; Phone moment:</strong> "Think of a TikTok video card. The video URL, username, likes count — those are props passed in. Whether it's playing or paused — that's state."</p>
+<p>[Q&amp;A] <strong>Student Q:</strong> "Why can't a component change its own props?"
+<strong>Short answer:</strong> Because props belong to the parent, not the component.
+<strong>Real answer:</strong> If a component could change its own props, you'd have data flowing in multiple directions and no way to track where changes came from. One-way data flow (parent -&gt; child via props) makes debugging predictable.
+<strong>The hidden question:</strong> "What if the component needs to change the data?" -&gt; It asks the parent to change it via a callback function.</p>
+<p>[Q&amp;A] <strong>Student Q:</strong> "What's the difference between re-rendering and creating new DOM elements?"
+<strong>Short answer:</strong> Re-rendering updates existing elements. Creating new ones destroys and rebuilds.
+<strong>Real answer:</strong> When you call <code>textContent = newValue</code>, you're updating an existing element — that's re-rendering. When you call <code>innerHTML = ''</code> and rebuild, you're destroying everything and starting over — you lose event listeners, focus, scroll position.
+<strong>The hidden question:</strong> "Why does it matter?" -&gt; Performance and UX. Updating in place is faster and preserves user interactions.</p>
+<p>[LOST] <strong>If they're lost:</strong> "The simplest summary: (1) Props = inputs from outside. (2) State = data inside that changes. (3) Composition = components using components. (4) Re-render = update existing DOM, don't rebuild."</p>
+</blockquote>
+<hr />
+<h3>4. Code Walkthrough</h3>
+<blockquote>
+<p>[TIME] <strong>Pacing:</strong> 30 min (5 min Button -&gt; 15 min Counter -&gt; 10 min Card composition)</p>
+<p>[SPEAK] <strong>Script:</strong> "Let's build three components step by step. First a Button — the simplest component. Then a Counter — to show state. Then a Card — to show composition. Each builds on the last."</p>
+<p>[SLIDE] <strong>Slide:</strong> Show each step on its own slide. Step 1: Button (props only). Step 2: Counter (props + state + re-render). Step 3: Card (composition — uses Button internally).</p>
+<p>[TIP] <strong>Teaching Tip:</strong> <strong>Type each component live, don't paste.</strong> For the Counter, emphasize the closure pattern: <code>let count</code> is the state, <code>render()</code> updates the DOM, event handlers update state then call <code>render()</code>. This is exactly how React's <code>useState</code> works under the hood.</p>
+<p>[BOARD] <strong>Whiteboard:</strong> Draw the Counter's data flow:
+<code>Counter({ initialCount: 5 })
+  v
+let count = 5  &lt;- STATE (closure variable)
+  v
+render() -&gt; display.textContent = count  &lt;- UPDATE DOM
+  v
+click "+" -&gt; count++ -&gt; render()  &lt;- STATE CHANGE -&gt; RE-RENDER</code></p>
+<p>[ENGAGE] <strong>Gen-Z:</strong> "Building components is like assembling a Gundam kit. Step 1: build one piece (Button). Step 2: add moving parts (Counter with state). Step 3: snap pieces together (Card uses Button). Each step builds on the last."<br />
+<strong>-&gt; Type-along:</strong> "Type the Button first. Test it. Then type the Counter. Test it. Then type the Card. Don't skip testing — each component should work independently."</p>
+<p>[Q&amp;A] <strong>Student Q:</strong> "Why do we create DOM elements once and only update textContent in render()?"
+<strong>Short answer:</strong> Because creating new elements destroys event listeners.
+<strong>Real answer:</strong> If you called <code>createElement</code> inside <code>render()</code>, every state change would create brand new elements. The old event listeners would be attached to the old elements — they'd stop working. By creating elements once and only updating <code>textContent</code>, the listeners stay attached.
+<strong>The hidden question:</strong> "Isn't that what React's Virtual DOM does?" -&gt; Yes! React does this automatically. You're learning the manual version first.</p>
+<p>[LOST] <strong>If they're lost:</strong> "Start with just the Button. Get it working. Then add the Counter — copy the Button pattern but add a <code>count</code> variable and a <code>render()</code> function. One step at a time."</p>
+</blockquote>
+<hr />
+<h3>5. The "Industry Reality"</h3>
+<blockquote>
+<p>[SPEAK] <strong>Script:</strong> "Before React existed, Facebook's newsfeed was built with manually managed DOM updates. Every time a new post arrived, they had to figure out which DOM nodes to create, update, or remove. It was a maintenance nightmare. React's component model solved this by letting developers describe <em>what</em> the UI should look like for a given state, and React figures out <em>how</em> to update the DOM. The vanilla JS components you're building this week are exactly what every company was doing before 2013."</p>
+<p>[SLIDE] <strong>Slide:</strong> Timeline: "Pre-2013: Manual DOM manipulation (jQuery spaghetti)" -&gt; "2013: React introduces component model" -&gt; "2026: Every framework uses components."</p>
+<p>[TIP] <strong>Teaching Tip:</strong> Keep this to 5 minutes. Show them that component thinking isn't a React invention — it's the solution to a real problem that every company faced.</p>
+<p>[ENGAGE] <strong>Gen-Z:</strong> <strong>-&gt; Poll:</strong> "How many of you have used jQuery?" (Some hands.) "jQuery is like the flip phone of DOM manipulation. It works, but components are the smartphone upgrade."</p>
+<p>[LOST] <strong>If they're lost:</strong> "You don't need to know Facebook's history. Just understand: components solve the problem of 'how do I keep my UI organized when it gets complex?'"</p>
+</blockquote>
+<hr />
+<h3>6. Exercise</h3>
+<blockquote>
+<p>[TIME] <strong>Pacing:</strong> 55 min total (5 min setup -&gt; 40 min coding -&gt; 10 min share)</p>
+<p>[SPEAK] <strong>Script:</strong> "Build a vanilla JS component library with three components: Button, Card, and Modal. Each takes props, manages its own state, and returns a DOM element."</p>
+<p>[SLIDE] <strong>Slide:</strong> Exercise checklist:
+- [ ] Button: <code>label</code>, <code>variant</code>, <code>onClick</code>, <code>disabled</code>
+- [ ] Card: <code>title</code>, <code>content</code>, <code>image</code> (optional), <code>actions</code> (array of Button configs)
+- [ ] Modal: <code>isOpen</code>, <code>title</code>, <code>content</code>, <code>onClose</code> — show/hide on <code>isOpen</code> change
+- [ ] Each component is a function returning a DOM element
+- [ ] Each component handles its own re-rendering
+- [ ] Demo page: Card with Buttons, Modal opens on Button click</p>
+<p>[TIP] <strong>Teaching Tip:</strong> The Modal (requirement 3) is the hardest part — students need to handle show/hide state and the overlay. Circulate and help with the overlay CSS and the <code>isOpen</code> toggle pattern.</p>
+<p>[ENGAGE] <strong>Gen-Z:</strong> <strong>-&gt; Pair up:</strong> "One person builds Button + Card, the other builds Modal. Then combine them into a demo page. It's like a collab — each person owns their component."</p>
+<p>[LOST] <strong>If they're lost:</strong> "Start with Button. Get it working with variants. Then Card — it's just a div with children. Then Modal — use <code>display: none</code> / <code>display: flex</code> for show/hide. Build incrementally."</p>
+</blockquote>
+<hr />
+<h3>7. AI Integration Note</h3>
+<blockquote>
+<p>[TIME] <strong>Pacing:</strong> 10 min (5 min demo -&gt; 5 min try)</p>
+<p>[SPEAK] <strong>Script:</strong> "This week, ask AI to generate a vanilla JS component, then trace through its DOM manipulation. Ask 'What happens to the old DOM element when state changes?' If the answer involves <code>innerHTML</code>, that's a red flag."</p>
+<p>[SLIDE] <strong>Slide:</strong> AI usage guide:
+| [OK] Allowed | [NO] Not Allowed |
+|-----------|--------------|
+| "Generate a Button component in vanilla JS" | "Design my component API" |
+| "What happens when state changes?" | "Write my entire component library" |</p>
+<p>[TIP] <strong>Teaching Tip:</strong> Point out the common AI mistakes: <code>innerHTML</code> for re-rendering (XSS risk + destroys listeners), re-rendering entire DOM tree, leaking state between instances. Teach students to audit AI's DOM approach.</p>
+<p>[ENGAGE] <strong>Gen-Z:</strong> "AI is like that classmate who copies fast but doesn't understand. It'll give you working code, but you need to verify it doesn't use <code>innerHTML</code> or leak state."</p>
+</blockquote>
+<hr />
+<h3>8. Debugging / "Watch Out For" Section</h3>
+<blockquote>
+<p>[TIME] <strong>Pacing:</strong> 15 min (5 min common errors -&gt; 5 min group debug -&gt; 5 min Q&amp;A)</p>
+<p>[SPEAK] <strong>Script:</strong> "Here are the errors and mental model traps you'll hit this week. The event listener double-fire alone will save you hours of debugging."</p>
+<p>[SLIDE] <strong>Slide:</strong> Error cards:
+<code>+--------------------------------------+
+| "Event listener fires multiple times"|
+| Adding listeners in render() instead |
+| of during element creation           |
+| Fix: add listeners once, outside render|
++--------------------------------------+
++--------------------------------------+
+| "innerHTML XSS vulnerability"        |
+| User input executed as HTML          |
+| Fix: use textContent for user data   |
++--------------------------------------+</code></p>
+<p>[ENGAGE] <strong>Gen-Z:</strong> "The double-fire listener is like pressing the GCash send button twice because the app didn't respond fast enough — now you sent money twice. Add the listener once, not every render."</p>
+<p>[Q&amp;A] <strong>Student Q:</strong> "Why does <code>container.innerHTML = ''</code> break my event listeners?"
+<strong>Short answer:</strong> Because it destroys all child elements and creates new ones.
+<strong>Real answer:</strong> <code>innerHTML = ''</code> removes every child DOM node from memory. New elements created after that are brand new — they have no event listeners attached. The old listeners were attached to the old elements, which no longer exist.
+<strong>The hidden question:</strong> "So how do I clear content?" -&gt; Update individual properties (<code>textContent</code>, <code>className</code>) instead of replacing everything.</p>
+<p>[LOST] <strong>If they're lost:</strong> "The #1 issue: event listeners firing multiple times. If your counter jumps by 2 instead of 1, you're adding listeners in <code>render()</code>. Move them to element creation, outside <code>render()</code>."</p>
+</blockquote>
+<hr />
+<h3>Teaching Script</h3>
+<p>This week's annotations cover: pacing table at top, inline annotations per section, and this summary. The core arc is: Button (props) -&gt; Counter (state + re-render) -&gt; Card (composition). Students must understand that React's <code>useState</code> and JSX are abstractions over the closure + DOM patterns they're building manually. The <code>innerHTML</code> danger and event listener double-fire are the two most common bugs to watch for.</p>
+<hr />
+</body></html>

@@ -1,0 +1,213 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>elective-2\week-02-interfaces-and-di-mental-model.md</title><style>
+body { font-family: 'Segoe UI', Arial, sans-serif; max-width: 960px; margin: 2em auto; padding: 0 1.5em; line-height: 1.7; color: #1a1a1a; background: #fafafa; }
+h1 { border-bottom: 2px solid #2563eb; padding-bottom: .3em; margin-top: 1.5em; color: #1e3a5f; }
+h2 { border-bottom: 1px solid #cbd5e1; padding-bottom: .2em; margin-top: 1.5em; color: #1e3a5f; }
+h3 { margin-top: 1.3em; color: #334155; }
+a { color: #2563eb; }
+code { background: #eef2ff; padding: .15em .35em; border-radius: 4px; font-size: .9em; }
+pre { background: #1e293b; color: #e2e8f0; padding: 1em; border-radius: 6px; overflow-x: auto; }
+pre code { background: none; padding: 0; color: inherit; }
+blockquote { border-left: 4px solid #2563eb; margin: 1em 0; padding: .5em 1em; background: #f1f5f9; border-radius: 0 6px 6px 0; }
+table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+th, td { border: 1px solid #cbd5e1; padding: .5em .75em; text-align: left; }
+th { background: #2563eb; color: #fff; }
+tr:nth-child(even) { background: #f8fafc; }
+hr { border: none; border-top: 2px solid #e2e8f0; margin: 2em 0; }
+</style></head><body>
+<nav><a href="index.htm">Home</a></nav>
+<h2>Week 2: Interfaces &amp; DI Mental Model</h2>
+<blockquote>
+<p>[TIME] <strong>Session Pacing (180 min)</strong></p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Block</th>
+<th>Time</th>
+<th>Format</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Hook + Analogy</td>
+<td>15 min</td>
+<td>Lecture + Whiteboard</td>
+</tr>
+<tr>
+<td>Concept Discussion</td>
+<td>25 min</td>
+<td>Lecture + Slides + Code Comparison</td>
+</tr>
+<tr>
+<td>Code Walkthrough</td>
+<td>30 min</td>
+<td>Live Code (instructor + students type)</td>
+</tr>
+<tr>
+<td>Industry Reality</td>
+<td>10 min</td>
+<td>Lecture + Discussion</td>
+</tr>
+<tr>
+<td>Break</td>
+<td>10 min</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Exercise</td>
+<td>55 min</td>
+<td>Lab (solo or pairs)</td>
+</tr>
+<tr>
+<td>AI Integration</td>
+<td>10 min</td>
+<td>Demo + Prompt Walkthrough</td>
+</tr>
+<tr>
+<td>Debugging + Wrap</td>
+<td>15 min</td>
+<td>Group Debug + Q&amp;A</td>
+</tr>
+<tr>
+<td>Buffer</td>
+<td>10 min</td>
+<td>Overflow / Stretch discussion</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>[TIP] <strong>Teaching Tip (Week 2 strategy):</strong> DI is the hardest mental model shift this term. Students who came from VB think "just new it up inside the class." Expect resistance. Use the restaurant analogy repeatedly — every time someone asks "why not just create it inside?", point back to the waiter/kitchen metaphor.</p>
+</blockquote>
+<hr />
+<h3>The Hook</h3>
+<blockquote>
+<p>[SPEAK] <strong>Script:</strong> "Your VB form has 500 lines of code doing everything from database queries to font colors? That's not impressive — that's a cry for help. Today we learn why your classes should be dumb and services should be swappable."</p>
+<p>[SLIDE] <strong>Slide:</strong> Title: "500 Lines of Code ≠ Good Code"<br />
+Left: Screenshot of a massive VB form with 500+ lines, labeled "Spaghetti."<br />
+Right: Clean interface + service pattern, labeled "Scalable."</p>
+<p>[TIP] <strong>Teaching Tip:</strong> This hook is intentionally confrontational — it challenges the "more code = better programmer" mindset. Deliver it with humor, not judgment. Some students are proud of their 500-line forms.</p>
+<p>[ENGAGE] <strong>Gen-Z:</strong> "A 500-line form is like a Jollibee tray where you put your burger, fries, spaghetti, and drink all in one pile. It works, but it's messy. Interfaces are the dividers that keep everything organized."<br />
+<strong>-&gt; Poll:</strong> "Raise your hand if you've ever opened your own code from last semester and had no idea what it does."</p>
+<p>[LOST] <strong>If they're lost:</strong> "Don't worry if your past code is messy. Everyone writes messy code first. Today we learn how to organize it."</p>
+</blockquote>
+<hr />
+<h3>The Analogy</h3>
+<blockquote>
+<p>[SPEAK] <strong>Script:</strong> "Think of a restaurant. The waiter takes your order and brings food, but they don't cook. The kitchen is where the actual work happens. The menu is the interface — it tells you what's available without you needing to go into the kitchen. If the chef quits, the waiter doesn't need retraining — they still look at the same menu."</p>
+<p>[BOARD] <strong>Whiteboard:</strong> Draw three boxes: "Customer" -&gt; "Waiter (Controller)" -&gt; "Kitchen (Service)." Draw a "Menu" arrow between Waiter and Kitchen labeled "Interface." Add a second kitchen box labeled "Kitchen B (swap!)" with the same menu arrow.</p>
+<p>[TIP] <strong>Teaching Tip:</strong> The restaurant analogy works well for Filipino students — everyone has been to a restaurant. Emphasize the key insight: <strong>the waiter never cooks, the kitchen never talks to customers.</strong> This maps directly to Controller -&gt; Service separation.</p>
+<p>[ENGAGE] <strong>Gen-Z:</strong> <strong>-&gt; Turn to your neighbor:</strong> "Explain DI using the restaurant analogy in 15 seconds. Go!" (Then pick 2 people to share their version.)</p>
+<p>[LOST] <strong>If they're lost:</strong> "Think of it like GCash and Maya. Both are payment apps (interface). A store accepts 'payment apps' — it doesn't care which one you use. Swap GCash for Maya, the store still works. That's DI."</p>
+</blockquote>
+<hr />
+<h3>Concept Discussion</h3>
+<blockquote>
+<p>[TIME] <strong>Pacing:</strong> 25 min total (15 min interface -&gt; 10 min DI)</p>
+<p>[SPEAK] <strong>Script:</strong> "An interface is a contract. It says: any class that signs this contract MUST have these methods. It doesn't say HOW — just THAT. This is the foundation of everything we'll build this semester."</p>
+<p>[SLIDE] <strong>Slide:</strong> Show the <code>INotificationService</code> interface alone first. Then reveal <code>EmailService</code> and <code>SmsService</code> side by side, both implementing the same interface. Highlight that the <code>Send</code> method signature is identical.</p>
+<p>[TIP] <strong>Teaching Tip:</strong> Students will ask "why not just use a base class?" Address this proactively: "Interfaces are 'what you can do.' Base classes are 'what you are.' A class can implement many interfaces but only inherit one base class. Interfaces are more flexible."</p>
+<p>[ASK] <strong>Ask the class:</strong> "If I have an interface with 5 methods, and a class implements it — how many methods MUST that class have?" (Answer: All 5. No exceptions.)</p>
+<p>[ENGAGE] <strong>Gen-Z:</strong> "An interface is like a job posting on JobStreet. It lists the requirements. If you apply (implement), you MUST have those skills. How you got those skills? That's your implementation."<br />
+<strong>-&gt; Phone moment:</strong> "Pull up any job posting. The 'Requirements' section? That's an interface. Your resume? That's your implementation."</p>
+<p>[Q&amp;A] <strong>Student Q:</strong> "Can an interface have code in it?"
+<strong>Short answer:</strong> Not in the way you're thinking.
+<strong>Real answer:</strong> C# 8+ allows default interface methods, but that's advanced. For now: interfaces only declare signatures, no bodies. Think of them as pure contracts.
+<strong>The hidden question:</strong> "Is an interface just an empty class?" -&gt; No. An empty class can be instantiated. An interface cannot.</p>
+<p>[LOST] <strong>If they're lost:</strong> "Forget the word 'interface' for a second. Think 'promise.' This code promises: 'I will have a Send method that takes two strings.' Any class that makes this promise can be used anywhere that promise is expected."</p>
+</blockquote>
+<hr />
+<h3>Code Walkthrough</h3>
+<blockquote>
+<p>[TIME] <strong>Pacing:</strong> 30 min (10 min interface + implementations -&gt; 10 min consumer class -&gt; 10 min wiring + swap demo)</p>
+<p>[SPEAK] <strong>Script:</strong> "Let's build this from scratch. First the contract, then two implementations, then something that uses the contract. Watch how the consumer never knows which implementation it's getting."</p>
+<p>[SLIDE] <strong>Slide:</strong> Show the full DI demo code in 4 steps, revealing one step at a time: (1) interface, (2) two implementations, (3) OrderService, (4) wiring in Main.</p>
+<p>[TIP] <strong>Teaching Tip:</strong> <strong>Type this live, don't paste.</strong> When you type <code>public class EmailService : INotificationService</code>, pause and say: "The colon means 'implements.' This class is signing the contract." Make the deliberate mistake of writing <code>new INotificationService()</code> — let it fail, then explain why.</p>
+<p>[BOARD] <strong>Whiteboard:</strong> Draw the dependency flow:
+<code>Main -&gt; creates EmailService
+     -&gt; injects into OrderService
+     -&gt; OrderService calls _notif.Send()
+     -&gt; EmailService.Send() runs</code>
+Then redraw with SmsService. Show that only the Main line changes.</p>
+<p>[ENGAGE] <strong>Gen-Z:</strong> "This is the 'plug and play' of programming. Like swapping earbuds — your phone doesn't care if they're Apple, Samsung, or JBL. As long as they use Bluetooth (the interface), they work."<br />
+<strong>-&gt; Type-along:</strong> "Type the interface definition with me. Then type EmailService. Then SmsService. Don't copy-paste."</p>
+<p>[Q&amp;A] <strong>Student Q:</strong> "Why <code>private readonly</code>? Why not just <code>private</code>?"
+<strong>Short answer:</strong> <code>readonly</code> means it can only be set in the constructor.
+<strong>Real answer:</strong> It prevents accidental reassignment later in the class. It's a safety guarantee: "This dependency won't change after construction."
+<strong>The hidden question:</strong> "Is that really necessary?" -&gt; In a small app, no. In a 10,000-line app, yes. It prevents a whole class of bugs.</p>
+<p>[LOST] <strong>If they're lost:</strong> "Let me show you the simplest DI possible:"<br />
+```csharp
+interface IGreeter { void Greet(string name); }
+class EnglishGreeter : IGreeter { public void Greet(string n) =&gt; Console.WriteLine($"Hello, {n}"); }
+class TagalogGreeter : IGreeter { public void Greet(string n) =&gt; Console.WriteLine($"Kumusta, {n}!"); }</p>
+<p>IGreeter greeter = new TagalogGreeter();
+greeter.Greet("Juan"); // Kumusta, Juan!
+<code>``
+"Swap</code>TagalogGreeter<code>for</code>EnglishGreeter` — everything else stays the same. That's DI."</p>
+</blockquote>
+<hr />
+<h3>The "Why Should I Care?"</h3>
+<blockquote>
+<p>[SPEAK] <strong>Script:</strong> "Spotify, Netflix, Microsoft, and your future employer all use DI. It's not optional — it's how modern backend code is written. If you apply for a .NET job and don't know what DI is, the interview ends in under five minutes."</p>
+<p>[SLIDE] <strong>Slide:</strong> Screenshot of an ASP.NET Core <code>Program.cs</code> showing <code>builder.Services.AddScoped&lt;INotificationService, EmailService&gt;()</code>. Label: "This one line is DI in production."</p>
+<p>[TIP] <strong>Teaching Tip:</strong> Keep this section to 5 minutes. The goal is motivation. Show them that DI isn't academic — it's in every real .NET project.</p>
+<p>[ENGAGE] <strong>Gen-Z:</strong> <strong>-&gt; Poll:</strong> "How many of you have seen 'Dependency Injection' in a job posting?" (Show a real JobStreet or LinkedIn screenshot if hands are low.)</p>
+<p>[LOST] <strong>If they're lost:</strong> "You don't need to master DI today. You just need to understand: interfaces = contracts, DI = swapping implementations. That's enough for now."</p>
+</blockquote>
+<hr />
+<h3>Exercise: DI Playground</h3>
+<blockquote>
+<p>[TIME] <strong>Pacing:</strong> 55 min total (5 min setup -&gt; 40 min coding -&gt; 10 min share)</p>
+<p>[SPEAK] <strong>Script:</strong> "Build a notification system with three implementations. Email, SMS, and Console. Let the user pick which one at runtime. You have 40 minutes."</p>
+<p>[SLIDE] <strong>Slide:</strong> Exercise checklist:
+- [ ] Define <code>INotificationService</code> interface
+- [ ] Implement <code>EmailService</code>, <code>SmsService</code>, <code>ConsoleService</code>
+- [ ] Create <code>NotificationSender</code> with constructor injection
+- [ ] Let user pick service at runtime
+- [ ] Bonus: Add a fourth implementation</p>
+<p>[TIP] <strong>Teaching Tip:</strong> Circulate during the first 10 minutes — students will get stuck on the interface definition or the constructor injection pattern. The bonus (runtime selection) is where the DI concept really clicks.</p>
+<p>[ENGAGE] <strong>Gen-Z:</strong> <strong>-&gt; Pair up:</strong> "Work in pairs. One person types the interface, the other types the implementations. Then swap roles for the consumer class."</p>
+<p>[LOST] <strong>If they're lost:</strong> "Start with just the interface and ONE implementation. Get that working. Then add the second. Then the third. Don't try to build everything at once."</p>
+</blockquote>
+<hr />
+<h3>AI Integration Note</h3>
+<blockquote>
+<p>[TIME] <strong>Pacing:</strong> 10 min (5 min demo -&gt; 5 min try)</p>
+<p>[SPEAK] <strong>Script:</strong> "This week, you can ask AI to explain interface concepts or debug DI compilation errors. You cannot ask it to generate your entire exercise."</p>
+<p>[SLIDE] <strong>Slide:</strong> Allowed vs Not Allowed columns:
+| [OK] Allowed | [NO] Not Allowed |
+|-----------|--------------|
+| "What does 'implements interface' mean?" | "Generate my DI exercise" |
+| "Why does this say 'does not implement interface member'?" | "Write all three service classes for me" |</p>
+<p>[TIP] <strong>Teaching Tip:</strong> Frame AI as a "rubber duck that talks back." It's great for explaining concepts, terrible for doing your thinking.</p>
+<p>[ENGAGE] <strong>Gen-Z:</strong> "AI is your 'code-senpai' — it guides, but doesn't do your homework. If AI writes your interfaces, you won't understand them when the midterm comes."</p>
+</blockquote>
+<hr />
+<h3>Debugging / "Watch Out For"</h3>
+<blockquote>
+<p>[TIME] <strong>Pacing:</strong> 15 min (5 min common errors -&gt; 5 min group debug -&gt; 5 min Q&amp;A)</p>
+<p>[SPEAK] <strong>Script:</strong> "Here are the errors you WILL see this week. Let's go through them so you don't spend 20 minutes Googling."</p>
+<p>[SLIDE] <strong>Slide:</strong> Error cards:
+<code>+---------------------------------------------+
+| "Cannot create instance of interface"        |
+| You wrote: new INotificationService()        |
+| Fix: new EmailService() (concrete class)     |
++---------------------------------------------+
++---------------------------------------------+
+| NullReferenceException at _service.Send()    |
+| You forgot to pass the dependency            |
+| Fix: Check your constructor call             |
++---------------------------------------------+</code></p>
+<p>[ENGAGE] <strong>Gen-Z:</strong> "The 'Cannot create instance of interface' error is like trying to order from a menu that doesn't exist. You need an actual kitchen (concrete class), not just the menu (interface)."</p>
+<p>[Q&amp;A] <strong>Student Q:</strong> "But why can't I just new up the service inside the class? It works!"
+<strong>Short answer:</strong> It works until you need to test it or swap it.
+<strong>Real answer:</strong> Hard-coded dependencies mean you can't mock them for unit tests, can't swap implementations, and can't change behavior without modifying the class itself. DI solves all three.
+<strong>The hidden question:</strong> "This seems like extra work for no benefit." -&gt; The benefit shows up at scale. With 50 classes, DI is essential. With 3, it's practice.</p>
+<p>[LOST] <strong>If they're lost:</strong> "The simplest fix: whenever you see 'Cannot create instance of interface,' replace the interface name with the concrete class name. <code>new INotificationService()</code> -&gt; <code>new EmailService()</code>. That fixes 90% of this week's errors."</p>
+</blockquote>
+<hr />
+<h3>Teaching Script</h3>
+<p>This week's annotations cover: pacing table at top, inline annotations per section ([SPEAK] Script, [SLIDE] Slide, [BOARD] Whiteboard, [TIP] Teaching Tip, [ENGAGE] Gen-Z, [Q&amp;A] Student Q, [LOST] If they're lost), and this summary. The hardest concept is DI — use the restaurant analogy repeatedly and let students type along during the walkthrough.</p>
+<hr />
+</body></html>
