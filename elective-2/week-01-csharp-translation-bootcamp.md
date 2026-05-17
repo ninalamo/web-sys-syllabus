@@ -29,21 +29,52 @@
 
 ### 2. Core Concepts & Discussion Topics
 
-> [SPEAK] **Script:** "Here is the cheat sheet for this entire week. There are exactly 6 things different between VB and C#. Everything else is identical logic."
+#### Topic A: Case Sensitivity (The #1 Bug Creator)
+> **[SPEAK] Discussion:** "VB doesn't care if you yell at it or whisper. `Console` is the same as `console`. C# is extremely strict. If you miscapitalize a single letter, the compiler will crash."
+>
+> **[CODE] Example:**
+> ```csharp
+> // WRONG
+> console.writeline("Hello"); 
+> // RIGHT
+> Console.WriteLine("Hello");
+> ```
+>
+> **[TIP] Instructor Tip:** Teach them the rule: Classes and Methods are `PascalCase` (Capital first letter). Variables are `camelCase` (lowercase first letter).
 
-*   **Topic A: Case Sensitivity (The #1 Bug Creator)**
-    *   *Concept:* VB doesn't care about capitalization. C# does. `Console` is not `console`.
-    *   *Rule of Thumb:* Classes and Methods are PascalCase (`Console.WriteLine`). Variables are camelCase (`studentName`).
-*   **Topic B: Statement Terminators (The Semicolon)**
-    *   *Concept:* VB ends a statement with a new line. C# ends a statement with a semicolon `;`. The compiler uses this to know you're done speaking.
-*   **Topic C: Scope Definition (Curly Braces)**
-    *   *Concept:* VB uses `If...End If` or `Sub...End Sub`. C# uses `{` to start a block and `}` to end it.
-*   **Topic D: Implicit Typing (`var`)**
-    *   *Concept:* It is NOT "typeless". It means "let the compiler figure out the type based on the right side of the equals sign."
-    *   *Example:* `var name = "Alice";` (Compiler locks it in as a string).
-*   **Topic E: String Interpolation**
-    *   *Concept:* The modern way to inject variables into strings. Put a `$` before the quotes and use `{}` around variables.
-    *   *Example:* `$"Hello, {name}!"`
+#### Topic B: Statement Terminators (The Semicolon)
+> **[SPEAK] Discussion:** "In VB, pressing Enter ends the line. In C#, pressing Enter does nothing. You must tell the compiler you are finished speaking by using a semicolon."
+>
+> **[CODE] Example:**
+> ```csharp
+> var name = "Alice" // ERROR
+> var name = "Alice"; // SUCCESS
+> ```
+>
+> **[TIP] Gen-Z Hook:** The semicolon is the period at the end of a text message. It means "I'm done making my point."
+
+#### Topic C: Scope Definition (Curly Braces)
+> **[SPEAK] Discussion:** "Instead of writing `End If` or `End Sub`, C# uses curly braces `{}` to create a visual box around a block of code."
+>
+> **[CODE] Example:**
+> ```csharp
+> if (isAdmin) {
+>     Console.WriteLine("Welcome back!");
+> }
+> ```
+>
+> **[TIP] Instructor Tip:** Tell students to ALWAYS format their document (`Shift + Alt + F`) to line up their curly braces.
+
+#### Topic D: Implicit Typing (`var`)
+> **[SPEAK] Discussion:** "This is the most misunderstood feature. `var` is NOT typeless like JavaScript. It just means 'Compiler, figure out the type based on the right side of the equals sign, and lock it in forever.'"
+>
+> **[CODE] Example:**
+> ```csharp
+> var age = 25; // Locked in as an integer
+> age = "hello"; // ERROR: Cannot implicitly convert type 'string' to 'int'
+> ```
+>
+> **[TIP] Instructor Tip:** Show them the error live. Prove that `var` is strictly typed.
 
 ---
 
@@ -53,12 +84,6 @@
 
 *   **Step 1: The "Hello World" Translation**
     *   *Action:* Write a simple VB Console output, then translate to C# Top-Level Statements.
-      ```csharp
-      // C# Version
-      Console.WriteLine("What is your name?");
-      var name = Console.ReadLine();
-      Console.WriteLine($"Hello, {name}!");
-      ```
 *   **Step 2: Translating a Class**
     *   *Action:* Show the transition from `Public Property Name As String` to `public string Name { get; set; }`. 
 *   **Step 3: Translating an Array & Loop**
@@ -94,7 +119,7 @@
 
 > ### Take-Home Mission
 > > **[HOMEWORK]** **Mission:** "The Translation Engine"
-> > Take the classic "Bank Account" assignment from your previous VB course (the one with Deposit, Withdraw, and Balance checking). 
+> > Take the classic "Bank Account" assignment from your previous VB course. 
 > > 1. Rewrite the entire application in C#.
 > > 2. **The Catch:** You must use `var` for all local variable declarations, and use string interpolation `$` for all console outputs.
 

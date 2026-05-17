@@ -30,21 +30,44 @@
 
 ### 2. Core Concepts & Discussion Topics
 
-> [SPEAK] **Script:** "Every app you've ever used runs on HTTP. It is a text-based protocol that allows clients and servers to talk."
+#### Topic A: The Request-Response Cycle
+> **[SPEAK] Discussion:** "HTTP is a conversation. The client (browser/phone) asks a question. The server answers. The server can NEVER start the conversation."
+>
+> **[VISUAL] Example:**
+> Draw: `Client ---(Request)---> Server` then `Server ---(Response)---> Client`.
+>
+> **[TIP] Instructor Tip:** Emphasize this because students often think the server can magically push data to the client (which requires WebSockets, not standard HTTP).
 
-*   **Topic A: The Request-Response Cycle**
-    *   *Concept:* The client (browser) always initiates. The server listens, processes, and responds. The server *never* initiates an HTTP request to the client.
-*   **Topic B: HTTP Methods (Verbs)**
-    *   *GET:* Give me data. (No body allowed).
-    *   *POST:* Here is new data. Create something. (Has a body).
-    *   *PUT/PATCH:* Update existing data.
-    *   *DELETE:* Destroy data.
-*   **Topic C: Status Codes**
-    *   *200s (Success):* 200 OK, 201 Created.
-    *   *400s (Client Error):* 400 Bad Request, 401 Unauthorized (not logged in), 403 Forbidden (no permission), 404 Not Found.
-    *   *500s (Server Error):* 500 Internal Server Error (The developer messed up).
-*   **Topic D: Statelessness**
-    *   *Concept:* HTTP has amnesia. Every request is completely isolated. If you log in on request 1, request 2 has no idea who you are unless you pass a token/cookie.
+#### Topic B: HTTP Methods (Verbs)
+> **[SPEAK] Discussion:** "The URL tells the server WHERE to go. The method tells the server WHAT to do."
+>
+> **[CODE] Example:**
+> *   **GET:** Read only. (No body allowed).
+> *   **POST:** Create new. (Contains a body).
+> *   **PUT/PATCH:** Update existing.
+> *   **DELETE:** Destroy.
+>
+> **[TIP] Gen-Z Hook:** GET is browsing the menu. POST is ordering the food. DELETE is canceling the order.
+
+#### Topic C: Status Codes
+> **[SPEAK] Discussion:** "Status codes are the server's mood. 200s are happy. 400s mean you messed up. 500s mean the server messed up."
+>
+> **[CODE] Example:**
+> *   **200 OK:** Everything worked.
+> *   **400 Bad Request:** You sent bad JSON or missing data.
+> *   **404 Not Found:** The URL doesn't exist.
+> *   **500 Internal Error:** The server crashed.
+>
+> **[TIP] Instructor Tip:** Drill 404 vs 500. 404 is a routing problem. 500 is a code logic problem.
+
+#### Topic D: Statelessness
+> **[SPEAK] Discussion:** "HTTP has amnesia. Every request is completely isolated. If you log in on request 1, request 2 has no idea who you are."
+>
+> **[VISUAL] Example:**
+> "Hi, I'm Nina." -> "Hello Nina."
+> (Next request) "What's my balance?" -> "Who are you?"
+>
+> **[TIP] Instructor Tip:** This sets up the concept of Cookies/Tokens for later in the semester. 
 
 ---
 
@@ -55,7 +78,7 @@
 *   **Step 1: The DevTools X-Ray**
     *   *Action:* Open Chrome, hit F12, go to the Network Tab. Refresh google.com. Show the class the 50+ requests. Click on one and show the Headers and Response.
 *   **Step 2: C# `HttpClient`**
-    *   *Action:* Write a simple C# Console App that makes a GET request to a public API (like GitHub or a weather API).
+    *   *Action:* Write a simple C# Console App that makes a GET request to a public API.
       ```csharp
       using var client = new HttpClient();
       var response = await client.GetAsync("https://api.github.com/users/octocat");

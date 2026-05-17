@@ -31,18 +31,44 @@
 
 ### 2. Core Concepts & Discussion Topics
 
-> [SPEAK] **Script:** "An interface is a contract. It says: any class that signs this contract MUST have these methods. It doesn't say HOW — just THAT they exist."
+#### Topic A: Interfaces (The Contract)
+> **[SPEAK] Discussion:** "An interface is a contract. It says: any class that signs this contract MUST have these methods. It doesn't say HOW — just THAT they exist. It has no body."
+>
+> **[CODE] Example:**
+> ```csharp
+> public interface INotificationService {
+>     void Send(string message); // No curly braces!
+> }
+> ```
+>
+> **[TIP] Gen-Z Hook:** An interface is a job posting on JobStreet. It lists the requirements. If a class applies for the job, it MUST have those skills.
 
-*   **Topic A: Interfaces (The Contract)**
-    *   *Concept:* An interface defines a signature (what methods and properties must exist). It contains NO actual code or logic.
-    *   *Syntax:* Starts with an 'I' (`INotificationService`). Methods have no bodies.
-*   **Topic B: Tight Coupling vs. Loose Coupling**
-    *   *Tight Coupling:* Class A creates Class B directly using `new`. If Class B changes its constructor, Class A breaks.
-    *   *Loose Coupling:* Class A asks for an interface. It doesn't care who provides it.
-*   **Topic C: Dependency Injection (DI)**
-    *   *Concept:* Instead of a class creating its own dependencies, they are *injected* into it (usually via the constructor).
-*   **Topic D: The IoC Container (The Matchmaker)**
-    *   *Concept:* In ASP.NET Core, the built-in DI container connects the Interface to the specific Class implementation. `builder.Services.AddScoped<IInterface, Class>()`
+#### Topic B: Tight Coupling vs. Loose Coupling
+> **[SPEAK] Discussion:** "If Class A uses the `new` keyword to create Class B, they are tightly coupled. If Class B changes, Class A breaks. Loose coupling means Class A just asks for an interface, and doesn't care who provides it."
+>
+> **[CODE] Example:**
+> ```csharp
+> // TIGHT (Bad)
+> EmailService _email = new EmailService(); 
+> 
+> // LOOSE (Good - Constructor Injection)
+> public OrderProcessor(INotificationService service) {
+>     _service = service;
+> }
+> ```
+>
+> **[TIP] Instructor Tip:** Emphasize that `new` is "glue". Avoid it inside business logic classes.
+
+#### Topic C: The IoC Container (The Matchmaker)
+> **[SPEAK] Discussion:** "If we aren't using `new`, who is creating the objects? The framework is. ASP.NET Core has a built-in matchmaker. When a class asks for an `INotificationService`, the matchmaker hands it an `EmailService`."
+>
+> **[CODE] Example:**
+> ```csharp
+> // Inside Program.cs
+> builder.Services.AddScoped<INotificationService, EmailService>();
+> ```
+>
+> **[TIP] Instructor Tip:** This is the magic line. Changing `EmailService` to `SmsService` right here swaps out the functionality for the entire application instantly.
 
 ---
 
@@ -55,15 +81,7 @@
 *   **Step 2: The Implementations**
     *   *Action:* Create `EmailService` and `SmsService` that implement `INotificationService`. Give them different `Console.WriteLine` outputs.
 *   **Step 3: The Consumer (Constructor Injection)**
-    *   *Action:* Create an `OrderProcessor` class. Instead of `new EmailService()`, pass `INotificationService` into the constructor.
-      ```csharp
-      public class OrderProcessor {
-          private readonly INotificationService _notif;
-          public OrderProcessor(INotificationService notif) {
-              _notif = notif;
-          }
-      }
-      ```
+    *   *Action:* Create an `OrderProcessor` class. Inject the interface.
 *   **Step 4: The Swap Demo**
     *   *Action:* In `Program.cs`, show how changing one line of configuration swaps the entire application from sending Emails to sending SMS.
 

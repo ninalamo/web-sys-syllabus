@@ -1,12 +1,11 @@
 ## Week 7: Views & Layouts
 
 > [TIME] **Session Pacing (180 min)**
-
 | Block | Time | Format |
 |-------|------|--------|
 | Hook + Analogy | 15 min | Lecture + Whiteboard |
-| Concept Discussion | 25 min | Lecture + Slides + Live Razor Demo |
-| Code Walkthrough | 30 min | Live Code (instructor + students type) |
+| Concept Discussion | 25 min | Lecture + Slides + Razor Syntax |
+| Code Walkthrough | 30 min | Live Code (Layouts & Partials) |
 | Industry Reality | 10 min | Lecture + Discussion |
 | Break | 10 min | — |
 | Exercise | 55 min | Lab (solo or pairs) |
@@ -14,197 +13,128 @@
 | Debugging + Wrap | 15 min | Group Debug + Q&A |
 | Buffer | 10 min | Overflow / Stretch discussion |
 
-> [TIP] **Teaching Tip (Week 7 strategy):** This is the week students finally see their apps look like real websites. The "aha" moment is when they create a layout and all pages instantly get a navbar. Spend extra time on `_ViewStart.cshtml` placement — it's the #1 cause of "my layout isn't applying."
+> [TIP] **Teaching Tip:** Students often confuse Razor with frontend frameworks (like React). Constantly remind them: "Razor runs on the server. By the time the browser sees it, it is 100% plain HTML."
 
 ---
 
-### The Hook
+### 1. The Hook & The Analogy
 
-> [SPEAK] **Script:** "Your website looks like it's from 1998. Three different pages, three different fonts, zero consistency. Today, we fix that. Your app will finally look like someone in this decade designed it."
+> [SPEAK] **Script:** "If you have a website with 50 pages, and your boss says 'change the copyright year in the footer', are you going to open 50 files and edit them? No. That's a waste of your life. Today we learn how to write UI code exactly once."
 
-> [SLIDE] **Slide:** Title: "From 1998 to 2026"  
-> Left: Screenshot of a plain HTML page with Times New Roman, no styling, labeled "Before."  
-> Right: Same content with a navbar, cards, footer, labeled "After Layout."
-
-> [ENGAGE] **Gen-Z:** "Your app without a layout is like a TikTok with no filter — it works, but nobody wants to look at it. Today we add the filter."  
-> **-> Poll:** "Raise your hand if you've ever judged a website by how it looks and left immediately. That's why layouts matter."
-
-> [LOST] **If they're lost:** "Don't worry if you're not a designer. Layouts are about consistency, not beauty. Same navbar, same footer, same colors on every page. That's it."
+> [BOARD] **Whiteboard Analogy:** The Picture Frame
+> *   **Layout (`_Layout.cshtml`):** The wooden frame and the glass. It never changes. It holds the navigation bar and the footer.
+> *   **View (`Index.cshtml`):** The picture inside the frame. When you click a link, the frame stays on the wall, but we swap the picture.
 
 ---
 
-### The Analogy
+### 2. Core Concepts & Discussion Topics
 
-> [SPEAK] **Script:** "A shopping mall has a consistent design — same signage, same floor tiles, same lighting in every corridor. The individual stores (your pages) have their own content, but the hallway (the layout) stays the same. You don't redesign the hallway for every store. That's a Layout page."
-
-> [BOARD] **Whiteboard:** Draw the mall analogy:
+#### Topic A: The Razor Engine
+> **[SPEAK] Discussion:** "Razor is a templating engine. It scans your HTML, looks for the `@` symbol, executes the C# code, and then rips the C# out, leaving only the resulting HTML to send to the user."
+>
+> **[CODE] Example:**
+> ```html
+> <!-- What you write (.cshtml) -->
+> <ul>
+> @foreach(var item in Model) {
+>     <li>@item.Name</li>
+> }
+> </ul>
 > ```
-> +-------------------------------------+
-> |  MALL LAYOUT (_Layout.cshtml)       |
-> |  +-----+ +-----+ +-----+           |
-> |  |Store| |Store| |Store|  <- Pages   |
-> |  |  A  | |  B  | |  C  |  (Views)   |
-> |  +-----+ +-----+ +-----+           |
-> |  Same hallway, same entrance, same  |
-> |  exit for every store               |
-> +-------------------------------------+
+>
+> **[TIP] Instructor Tip:** Explain the difference between `@` (inline expression) and `@{ }` (code block). Code blocks don't print to the screen.
+
+#### Topic B: Layout Pages & `RenderBody()`
+> **[SPEAK] Discussion:** "The Layout page is your master template. The magic happens at a specific method called `@RenderBody()`. That is the exact spot where your individual views are injected."
+>
+> **[CODE] Example:**
+> ```html
+> <!-- Inside _Layout.cshtml -->
+> <body>
+>     <nav>My Website</nav>
+>     <main>
+>         @RenderBody() <!-- The 'Picture' goes here -->
+>     </main>
+>     <footer>2026</footer>
+> </body>
 > ```
+>
+> **[TIP] Gen-Z Hook:** The Layout is your phone's status bar (battery, time). `RenderBody()` is the actual app you are currently using.
 
-> [ENGAGE] **Gen-Z:** **-> Turn to your neighbor:** "Think of your favorite app. What stays the same on every screen? The bottom nav? The top bar? That's the layout. The content that changes? That's the view. 10 seconds, go!"
-
-> [LOST] **If they're lost:** "A layout is a template. Every page gets injected into it. Same header, same footer, different content in the middle. Like a Canva template — you change the text but keep the design."
-
----
-
-### Concept Discussion
-
-> [TIME] **Pacing:** 25 min total (10 min Razor syntax -> 8 min layouts -> 7 partials + tag helpers)
-
-> [SPEAK] **Script:** "Razor lets you mix C# and HTML in the same file. The `@` symbol is your escape hatch — it tells the engine 'this is C# code, not HTML.' Layouts wrap every page. Partials are reusable chunks. Tag helpers make HTML feel like HTML, not C#."
-
-> [SLIDE] **Slide:** Show Razor syntax examples one at a time: variable output, loops, conditionals. Then show the layout structure with `@RenderBody()` highlighted. Then show a partial view.
-
-> [TIP] **Teaching Tip:** Students will confuse `@{ }` (code block) with `@variable` (output). Emphasize: curly braces = execute code, no braces = print value. For layouts, the critical point is `_ViewStart.cshtml` — it must be in the `Views/` folder, not `Views/Shared/`.
-
-> [ASK] **Ask the class:** "If I have 50 pages and I need to change the navbar — how many files do I edit without a layout?" (Answer: 50. With a layout: 1.)
-
-> [ENGAGE] **Gen-Z:** "Razor syntax is like Instagram captions with hashtags. Regular text = HTML. `@something` = C# code. `@{ block }` = multiple lines of code. The `@` is your hashtag."  
-> **-> Phone moment:** "Think about how Instagram templates work — same frame, different photo. That's exactly what a layout does."
-
-> [Q&A] **Student Q:** "Why does the layout file start with an underscore?"
-> **Short answer:** It's a convention — files starting with `_` are not directly accessible as views.
-> **Real answer:** ASP.NET won't serve `_Layout.cshtml` if someone visits `/Shared/_Layout`. The underscore marks it as a "support file" — it's used by other views, not accessed directly.
-> **The hidden question:** "Can I name it something else?" -> Yes, but don't. The underscore convention is universal.
-
-> [Q&A] **Student Q:** "What's the difference between a partial view and a regular view?"
-> **Short answer:** A partial is a reusable chunk. A regular view is a full page.
-> **Real answer:** Partials don't run `_ViewStart` and don't need a layout. They're like components — you include them inside other views. Think of them as LEGO bricks.
-> **The hidden question:** "When should I use a partial?" -> When the same HTML appears on multiple pages (product cards, nav items, forms).
-
-> [LOST] **If they're lost:** "Forget Razor for a second. Think of it like this: you have one HTML file with a hole in the middle (`@RenderBody()`). Every page fills that hole. The rest of the HTML stays the same. That's a layout."
-
----
-
-### Code Walkthrough
-
-> [TIME] **Pacing:** 30 min (10 min layout setup -> 10 min view + tag helpers -> 10 min test + partial)
-
-> [SPEAK] **Script:** "Let's build a themed site from scratch. First the layout, then a view that uses it, then a partial for reusable cards. Watch how the pieces connect."
-
-> [SLIDE] **Slide:** Show `_Layout.cshtml` first — highlight the `@RenderBody()` spot. Then show `_ViewStart.cshtml`. Then show a page view getting injected into the layout.
-
-> [TIP] **Teaching Tip:** **Type this live.** Create the `_Layout.cshtml` file, then `_ViewStart.cshtml`, then a page view. After each step, run the app and show the result. The "aha" moment is when they see the navbar appear on a page they didn't add it to.
-
-> [BOARD] **Whiteboard:** Draw the file structure and rendering flow:
+#### Topic C: ViewImports & ViewStart
+> **[SPEAK] Discussion:** "To avoid typing the same C# using statements at the top of every single view, we use `_ViewImports.cshtml`. It applies globally. `_ViewStart.cshtml` is where we tell every view to use the master Layout by default."
+>
+> **[CODE] Example:**
+> ```csharp
+> // Inside _ViewStart.cshtml
+> @{
+>     Layout = "_Layout";
+> }
 > ```
-> Views/
->   _ViewStart.cshtml  ->  Layout = "_Layout"
->   Shared/
->     _Layout.cshtml   ->  <nav> @RenderBody() <footer>
->   Games/
->     Index.cshtml     ->  injected into @RenderBody()
+>
+> **[TIP] Instructor Tip:** Show what happens if you delete `_ViewStart`. Every page suddenly loses its CSS and navigation because it forgets to use the Layout.
+
+#### Topic D: Partial Views
+> **[SPEAK] Discussion:** "What if you have a complex UI element, like a Product Card, that appears on the Home page, the Search page, and the Cart page? We extract it into a Partial View so we can reuse it like a component."
+>
+> **[CODE] Example:**
+> ```html
+> <!-- Injecting a partial view -->
+> <partial name="_ProductCard" model="currentItem" />
 > ```
-
-> [ENGAGE] **Gen-Z:** **-> Type-along:** "Create the `_Layout.cshtml` with me. Then `_ViewStart.cshtml`. Then a page. Run it after each step. Watch the layout appear like magic."
-
-> [Q&A] **Student Q:** "Why do I need `_ViewStart.cshtml`? Can't I just set the layout in each view?"
-> **Short answer:** You can, but it's repetitive.
-> **Real answer:** `_ViewStart.cshtml` runs before every view in its folder and subfolders. Set the layout once, and every view inherits it. Without it, you'd write `@{ Layout = "_Layout"; }` in every single view file.
-> **The hidden question:** "Is this really necessary?" -> For 3 pages, no. For 30, absolutely.
-
-> [LOST] **If they're lost:** "Let's do the simplest layout possible: an HTML file with `<h1>My Site</h1>`, then `@RenderBody()`, then `<footer>Copyright</footer>`. That's it. Every page gets that wrapper."
+>
+> **[TIP] Instructor Tip:** Note the naming convention: Layouts and Partials start with an underscore `_` to indicate they are not standalone pages.
 
 ---
 
-### The "Why Should I Care?"
+### 3. Code Walkthrough / Live Coding Blueprint
 
-> [SPEAK] **Script:** "Consistent UI isn't just about looks — it builds user trust. Amazon, Facebook, and Reddit all use layout systems. Changing your nav bar in one file instead of 50 pages saves hours. In industry, layouts are non-negotiable."
+> [SPEAK] **Script:** "Let's build a Layout from scratch and break our UI into reusable pieces."
 
-> [SLIDE] **Slide:** Side-by-side: a site with inconsistent pages (different nav, different fonts) vs a site with a layout. Label: "Which one would you trust with your GCash?"
-
-> [TIP] **Teaching Tip:** Keep this to 5 minutes. The practical point is time-saving: "One file change vs 50 file changes." That's the argument that convinces students.
-
-> [ENGAGE] **Gen-Z:** **-> Poll:** "How many of you have visited a website where every page looked different and immediately left?" (Most hands.) "That's what happens without layouts."
-
-> [LOST] **If they're lost:** "You don't need to be a designer. Layouts are about consistency. Same navbar everywhere. Same footer everywhere. That alone makes your site look 10x better."
-
----
-
-### Exercise: Consistent Themed Site
-
-> [TIME] **Pacing:** 55 min total (5 min setup -> 40 min coding -> 10 min share)
-
-> [SPEAK] **Script:** "Take your GameZone site from Week 5 and add a layout. Navigation bar, footer, consistent styling. Every page should look like it belongs to the same site. You have 40 minutes."
-
-> [SLIDE] **Slide:** Exercise checklist:
-> - [ ] Create `_Layout.cshtml` with nav (3+ links using Tag Helpers)
-> - [ ] Add `@RenderBody()` in the main content area
-> - [ ] Add footer with copyright
-> - [ ] Create `_ViewStart.cshtml` to set the layout
-> - [ ] Add `site.css` with basic styling
-> - [ ] Bonus: Create `_ProductCard.cshtml` partial view
-
-> [TIP] **Teaching Tip:** Circulate during the first 10 minutes — students will get stuck on `_ViewStart.cshtml` placement. The most common error: putting it in `Views/Shared/` instead of `Views/`.
-
-> [ENGAGE] **Gen-Z:** **-> Pair up:** "One person builds the layout HTML, the other writes the CSS. Then combine and test on all pages."
-
-> [ASK] **Mid-exercise check-in (at 20 min):** "How many pages have the navbar?" (Show of hands.) "Visit each page — does the nav look the same everywhere? That's the layout working."
-
-> [LOST] **If they're lost:** "Start with just the layout file. Get it working with one page. Then add the CSS. Then add the partial. Don't try to style everything at once."
+*   **Step 1: The Raw Layout**
+    *   *Action:* Delete the default scaffolded layout. Create a new `_Layout.cshtml` with a simple Navbar and Footer. Add `@RenderBody()`.
+*   **Step 2: Testing the Injection**
+    *   *Action:* Create two views (`Home` and `About`). Click between them to show that the Navbar never reloads, but the content changes.
+*   **Step 3: Creating a Partial**
+    *   *Action:* Create `_UserCard.cshtml`. Use a `<partial>` tag inside a `foreach` loop to render a grid of 10 users using only 3 lines of code in the main view.
 
 ---
 
-### AI Integration Note
+### 4. From the Trenches (Pro-Tip)
 
-> [TIME] **Pacing:** 10 min (5 min demo -> 5 min try)
-
-> [SPEAK] **Script:** "This week, AI can help you debug layout issues. Ask it why your layout isn't applying, why your partial isn't rendering, or why your CSS isn't loading. But don't ask it to design your site."
-
-> [SLIDE] **Slide:** Prompt template:
-> "I created a layout at [path] but my pages don't use it. Here's my _ViewStart.cshtml [paste]."
-
-> [TIP] **Teaching Tip:** Demonstrate asking AI about a layout issue vs asking it to generate HTML. The first is learning. The second is copying.
-
-> [ENGAGE] **Gen-Z:** "AI is your 'layout debugger' — it helps you figure out why things aren't rendering, but it doesn't design your site for you. You still need to pick the colors."
+> [TRENCHES] **Instructor Script:** "In a real enterprise application, the `_Layout.cshtml` file can get messy very fast. Junior devs will put 50 script tags and CSS links in it. Always use `@RenderSection("Scripts", required: false)`. This allows a specific view (like a map page) to inject a heavy JavaScript file ONLY when that page loads, rather than forcing the entire application to download it on every click."
 
 ---
 
-### Debugging / "Watch Out For"
+### 5. AI Integration & Debugging
 
-> [TIME] **Pacing:** 15 min (5 min common errors -> 5 min group debug -> 5 min Q&A)
-
-> [SPEAK] **Script:** "Here are the layout errors you'll see this week. Most are file placement or naming issues."
-
-> [SLIDE] **Slide:** Error cards:
-> ```
-> +------------------------------------------+
-> | Layout not applying                      |
-> | Is _ViewStart.cshtml in Views/ folder?   |
-> | (Not Views/Shared/ — that's wrong)       |
-> +------------------------------------------+
-> +------------------------------------------+
-> | CSS not loading                          |
-> | Check: wwwroot/css/site.css exists       |
-> | Using ~/ for root path: href="~/css/..." |
-> +------------------------------------------+
-> ```
-
-> [ENGAGE] **Gen-Z:** "Layout not applying is like putting your profile picture in the wrong folder on your phone. The file exists, but the app can't find it. Check the path."
-
-> [Q&A] **Student Q:** "Why does `@RenderBody()` have to be called exactly once?"
-> **Short answer:** Because there's only one place for the page content to go.
-> **Real answer:** If you call it twice, ASP.NET doesn't know which copy gets the content. It throws an exception to prevent ambiguous rendering.
-> **The hidden question:** "What if I want content in two places?" -> Use `@RenderSection()` instead.
-
-> [LOST] **If they're lost:** "The three things to check: (1) Is `_ViewStart.cshtml` in `Views/`? (2) Does `_Layout.cshtml` exist in `Views/Shared/`? (3) Does the layout file have `@RenderBody()`? Those fix 90% of layout issues."
-
-> [TIP] **Teaching Tip:** End with one action item: "If you only remember one thing: `_ViewStart.cshtml` goes in `Views/`, not `Views/Shared/`. That's the #1 mistake."
+*   **AI Policy:** Allowed: "How do I write an if/else block in Razor?" Not Allowed: "Write the HTML for my entire dashboard."
+*   **Common Error 1:** `The name 'Model' does not exist in the current context.` -> You forgot to declare the `@model` directive at the top of the file.
+*   **Common Error 2:** `Cannot locate the partial view '_MyCard'.` -> You put it in a specific controller's folder instead of the `Views/Shared` folder.
 
 ---
 
-### Teaching Script
+### 6. Exercise & Homework
 
-This week's annotations cover: pacing table at top, inline annotations per section ([SPEAK] Script, [SLIDE] Slide, [BOARD] Whiteboard, [TIP] Teaching Tip, [ENGAGE] Gen-Z, [Q&A] Student Q, [LOST] If they're lost), and this summary. The "aha" moment is the layout appearing on all pages — make sure students see it happen live. The #1 pitfall is `_ViewStart.cshtml` placement — emphasize `Views/` not `Views/Shared/`.
+> [TIME] **In-Class Exercise (55 min):** Build a "Storefront". Create a master Layout with a header. Create a list of dummy products. Build a Partial View called `_ProductTile.cshtml` that renders an image, title, and price. Use a loop on the Index page to render the partial for each product.
+
+> ### Learning Baseline (Self-Assessment)
+> > **[ASSESSMENT]** By the end of this week, students must be able to say "Yes" to:
+> > - [ ] I understand that Razor executes on the server, not the browser.
+> > - [ ] I can write a `foreach` loop in an HTML file using Razor.
+> > - [ ] I know what `@RenderBody()` does in a Layout file.
+> > - [ ] I can explain the purpose of the `Shared` folder.
+
+> ### Take-Home Mission
+> > **[HOMEWORK]** **Mission:** "The Theme Switcher"
+> > 1. Create a simple MVC blog with a Layout.
+> > 2. Create a specific `_Sidebar.cshtml` partial view for recent posts.
+> > 3. **The Catch:** Pass a string to `ViewData["Theme"] = "dark"` in the Controller. In the `_Layout.cshtml`, write a Razor `@if` statement that checks this ViewData. If it's dark, apply a dark CSS class to the `<body>`. If not, apply a light class.
 
 ---
 
+### 7. Instructor Assets Blueprint
+
+> **[ASSETS]** What to prepare before this class:
+> - **Starter Repo:** A project with 3 pages that have massive, duplicated HTML code in every single file.
+> - **Solution Repo:** The refactored project using a clean `_Layout.cshtml` and `_Partial` views to eliminate the duplication.

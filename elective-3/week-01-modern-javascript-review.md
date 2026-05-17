@@ -21,40 +21,68 @@
 
 > [SPEAK] **Script:** "You know how TikTok doesn't reload the whole page when you switch from your For You feed to Following? That's not magic — it's modern JavaScript. Every app you use daily is built on the ES6+ features we're covering this week."
 
-> [BOARD] **Whiteboard Analogy:**
-> ```text
-> OLD (ES5): One giant drawer labeled "var"
->   [users, i, temp, data, results] — all mixed up
-> 
-> NEW (ES6+): Labeled containers
->   [const users] — sealed jar
->   [let i] — refillable container
->   [module: utils.js] — separate drawer
-> ```
-> [ENGAGE] **Gen-Z:** "`var` is like your GCash transaction history — everything's in one long list. `const` and `let` are categorized folders. Much cleaner."
+> [BOARD] **Whiteboard Analogy:** The Messy Drawer vs The Organizer
+> *   **OLD (ES5):** One giant drawer labeled "var". `users`, `i`, `temp`, `data` are all mixed up.
+> *   **NEW (ES6+):** Labeled containers. `const users` is a sealed jar. `let i` is a refillable container. `module.js` is a separate drawer entirely.
 
 ---
 
 ### 2. Core Concepts & Discussion Topics
 
-> [SPEAK] **Script:** "ES6+ didn't just add features — it added structure. Let's break down the actual technical differences you'll write every day."
+#### Topic A: Variable Declaration (`let`/`const` vs `var`)
+> **[SPEAK] Discussion:** "Before ES6, `var` was the only way to declare variables. The problem? `var` ignores block scope like `if` statements and loops. It leaks everywhere. `let` and `const` fix this by staying trapped inside their curly braces."
+>
+> **[CODE] Example:**
+> ```javascript
+> if (true) {
+>     var a = 5; // Leaks!
+>     const b = 10; // Trapped!
+> }
+> console.log(a); // Prints 5
+> console.log(b); // ReferenceError
+> ```
+>
+> **[TIP] Instructor Tip:** Teach the strict hierarchy: Always use `const`. Only use `let` if the value *must* be reassigned (like a loop counter). Never use `var`.
 
-*   **Topic A: Variable Declaration (`let` and `const` vs `var`)**
-    *   *Concept:* Block scoping vs Function scoping. `var` leaks out of `if` blocks and `for` loops. `let` and `const` stay trapped inside the `{}`.
-    *   *Rule of Thumb:* Use `const` by default. Use `let` only if the value *must* change (like a loop counter). Never use `var`.
-*   **Topic B: Arrow Functions & `this` Context**
-    *   *Concept:* Shorter syntax `() => {}` with implicit returns for single-liners.
-    *   *The "Why":* Lexical `this`. Traditional `function()` creates its own `this` context, which breaks inside callbacks (like `setTimeout`). Arrow functions inherit `this` from the surrounding code.
-*   **Topic C: Declarative Arrays (`map`, `filter`, `reduce`)**
-    *   *Concept:* Instead of imperative `for` loops where you manually track indices, you declare *what* you want to do.
-    *   *Definitions:*
-        *   `map`: Transforms every item (e.g., array of objects to array of strings).
-        *   `filter`: Keeps items that match a condition.
-        *   `reduce`: Boils an array down to a single value (e.g., sum).
-*   **Topic D: Destructuring & Spread/Rest**
-    *   *Concept:* Extracting object properties or array elements quickly.
-    *   *Spread (`...`):* "Unpacking" elements (e.g., merging two arrays: `[...arr1, ...arr2]`).
-    *   *Rest (`...`):* "Gathering" remaining arguments into an array in function parameters.
+#### Topic B: Arrow Functions & Context
+> **[SPEAK] Discussion:** "Arrow functions aren't just a shorter way to write code. They solve a massive headache in older JS: losing the `this` context inside callbacks like `setTimeout`."
+>
+> **[CODE] Example:**
+> ```javascript
+> // ES5
+> var self = this; // The hacky old way
+> setTimeout(function() { console.log(self.name); }, 1000);
+> 
+> // ES6 Arrow Function
+> setTimeout(() => { console.log(this.name); }, 1000);
+> ```
+>
+> **[TIP] Gen-Z Hook:** An arrow function is like a loyal friend. It remembers where it came from (inherits `this`), while traditional functions get confused depending on who called them.
+
+#### Topic C: Declarative Arrays (`map`, `filter`)
+> **[SPEAK] Discussion:** "Imperative code tells the computer *how* to do something (a `for` loop). Declarative code tells it *what* you want. Modern JS relies on declarative array methods."
+>
+> **[CODE] Example:**
+> ```javascript
+> // Transform an array (map)
+> const names = users.map(user => user.name);
+> 
+> // Keep only active users (filter)
+> const active = users.filter(user => user.isActive);
+> ```
+>
+> **[TIP] Instructor Tip:** Emphasize that these methods do NOT change the original array; they return a brand new array. This is critical for React state later.
+
+#### Topic D: Destructuring
+> **[SPEAK] Discussion:** "Destructuring is a shortcut to extract properties from an object without writing `user.` ten times."
+>
+> **[CODE] Example:**
+> ```javascript
+> const user = { name: "Nina", role: "Admin" };
+> const { name, role } = user;
+> ```
+>
+> **[TIP] Instructor Tip:** Mention that they will use this exact syntax every single day in React to extract "props".
 
 ---
 
@@ -63,19 +91,11 @@
 > [SPEAK] **Script:** "Let's refactor a messy piece of legacy JavaScript into modern ES6+. I'll type, you type along."
 
 *   **Step 1: Scoping Fixes**
-    *   *Action:* Change all `var` to `const`, change loop variables to `let`. Show how trying to reassign a `const` throws a TypeError.
+    *   *Action:* Change all `var` to `const`. Run the script to show where reassignments break, then change those specific variables to `let`.
 *   **Step 2: The `for` Loop Eradication**
-    *   *Before:* 
-      ```javascript
-      var activeUsers = [];
-      for(var i=0; i<users.length; i++) { if(users[i].isActive) activeUsers.push(users[i]); }
-      ```
-    *   *After:*
-      ```javascript
-      const activeUsers = users.filter(user => user.isActive);
-      ```
-*   **Step 3: Object Destructuring**
-    *   *Action:* Instead of `user.name` and `user.email` repeated ten times, extract them: `const { name, email } = user;`
+    *   *Action:* Find a messy `for` loop that pushes items to a new array. Delete it entirely and replace it with a one-line `.filter()` or `.map()`.
+*   **Step 3: String Interpolation**
+    *   *Action:* Replace messy `greeting = "Hi " + user.name + "!"` concatenations with template literals `` `Hi ${user.name}!` ``.
 
 ---
 
@@ -88,8 +108,8 @@
 ### 5. AI Integration & Debugging
 
 *   **AI Policy:** Allowed: "Refactor this ES5 code to ES6+". Not Allowed: "Write my module imports for me."
-*   **Common Error 1:** "Assignment to constant variable" (Used `const` but tried to reassign). *Fix: Use `let` or don't reassign.*
-*   **Common Error 2:** "Cannot use import statement outside a module." *Fix: Add `type="module"` to the script tag.*
+*   **Common Error 1:** "Assignment to constant variable" -> You used `const` but tried to reassign it. *Fix: Use `let`.*
+*   **Common Error 2:** "Cannot use import statement outside a module." -> *Fix: Add `type="module"` to the script tag in your HTML.*
 
 ---
 
@@ -99,11 +119,11 @@
 
 > ### Learning Baseline (Self-Assessment)
 > > **[ASSESSMENT]** By the end of this week, students must be able to say "Yes" to:
-> > - [ ] I can confidently explain the difference between `let`, `const`, and `var`.
+> > - [ ] I can explain why `var` is bad and when to use `let` vs `const`.
 > > - [ ] I can write an arrow function with implicit return.
-> > - [ ] I can use `.map()` to render a list of data, and `.filter()` to search it.
+> > - [ ] I can use `.map()` to render a list, and `.filter()` to search it.
 > > - [ ] I can destructure an object to extract specific properties.
-> > - [ ] I can split JavaScript code into separate files using `import` and `export`.
+> > - [ ] I can split JavaScript code into separate files using `import`/`export`.
 
 > ### Take-Home Mission
 > > **[HOMEWORK]** **Mission:** "The Legacy Code Rescue"
@@ -117,5 +137,5 @@
 ### 7. Instructor Assets Blueprint
 
 > **[ASSETS]** What to prepare before this class:
-> - **Starter Repo:** `legacy-cart.js` (The messy ES5 file for the live walkthrough) and the homework starter file.
-> - **Solution Repo:** The refactored ES6+ versions, split into clean modules.
+> - **Starter Repo:** `legacy-cart.js` (The messy ES5 file for the live walkthrough).
+> - **Solution Repo:** The refactored ES6+ versions, split into clean modules using modern syntax.
