@@ -442,3 +442,51 @@ body {
     padding: 1.5em 1em;
   }
 }
+
+/* Code Viewer Premium Styles */
+.code-page {
+  padding: 0 !important;
+}
+
+.code-header {
+  background: #0f172a;
+  color: #94a3b8;
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px 6px 0 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'Segoe UI', system-ui, Arial, sans-serif;
+  font-size: 0.8rem;
+  border-bottom: 1px solid #1e293b;
+  margin-top: 1.5rem;
+}
+
+.code-filename {
+  font-weight: 600;
+  color: #e2e8f0;
+}
+
+.code-lang {
+  background: #334155;
+  color: #cbd5e1;
+  padding: 0.15rem 0.45rem;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+
+.code-page pre {
+  margin-top: 0 !important;
+  border-radius: 0 0 6px 6px !important;
+  border: 1px solid #1e293b;
+  border-top: none;
+  background: #0f172a !important;
+}
+
+/* Sidebar Tree Controls */
+.week-arrow.open,
+.cat-arrow.open {
+  transform: rotate(90deg);
+}
+

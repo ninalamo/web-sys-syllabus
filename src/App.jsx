@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, useMemo, useCallback, Suspense } from 'rea
 import Sidebar from './components/Sidebar'
 import Header from './components/Header'
 import Content from './components/Content'
-import { ALL_ITEMS } from './data'
+import { ALL_ITEMS, CHAPTERS } from './data'
 
 const THEMES = ['light', 'sepia', 'dark']
 
@@ -46,10 +46,31 @@ export default function App() {
   const item = ALL_ITEMS[index]
   const CurrentComponent = item?.component
 
+  const headerTitle = useMemo(() => {
+    if (!item) return ''
+    for (const chapter of CHAPTERS) {
+      for (const week of chapter.items) {
+        if (week.file === item.file) {
+          return `${chapter.title.split(':')[0]} › ${week.title}`
+        }
+        if (week.children) {
+          for (const cat of week.children) {
+            const found = cat.items.find((sub) => sub.file === item.file)
+            if (found) {
+              const weekNum = week.file.match(/week-(\d+)/i)?.[1] || ''
+              return `Week ${parseInt(weekNum)} › ${cat.title} › ${found.title}`
+            }
+          }
+        }
+      }
+    }
+    return item.title
+  }, [item])
+
   return (
     <div className="app">
       <Header
-        title={item?.title}
+        title={headerTitle}
         index={index}
         total={ALL_ITEMS.length}
         fontSize={fontSize}

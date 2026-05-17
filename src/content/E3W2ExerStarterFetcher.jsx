@@ -1,0 +1,40 @@
+export default function E3W2ExerStarterFetcher() {
+  const code = `// Week 2: Async Fetcher — Starter Code
+// TODO: Complete the functions below
+
+const API_URL = 'https://jsonplaceholder.typicode.com';
+
+// TODO: Fetch all posts and display them
+async function loadPosts() {
+    // 1. Show loading state
+    // 2. Fetch posts from API
+    // 3. Check response.ok
+    // 4. Parse JSON
+    // 5. For each post, fetch its comments using Promise.all()
+    // 6. Display posts with comments
+    // 7. Handle errors with try/catch
+}
+
+// TODO: Fetch comments for a single post
+async function fetchComments(postId) {
+    // Fetch comments for the given postId
+}
+
+// TODO: Render a single post with its comments
+function renderPost(post, comments) {
+    // Return HTML string for a post and its comments
+}
+
+// Wire up the button
+document.getElementById('loadBtn').addEventListener('click', loadPosts);
+`
+  return (
+    <div className="page-content code-page">
+      <div className="code-header">
+        <span className="code-filename">starter-fetcher.js</span>
+        <span className="code-lang">JAVASCRIPT</span>
+      </div>
+      <pre className="language-javascript"><code className="language-javascript">{code}</code></pre>
+    </div>
+  )
+}

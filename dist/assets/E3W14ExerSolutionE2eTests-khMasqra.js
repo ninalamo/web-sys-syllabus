@@ -1,0 +1,38 @@
+import{j as e}from"./index-ChWpJeR-.js";function o(){return e.jsxs("div",{className:"page-content code-page",children:[e.jsxs("div",{className:"code-header",children:[e.jsx("span",{className:"code-filename",children:"solution-e2e-tests.ts"}),e.jsx("span",{className:"code-lang",children:"TYPESCRIPT"})]}),e.jsx("pre",{className:"language-typescript",children:e.jsx("code",{className:"language-typescript",children:`// Week 14: E2E Tests — Solution (login.spec.ts)
+
+import { test, expect } from '@playwright/test';
+
+test.describe('Login Flow', () => {
+    test('user can login and see dashboard', async ({ page }) => {
+        // Navigate to login page
+        await page.goto('http://localhost:5173/login');
+
+        // Fill in credentials
+        await page.getByLabel('Username').fill('admin');
+        await page.getByLabel('Password').fill('password123');
+
+        // Submit form
+        await page.getByRole('button', { name: 'Login' }).click();
+
+        // Wait for navigation to dashboard
+        await expect(page).toHaveURL('http://localhost:5173/dashboard');
+
+        // Verify dashboard content
+        await expect(page.getByText('Welcome')).toBeVisible();
+    });
+
+    test('invalid credentials show error', async ({ page }) => {
+        await page.goto('http://localhost:5173/login');
+
+        await page.getByLabel('Username').fill('wrong');
+        await page.getByLabel('Password').fill('wrong');
+        await page.getByRole('button', { name: 'Login' }).click();
+
+        // Wait for error message
+        await expect(page.getByText('Invalid credentials')).toBeVisible();
+
+        // Should stay on login page
+        await expect(page).toHaveURL('http://localhost:5173/login');
+    });
+});
+`})})]})}export{o as default};

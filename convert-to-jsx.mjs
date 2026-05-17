@@ -6,66 +6,6 @@ const SRC = path.join(ROOT, 'src', 'content')
 
 if (!fs.existsSync(SRC)) fs.mkdirSync(SRC, { recursive: true })
 
-const CHAPTERS = [
-  {
-    id: 'e2',
-    title: 'Elective 2: Building Web Products',
-    items: [
-      { title: 'Syllabus', file: '/elective-2-building-web-products.htm' },
-      { title: 'Week 1: C# Translation Bootcamp', file: '/elective-2/week-01-csharp-translation-bootcamp.htm' },
-      { title: 'Week 2: Interfaces & DI Mental Model', file: '/elective-2/week-02-interfaces-and-di-mental-model.htm' },
-      { title: 'Week 3: HTTP & The Web', file: '/elective-2/week-03-http-and-the-web.htm' },
-      { title: 'Week 4: MVC Big Picture', file: '/elective-2/week-04-mvc-big-picture.htm' },
-      { title: 'Week 5: Routing Deep-Dive', file: '/elective-2/week-05-routing-deep-dive.htm' },
-      { title: 'Week 6: Controllers & Action Results', file: '/elective-2/week-06-controllers-and-action-results.htm' },
-      { title: 'Week 7: Views & Layouts', file: '/elective-2/week-07-views-and-layouts.htm' },
-      { title: 'Week 8: Model Binding & Validation', file: '/elective-2/week-08-model-binding-and-validation.htm' },
-      { title: 'Week 9: EF Core Fundamentals', file: '/elective-2/week-09-ef-core-fundamentals.htm' },
-      { title: 'Week 10: Relationships & Data Display', file: '/elective-2/week-10-relationships-and-data-display.htm' },
-      { title: 'Week 11: Consuming APIs with HttpClient', file: '/elective-2/week-11-consuming-apis-with-httpclient.htm' },
-      { title: 'Week 12: Mini-Capstone Checkpoint', file: '/elective-2/week-12-mini-capstone-checkpoint.htm' },
-      { title: 'Week 13: Authentication & Authorization', file: '/elective-2/week-13-authentication-and-authorization.htm' },
-      { title: 'Week 14: Security Fundamentals', file: '/elective-2/week-14-security-fundamentals.htm' },
-      { title: 'Week 15: Capstone Sprint', file: '/elective-2/week-15-capstone-sprint.htm' },
-      { title: 'Week 16: Capstone Final', file: '/elective-2/week-16-capstone-final-deploy-and-present.htm' },
-      { title: 'Full Discussions', file: '/elective-2-discussions.htm' },
-    ],
-  },
-  {
-    id: 'e3',
-    title: 'Elective 3: Production-Grade Products',
-    items: [
-      { title: 'Syllabus', file: '/elective-3-production-grade-products.htm' },
-      { title: 'Week 1: Modern JavaScript Review', file: '/elective-3/week-01-modern-javascript-review.htm' },
-      { title: 'Week 2: Async JavaScript Deep-Dive', file: '/elective-3/week-02-async-javascript-deep-dive.htm' },
-      { title: 'Week 3: TypeScript Essentials', file: '/elective-3/week-03-typescript-essentials.htm' },
-      { title: 'Week 4: Dev Tooling & Workflow', file: '/elective-3/week-04-dev-tooling-and-workflow.htm' },
-      { title: 'Week 5: Component Thinking in Vanilla JS', file: '/elective-3/week-05-component-thinking-in-vanilla-js.htm' },
-      { title: 'Week 6: React Fundamentals', file: '/elective-3/week-06-react-fundamentals.htm' },
-      { title: 'Week 7: Effects & Data Fetching', file: '/elective-3/week-07-effects-and-data-fetching.htm' },
-      { title: 'Week 8: React Router & SPA Concepts', file: '/elective-3/week-08-react-router-and-spa-concepts.htm' },
-      { title: 'Week 9: API Design Philosophy', file: '/elective-3/week-09-api-design-philosophy.htm' },
-      { title: 'Week 10: ASP.NET Core Web API', file: '/elective-3/week-10-aspnet-core-web-api.htm' },
-      { title: 'Week 11: Frontend-Backend Integration', file: '/elective-3/week-11-frontend-backend-integration.htm' },
-      { title: 'Week 12: API Versioning & Documentation', file: '/elective-3/week-12-api-versioning-and-documentation.htm' },
-      { title: 'Week 13: Auth Deep-Dive', file: '/elective-3/week-13-auth-deep-dive.htm' },
-      { title: 'Week 14: Testing', file: '/elective-3/week-14-testing.htm' },
-      { title: 'Week 15: CI/CD & Deployment', file: '/elective-3/week-15-ci-cd-and-deployment.htm' },
-      { title: 'Week 16: Capstone Final', file: '/elective-3/week-16-capstone-final.htm' },
-      { title: 'Full Discussions', file: '/elective-3-discussions.htm' },
-    ],
-  },
-  {
-    id: 'appendix',
-    title: 'Appendices',
-    items: [
-      { title: 'Teaching Script Format', file: '/teaching-script-format.htm' },
-    ],
-  },
-]
-
-const ALL_ITEMS = CHAPTERS.flatMap((s) => s.items)
-
 // ─── Name helpers ────────────────────────────────────────────────────────────
 
 function toPascalCase(str) {
@@ -83,20 +23,95 @@ function sanitizeComponentName(name) {
   return s.replace(/[^a-zA-Z0-9_$]/g, '')
 }
 
-function componentNameFromFile(file) {
-  const base = path.basename(file, '.htm')
-  const cleaned = base.replace(/^week-\d+-/, '').replace(/[- ]/g, ' ')
-  return sanitizeComponentName(cleaned)
+function uniqueComponentName(relativeFile) {
+  const file = relativeFile.replace(/\\/g, '/')
+  
+  // Subfolder item path matches: elective-(2|3)/week-(\d+)/(resources|exercises|presentations)/(.+)
+  const subMatch = file.match(/elective-(\d+)\/week-(\d+)\/(resources|exercises|presentations)\/(.+)$/i)
+  if (subMatch) {
+    const [, electiveNum, weekNum, category, filenameRaw] = subMatch
+    const filename = path.basename(filenameRaw, path.extname(filenameRaw))
+    const cleanCategory = category.slice(0, 4) // "reso", "exer", "pres"
+    const cleanFilename = sanitizeComponentName(filename)
+    return `E${electiveNum}W${parseInt(weekNum)}${toPascalCase(cleanCategory)}${cleanFilename}`
+  }
+  
+  // Main week page, e.g. "elective-2/week-01-csharp-translation-bootcamp.htm"
+  const weekMatch = file.match(/elective-(\d+)\/week-(\d+)-(.+)\.htm$/i)
+  if (weekMatch) {
+    const [, electiveNum, weekNum, rest] = weekMatch
+    const cleanRest = rest.replace(/\.htm$/i, '')
+    return sanitizeComponentName(cleanRest)
+  }
+  
+  // Root level page, e.g. "elective-2-building-web-products.htm"
+  const base = path.basename(file, path.extname(file))
+  return sanitizeComponentName(base)
+}
+
+function getTitleFromHtml(htmlContent, fallback) {
+  const hMatch = htmlContent.match(/<(h[1-2])[^>]*>([\s\S]*?)<\/\1>/i)
+  if (hMatch) {
+    const text = hMatch[2].replace(/<[^>]*>/g, '').trim()
+    const decoded = text
+      .replace(/&amp;/g, '&')
+      .replace(/&quot;/g, '"')
+      .replace(/&#39;/g, "'")
+      .replace(/&nbsp;/g, ' ')
+    if (/^Week \d+:\s*/i.test(decoded)) {
+      return decoded.replace(/^Week \d+:\s*/i, '')
+    }
+    return decoded
+  }
+
+  const match = htmlContent.match(/<title>([\s\S]*?)<\/title>/i)
+  if (match && match[1].trim()) {
+    const text = match[1].trim()
+      .replace(/Week \d+:\s*/gi, '')
+      .replace(/Elective \d+:\s*/gi, '')
+      .replace(/\s*—\s*Placeholder/gi, '')
+    if (!text.endsWith('.htm') && !text.endsWith('.md')) {
+      return text
+    }
+  }
+  return fallback
+}
+
+function formatTitleFromFilename(filename) {
+  const base = path.basename(filename, path.extname(filename))
+  return base
+    .replace(/[-_]/g, ' ')
+    .replace(/\b[a-z]/g, (c) => c.toUpperCase())
+}
+
+function getLanguageClass(ext, filename) {
+  const lowExt = ext.toLowerCase()
+  if (lowExt === '.cs') return 'language-csharp'
+  if (lowExt === '.js') return 'language-javascript'
+  if (lowExt === '.jsx') return 'language-jsx'
+  if (lowExt === '.ts') return 'language-typescript'
+  if (lowExt === '.tsx') return 'language-tsx'
+  if (lowExt === '.json') return 'language-json'
+  if (lowExt === '.cshtml') return 'language-cshtml'
+  if (lowExt === '.css') return 'language-css'
+  if (lowExt === '.md') return 'language-markdown'
+  if (lowExt === '.yml' || lowExt === '.yaml' || filename.includes('yml') || filename.includes('yaml')) return 'language-yaml'
+  return 'language-text'
+}
+
+function escapeCodeString(code) {
+  return code
+    .replace(/\\/g, '\\\\')
+    .replace(/`/g, '\\`')
+    .replace(/\${/g, '\\${')
 }
 
 // ─── HTML extraction ──────────────────────────────────────────────────────────
 
 function extractContent(html) {
-  // Try <main class="content"> first
   const mainMatch = html.match(/<main\s+class="content">([\s\S]*?)<\/main>/i)
   if (mainMatch) return mainMatch[1].trim()
 
-  // Strip head / scripts / nav / aside
   let body = html.replace(/<head>[\s\S]*?<\/head>/i, '')
   body = body.replace(/<script[\s\S]*?<\/script>/gi, '')
   body = body.replace(/<nav[\s\S]*?<\/nav>/gi, '')
@@ -110,7 +125,6 @@ function extractContent(html) {
 
 // ─── HTML → JSX transforms ────────────────────────────────────────────────────
 
-/** Decode the HTML entities present in the htm files */
 function decodeHtmlEntities(str) {
   return str
     .replace(/&quot;/g, '"')
@@ -125,10 +139,6 @@ function decodeHtmlEntities(str) {
     })
 }
 
-/**
- * Convert an inline style string like "color: red; font-size: 14px"
- * to a JSX style object literal string: {{ color: 'red', fontSize: '14px' }}
- */
 function styleStringToJsx(styleStr) {
   const pairs = styleStr.split(';').filter(Boolean)
   const obj = pairs.map((pair) => {
@@ -136,48 +146,30 @@ function styleStringToJsx(styleStr) {
     if (colonIdx === -1) return null
     const prop = pair.slice(0, colonIdx).trim()
     const val = pair.slice(colonIdx + 1).trim()
-    // camelCase the CSS property
     const camel = prop.replace(/-([a-z])/g, (_, c) => c.toUpperCase())
-    // Escape single quotes inside value
     const safeVal = val.replace(/'/g, "\\'")
     return `${camel}: '${safeVal}'`
   }).filter(Boolean).join(', ')
   return `{{ ${obj} }}`
 }
 
-/** Apply all HTML → JSX attribute and element transformations */
 function htmlToJsx(html) {
-  // 1. Decode entities so we get raw text
   let jsx = decodeHtmlEntities(html)
-
-  // 2. class= → className=
   jsx = jsx.replace(/\bclass=/g, 'className=')
-
-  // 3. for= → htmlFor=  (label for)
   jsx = jsx.replace(/\bfor=/g, 'htmlFor=')
-
-  // 4. inline style string → JSX object
-  //    style="..." → style={{ ... }}
   jsx = jsx.replace(/\bstyle="([^"]*)"/g, (_, styleStr) => `style=${styleStringToJsx(styleStr)}`)
 
-  // 5. Self-close void elements
   const voidTags = ['area', 'base', 'br', 'col', 'embed', 'hr', 'img',
                     'input', 'link', 'meta', 'param', 'source', 'track', 'wbr']
   for (const tag of voidTags) {
-    // <tag> or <tag ...attrs> — add /> if not already self-closed
     jsx = jsx.replace(
       new RegExp(`<(${tag})(\\s[^>]*)?>(?!/)`, 'gi'),
       (_, t, attrs) => `<${t}${attrs || ''} />`
     )
   }
 
-  // 6. Remove <style>...</style> blocks (they're already in index.css)
   jsx = jsx.replace(/<style[\s\S]*?<\/style>/gi, '')
 
-  // 7. Escape curly braces in text nodes only — we replace bare { and } that
-  //    are NOT part of an attribute value or tag with JSX-safe versions.
-  //    Strategy: protect already-JSX attribute braces, then escape remaining.
-  //    Simple approach: escape { → &#123; } → &#125; only outside tags.
   jsx = jsx.replace(/>([^<]*)</g, (match, text) => {
     const escaped = text.replace(/\{/g, '&#123;').replace(/\}/g, '&#125;')
     return `>${escaped}<`
@@ -186,29 +178,17 @@ function htmlToJsx(html) {
   return jsx
 }
 
-// ─── JSX indentation ─────────────────────────────────────────────────────────
-
-/**
- * Rudimentary pretty-printer: indent each tag line based on nesting depth.
- * Good enough for readable output – not a full formatter.
- */
 function indentJsx(jsx) {
   const lines = jsx.split('\n')
   let depth = 0
   return lines.map((line) => {
     const trimmed = line.trim()
     if (!trimmed) return ''
-
-    // Decrease indent before closing tags
     if (/^<\//.test(trimmed)) depth = Math.max(0, depth - 1)
-
     const indented = '  '.repeat(depth) + trimmed
-
-    // Increase indent after opening tags (not self-closing, not DOCTYPE)
     if (/^<[a-zA-Z][^/]*[^/]>$/.test(trimmed) && !/^<!/.test(trimmed)) {
       depth++
     }
-
     return indented
   }).join('\n')
 }
@@ -242,7 +222,6 @@ function balanceHtmlTags(html) {
           balanced += `</${openTag}>`
         }
       } else {
-        // Mismatched closing tag, ignore
         continue
       }
     } else {
@@ -268,40 +247,194 @@ function balanceHtmlTags(html) {
 }
 
 function preprocessHtml(html) {
-  // 1. Escape C# generics like <IActionResult>, <INotificationService, EmailService>, <UserService>, etc.
-  // These contain uppercase letters and are not valid layout HTML tags.
   let cleaned = html.replace(/<([A-Z][A-Za-z0-9_,\s]*)>/g, '&lt;$1&gt;')
-
-  // 2. Escape literal unclosed <h1> tags used in the text (like "the <h1> to show 6" or "touch the <h1>")
   cleaned = cleaned.replace(/\b(the|a|an|your|this)\s+<h1>/gi, '$1 &lt;h1&gt;')
   cleaned = cleaned.replace(/<h1>\s+(to show|is|should)\b/gi, '&lt;h1&gt; $1')
   cleaned = cleaned.replace(/touch the\s+<h1>/gi, 'touch the &lt;h1&gt;')
-
-  // 3. Balance mismatched/unclosed tags (like blockquotes)
   return balanceHtmlTags(cleaned)
 }
 
-// ─── Main generation loop ─────────────────────────────────────────────────────
+// ─── Dynamic Discovery & Tree Construction ────────────────────────────────────
 
+console.log('Discovering files dynamically...')
+
+const CHAPTERS = []
+const processedFiles = new Set()
 let successCount = 0
 let skipCount = 0
 
-for (const item of ALL_ITEMS) {
-  const filePath = path.join(ROOT, item.file.replace(/^\//, ''))
-  if (!fs.existsSync(filePath)) {
-    console.log(`SKIP (not found): ${item.file}`)
-    skipCount++
-    continue
+// Electives configurations
+const electives = [
+  {
+    id: 'e2',
+    title: 'Elective 2: Building Web Products',
+    dir: 'elective-2',
+    syllabus: 'elective-2-building-web-products.htm',
+    discussions: 'elective-2-discussions.htm'
+  },
+  {
+    id: 'e3',
+    title: 'Elective 3: Production-Grade Products',
+    dir: 'elective-3',
+    syllabus: 'elective-3-production-grade-products.htm',
+    discussions: 'elective-3-discussions.htm'
+  }
+]
+
+for (const el of electives) {
+  const elChapter = {
+    id: el.id,
+    title: el.title,
+    items: []
   }
 
-  const html = fs.readFileSync(filePath, 'utf8')
-  const rawContent = extractContent(html)
-  const preprocessed = preprocessHtml(rawContent)
-  const jsxContent = htmlToJsx(preprocessed)
-  const indented = indentJsx(jsxContent)
-  const compName = componentNameFromFile(item.file)
+  // 1. Syllabus
+  const syllabusPath = path.join(ROOT, el.syllabus)
+  if (fs.existsSync(syllabusPath)) {
+    const compName = uniqueComponentName(el.syllabus)
+    elChapter.items.push({
+      title: 'Syllabus',
+      file: '/' + el.syllabus,
+      componentName: compName
+    })
+    processFile(el.syllabus, compName)
+  }
 
-  const componentCode = `export default function ${compName}() {
+  // 2. Discover weeks
+  const elDirPath = path.join(ROOT, el.dir)
+  if (fs.existsSync(elDirPath)) {
+    const children = fs.readdirSync(elDirPath)
+    const weekDirs = children
+      .filter((name) => fs.statSync(path.join(elDirPath, name)).isDirectory() && /^week-\d+$/i.test(name))
+      .sort()
+
+    for (const weekDir of weekDirs) {
+      const weekPath = path.join(elDirPath, weekDir)
+      const weekNum = parseInt(weekDir.split('-')[1])
+
+      // Find the main week file in the elective root
+      const mainWeekFileMatch = fs.readdirSync(elDirPath).find((name) => {
+        return name.toLowerCase().startsWith(`week-${String(weekNum).padStart(2, '0')}-`) && name.endsWith('.htm')
+      })
+
+      if (mainWeekFileMatch) {
+        const relativeMainPath = `${el.dir}/${mainWeekFileMatch}`
+        const compName = uniqueComponentName(relativeMainPath)
+        const mainHtml = fs.readFileSync(path.join(ROOT, relativeMainPath), 'utf8')
+        const weekTitle = getTitleFromHtml(mainHtml, `Week ${weekNum}`)
+
+        const weekItem = {
+          title: `Week ${weekNum}: ${weekTitle}`,
+          file: '/' + relativeMainPath,
+          componentName: compName,
+          children: []
+        }
+
+        processFile(relativeMainPath, compName)
+
+        // Find nested subcategories (resources, presentations, exercises)
+        const categories = ['resources', 'presentations', 'exercises']
+        for (const cat of categories) {
+          const catPath = path.join(weekPath, cat)
+          if (fs.existsSync(catPath)) {
+            const files = fs.readdirSync(catPath)
+              .filter((f) => !f.startsWith('.'))
+              .sort()
+
+            if (files.length > 0) {
+              const catItem = {
+                title: cat.charAt(0).toUpperCase() + cat.slice(1),
+                items: []
+              }
+
+              for (const file of files) {
+                const relativeFilePath = `${el.dir}/${weekDir}/${cat}/${file}`
+                const fileCompName = uniqueComponentName(relativeFilePath)
+                
+                let title = formatTitleFromFilename(file)
+                if (file.endsWith('.htm') || file.endsWith('.html')) {
+                  const subHtml = fs.readFileSync(path.join(ROOT, relativeFilePath), 'utf8')
+                  title = getTitleFromHtml(subHtml, title)
+                }
+
+                catItem.items.push({
+                  title: title,
+                  file: '/' + relativeFilePath,
+                  componentName: fileCompName
+                })
+
+                processFile(relativeFilePath, fileCompName)
+              }
+
+              weekItem.children.push(catItem)
+            }
+          }
+        }
+
+        elChapter.items.push(weekItem)
+      }
+    }
+  }
+
+  // 3. Discussions
+  const discussionsPath = path.join(ROOT, el.discussions)
+  if (fs.existsSync(discussionsPath)) {
+    const compName = uniqueComponentName(el.discussions)
+    elChapter.items.push({
+      title: 'Full Discussions',
+      file: '/' + el.discussions,
+      componentName: compName
+    })
+    processFile(el.discussions, compName)
+  }
+
+  CHAPTERS.push(elChapter)
+}
+
+// 4. Appendices
+const teachingScript = 'teaching-script-format.htm'
+const appendixChapter = {
+  id: 'appendix',
+  title: 'Appendices',
+  items: []
+}
+if (fs.existsSync(path.join(ROOT, teachingScript))) {
+  const compName = uniqueComponentName(teachingScript)
+  appendixChapter.items.push({
+    title: 'Teaching Script Format',
+    file: '/' + teachingScript,
+    componentName: compName
+  })
+  processFile(teachingScript, compName)
+  CHAPTERS.push(appendixChapter)
+}
+
+// ─── File conversion engine ──────────────────────────────────────────────────
+
+function processFile(relativeFile, compName) {
+  const filePath = path.join(ROOT, relativeFile.replace(/^\//, ''))
+  if (processedFiles.has(compName)) return
+  processedFiles.add(compName)
+
+  if (!fs.existsSync(filePath)) {
+    console.log(`SKIP (not found): ${relativeFile}`)
+    skipCount++
+    return
+  }
+
+  const ext = path.extname(filePath).toLowerCase()
+  const filename = path.basename(filePath)
+
+  let componentCode = ''
+
+  if (ext === '.htm' || ext === '.html') {
+    const html = fs.readFileSync(filePath, 'utf8')
+    const rawContent = extractContent(html)
+    const preprocessed = preprocessHtml(rawContent)
+    const jsxContent = htmlToJsx(preprocessed)
+    const indented = indentJsx(jsxContent)
+
+    componentCode = `export default function ${compName}() {
   return (
     <div className="page-content">
 ${indented.split('\n').map((l) => '      ' + l).join('\n')}
@@ -309,20 +442,83 @@ ${indented.split('\n').map((l) => '      ' + l).join('\n')}
   )
 }
 `
+  } else {
+    // Code or text files
+    const rawText = fs.readFileSync(filePath, 'utf8')
+    const escaped = escapeCodeString(rawText)
+    const langClass = getLanguageClass(ext, filename)
+    const langLabel = langClass.replace('language-', '').toUpperCase()
+
+    componentCode = `export default function ${compName}() {
+  const code = \`${escaped}\`
+  return (
+    <div className="page-content code-page">
+      <div className="code-header">
+        <span className="code-filename">${filename}</span>
+        <span className="code-lang">${langLabel}</span>
+      </div>
+      <pre className="${langClass}"><code className="${langClass}">{code}</code></pre>
+    </div>
+  )
+}
+`
+  }
 
   const outPath = path.join(SRC, `${compName}.jsx`)
   fs.writeFileSync(outPath, componentCode, 'utf8')
-  console.log(`OK: ${item.file} → src/content/${compName}.jsx`)
+  console.log(`OK: ${relativeFile} → src/content/${compName}.jsx`)
   successCount++
 }
 
-// ─── Generate index.js ────────────────────────────────────────────────────────
+// ─── Generate src/data.js dynamically ────────────────────────────────────────
 
-const exportLines = ALL_ITEMS.map((item) => {
-  const name = componentNameFromFile(item.file)
+const allExportedComponents = Array.from(processedFiles)
+
+const importsSection = 'import { lazy } from \'react\'\n\n'
+
+const chaptersSection = `export const CHAPTERS = [\n` + CHAPTERS.map((ch) => {
+  return `  {\n    id: '${ch.id}',\n    title: '${ch.title}',\n    items: [\n` + ch.items.map((item) => {
+    let out = `      {\n        title: '${item.title.replace(/'/g, "\\'")}',\n        file: '${item.file}',\n        component: lazy(() => import('./content/${item.componentName}'))`
+    if (item.children && item.children.length > 0) {
+      out += `,\n        children: [\n` + item.children.map((cat) => {
+        return `          {\n            title: '${cat.title}',\n            items: [\n` + cat.items.map((subItem) => {
+          return `              {\n                title: '${subItem.title.replace(/'/g, "\\'")}',\n                file: '${subItem.file}',\n                component: lazy(() => import('./content/${subItem.componentName}'))\n              }`
+        }).join(',\n') + `\n            ]\n          }`
+      }).join(',\n') + `\n        ]`
+    }
+    out += `\n      }`
+    return out
+  }).join(',\n') + `\n    ]\n  }`
+}).join(',\n') + `\n]\n`
+
+const flatteningSection = `
+function flattenItems(items) {
+  const flat = []
+  for (const item of items) {
+    if (item.component) {
+      flat.push(item)
+    }
+    if (item.children) {
+      for (const cat of item.children) {
+        flat.push(...flattenItems(cat.items))
+      }
+    }
+  }
+  return flat
+}
+
+export const ALL_ITEMS = CHAPTERS.flatMap((s) => flattenItems(s.items))
+`
+
+fs.writeFileSync(path.join(ROOT, 'src', 'data.js'), importsSection + chaptersSection + flatteningSection, 'utf8')
+console.log('\nGenerated src/data.js successfully.')
+
+// ─── Generate src/content/index.js dynamically ────────────────────────────────
+
+const indexExportLines = allExportedComponents.map((name) => {
   return `export { default as ${name} } from './${name}'`
 }).join('\n')
 
-fs.writeFileSync(path.join(SRC, 'index.js'), exportLines + '\n', 'utf8')
-console.log(`\nDone: ${successCount} generated, ${skipCount} skipped.`)
-console.log(`Generated src/content/index.js with ${ALL_ITEMS.length} exports`)
+fs.writeFileSync(path.join(SRC, 'index.js'), indexExportLines + '\n', 'utf8')
+console.log(`Generated src/content/index.js with ${allExportedComponents.length} exports`)
+console.log(`\nDone: ${successCount} generated successfully.`)
