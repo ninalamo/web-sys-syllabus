@@ -1,6 +1,6 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>week-01-csharp-translation-bootcamp.md</title><style>
+<title>week-01-csharp-translation-bootcamp.htm</title><style>
 body { font-family: 'Segoe UI', Arial, sans-serif; max-width: 960px; margin: 2em auto; padding: 0 1.5em; line-height: 1.7; color: #1a1a1a; background: #fafafa; }
 h1 { border-bottom: 2px solid #2563eb; padding-bottom: .3em; margin-top: 1.5em; color: #1e3a5f; }
 h2 { border-bottom: 1px solid #cbd5e1; padding-bottom: .2em; margin-top: 1.5em; color: #1e3a5f; }
@@ -18,8 +18,22 @@ hr { border: none; border-top: 2px solid #e2e8f0; margin: 2em 0; }
 </style></head><body>
 <nav><a href="index.htm">Home</a></nav>
 <h2>Week 1: C# Translation Bootcamp</h2>
+<div style="background: #fefce8; padding: 15px; border-left: 5px solid #ca8a04; margin-bottom: 20px;">
+    <strong>📋 This Week at a Glance</strong><br>
+    🎯 This week: &quot;Learn C# fundamentals — syntax, types, variables, and classes — the foundation for building web apps with ASP.NET Core&quot;<br>
+    <br>
+    <strong>Core Concepts:</strong><br>
+    ▸ A. Case Sensitivity &amp; Naming Conventions (5 min)<br>
+    ▸ B. Semicolons &amp; Statements (5 min)<br>
+    ▸ C. Console App Anatomy — Project Structure &amp; the Build-Run Cycle (8 min)<br>
+    ▸ D. Curly Braces &amp; Code Blocks (7 min)<br>
+    <br>
+    <strong>ONLINE (1h):</strong> Industry Reality + AI Integration + Take-Home Mission (The Translation Engine)<br>
+    <br>
+    ✅ By end of lab: Fix capitalization errors; end statements with semicolons; scaffold and run a console app; use curly braces
+</div>
 <blockquote>
-<p>[TIME] <strong>Session Pacing (180 min)</strong></p>
+<p>[TIME] <strong>Session Pacing (Lab - ~150 min)</strong></p>
 <table>
 <thead>
 <tr>
@@ -36,17 +50,12 @@ hr { border: none; border-top: 2px solid #e2e8f0; margin: 2em 0; }
 <tr>
 <td>Concept Discussion</td>
 <td>25 min</td>
-<td>Lecture + Slides + Side-by-Side Comparison</td>
+<td>Lecture + Slides + Live Demos</td>
 </tr>
 <tr>
 <td>Code Walkthrough</td>
 <td>35 min</td>
 <td>Live Code (instructor + students type)</td>
-</tr>
-<tr>
-<td>Industry Reality</td>
-<td>10 min</td>
-<td>Lecture + Discussion</td>
 </tr>
 <tr>
 <td>Break</td>
@@ -57,11 +66,6 @@ hr { border: none; border-top: 2px solid #e2e8f0; margin: 2em 0; }
 <td>Exercise</td>
 <td>55 min</td>
 <td>Lab (solo or pairs)</td>
-</tr>
-<tr>
-<td>AI Integration</td>
-<td>10 min</td>
-<td>Demo + Prompt Walkthrough</td>
 </tr>
 <tr>
 <td>Debugging + Wrap</td>
@@ -76,33 +80,45 @@ hr { border: none; border-top: 2px solid #e2e8f0; margin: 2em 0; }
 </tbody></table>
 </blockquote>
 <blockquote>
-<p>[TIP] <strong>Teaching Tip:</strong> This is Week 1. Students are nervous. Some haven&#39;t written code in months. If they only get one thing from this week, it should be: curly braces, semicolons, and <code>var</code>.</p>
+<p>[TIP] <strong>Teaching Tip:</strong> This is Week 1. Students are nervous. Some haven&#39;t written code in months. If they only get one thing from this week, it should be: curly braces, semicolons, and the build-run cycle.</p>
 </blockquote>
 <hr>
-<h3>1. The Hook &amp; The Analogy</h3>
+<h3><span style="background:#2563eb;color:#fff;padding:2px 10px;border-radius:12px;font-size:0.8em;">15 min</span> 1. Course Overview &amp; The Hook</h3>
 <blockquote>
-<p>[SPEAK] <strong>Script:</strong> &quot;You already know .NET concepts through VB. C# is the same ideas, different syntax. Think of it like speaking the same language with a different accent. Let&#39;s see how they compare — side by side.&quot;</p>
+<p>[SPEAK] <strong>Course Framing — &quot;Web Systems and Technologies&quot;:</strong> &quot;This course is called <em>Web Systems and Technologies</em>. Let&#39;s be clear what that means: we are here to build web applications that run on the open internet. Not console apps, not desktop forms — real, deployed web software that users access through a browser. Over the next 16 weeks, you will learn to build multi-page web applications using ASP.NET Core MVC with C#, connected to databases, secured with authentication, and deployed to the cloud.&quot;</p>
 </blockquote>
 <blockquote>
-<p>[BOARD] <strong>Whiteboard Analogy:</strong> The Automatic vs. Manual Car</p>
+<p>[BOARD] <strong>Whiteboard — The 16-Week Roadmap:</strong></p>
 <ul>
-<li><strong>VB (Automatic):</strong> It handles the shifting for you (<code>End If</code>, <code>End Sub</code>).</li>
-<li><strong>C# (Manual):</strong> You have direct control over the gears. You declare types explicitly, close your own curly braces <code>{}</code>, and define exact access modifiers. Same road, different driving experience.</li>
+<li><strong>Prelim (Weeks 1-4):</strong> C# for MVC + Web Foundations — learn the language, understand HTTP, grasp MVC</li>
+<li><strong>Midterm (Weeks 5-8):</strong> ASP.NET Core MVC — routes, controllers, views, model binding, validation</li>
+<li><strong>PreFinals (Weeks 9-12):</strong> Data &amp; Persistence — Entity Framework, database relationships, consuming APIs</li>
+<li><strong>Finals (Weeks 13-16):</strong> Auth, Security, and Capstone — ship a complete full-stack product</li>
+</ul>
+</blockquote>
+<blockquote>
+<p>[SPEAK] <strong>Why C# First?:</strong> &quot;This entire course is built on C# and ASP.NET Core. You cannot build an MVC web application without knowing the language it&#39;s written in. This week is our C# fundamentals sprint — curly braces, semicolons, types, classes, properties, loops. If you have programmed before in any language (Java, Python, even VB), the concepts are the same — only the syntax changes. If you haven&#39;t, this week gives you the scaffolding to survive the next 15 weeks. Either way, we start from &#39;this is a semicolon&#39; and build up.&quot;</p>
+</blockquote>
+<blockquote>
+<p>[BOARD] <strong>Whiteboard Analogy:</strong> Learning the Alphabet Before Writing a Novel</p>
+<ul>
+<li>You can&#39;t write an ASP.NET Core MVC app without knowing C#.</li>
+<li>You can&#39;t know C# without understanding types, scopes, and statements.</li>
+<li>This week is the alphabet. The next 15 weeks are the novel.</li>
 </ul>
 </blockquote>
 <hr>
-<h3>2. Core Concepts &amp; Module Discussion</h3>
-<h4>Topic A: Case Sensitivity (The #1 Bug Creator)</h4>
+<h3><span style="background:#2563eb;color:#fff;padding:2px 10px;border-radius:12px;font-size:0.8em;">25 min</span> 2. Core Concepts &amp; Module Discussion</h3>
+<h4>▸ A. Case Sensitivity &amp; Naming Conventions (5 min)</h4>
 <p><strong>Module Syllabus Content:</strong>
-Unlike Visual Basic (VB), which is case-insensitive, C# is a strictly case-sensitive language. This means that the compiler treats uppercase and lowercase letters as completely different entities. For example, <code>Console</code>, <code>console</code>, and <code>CONSOLE</code> represent three entirely distinct identifiers in C#. </p>
-<p>Because of this strictness, the C# ecosystem relies heavily on standardized naming conventions to keep code readable:</p>
+C# is a strictly case-sensitive language. The compiler treats uppercase and lowercase letters as completely different entities. <code>Console</code>, <code>console</code>, and <code>CONSOLE</code> are three entirely distinct identifiers and will produce error <code>CS0103: The name does not exist in the current context</code> if mismatched.</p>
+<p>Standard naming conventions keep code readable:</p>
 <ul>
-<li><strong>PascalCase</strong> (capitalizing the first letter of every word) is used for Classes, Methods, and Properties (e.g., <code>WriteLine</code>, <code>StudentManager</code>).</li>
-<li><strong>camelCase</strong> (lowercase first word, capitalized subsequent words) is used for local variables and method parameters (e.g., <code>firstName</code>, <code>studentAge</code>).</li>
+<li><strong>PascalCase</strong> — Classes, Methods, Properties (e.g., <code>WriteLine</code>, <code>StudentManager</code>).</li>
+<li><strong>camelCase</strong> — local variables and parameters (e.g., <code>firstName</code>, <code>studentAge</code>).</li>
 </ul>
-<p>Failing to match the exact casing will result in a compiler error, specifically <code>CS0103: The name does not exist in the current context</code>.</p>
 <blockquote>
-<p><strong>[SPEAK] Instructor Script:</strong> &quot;VB doesn&#39;t care if you yell at it or whisper. C# is extremely strict. If you miscapitalize a single letter, the compiler will crash.&quot;</p>
+<p><strong>[SPEAK] Instructor Script:</strong> &quot;C# is extremely strict about letter case. If you miscapitalize a single letter, the compiler will crash.&quot;</p>
 <p><strong>[CODE] Live Example:</strong></p>
 <pre><code class="language-csharp">// WRONG: Throws CS0103
 console.writeline(&quot;Hello&quot;); 
@@ -110,84 +126,101 @@ console.writeline(&quot;Hello&quot;);
 // RIGHT
 Console.WriteLine(&quot;Hello&quot;);
 </code></pre>
-<p><strong>[TIP] Instructor Tip:</strong> Teach them the rule: Classes and Methods are <code>PascalCase</code>. Variables are <code>camelCase</code>. Force them to fix casing errors manually rather than relying on Auto-Correct.</p>
+<p><strong>[TIP] Instructor Tip:</strong> Force them to fix casing errors manually rather than relying on Auto-Correct. Build the muscle memory now.</p>
 </blockquote>
-<h4>Topic B: Statement Terminators (The Semicolon)</h4>
+<h4>▸ B. Semicolons &amp; Statements (5 min)</h4>
 <p><strong>Module Syllabus Content:</strong>
-In VB, the end of a line of code (pressing Enter) tells the compiler that the statement is finished. In C#, whitespace, line breaks, and tabs are completely ignored by the compiler. Instead, C# requires an explicit statement terminator: the semicolon (<code>;</code>).</p>
-<p>Because whitespace is ignored, you have the flexibility to write multiple statements on a single line, or stretch a complex statement across multiple lines for readability. However, forgetting to place a semicolon at the end of a logical statement is the most common syntax error for developers transitioning to C#, resulting in a <code>CS1002: ; expected</code> error.</p>
+In C#, whitespace, line breaks, and tabs are completely ignored by the compiler. Every statement must end with an explicit semicolon (<code>;</code>) as a terminator. This means you can write multiple statements on one line, or stretch one statement across many lines. Forgetting the semicolon produces <code>CS1002: ; expected</code> — the most common syntax error for new C# developers.</p>
 <blockquote>
-<p><strong>[SPEAK] Instructor Script:</strong> &quot;In VB, pressing Enter ends the line. In C#, pressing Enter does nothing. You must tell the compiler you are finished speaking by using a semicolon.&quot;</p>
+<p><strong>[SPEAK] Instructor Script:</strong> &quot;Pressing Enter does nothing to end a statement. You must tell the compiler you are finished speaking with a semicolon.&quot;</p>
 <p><strong>[CODE] Live Example:</strong></p>
 <pre><code class="language-csharp">var name = &quot;Alice&quot; // ERROR: Missing semicolon
 var age = 25;      // SUCCESS
 </code></pre>
 <p><strong>[TIP] Gen-Z Hook:</strong> The semicolon is the period at the end of a text message. It means &quot;I&#39;m done making my point.&quot;</p>
 </blockquote>
-<h4>Topic C: Scope Definition (Curly Braces)</h4>
+<h4>▸ C. Console App Anatomy — Project Structure &amp; Build-Run Cycle (8 min)</h4>
 <p><strong>Module Syllabus Content:</strong>
-Visual Basic defines the start and end of code blocks using verbose word pairs, such as <code>If...End If</code>, <code>Sub...End Sub</code>, or <code>For...Next</code>. C# replaces all of these verbose terminators with curly braces <code>{}</code>.</p>
-<p>The opening brace <code>{</code> marks the beginning of a scope block, and the closing brace <code>}</code> marks the end. This applies to namespaces, classes, methods, loops, and conditional statements. While this makes C# code more concise, it requires developers to be diligent about indentation and formatting to visually track which brace closes which block.</p>
+A basic C# console application has three key parts:</p>
+<ol>
+<li><strong>The Project File (<code>.csproj</code>)</strong> — XML file that tells .NET how to build the project (SDK version, target framework, dependencies).</li>
+<li><strong>Source File (<code>Program.cs</code>)</strong> — contains the code. Modern .NET uses <strong>top-level statements</strong>: you write code directly inside the file without wrapping it in a <code>class</code> or <code>Main</code> method. The compiler auto-generates the entry point for you.</li>
+<li><strong>The Build-Run Cycle</strong> — <code>dotnet build</code> compiles the code; <code>dotnet run</code> builds and executes in one step. Errors appear as compiler errors, not runtime crashes.</li>
+</ol>
+<p><strong>Key I/O methods:</strong></p>
+<ul>
+<li><code>Console.WriteLine()</code> — prints text to the output window, appends a newline.</li>
+<li><code>Console.Write()</code> — prints without a trailing newline.</li>
+<li><code>Console.ReadLine()</code> — reads a line of user input as a <code>string</code>.</li>
+</ul>
 <blockquote>
-<p><strong>[SPEAK] Instructor Script:</strong> &quot;Instead of writing <code>End If</code> or <code>End Sub</code>, C# uses curly braces <code>{}</code> to create a visual box around a block of code.&quot;</p>
+<p><strong>[SPEAK] Instructor Script:</strong> &quot;The console is your testing playground. Every app starts as a console app. You write code, you hit <code>dotnet run</code>, and you see output instantly. This is the fastest feedback loop in programming.&quot;</p>
+<p><strong>[CODE] Minimal "Hello, Name" App:</strong></p>
+<pre><code class="language-csharp">// Program.cs — top-level statements
+Console.Write(&quot;Enter your name: &quot;);
+string name = Console.ReadLine();
+Console.WriteLine($&quot;Hello, {name}!&quot;);
+</code></pre>
+<p><strong>[CODE] Show the compile-error feedback loop:</strong> intentionally remove a semicolon, run <code>dotnet run</code>, and show the red squiggle + <code>CS1002</code> in the terminal.</p>
+<p><strong>[TIP] Instructor Tip:</strong> Start every session with <code>dotnet new console -o demo</code> and have students <code>cd demo &amp;&amp; dotnet run</code> to verify the toolchain works before writing any code.</p>
+</blockquote>
+<h4>▸ D. Curly Braces &amp; Code Blocks (7 min)</h4>
+<p><strong>Module Syllabus Content:</strong>
+Curly braces <code>{}</code> define the start and end of code blocks in C# — for namespaces, classes, methods, loops, and conditionals. The opening brace <code>{</code> opens a scope, and the closing brace <code>}</code> closes it. Because there are no keyword terminators like <code>End If</code> or <code>End Sub</code>, you must be diligent about indentation to track which brace pairs with which.</p>
+<blockquote>
+<p><strong>[SPEAK] Instructor Script:</strong> &quot;Curly braces create a visual box around a block of code. Everything inside the box belongs together.&quot;</p>
 <p><strong>[CODE] Live Example:</strong></p>
-<pre><code class="language-csharp">if (isAdmin) 
+<pre><code class="language-csharp">if (age &gt;= 18)
 {
-    Console.WriteLine(&quot;Welcome back!&quot;);
-    // The brace below replaces &#39;End If&#39;
+    Console.WriteLine(&quot;Adult&quot;);
+    // The } below marks the end of the if-block
 }
 </code></pre>
-<p><strong>[TIP] Instructor Tip:</strong> Tell students to ALWAYS format their document (<code>Shift + Alt + F</code> in VS Code) to line up their curly braces. A misaligned brace is the fastest way to break a program.</p>
-</blockquote>
-<h4>Topic D: Implicit Typing (<code>var</code>)</h4>
-<p><strong>Module Syllabus Content:</strong>
-In older versions of C#, developers had to explicitly declare the type on both sides of an assignment (e.g., <code>List&lt;string&gt; names = new List&lt;string&gt;();</code>). C# introduced the <code>var</code> keyword to reduce this redundancy. </p>
-<p>It is crucial to understand that <code>var</code> does <strong>not</strong> mean the variable is untyped or dynamic (like in JavaScript). It simply instructs the compiler to infer the data type based on the value on the right side of the equals sign during compilation. Once the type is inferred, it is locked in forever. You cannot assign a string to a variable that was inferred as an integer.</p>
-<blockquote>
-<p><strong>[SPEAK] Instructor Script:</strong> &quot;This is the most misunderstood feature. <code>var</code> is NOT typeless like JavaScript. It just means &#39;Compiler, figure out the type based on the right side of the equals sign, and lock it in forever.&#39;&quot;</p>
-<p><strong>[CODE] Live Example:</strong></p>
-<pre><code class="language-csharp">var age = 25; // Compiler locks this in as an &#39;int&#39;
-age = &quot;hello&quot;; // ERROR: Cannot implicitly convert type &#39;string&#39; to &#39;int&#39;
-</code></pre>
-<p><strong>[TIP] Instructor Tip:</strong> Show them the error live. Prove that <code>var</code> is strictly typed by hovering over the word <code>var</code> in the IDE to show that the tooltip reads <code>int</code>.</p>
+<p><strong>[TIP] Instructor Tip:</strong> Tell students to ALWAYS format with <code>Shift + Alt + F</code> (VS Code) to align braces. A misaligned brace is the fastest way to introduce a hard-to-find bug.</p>
 </blockquote>
 <hr>
-<h3>3. Code Walkthrough / Live Coding Blueprint</h3>
+<h3><span style="background:#2563eb;color:#fff;padding:2px 10px;border-radius:12px;font-size:0.8em;">35 min</span> 3. Code Walkthrough / Live Coding Blueprint</h3>
 <blockquote>
-<p>[SPEAK] <strong>Script:</strong> &quot;Let me show you a class you already know in VB. Now here it is in C#. Don&#39;t read it — <em>scan</em> it. What&#39;s the same? What&#39;s different?&quot;</p>
+<p>[SPEAK] <strong>Script:</strong> &quot;Let&#39;s build something from nothing. I&#39;ll scaffold a console app, write code, and you&#39;ll see every piece — project file, source file, build, run. Watch once, then you&#39;ll do it.&quot;</p>
 </blockquote>
 <ul>
-<li><strong>Step 1: The &quot;Hello World&quot; Translation</strong><ul>
-<li><em>Action:</em> Write a simple VB Console output, then translate to C# Top-Level Statements.</li>
+<li><strong>Step 1: Scaffold the Project</strong><ul>
+<li><em>Action:</em> Open a terminal, run <code>dotnet new console -o MyFirstApp</code>, open the folder, and inspect the two files: <code>MyFirstApp.csproj</code> and <code>Program.cs</code>.</li>
+<li><em>Point out:</em> The <code>.csproj</code> file references the .NET SDK version. <code>Program.cs</code> has top-level statements — there is no visible <code>Main()</code> method.</li>
 </ul>
 </li>
-<li><strong>Step 2: Translating a Class</strong><ul>
-<li><em>Action:</em> Show the transition from <code>Public Property Name As String</code> to <code>public string Name { get; set; }</code>.</li>
+<li><strong>Step 2: Read Input &amp; Print Output</strong><ul>
+<li><em>Action:</em> Replace the default "Hello World!" with a program that asks for the user&#39;s name, reads it, and prints a greeting.</li>
+<li><em>Key concepts shown:</em> <code>Console.ReadLine()</code> returns a string, <code>Console.WriteLine()</code> output, string interpolation with <code>$&quot;&quot;</code>.</li>
 </ul>
 </li>
-<li><strong>Step 3: Translating an Array &amp; Loop</strong><ul>
-<li><em>Action:</em> Translate a <code>For Each</code> loop into a C# <code>foreach</code> loop.</li>
+<li><strong>Step 3: Build, Run &amp; Break</strong><ul>
+<li><em>Action:</em> Run <code>dotnet run</code> — it works. Then deliberately remove a semicolon and run again — show the compiler error <code>CS1002</code> in the terminal.</li>
+<li><em>Point out:</em> The build-run cycle catches mistakes before the program ever executes.</li>
 </ul>
 </li>
 </ul>
 <hr>
-<h3>4. From the Trenches (Pro-Tip)</h3>
-<blockquote>
-<p>[TRENCHES] <strong>Instructor Script:</strong> &quot;Why did the industry switch from VB to C#? Because C# is strictly enforced. When you&#39;re working on a codebase with 50 other developers, you don&#39;t want &#39;loose&#39; code. You want strict rules so that if someone breaks something, the compiler yells at them immediately. C# forces you to be disciplined, which makes you a professional.&quot;</p>
-</blockquote>
-<hr>
-<h3>5. AI Integration &amp; Debugging</h3>
+<h3><span style="background:#2563eb;color:#fff;padding:2px 10px;border-radius:12px;font-size:0.8em;">15 min</span> 4. Debugging + Wrap</h3>
 <ul>
-<li><strong>AI Policy:</strong> Allowed: &quot;In C#, how do I write a For Each loop?&quot; Not Allowed: &quot;Write my FizzBuzz exercise for me.&quot;</li>
 <li><strong>Common Error 1:</strong> <code>CS1002 — ; expected</code>. -&gt; You forgot a semicolon. Check the end of your line.</li>
 <li><strong>Common Error 2:</strong> <code>CS0103 — The name doesn&#39;t exist in the current context</code>. -&gt; 99% of the time, this is a case sensitivity issue. You typed <code>console</code> instead of <code>Console</code>.</li>
 </ul>
 <hr>
-<h3>6. Exercise &amp; Homework</h3>
+<h3><span style="background:#2563eb;color:#fff;padding:2px 10px;border-radius:12px;font-size:0.8em;">55 min</span> 5. In-Class Exercise</h3>
 <blockquote>
 <p>[TIME] <strong>In-Class Exercise (55 min):</strong> Three small programs in one console app: FizzBuzz, a basic Calculator, and a Student Manager list. Use C# syntax.</p>
 </blockquote>
+<hr>
+<h3>💻 Online Session (1 hour)</h3>
+<h3>From the Trenches (Pro-Tip)</h3>
 <blockquote>
+<p>[TRENCHES] <strong>Instructor Script:</strong> &quot;Why did the industry switch from VB to C#? Because C# is strictly enforced. When you&#39;re working on a codebase with 50 other developers, you don&#39;t want &#39;loose&#39; code. You want strict rules so that if someone breaks something, the compiler yells at them immediately. C# forces you to be disciplined, which makes you a professional.&quot;</p>
+</blockquote>
+<h3>AI Integration</h3>
+<ul>
+<li><strong>AI Policy:</strong> Allowed: &quot;In C#, how do I write a For Each loop?&quot; Not Allowed: &quot;Write my FizzBuzz exercise for me.&quot;</li>
+</ul>
 <h3>Learning Baseline (Self-Assessment)</h3>
 <blockquote>
 <p><strong>[ASSESSMENT]</strong> By the end of this week, students must be able to say &quot;Yes&quot; to:</p>
@@ -199,8 +232,6 @@ age = &quot;hello&quot;; // ERROR: Cannot implicitly convert type &#39;string&#3
 <li><input disabled="" type="checkbox"> I can create a simple Class with Properties in C#.</li>
 </ul>
 </blockquote>
-</blockquote>
-<blockquote>
 <h3>Take-Home Mission</h3>
 <blockquote>
 <p><strong>[HOMEWORK]</strong> <strong>Mission:</strong> &quot;The Translation Engine&quot;
@@ -210,9 +241,7 @@ Take the classic &quot;Bank Account&quot; assignment from your previous VB cours
 <li><strong>The Catch:</strong> You must use <code>var</code> for all local variable declarations, and use string interpolation <code>$</code> for all console outputs.</li>
 </ol>
 </blockquote>
-</blockquote>
-<hr>
-<h3>7. Instructor Assets Blueprint</h3>
+<h3>Instructor Assets Blueprint</h3>
 <blockquote>
 <p><strong>[ASSETS]</strong> What to prepare before this class:</p>
 <ul>
@@ -220,5 +249,4 @@ Take the classic &quot;Bank Account&quot; assignment from your previous VB cours
 <li><strong>Solution Repo:</strong> A C# Console Application with the completed FizzBuzz, Calculator, and Student Manager code.</li>
 </ul>
 </blockquote>
-
 </body></html>

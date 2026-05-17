@@ -18,8 +18,22 @@ hr { border: none; border-top: 2px solid #e2e8f0; margin: 2em 0; }
 </style></head><body>
 <nav><a href="index.htm">Home</a></nav>
 <h2>Week 1: Modern JavaScript Review</h2>
+<div style="background: #fefce8; padding: 15px; border-left: 5px solid #ca8a04; margin-bottom: 20px;">
+    <strong>📋 This Week at a Glance</strong><br>
+    🎯 This week: &quot;Replace outdated JS habits (var, for loops) with modern ES6+ patterns used by every framework&quot;<br>
+    <br>
+    <strong>LAB (3h) Topics:</strong><br>
+    ▸ A. let/const vs var (7 min)<br>
+    ▸ B. Arrow Functions &amp; Context (6 min)<br>
+    ▸ C. Declarative Arrays — map, filter (7 min)<br>
+    ▸ D. Destructuring (5 min)<br>
+    <br>
+    <strong>ONLINE (1h):</strong> Industry Reality + AI Integration + Take-Home Mission (The Legacy Code Rescue)<br>
+    <br>
+    ✅ By end of lab: Explain why var is bad; write arrow functions; use map/filter; destructure objects; split code into modules
+</div>
 <blockquote>
-<p>[TIME] <strong>Session Pacing (180 min)</strong></p>
+<p>[TIME] <strong>Session Pacing (Lab - ~150 min)</strong></p>
 <table>
 <thead>
 <tr>
@@ -44,11 +58,6 @@ hr { border: none; border-top: 2px solid #e2e8f0; margin: 2em 0; }
 <td>Live Code (refactor alongside)</td>
 </tr>
 <tr>
-<td>Industry Reality</td>
-<td>10 min</td>
-<td>Lecture + Discussion</td>
-</tr>
-<tr>
 <td>Break</td>
 <td>10 min</td>
 <td>—</td>
@@ -57,11 +66,6 @@ hr { border: none; border-top: 2px solid #e2e8f0; margin: 2em 0; }
 <td>Exercise</td>
 <td>55 min</td>
 <td>Lab (solo or pairs)</td>
-</tr>
-<tr>
-<td>AI Integration</td>
-<td>10 min</td>
-<td>Demo + Prompt Walkthrough</td>
 </tr>
 <tr>
 <td>Debugging + Wrap</td>
@@ -79,9 +83,21 @@ hr { border: none; border-top: 2px solid #e2e8f0; margin: 2em 0; }
 <p>[TIP] <strong>Teaching Tip:</strong> This is a &quot;review&quot; week but don&#39;t assume mastery. Many students learned JS from outdated tutorials. The goal is to replace bad habits (<code>var</code>, for loops for everything) with modern patterns (<code>const</code>, <code>.filter()</code>, <code>.map()</code>). Keep energy high.</p>
 </blockquote>
 <hr>
-<h3>1. The Hook &amp; The Analogy</h3>
+<h3><span style="background:#2563eb;color:#fff;padding:2px 10px;border-radius:12px;font-size:0.8em;">15 min</span> 1. Course Overview &amp; The Hook</h3>
 <blockquote>
-<p>[SPEAK] <strong>Script:</strong> &quot;You know how TikTok doesn&#39;t reload the whole page when you switch from your For You feed to Following? That&#39;s not magic — it&#39;s modern JavaScript. Every app you use daily is built on the ES6+ features we&#39;re covering this week.&quot;</p>
+<p>[SPEAK] <strong>Course Framing — &quot;Production-Grade Products&quot;:</strong> &quot;This elective is called <em>Production-Grade Products</em>. That means by the end of 16 weeks, you will ship a full-stack web application — with a React frontend, an ASP.NET Core Web API backend, a database, authentication, automated tests, and a CI/CD pipeline that deploys it to the internet. Not a tutorial project. A real, deployed product you can put in your portfolio.&quot;</p>
+</blockquote>
+<blockquote>
+<p>[BOARD] <strong>Whiteboard — The 16-Week Roadmap:</strong></p>
+<ul>
+<li><strong>Prelim (Weeks 1-4):</strong> Modern JavaScript / TypeScript + Dev Tooling — unlearn old JS, learn the modern toolchain</li>
+<li><strong>Midterm (Weeks 5-8):</strong> Component Architecture — from vanilla JS components to React</li>
+<li><strong>PreFinals (Weeks 9-12):</strong> API as Product — design, build, and document ASP.NET Core Web APIs</li>
+<li><strong>Finals (Weeks 13-16):</strong> Auth, Testing, CI/CD, and Capstone — secure, test, deploy, and present</li>
+</ul>
+</blockquote>
+<blockquote>
+<p>[SPEAK] <strong>Why JavaScript First?:</strong> &quot;React — the framework we start in Week 6 — is built entirely on modern JavaScript. <code>map()</code>, <code>filter()</code>, destructuring, arrow functions, modules — these aren't optional niceties, they are the syntax you will write in every single React component. If you're still writing <code>var</code> and <code>for</code> loops, React will feel like a foreign language. This week is the foundation. Get this right, and the next 15 weeks click into place.&quot;</p>
 </blockquote>
 <blockquote>
 <p>[BOARD] <strong>Whiteboard Analogy:</strong> The Messy Drawer vs The Organizer</p>
@@ -91,8 +107,8 @@ hr { border: none; border-top: 2px solid #e2e8f0; margin: 2em 0; }
 </ul>
 </blockquote>
 <hr>
-<h3>2. Core Concepts &amp; Discussion Topics</h3>
-<h4>Topic A: Variable Declaration (<code>let</code>/<code>const</code> vs <code>var</code>)</h4>
+<h3><span style="background:#2563eb;color:#fff;padding:2px 10px;border-radius:12px;font-size:0.8em;">25 min</span> 2. Core Concepts &amp; Discussion Topics</h3>
+<h4>▸ A. let/const vs var (7 min)</h4>
 <blockquote>
 <p><strong>[SPEAK] Discussion:</strong> &quot;Before ES6, <code>var</code> was the only way to declare variables. The problem? <code>var</code> ignores block scope like <code>if</code> statements and loops. It leaks everywhere. <code>let</code> and <code>const</code> fix this by staying trapped inside their curly braces.&quot;</p>
 <p><strong>[CODE] Example:</strong></p>
@@ -105,7 +121,7 @@ console.log(b); // ReferenceError
 </code></pre>
 <p><strong>[TIP] Instructor Tip:</strong> Teach the strict hierarchy: Always use <code>const</code>. Only use <code>let</code> if the value <em>must</em> be reassigned (like a loop counter). Never use <code>var</code>.</p>
 </blockquote>
-<h4>Topic B: Arrow Functions &amp; Context</h4>
+<h4>▸ B. Arrow Functions &amp; Context (6 min)</h4>
 <blockquote>
 <p><strong>[SPEAK] Discussion:</strong> &quot;Arrow functions aren&#39;t just a shorter way to write code. They solve a massive headache in older JS: losing the <code>this</code> context inside callbacks like <code>setTimeout</code>.&quot;</p>
 <p><strong>[CODE] Example:</strong></p>
@@ -118,7 +134,7 @@ setTimeout(() =&gt; { console.log(this.name); }, 1000);
 </code></pre>
 <p><strong>[TIP] Gen-Z Hook:</strong> An arrow function is like a loyal friend. It remembers where it came from (inherits <code>this</code>), while traditional functions get confused depending on who called them.</p>
 </blockquote>
-<h4>Topic C: Declarative Arrays (<code>map</code>, <code>filter</code>)</h4>
+<h4>▸ C. Declarative Arrays — map, filter (7 min)</h4>
 <blockquote>
 <p><strong>[SPEAK] Discussion:</strong> &quot;Imperative code tells the computer <em>how</em> to do something (a <code>for</code> loop). Declarative code tells it <em>what</em> you want. Modern JS relies on declarative array methods.&quot;</p>
 <p><strong>[CODE] Example:</strong></p>
@@ -130,7 +146,7 @@ const active = users.filter(user =&gt; user.isActive);
 </code></pre>
 <p><strong>[TIP] Instructor Tip:</strong> Emphasize that these methods do NOT change the original array; they return a brand new array. This is critical for React state later.</p>
 </blockquote>
-<h4>Topic D: Destructuring</h4>
+<h4>▸ D. Destructuring (5 min)</h4>
 <blockquote>
 <p><strong>[SPEAK] Discussion:</strong> &quot;Destructuring is a shortcut to extract properties from an object without writing <code>user.</code> ten times.&quot;</p>
 <p><strong>[CODE] Example:</strong></p>
@@ -140,7 +156,7 @@ const { name, role } = user;
 <p><strong>[TIP] Instructor Tip:</strong> Mention that they will use this exact syntax every single day in React to extract &quot;props&quot;.</p>
 </blockquote>
 <hr>
-<h3>3. Code Walkthrough / Live Coding Blueprint</h3>
+<h3><span style="background:#2563eb;color:#fff;padding:2px 10px;border-radius:12px;font-size:0.8em;">30 min</span> 3. Code Walkthrough / Live Coding Blueprint</h3>
 <blockquote>
 <p>[SPEAK] <strong>Script:</strong> &quot;Let&#39;s refactor a messy piece of legacy JavaScript into modern ES6+. I&#39;ll type, you type along.&quot;</p>
 </blockquote>
@@ -159,23 +175,26 @@ const { name, role } = user;
 </li>
 </ul>
 <hr>
-<h3>4. From the Trenches (Pro-Tip)</h3>
-<blockquote>
-<p>[TRENCHES] <strong>Instructor Script:</strong> &quot;In university, you might lose 5 points on a rubric for using <code>var</code>. In the industry, using <code>var</code> in a modern React codebase will cause your Pull Request to be instantly rejected by the Senior Developer. It&#39;s not just a style preference; <code>var</code> causes massive memory leaks and state bugs in complex applications. Writing modern JS isn&#39;t about looking cool; it&#39;s about proving you are safe to work in a production codebase.&quot;</p>
-</blockquote>
-<hr>
-<h3>5. AI Integration &amp; Debugging</h3>
+<h3><span style="background:#2563eb;color:#fff;padding:2px 10px;border-radius:12px;font-size:0.8em;">15 min</span> 4. Debugging + Wrap</h3>
 <ul>
-<li><strong>AI Policy:</strong> Allowed: &quot;Refactor this ES5 code to ES6+&quot;. Not Allowed: &quot;Write my module imports for me.&quot;</li>
 <li><strong>Common Error 1:</strong> &quot;Assignment to constant variable&quot; -&gt; You used <code>const</code> but tried to reassign it. <em>Fix: Use <code>let</code>.</em></li>
 <li><strong>Common Error 2:</strong> &quot;Cannot use import statement outside a module.&quot; -&gt; <em>Fix: Add <code>type=&quot;module&quot;</code> to the script tag in your HTML.</em></li>
 </ul>
 <hr>
-<h3>6. Exercise &amp; Homework</h3>
+<h3><span style="background:#2563eb;color:#fff;padding:2px 10px;border-radius:12px;font-size:0.8em;">55 min</span> 5. In-Class Exercise</h3>
 <blockquote>
 <p>[TIME] <strong>In-Class Exercise (55 min):</strong> Refactor a provided ES5 product inventory script to modern ES6+. Replace all <code>var</code>, convert to arrow functions, use <code>.filter()/.map()</code>, use template literals, and split into two files (<code>data.js</code> and <code>utils.js</code>).</p>
 </blockquote>
+<hr>
+<h3>💻 Online Session (1 hour)</h3>
+<h3>From the Trenches (Pro-Tip)</h3>
 <blockquote>
+<p>[TRENCHES] <strong>Instructor Script:</strong> &quot;In university, you might lose 5 points on a rubric for using <code>var</code>. In the industry, using <code>var</code> in a modern React codebase will cause your Pull Request to be instantly rejected by the Senior Developer. It&#39;s not just a style preference; <code>var</code> causes massive memory leaks and state bugs in complex applications. Writing modern JS isn&#39;t about looking cool; it&#39;s about proving you are safe to work in a production codebase.&quot;</p>
+</blockquote>
+<h3>AI Integration</h3>
+<ul>
+<li><strong>AI Policy:</strong> Allowed: &quot;Refactor this ES5 code to ES6+&quot;. Not Allowed: &quot;Write my module imports for me.&quot;</li>
+</ul>
 <h3>Learning Baseline (Self-Assessment)</h3>
 <blockquote>
 <p><strong>[ASSESSMENT]</strong> By the end of this week, students must be able to say &quot;Yes&quot; to:</p>
@@ -187,8 +206,6 @@ const { name, role } = user;
 <li><input disabled="" type="checkbox"> I can split JavaScript code into separate files using <code>import</code>/<code>export</code>.</li>
 </ul>
 </blockquote>
-</blockquote>
-<blockquote>
 <h3>Take-Home Mission</h3>
 <blockquote>
 <p><strong>[HOMEWORK]</strong> <strong>Mission:</strong> &quot;The Legacy Code Rescue&quot;
@@ -199,9 +216,7 @@ I have provided a 100-line &quot;spaghetti&quot; JavaScript file that handles a 
 <li><strong>The Catch:</strong> You cannot use a single <code>for</code> loop or <code>var</code> keyword anywhere.</li>
 </ol>
 </blockquote>
-</blockquote>
-<hr>
-<h3>7. Instructor Assets Blueprint</h3>
+<h3>Instructor Assets Blueprint</h3>
 <blockquote>
 <p><strong>[ASSETS]</strong> What to prepare before this class:</p>
 <ul>
@@ -209,5 +224,4 @@ I have provided a 100-line &quot;spaghetti&quot; JavaScript file that handles a 
 <li><strong>Solution Repo:</strong> The refactored ES6+ versions, split into clean modules using modern syntax.</li>
 </ul>
 </blockquote>
-
 </body></html>
