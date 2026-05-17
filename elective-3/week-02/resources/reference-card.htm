@@ -1,0 +1,176 @@
+﻿<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Week 2: Async JavaScript Deep-Dive — Resources & Reference</title><style>
+body { font-family: 'Segoe UI', Arial, sans-serif; max-width: 960px; margin: 2em auto; padding: 0 1.5em; line-height: 1.7; color: #1a1a1a; background: #fafafa; }
+h1 { border-bottom: 2px solid #2563eb; padding-bottom: .3em; margin-top: 1.5em; color: #1e3a5f; }
+h2 { border-bottom: 1px solid #cbd5e1; padding-bottom: .2em; margin-top: 1.5em; color: #1e3a5f; }
+h3 { margin-top: 1.3em; color: #334155; }
+h4 { margin-top: 1.2em; color: #334155; }
+a { color: #2563eb; }
+code { background: #eef2ff; padding: .15em .35em; border-radius: 4px; font-size: .9em; }
+pre { background: #1e293b; color: #e2e8f0; padding: 1em; border-radius: 6px; overflow-x: auto; }
+pre code { background: none; padding: 0; color: inherit; }
+blockquote { border-left: 4px solid #2563eb; margin: 1em 0; padding: .5em 1em; background: #f1f5f9; border-radius: 0 6px 6px 0; }
+table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+th, td { border: 1px solid #cbd5e1; padding: .5em .75em; text-align: left; }
+th { background: #2563eb; color: #fff; }
+tr:nth-child(even) { background: #f8fafc; }
+hr { border: none; border-top: 2px solid #e2e8f0; margin: 2em 0; }
+ul, ol { padding-left: 1.5em; }
+li { margin: .3em 0; }
+</style></head><body>
+<nav><a href="../../index.htm">Home</a> &gt; <a href="../../index.htm#prelim">Prelim</a> &gt; <a href="../../week-02-async-javascript-deep-dive.htm">Week 02</a></nav>
+<h1>Week 2: Async JavaScript Deep-Dive — Resources &amp; Reference</h1>
+<h2>Core Concepts Quick Reference</h2>
+<h3>1. The Event Loop</h3>
+<pre><code>Call Stack -&gt; Web APIs (background) -&gt; Callback Queue -&gt; Event Loop</code></pre>
+<p>
+The Event Loop constantly checks: "Is the Call Stack empty? If yes, let the next task from the Queue in."
+</p>
+</p>
+<h3>2. Promise States</h3>
+</p>
+</p>
+<table><thead><tr>
+<th>State</th>
+<th>Meaning</th>
+</tr></thead><tbody>
+</p>
+</p>
+<tr>
+<td><code>Pending</code></td>
+<td>Waiting for the server</td>
+</tr>
+</p>
+<tr>
+<td><code>Fulfilled</code></td>
+<td>The server replied with data</td>
+</tr>
+</p>
+<tr>
+<td><code>Rejected</code></td>
+<td>The network failed</td>
+</tr>
+</p>
+</p>
+<h3>3. The fetch API Gotcha</h3>
+</p>
+</p>
+<pre><code>// WRONG — fetch does NOT reject on 404/500
+const res = await fetch('/missing-page');
+const data = await res.json(); // This might fail!
+
+// RIGHT — always check response.ok
+const res = await fetch('/missing-page');
+if (!res.ok) throw new Error(`HTTP ${res.status}`);
+const data = await res.json();</code></pre>
+</p>
+</p>
+<h3>4. async/await Pattern</h3>
+</p>
+</p>
+<pre><code>// The .then() chain (old way)
+fetch('/api/user')
+    .then(res =&gt; res.json())
+    .then(data =&gt; console.log(data))
+    .catch(err =&gt; console.error(err));
+
+// async/await (modern way)
+async function getUser() {
+    try {
+        const response = await fetch('/api/user');
+        if (!response.ok) throw new Error('Failed to fetch');
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}</code></pre>
+</p>
+<br><strong>Rule:</strong> You cannot use <code>await</code> unless the function has <code>async</code>.
+</p>
+</p>
+<h3>5. Promise.all() for Parallel Requests</h3>
+</p>
+</p>
+<pre><code>// Sequential (slow — waits for each to finish)
+const users = await fetch('/users').then(r =&gt; r.json());
+const posts = await fetch('/posts').then(r =&gt; r.json());
+
+// Parallel (fast — both start at the same time)
+const [users, posts] = await Promise.all([
+    fetch('/users').then(r =&gt; r.json()),
+    fetch('/posts').then(r =&gt; r.json())
+]);</code></pre>
+</p>
+</p>
+<h3>6. The 3-State Fetch Pattern</h3>
+</p>
+</p>
+<pre><code>const [data, setData] = useState(null);
+const [isLoading, setIsLoading] = useState(true);
+const [error, setError] = useState(null);
+
+useEffect(() =&gt; {
+    async function loadData() {
+        try {
+            setIsLoading(true);
+            const res = await fetch(url);
+            if (!res.ok) throw new Error('Fetch failed');
+            setData(await res.json());
+        } catch (err) {
+            setError(err.message);
+        } finally {
+            setIsLoading(false);
+        }
+    }
+    loadData();
+}, [url]);</code></pre>
+</p>
+</p>
+<h2>Learning Baseline Checklist</h2>
+</p>
+</p>
+<ul>
+<li>[ ] I can explain why an app doesn't freeze when fetching data</li>
+<li>[ ] I can write a <code>fetch</code> request using <code>async/await</code></li>
+<li>[ ] I know how to check <code>response.ok</code> before trying to parse JSON</li>
+<li>[ ] I can wrap my async code in a <code>try/catch</code> block</li>
+<li>[ ] I understand when to use <code>Promise.all()</code> to speed up multiple requests</li>
+</p>
+</ul>
+</p>
+<h2>Common Errors</h2>
+</p>
+</p>
+<table><thead><tr>
+<th>Error</th>
+<th>Cause</th>
+<th>Fix</th>
+</tr></thead><tbody>
+</p>
+</p>
+<tr>
+<td>"Cannot read properties of undefined (reading 'json')"</td>
+<td>Fetch failed or forgot to <code>await</code></td>
+<td>Check <code>response.ok</code> and <code>await</code></td>
+</tr>
+</p>
+<tr>
+<td>Infinite loading state</td>
+<td>Forgot <code>finally</code> block or early return in <code>catch</code></td>
+<td>Add <code>finally { setIsLoading(false) }</code></td>
+</tr>
+</p>
+<tr>
+<td>"await is only valid in async functions"</td>
+<td>Used <code>await</code> outside an <code>async</code> function</td>
+<td>Add <code>async</code> to the function signature</td>
+</tr>
+</p>
+
+</body></html>
+
+
+
+

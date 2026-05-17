@@ -1,0 +1,77 @@
+﻿<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Week 11: Frontend/Backend Integration — Exercises</title><style>
+body { font-family: 'Segoe UI', Arial, sans-serif; max-width: 960px; margin: 2em auto; padding: 0 1.5em; line-height: 1.7; color: #1a1a1a; background: #fafafa; }
+h1 { border-bottom: 2px solid #2563eb; padding-bottom: .3em; margin-top: 1.5em; color: #1e3a5f; }
+h2 { border-bottom: 1px solid #cbd5e1; padding-bottom: .2em; margin-top: 1.5em; color: #1e3a5f; }
+h3 { margin-top: 1.3em; color: #334155; }
+h4 { margin-top: 1.2em; color: #334155; }
+a { color: #2563eb; }
+code { background: #eef2ff; padding: .15em .35em; border-radius: 4px; font-size: .9em; }
+pre { background: #1e293b; color: #e2e8f0; padding: 1em; border-radius: 6px; overflow-x: auto; }
+pre code { background: none; padding: 0; color: inherit; }
+blockquote { border-left: 4px solid #2563eb; margin: 1em 0; padding: .5em 1em; background: #f1f5f9; border-radius: 0 6px 6px 0; }
+table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+th, td { border: 1px solid #cbd5e1; padding: .5em .75em; text-align: left; }
+th { background: #2563eb; color: #fff; }
+tr:nth-child(even) { background: #f8fafc; }
+hr { border: none; border-top: 2px solid #e2e8f0; margin: 2em 0; }
+ul, ol { padding-left: 1.5em; }
+li { margin: .3em 0; }
+</style></head><body>
+<nav><a href="../../index.htm">Home</a> &gt; <a href="../../index.htm#prefinals">PreFinals</a> &gt; <a href="../../week-11-frontend-backend-integration.htm">Week 11</a></nav>
+<h1>Week 11: Frontend/Backend Integration — Exercises</h1>
+<h2>In-Class Exercise (55 min)</h2>
+<h3>Task: Full-Stack Todo Integration</h3>
+<p>
+Connect a React frontend to an ASP.NET Core backend.
+</p>
+</p>
+<h3>Starter Files</h3>
+</p>
+</p>
+<ul>
+<li>Use the Todo API from Week 10</li>
+<li>Create a new Vite React app</li>
+</p>
+</ul>
+</p>
+<h3>Requirements</h3>
+</p>
+</p>
+<ol>
+<li>Run both servers simultaneously (API on port 5000, React on port 5173)</li>
+<li>Configure Vite proxy to forward <code>/api</code> requests to the ASP.NET server</li>
+<li>Use <code>useEffect</code> to fetch and display the list of Todos</li>
+<li>Create a form to add a new Todo that persists to the backend</li>
+</p>
+</ol>
+</p>
+<h3>Hints</h3>
+</p>
+</p>
+<ul>
+<li><code>vite.config.js</code> proxy config:</li>
+<br>  <code>`</code>js
+<br>  server: { proxy: { '/api': '<a href="https://localhost:5000'">https://localhost:5000'</a> } }
+<br>  <code>`</code>
+<li>Use <code>fetch</code> with <code>method: 'POST'</code> and <code>JSON.stringify(data)</code></li>
+<li>Handle loading and error states</li>
+</p>
+</ul>
+</p>
+<h3>Stretch Goals</h3>
+</p>
+</p>
+<ul>
+<li>Add environment variables for the API URL</li>
+<li>Add optimistic UI updates</li>
+<li>Add a loading spinner during POST</li>
+</p>
+</ul>
+
+</body></html>
+
+
+
+

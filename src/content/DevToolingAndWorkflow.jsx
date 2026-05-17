@@ -1,0 +1,187 @@
+export default function DevToolingAndWorkflow() {
+  return (
+    <div className="page-content">
+      <h2>Week 4: Dev Tooling &amp; Workflow</h2>
+      <div style={{ background: '#fefce8', padding: '15px', borderLeft: '5px solid #ca8a04', marginBottom: '20px' }}>
+        <strong>📋 This Week at a Glance</strong><br />
+        🔁 Last week: "Week 3: TypeScript Essentials"<br />
+        🎯 This week: "Professionalize our workflow — NPM, Vite, and Git branches are the tools every real project uses"<br />
+        <br />
+        <strong>LAB (3h) Topics:</strong><br />
+        ▸ A. NPM &amp; `package.json` (7 min)<br />
+        ▸ B. The `node_modules` Black Hole (6 min)<br />
+        ▸ C. Bundlers / Vite (7 min)<br />
+        ▸ D. Git Feature Branches (5 min)<br />
+        <br />
+        <strong>ONLINE (1h):</strong> Industry Reality + AI Integration + The Linter's Revenge homework<br />
+        <br />
+        ✅ By end of lab: Know why we use `package.json`; understand `.gitignore` for `node_modules`; scaffold with Vite; install NPM packages; create Git feature branch
+      </div>
+      <blockquote>
+        <p>[TIME] <strong>Session Pacing (Lab - ~150 min)</strong></p>
+        <table>
+          <thead>
+            <tr>
+              <th>Block</th>
+              <th>Time</th>
+              <th>Format</th>
+            </tr>
+          </thead>
+          <tbody><tr>
+            <td>Hook + Analogy</td>
+            <td>15 min</td>
+            <td>Lecture + Whiteboard</td>
+          </tr>
+          <tr>
+            <td>Concept Discussion</td>
+            <td>25 min</td>
+            <td>Lecture + Slides + Terminal Demos</td>
+          </tr>
+          <tr>
+            <td>Code Walkthrough</td>
+            <td>30 min</td>
+            <td>Live Code (NPM init to Vite build)</td>
+          </tr>
+          <tr>
+            <td>Break</td>
+            <td>10 min</td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td>Exercise</td>
+            <td>55 min</td>
+            <td>Lab (solo or pairs)</td>
+          </tr>
+          <tr>
+            <td>Debugging + Wrap</td>
+            <td>15 min</td>
+            <td>Group Debug + Q&amp;A</td>
+          </tr>
+          <tr>
+            <td>Buffer</td>
+            <td>10 min</td>
+            <td>Overflow / Stretch discussion</td>
+          </tr>
+        </tbody></table>
+      </blockquote>
+      <blockquote>
+        <p>[TIP] <strong>Teaching Tip:</strong> This week involves a lot of terminal usage. Students will get frustrated with <code>npm ERR!</code>. Walk around and help them read the actual error messages instead of just typing fixes for them.</p>
+      </blockquote>
+      <hr />
+      <h3><span style={{ background: '#2563eb', color: '#fff', padding: '2px 10px', borderRadius: '12px', fontSize: '0.8em' }}>15 min</span> 1. The Hook &amp; The Analogy</h3>
+      <blockquote>
+        <p>[SPEAK] <strong>Script:</strong> "You've been writing HTML, CSS, and JS in separate files and opening them in a browser. That works for a 3-page website. It fails catastrophically for an app with 5,000 files. Today we learn the industrial machines that build modern web apps."</p>
+      </blockquote>
+      <blockquote>
+        <p>[BOARD] <strong>Whiteboard Analogy:</strong> The Car Factory</p>
+        <ul>
+          <li><strong>Your Code:</strong> The raw steel, rubber, and glass.</li>
+          <li><strong>NPM:</strong> The supply chain delivering pre-built parts (radio, tires) from other factories.</li>
+          <li><strong>Vite (Bundler):</strong> The assembly line that crushes 5,000 files down into a single, highly optimized, drivable car.</li>
+        </ul>
+      </blockquote>
+      <hr />
+      <h3><span style={{ background: '#2563eb', color: '#fff', padding: '2px 10px', borderRadius: '12px', fontSize: '0.8em' }}>25 min</span> 2. Core Concepts &amp; Discussion Topics</h3>
+      <h4>▸ A. NPM &amp; <code>package.json</code> (7 min)</h4>
+      <blockquote>
+        <p><strong>[SPEAK] Discussion:</strong> "NPM is the Node Package Manager. It is a giant library of free code written by other people. The <code>package.json</code> is your receipt. It lists exactly which versions of which libraries your app needs to run."</p>
+        <p><strong>[CODE] Example:</strong></p>
+        <pre><code className="language-json">"dependencies": &#123; "react": "^18.2.0" &#125;,
+        "devDependencies": &#123; "eslint": "^8.0.0" &#125;
+      </code></pre>
+      <p><strong>[TIP] Instructor Tip:</strong> Emphasize that dependencies are required for the app to work in production. DevDependencies are just tools for the developer (like linters).</p>
+      </blockquote>
+      <h4>▸ B. The <code>node_modules</code> Black Hole (6 min)</h4>
+      <blockquote>
+        <p><strong>[SPEAK] Discussion:</strong> "When you run <code>npm install</code>, it downloads all the code listed in your <code>package.json</code> into a folder called <code>node_modules</code>. This folder is massive. It will contain tens of thousands of files."</p>
+        <p><strong>[VISUAL] Example:</strong>
+        Show the <code>.gitignore</code> file with <code>node_modules/</code> in it.</p>
+        <p><strong>[TIP] Gen-Z Hook:</strong> Never commit <code>node_modules</code> to GitHub. It's like mailing your entire house instead of just the blueprint. GitHub will reject it, and your teammates will hate you.</p>
+      </blockquote>
+      <h4>▸ C. Bundlers / Vite (7 min)</h4>
+      <blockquote>
+        <p><strong>[SPEAK] Discussion:</strong> "Browsers are slow at downloading 500 individual JS files. A bundler like Vite takes your modern modules and crushes them together into one optimized <code>.js</code> file for the browser."</p>
+        <p><strong>[CODE] Example:</strong>
+        Run <code>npm run build</code>. Show the terminal output where it shrinks the code into the <code>dist/</code> folder.</p>
+        <p><strong>[TIP] Instructor Tip:</strong> Explain why Create React App (CRA) is dead and why Vite is the modern standard (it uses native ES modules so dev server starts in 100ms instead of 10 seconds).</p>
+      </blockquote>
+      <h4>▸ D. Git Feature Branches (5 min)</h4>
+      <blockquote>
+        <p><strong>[SPEAK] Discussion:</strong> "In the real world, you don't commit directly to the <code>main</code> branch. You create a sandbox, do your work, and then request to merge it."</p>
+        <p><strong>[CODE] Example:</strong></p>
+        <pre><code className="language-bash">git checkout -b feature/login-page
+        # Do work, commit, push
+      </code></pre>
+      <p><strong>[TIP] Instructor Tip:</strong> Drill this rule: "Working directly on <code>main</code> is a fireable offense in most companies."</p>
+      </blockquote>
+      <hr />
+      <h3><span style={{ background: '#2563eb', color: '#fff', padding: '2px 10px', borderRadius: '12px', fontSize: '0.8em' }}>30 min</span> 3. Code Walkthrough / Live Coding Blueprint</h3>
+      <blockquote>
+        <p>[SPEAK] <strong>Script:</strong> "Let's build a modern project from scratch using Vite, install a package, and push it to a feature branch."</p>
+      </blockquote>
+      <ul>
+        <li><strong>Step 1: Scaffolding with Vite</strong><ul>
+        <li><em>Action:</em> Run <code>npm create vite@latest my-app -- --template vanilla</code>. <code>cd</code> into it, run <code>npm install</code>, then <code>npm run dev</code>.</li>
+      </ul>
+      </li>
+      <li><strong>Step 2: Installing a Package</strong><ul>
+      <li><em>Action:</em> Install a visual package like <code>canvas-confetti</code>. Import it into <code>main.js</code> and make a button trigger it. Show the <code>package.json</code> updating.</li>
+      </ul>
+      </li>
+      <li><strong>Step 3: Branching &amp; Pushing</strong><ul>
+      <li><em>Action:</em> Create a feature branch, commit the confetti feature, and push it to GitHub.</li>
+      </ul>
+      </li>
+      </ul>
+      <hr />
+      <h3><span style={{ background: '#2563eb', color: '#fff', padding: '2px 10px', borderRadius: '12px', fontSize: '0.8em' }}>15 min</span> 4. Debugging + Wrap</h3>
+      <ul>
+        <li><strong>Common Error 1:</strong> <code>npm ERR! code ERESOLVE</code>. -&gt; Dependency conflict. Usually fixed by reading the terminal and using <code>--legacy-peer-deps</code> (explain why cautiously).</li>
+        <li><strong>Common Error 2:</strong> <code>command not found: vite</code>. -&gt; You forgot to run <code>npm install</code> before running <code>npm run dev</code>.</li>
+      </ul>
+      <hr />
+      <h3><span style={{ background: '#2563eb', color: '#fff', padding: '2px 10px', borderRadius: '12px', fontSize: '0.8em' }}>55 min</span> 5. In-Class Exercise</h3>
+      <blockquote>
+        <p>[TIME] <strong>In-Class Exercise (55 min):</strong> Scaffold a vanilla Vite app. Install the <code>date-fns</code> package. Write a script that imports <code>formatDistanceToNow</code> to show exactly how many days/hours ago they were born. Push it to a feature branch.</p>
+      </blockquote>
+      <hr />
+      <h3>💻 Online Session (1 hour)</h3>
+      <h3>From the Trenches (Pro-Tip)</h3>
+      <blockquote>
+        <p>[TRENCHES] <strong>Instructor Script:</strong> "When you join a company, day one is usually 'Set up your local environment.' You will pull the code, run <code>npm install</code>, and it will immediately crash. This is normal. Half the job of a modern frontend developer is fighting with mismatched Node versions and broken dependencies. Learn to read the red error text. The answer is almost always literally written in the terminal output, but junior devs panic and don't read it."</p>
+      </blockquote>
+      <h3>AI Integration</h3>
+      <ul>
+        <li><strong>AI Policy:</strong> Allowed: "What does this npm error mean?" Not Allowed: "Write a bash script to do all my git commands."</li>
+      </ul>
+      <h3>Learning Baseline (Self-Assessment)</h3>
+      <blockquote>
+        <p><strong>[ASSESSMENT]</strong> By the end of this week, students must be able to say "Yes" to:</p>
+        <ul>
+          <li><input disabled="" type="checkbox" /> I know why we use <code>package.json</code>.</li>
+          <li><input disabled="" type="checkbox" /> I understand why <code>node_modules</code> must be in <code>.gitignore</code>.</li>
+          <li><input disabled="" type="checkbox" /> I can use Vite to scaffold and run a development server.</li>
+          <li><input disabled="" type="checkbox" /> I can install a 3rd party package using NPM.</li>
+          <li><input disabled="" type="checkbox" /> I can create and push a Git feature branch.</li>
+        </ul>
+      </blockquote>
+      <h3>Take-Home Mission</h3>
+      <blockquote>
+        <p><strong>[HOMEWORK]</strong> <strong>Mission:</strong> "The Linter's Revenge"</p>
+        <ol>
+          <li>Create a new Vite Vanilla project.</li>
+          <li>Write a messy, poorly formatted JavaScript file with unused variables and bad indentation.</li>
+          <li><strong>The Catch:</strong> Install ESLint and Prettier. Configure them. Run the linting script and take a screenshot of ESLint screaming at your bad code, then run the auto-fix command to format it perfectly.</li>
+        </ol>
+      </blockquote>
+      <h3>Instructor Assets Blueprint</h3>
+      <blockquote>
+        <p><strong>[ASSETS]</strong> What to prepare before this class:</p>
+        <ul>
+          <li><strong>Starter Repo:</strong> None. Scaffold live.</li>
+          <li><strong>Solution Repo:</strong> A vanilla Vite project with <code>canvas-confetti</code> and <code>date-fns</code> installed, demonstrating basic package importing.</li>
+        </ul>
+      </blockquote>
+    </div>
+  )
+}

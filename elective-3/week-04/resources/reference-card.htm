@@ -1,0 +1,101 @@
+﻿<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Week 4: NPM & Vite Quick Reference</title><style>
+body { font-family: 'Segoe UI', Arial, sans-serif; max-width: 960px; margin: 2em auto; padding: 0 1.5em; line-height: 1.7; color: #1a1a1a; background: #fafafa; }
+h1 { border-bottom: 2px solid #2563eb; padding-bottom: .3em; margin-top: 1.5em; color: #1e3a5f; }
+h2 { border-bottom: 1px solid #cbd5e1; padding-bottom: .2em; margin-top: 1.5em; color: #1e3a5f; }
+h3 { margin-top: 1.3em; color: #334155; }
+h4 { margin-top: 1.2em; color: #334155; }
+a { color: #2563eb; }
+code { background: #eef2ff; padding: .15em .35em; border-radius: 4px; font-size: .9em; }
+pre { background: #1e293b; color: #e2e8f0; padding: 1em; border-radius: 6px; overflow-x: auto; }
+pre code { background: none; padding: 0; color: inherit; }
+blockquote { border-left: 4px solid #2563eb; margin: 1em 0; padding: .5em 1em; background: #f1f5f9; border-radius: 0 6px 6px 0; }
+table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+th, td { border: 1px solid #cbd5e1; padding: .5em .75em; text-align: left; }
+th { background: #2563eb; color: #fff; }
+tr:nth-child(even) { background: #f8fafc; }
+hr { border: none; border-top: 2px solid #e2e8f0; margin: 2em 0; }
+ul, ol { padding-left: 1.5em; }
+li { margin: .3em 0; }
+</style></head><body>
+<nav><a href="../../index.htm">Home</a> &gt; <a href="../../index.htm#prelim">Prelim</a> &gt; <a href="../../week-04-dev-tooling-and-workflow.htm">Week 04</a></nav>
+<h1>Week 4: NPM &amp; Vite Quick Reference</h1>
+<h2>Essential Commands</h2>
+<h3>NPM</h3>
+<pre><code>npm init -y              # Create package.json
+npm install &lt;package&gt;    # Install a dependency
+npm install -D &lt;package&gt; # Install a dev dependency
+npm run &lt;script&gt;         # Run a script from package.json
+npm ci                   # Install from lockfile (for CI)</code></pre>
+<h3>Vite</h3>
+<pre><code>npm create vite@latest my-app -- --template vanilla
+cd my-app
+npm install
+npm run dev              # Start dev server
+npm run build            # Build for production
+npm run preview          # Preview production build</code></pre>
+<h3>Git Feature Branches</h3>
+<pre><code>git checkout -b feature/login-page   # Create and switch to branch
+git add .                            # Stage all changes
+git commit -m "feat: add login page" # Commit
+git push -u origin feature/login-page # Push to remote</code></pre>
+<h2>package.json Structure</h2>
+<pre><code>{
+    "name": "my-app",
+    "version": "1.0.0",
+    "type": "module",
+    "scripts": {
+        "dev": "vite",
+        "build": "vite build",
+        "preview": "vite preview"
+    },
+    "dependencies": {
+        "date-fns": "^3.0.0"
+    },
+    "devDependencies": {
+        "vite": "^5.0.0"
+    }
+}</code></pre>
+<h2>.gitignore Essentials</h2>
+<pre><code>node_modules/
+dist/
+.env
+.env.local
+*.log
+.DS_Store</code></pre>
+<h2>Learning Baseline Checklist</h2>
+<ul>
+<li>[ ] I know why we use <code>package.json</code></li>
+<li>[ ] I understand why <code>node_modules</code> must be in <code>.gitignore</code></li>
+<li>[ ] I can use Vite to scaffold and run a development server</li>
+<li>[ ] I can install a 3rd party package using NPM</li>
+<li>[ ] I can create and push a Git feature branch</li>
+</ul>
+<h2>Common Errors</h2>
+<table><thead><tr>
+<th>Error</th>
+<th>Cause</th>
+<th>Fix</th>
+</tr></thead><tbody>
+<tr>
+<td><code>npm ERR! code ERESOLVE</code></td>
+<td>Dependency conflict</td>
+<td>Read terminal, try <code>--legacy-peer-deps</code></td>
+</tr>
+<tr>
+<td><code>command not found: vite</code></td>
+<td>Forgot <code>npm install</code></td>
+<td>Run <code>npm install</code> first</td>
+</tr>
+<tr>
+<td>Port already in use</td>
+<td>Another dev server running</td>
+<td>Kill the other process or use <code>--port 3001</code></td>
+</tr>
+
+</body></html>
+
+
+
+

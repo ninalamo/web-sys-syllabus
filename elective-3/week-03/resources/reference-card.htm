@@ -1,0 +1,120 @@
+﻿<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Week 3: TypeScript Essentials — Resources & Reference</title><style>
+body { font-family: 'Segoe UI', Arial, sans-serif; max-width: 960px; margin: 2em auto; padding: 0 1.5em; line-height: 1.7; color: #1a1a1a; background: #fafafa; }
+h1 { border-bottom: 2px solid #2563eb; padding-bottom: .3em; margin-top: 1.5em; color: #1e3a5f; }
+h2 { border-bottom: 1px solid #cbd5e1; padding-bottom: .2em; margin-top: 1.5em; color: #1e3a5f; }
+h3 { margin-top: 1.3em; color: #334155; }
+h4 { margin-top: 1.2em; color: #334155; }
+a { color: #2563eb; }
+code { background: #eef2ff; padding: .15em .35em; border-radius: 4px; font-size: .9em; }
+pre { background: #1e293b; color: #e2e8f0; padding: 1em; border-radius: 6px; overflow-x: auto; }
+pre code { background: none; padding: 0; color: inherit; }
+blockquote { border-left: 4px solid #2563eb; margin: 1em 0; padding: .5em 1em; background: #f1f5f9; border-radius: 0 6px 6px 0; }
+table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+th, td { border: 1px solid #cbd5e1; padding: .5em .75em; text-align: left; }
+th { background: #2563eb; color: #fff; }
+tr:nth-child(even) { background: #f8fafc; }
+hr { border: none; border-top: 2px solid #e2e8f0; margin: 2em 0; }
+ul, ol { padding-left: 1.5em; }
+li { margin: .3em 0; }
+</style></head><body>
+<nav><a href="../../index.htm">Home</a> &gt; <a href="../../index.htm#prelim">Prelim</a> &gt; <a href="../../week-03-typescript-essentials.htm">Week 03</a></nav>
+<h1>Week 3: TypeScript Essentials — Resources &amp; Reference</h1>
+<h2>Core Concepts Quick Reference</h2>
+<h3>1. Inference vs Explicit Types</h3>
+<pre><code>// TS infers this is a string — no need to type it
+let name = "Alice";
+name = 42; // ERROR: Type 'number' is not assignable to type 'string'
+
+// Redundant — let TS infer
+let age: number = 25; // Just write: let age = 25;
+
+// Explicit types needed for function parameters
+function greet(name: string): string {
+    return `Hello, ${name}`;
+}</code></pre>
+<h3>2. Interfaces</h3>
+<pre><code>interface User {
+    id: number;
+    name: string;
+    isAdmin: boolean;
+}
+
+// Using the interface
+const user: User = { id: 1, name: "Alice", isAdmin: true };</code></pre>
+<h3>3. Union Types &amp; Optional Properties</h3>
+<pre><code>interface User {
+    id: number | string;      // Union: can be number OR string
+    middleName?: string;      // Optional: may or may not exist
+}
+
+// Using optional properties safely
+function getMiddleName(user: User): string {
+    return user.middleName ?? "N/A"; // Must handle undefined
+}</code></pre>
+<h3>4. The Danger of <code>any</code></h3>
+<pre><code>// BAD — defeats the purpose of TypeScript
+let data: any = "Hello";
+data.explode(); // TS allows this, but it crashes at runtime!
+
+// GOOD — use unknown instead
+let data: unknown = "Hello";
+if (typeof data === "string") {
+    console.log(data.toUpperCase()); // Safe!
+}</code></pre>
+<h3>5. Type Assertion (Casting)</h3>
+<pre><code>// When you know the type better than TS
+const data = await response.json() as Product[];
+
+// Or with angle bracket syntax (not allowed in TSX)
+const data = &lt;Product[]&gt;await response.json();</code></pre>
+<h3>6. Type Aliases vs Interfaces</h3>
+<pre><code>// Type alias — good for unions, primitives, tuples
+type Status = "pending" | "fulfilled" | "rejected";
+type Point = [number, number];
+
+// Interface — good for objects, supports extension
+interface Product {
+    id: number;
+    name: string;
+}
+
+interface ExtendedProduct extends Product {
+    description: string;
+}</code></pre>
+<h2>Learning Baseline Checklist</h2>
+<ul>
+<li>[ ] I can define an <code>interface</code> for a custom object</li>
+<li>[ ] I can type function parameters and return types</li>
+<li>[ ] I can explain why using <code>any</code> is bad practice</li>
+<li>[ ] I can use a Union type (<code>|</code>) to restrict allowed values</li>
+<li>[ ] I understand that TypeScript errors happen at compile-time, not runtime</li>
+</ul>
+<h2>Common Errors</h2>
+<table><thead><tr>
+<th>Error</th>
+<th>Cause</th>
+<th>Fix</th>
+</tr></thead><tbody>
+<tr>
+<td>"Property does not exist on type"</td>
+<td>Using undefined property</td>
+<td>Add it to the interface</td>
+</tr>
+<tr>
+<td>"Type 'undefined' is not assignable"</td>
+<td>Optional property without check</td>
+<td>Add <code>if</code> or <code>??</code> guard</td>
+</tr>
+<tr>
+<td>"Cannot find name"</td>
+<td>Missing import or typo</td>
+<td>Check spelling and imports</td>
+</tr>
+
+</body></html>
+
+
+
+

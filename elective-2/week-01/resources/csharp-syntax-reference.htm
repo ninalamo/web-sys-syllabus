@@ -1,0 +1,169 @@
+﻿<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Week 1: C# Syntax Reference</title><style>
+body { font-family: 'Segoe UI', Arial, sans-serif; max-width: 960px; margin: 2em auto; padding: 0 1.5em; line-height: 1.7; color: #1a1a1a; background: #fafafa; }
+h1 { border-bottom: 2px solid #2563eb; padding-bottom: .3em; margin-top: 1.5em; color: #1e3a5f; }
+h2 { border-bottom: 1px solid #cbd5e1; padding-bottom: .2em; margin-top: 1.5em; color: #1e3a5f; }
+h3 { margin-top: 1.3em; color: #334155; }
+h4 { margin-top: 1.2em; color: #334155; }
+a { color: #2563eb; }
+code { background: #eef2ff; padding: .15em .35em; border-radius: 4px; font-size: .9em; }
+pre { background: #1e293b; color: #e2e8f0; padding: 1em; border-radius: 6px; overflow-x: auto; }
+pre code { background: none; padding: 0; color: inherit; }
+blockquote { border-left: 4px solid #2563eb; margin: 1em 0; padding: .5em 1em; background: #f1f5f9; border-radius: 0 6px 6px 0; }
+table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+th, td { border: 1px solid #cbd5e1; padding: .5em .75em; text-align: left; }
+th { background: #2563eb; color: #fff; }
+tr:nth-child(even) { background: #f8fafc; }
+hr { border: none; border-top: 2px solid #e2e8f0; margin: 2em 0; }
+ul, ol { padding-left: 1.5em; }
+li { margin: .3em 0; }
+</style></head><body>
+<nav><a href="../../index.htm">Home</a> &gt; <a href="../../index.htm#prelim">Prelim</a> &gt; <a href="../../week-01-csharp-translation-bootcamp.htm">Week 01</a></nav>
+<h1>Week 1: C# Syntax Reference</h1>
+<h2>1. Case Sensitivity</h2>
+<p>
+C# is <strong>strictly case-sensitive</strong>. <code>Console</code>, <code>console</code>, and <code>CONSOLE</code> are three different identifiers.
+</p>
+</p>
+<table><thead><tr>
+<th>Convention</th>
+<th>Used For</th>
+<th>Example</th>
+</tr></thead><tbody>
+</p>
+</p>
+<tr>
+<td><strong>PascalCase</strong></td>
+<td>Classes, Methods, Properties</td>
+<td><code>WriteLine</code>, <code>StudentManager</code></td>
+</tr>
+</p>
+<tr>
+<td><strong>camelCase</strong></td>
+<td>Local variables, parameters</td>
+<td><code>firstName</code>, <code>studentAge</code></td>
+</tr>
+</p>
+<br>Common error: <code>CS0103 — The name does not exist in the current context</code> (usually a casing mistake).
+</p>
+</p>
+<hr>
+</p>
+</p>
+<h2>2. Semicolons &amp; Statements</h2>
+</p>
+<br>Every statement in C# <strong>must</strong> end with a semicolon <code>;</code>.
+</p>
+</p>
+<pre><code>var name = "Alice";  // Correct
+var age = 25         // ERROR: CS1002 — ; expected</code></pre>
+</p>
+<br><strong>Tip:</strong> Whitespace, line breaks, and tabs are ignored by the compiler. The semicolon is what ends a statement.
+</p>
+</p>
+<hr>
+</p>
+</p>
+<h2>3. Console App Anatomy</h2>
+</p>
+<br>A C# console application consists of:
+</p>
+</p>
+<table><thead><tr>
+<th>File</th>
+<th>Purpose</th>
+</tr></thead><tbody>
+</p>
+</p>
+<tr>
+<td><code>MyApp.csproj</code></td>
+<td>Project file — SDK, target framework, dependencies</td>
+</tr>
+</p>
+<tr>
+<td><code>Program.cs</code></td>
+<td>Source code — uses top-level statements in modern .NET</td>
+</tr>
+</p>
+</p>
+<h3>Key I/O Methods</h3>
+</p>
+</p>
+<pre><code>Console.WriteLine("Hello");   // Prints + newline
+Console.Write("Hello");       // Prints without newline
+string input = Console.ReadLine();  // Reads a line as string</code></pre>
+</p>
+</p>
+<h3>Build-Run Cycle</h3>
+</p>
+</p>
+<pre><code>dotnet build    # Compile only
+dotnet run      # Build + execute</code></pre>
+</p>
+</p>
+<hr>
+</p>
+</p>
+<h2>4. Curly Braces &amp; Code Blocks</h2>
+</p>
+<br>Curly braces <code>{}</code> define code blocks for classes, methods, loops, and conditionals.
+</p>
+</p>
+<pre><code>if (age &gt;= 18)
+{
+    Console.WriteLine("Adult");
+}</code></pre>
+</p>
+<br><strong>Always format with</strong> <code>Shift + Alt + F</code> (VS Code) to keep braces aligned.
+</p>
+</p>
+<hr>
+</p>
+</p>
+<h2>5. String Interpolation</h2>
+</p>
+<br>Use <code>$"..."</code> to embed variables directly in strings:
+</p>
+</p>
+<pre><code>var name = "Alice";
+Console.WriteLine($"Hello, {name}!");</code></pre>
+</p>
+</p>
+<hr>
+</p>
+</p>
+<h2>6. Common Errors</h2>
+</p>
+</p>
+<table><thead><tr>
+<th>Error</th>
+<th>Meaning</th>
+<th>Fix</th>
+</tr></thead><tbody>
+</p>
+</p>
+<tr>
+<td><code>CS1002</code></td>
+<td>Missing semicolon</td>
+<td>Add <code>;</code> at end of statement</td>
+</tr>
+</p>
+<tr>
+<td><code>CS0103</code></td>
+<td>Name doesn't exist</td>
+<td>Check capitalization</td>
+</tr>
+</p>
+<tr>
+<td><code>CS1519</code></td>
+<td>Invalid token in class/struct/interface</td>
+<td>Check brace matching</td>
+</tr>
+</p>
+
+</body></html>
+
+
+
+

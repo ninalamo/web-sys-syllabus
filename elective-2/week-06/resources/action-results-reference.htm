@@ -1,0 +1,104 @@
+﻿<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Week 6: Controllers & Action Results Reference</title><style>
+body { font-family: 'Segoe UI', Arial, sans-serif; max-width: 960px; margin: 2em auto; padding: 0 1.5em; line-height: 1.7; color: #1a1a1a; background: #fafafa; }
+h1 { border-bottom: 2px solid #2563eb; padding-bottom: .3em; margin-top: 1.5em; color: #1e3a5f; }
+h2 { border-bottom: 1px solid #cbd5e1; padding-bottom: .2em; margin-top: 1.5em; color: #1e3a5f; }
+h3 { margin-top: 1.3em; color: #334155; }
+h4 { margin-top: 1.2em; color: #334155; }
+a { color: #2563eb; }
+code { background: #eef2ff; padding: .15em .35em; border-radius: 4px; font-size: .9em; }
+pre { background: #1e293b; color: #e2e8f0; padding: 1em; border-radius: 6px; overflow-x: auto; }
+pre code { background: none; padding: 0; color: inherit; }
+blockquote { border-left: 4px solid #2563eb; margin: 1em 0; padding: .5em 1em; background: #f1f5f9; border-radius: 0 6px 6px 0; }
+table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+th, td { border: 1px solid #cbd5e1; padding: .5em .75em; text-align: left; }
+th { background: #2563eb; color: #fff; }
+tr:nth-child(even) { background: #f8fafc; }
+hr { border: none; border-top: 2px solid #e2e8f0; margin: 2em 0; }
+ul, ol { padding-left: 1.5em; }
+li { margin: .3em 0; }
+</style></head><body>
+<nav><a href="../../index.htm">Home</a> &gt; <a href="../../index.htm#midterm">Midterm</a> &gt; <a href="../../week-06-controllers-and-action-results.htm">Week 06</a></nav>
+<h1>Week 6: Controllers &amp; Action Results Reference</h1>
+<h2>IActionResult Return Types</h2>
+<table><thead><tr>
+<th>Helper Method</th>
+<th>HTTP Status</th>
+<th>Description</th>
+</tr></thead><tbody>
+<tr>
+<td><code>View()</code></td>
+<td>200 OK</td>
+<td>Returns HTML view</td>
+</tr>
+<tr>
+<td><code>Json(obj)</code></td>
+<td>200 OK</td>
+<td>Returns JSON data</td>
+</tr>
+<tr>
+<td><code>Redirect(url)</code></td>
+<td>302 Found</td>
+<td>Redirects to another URL</td>
+</tr>
+<tr>
+<td><code>RedirectToAction(name, controller)</code></td>
+<td>302 Found</td>
+<td>Redirects to another action</td>
+</tr>
+<tr>
+<td><code>NotFound()</code></td>
+<td>404 Not Found</td>
+<td>Resource not found</td>
+</tr>
+<tr>
+<td><code>BadRequest()</code></td>
+<td>400 Bad Request</td>
+<td>Invalid input</td>
+</tr>
+<tr>
+<td><code>Unauthorized()</code></td>
+<td>401 Unauthorized</td>
+<td>Not authenticated</td>
+</tr>
+<tr>
+<td><code>File(bytes, type)</code></td>
+<td>200 OK</td>
+<td>Returns a file</td>
+</tr>
+<tr>
+<td><code>Content(str)</code></td>
+<td>200 OK</td>
+<td>Returns raw string</td>
+</tr>
+<tr>
+<td><code>StatusCode(code)</code></td>
+<td>Custom</td>
+<td>Any HTTP status code</td>
+</tr>
+<h2>Post-Redirect-Get (PRG) Pattern</h2>
+<pre><code>[HttpPost]
+public IActionResult Submit(FormModel model)
+{
+    if (!ModelState.IsValid)
+        return View(model); // Return form with errors
+
+    // Save data...
+
+    return RedirectToAction("Success"); // PRG: redirect after POST
+}
+
+public IActionResult Success()
+{
+    return View();
+}</code></pre>
+<p>
+This prevents duplicate form submissions on page refresh.
+</p>
+
+</body></html>
+
+
+
+

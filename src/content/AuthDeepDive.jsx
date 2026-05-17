@@ -1,0 +1,311 @@
+export default function AuthDeepDive() {
+  return (
+    <div className="page-content">
+      <h2>Week 13: Auth Deep-Dive</h2>
+      <div style={{ background: '#fefce8', padding: '15px', borderLeft: '5px solid #ca8a04', marginBottom: '20px' }}>
+        <strong>📋 This Week at a Glance</strong><br />
+        🔁 Last week: "Week 12: API Versioning &amp; Documentation"<br />
+        🎯 This week: "Deep dive into JWT internals — decode, forge, validate, refresh, and secure"<br />
+        <br />
+        <strong>LAB (3h) Topics:</strong><br />
+        ▸ A. JWT Structure (5 min)<br />
+        ▸ B. Header &amp; Payload (4 min)<br />
+        ▸ C. Signature Verification (4 min)<br />
+        ▸ D. Access vs Refresh Tokens (4 min)<br />
+        ▸ E. OAuth2 (4 min)<br />
+        <br />
+        <strong>ONLINE (1h):</strong> Industry Reality + AI Integration + Take-Home Mission<br />
+        <br />
+        ✅ By end of lab: Decode JWTs; understand signed≠encrypted; implement refresh token rotation; protect endpoints with roles
+      </div>
+      <blockquote>
+        <p>[TIME] <strong>Session Pacing (Lab - ~150 min)</strong></p>
+      </blockquote>
+      <table>
+        <thead>
+          <tr>
+            <th>Block</th>
+            <th>Time</th>
+            <th>Format</th>
+          </tr>
+        </thead>
+        <tbody><tr>
+          <td>Hook + Analogy</td>
+          <td>15 min</td>
+          <td>Lecture + Whiteboard</td>
+        </tr>
+        <tr>
+          <td>Concept Discussion</td>
+          <td>25 min</td>
+          <td>Lecture + Slides + JWT Structure Diagram</td>
+        </tr>
+        <tr>
+          <td>Code Walkthrough</td>
+          <td>30 min</td>
+          <td>Live Code (generate -&gt; validate -&gt; refresh -&gt; frontend)</td>
+        </tr>
+        <tr>
+          <td>Break</td>
+          <td>10 min</td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td>Exercise</td>
+          <td>55 min</td>
+          <td>Lab (solo or pairs)</td>
+        </tr>
+        <tr>
+          <td>Debugging + Wrap</td>
+          <td>15 min</td>
+          <td>Group Debug + Q&amp;A</td>
+        </tr>
+        <tr>
+          <td>Buffer</td>
+          <td>10 min</td>
+          <td>Overflow / Stretch discussion</td>
+        </tr>
+      </tbody></table>
+      <blockquote>
+        <p>[TIP] <strong>Teaching Tip (Week 13 strategy):</strong> This is the security deep-dive week. Students implemented basic auth in Week 11 but likely don't understand what's inside a JWT. The concert wristband analogy is essential — reference it for every JWT concept. Build progressively: decode -&gt; generate -&gt; validate -&gt; refresh -&gt; frontend rotation. The jwt.io workshop (exercise requirement 7) is the "aha" moment — students physically forge a token and watch the signature break. Emphasize: JWT payload is NOT encrypted, only signed. Refresh token rotation prevents replay attacks. Never let students hardcode secrets.</p>
+      </blockquote>
+      <h3><span style={{ background: '#2563eb', color: '#fff', padding: '2px 10px', borderRadius: '12px', fontSize: '0.8em' }}>15 min</span> 1. The Hook</h3>
+      <blockquote>
+        <p>[SPEAK] <strong>Script:</strong> "You implemented JWT auth last week, but do you actually know what's inside that token? Can you read it? Can you forge one? If you can't answer yes to all three, you have a security problem. JWTs are everywhere — every time you log into Discord, GitHub, or your bank's website, a token like this is proving who you are. But tokens expire, they get stolen, and they can be forged if you don't understand how they work. This week, we go deep into what makes auth actually secure."</p>
+      </blockquote>
+      <blockquote>
+        <p>[SLIDE] <strong>Slide:</strong> Title: "The Token You're Trusting With Everything"<br />Left: A JWT string split into its three parts with color coding. Right: jwt.io showing the decoded payload with user ID, role, and expiration. Subtitle: "Anyone can read this. The signature is all that stops forgery."</p>
+      </blockquote>
+      <blockquote>
+        <p>[TIP] <strong>Teaching Tip:</strong> Make it visceral. Show a real JWT from their Week 11 project decoded on jwt.io. Students are always shocked that their "secret" user data is readable by anyone.</p>
+      </blockquote>
+      <blockquote>
+        <p>[ENGAGE] <strong>Gen-Z:</strong> "A JWT is like your student ID — anyone can read the name and photo on it, but they can't forge the hologram seal. That seal is the signature. Without it, the ID is worthless."<br /><strong>-&gt; Phone moment:</strong> "Open jwt.io in your browser. Paste this token. Watch it decode in real-time. See your user ID, your role, your expiration — all in plain text. That's what you've been sending with every request."</p>
+      </blockquote>
+      <blockquote>
+        <p>[LOST] <strong>If they're lost:</strong> "Don't worry if JWTs feel abstract. By the end of today, you'll be able to read, generate, and validate them. We start from the basics."</p>
+      </blockquote>
+      <hr />
+      <h3><span style={{ background: '#2563eb', color: '#fff', padding: '2px 10px', borderRadius: '12px', fontSize: '0.8em' }}>15 min</span> 2. The Analogy</h3>
+      <blockquote>
+        <p><em>(Part of Hook — same 15 min block)</em></p>
+        <blockquote>
+          <p>[SPEAK] <strong>Script:</strong> "A JWT is like a concert wristband. When you buy a ticket (login), the venue gives you a wristband (token) that proves you're allowed in. The wristband has info printed on it: your name, the date, which areas you can access (payload). It has a special holographic seal (signature) that proves it's real — you can't just print one at home. The wristband expires at midnight (exp claim). When it expires, you go to the ticket booth (refresh endpoint) with your old wristband to get a new one. If someone steals your wristband, they can get in — that's why you keep it safe."</p>
+        </blockquote>
+        <blockquote>
+          <p>[BOARD] <strong>Whiteboard:</strong> Draw the wristband comparison:</p>
+          <pre><code>CONCERT WRISTBAND = JWT
+          +---------------------------------+
+          | Header: "Hologram: HS256"       | &lt;- Algorithm used
+          | Payload: "Name, VIP area, Date" | &lt;- Claims (NOT encrypted)
+          | Signature: Holographic seal     | &lt;- Proves authenticity
+          | Expiry: "Valid until midnight"  | &lt;- exp claim
+          +---------------------------------+
+      
+          ACCESS TOKEN (15 min) = Day pass
+          REFRESH TOKEN (7 days) = Season pass (can be revoked)
+        </code></pre>
+      </blockquote>
+      <blockquote>
+        <p>[TIP] <strong>Teaching Tip:</strong> The wristband analogy maps perfectly: header = hologram type, payload = printed info, signature = holographic seal, exp = expiry time, refresh = getting a new wristband at the booth. Draw it and reference it throughout.</p>
+      </blockquote>
+      <blockquote>
+        <p>[ENGAGE] <strong>Gen-Z:</strong> "Access token vs refresh token is like your GCash OTP vs your login session. The OTP (access token) expires in 5 minutes — short-lived, used for one transaction. Your login session (refresh token) lasts longer but can be revoked if someone reports your phone stolen."<br /><strong>-&gt; Turn to your neighbor:</strong> "In the wristband analogy, what happens if someone steals your wristband? What prevents them from staying forever? 15 seconds, discuss!"</p>
+      </blockquote>
+      <blockquote>
+        <p>[LOST] <strong>If they're lost:</strong> "Forget the concert. JWT = three parts: header (algorithm), payload (data), signature (proof). Payload is readable. Signature prevents tampering. That's the core."</p>
+      </blockquote>
+      <hr />
+      </blockquote><h3><span style={{ background: '#2563eb', color: '#fff', padding: '2px 10px', borderRadius: '12px', fontSize: '0.8em' }}>25 min</span> 3. Concept Discussion</h3>
+      <blockquote>
+        <p>[TIME] <strong>Pacing:</strong> 25 min total (5 min JWT structure -&gt; 4 min header -&gt; 4 min payload -&gt; 4 min signature -&gt; 4 min access vs refresh -&gt; 4 min OAuth2)</p>
+      </blockquote>
+      <blockquote>
+        <p>[SPEAK] <strong>Script:</strong> "HTTP is stateless — every request is independent. The server doesn't remember who you are between requests. JWTs solve this by giving the client a self-contained token that proves identity. The server doesn't need to store session data — it just validates the token's signature. Let me show you how each part works."</p>
+      </blockquote>
+      <blockquote>
+        <p>[SLIDE] <strong>Slide:</strong> Show one concept at a time. For each: (1) the concept, (2) a real JWT example, (3) what happens if you get it wrong. Don't show all concepts at once.</p>
+      </blockquote>
+      <blockquote>
+        <p>[TIP] <strong>Teaching Tip:</strong> Spend the most time on the signature and access vs refresh tokens — these are where 80% of security issues happen. For the signature, emphasize: it prevents tampering, NOT reading. For refresh tokens, emphasize: rotation prevents replay attacks.</p>
+      </blockquote>
+      <blockquote>
+        <p>[ASK] <strong>Ask the class:</strong> "If I change the role from 'user' to 'admin' in the JWT payload, will the server accept it?" (No — the signature won't match.) "But can I READ the role from the token?" (Yes — payload is base64 encoded, not encrypted.)</p>
+      </blockquote>
+      <blockquote>
+        <p>[ENGAGE] <strong>Gen-Z:</strong> "The JWT signature is like your GCash transaction receipt's QR code. You can read the receipt, but you can't change the amount and have the QR code still be valid. The server scans the QR (signature) to verify nothing was changed."<br /><strong>-&gt; Phone moment:</strong> "Open jwt.io. Paste this token. Change the role from 'user' to 'admin'. Watch the signature turn red — 'Invalid Signature.' That's the whole point of JWTs."</p>
+      </blockquote>
+      <blockquote>
+        <p>[Q&amp;A] <strong>Student Q:</strong> "If the payload isn't encrypted, why not just use a session cookie?"
+        <strong>Short answer:</strong> Sessions require server-side storage. JWTs are stateless.
+        <strong>Real answer:</strong> With sessions, the server stores session data (in memory, database, or Redis). Every request requires a database lookup. With JWTs, the token is self-contained — the server validates the signature and extracts claims without any database query. This scales better for distributed systems. The tradeoff: JWTs can't be easily revoked (hence refresh token rotation).
+        <strong>The hidden question:</strong> "Which is better?" -&gt; Depends. Sessions for simple apps. JWTs for distributed APIs and mobile apps.</p>
+      </blockquote>
+      <blockquote>
+        <p>[Q&amp;A] <strong>Student Q:</strong> "Why do I need refresh tokens? Why not just make the access token last 7 days?"
+        <strong>Short answer:</strong> Because if a 7-day token is stolen, the attacker has 7 days.
+        <strong>Real answer:</strong> Short-lived access tokens (15 min) limit the damage of theft. If an access token is stolen, the attacker has 15 minutes max. Refresh tokens are stored server-side, so they CAN be revoked. If you detect suspicious activity, you revoke the refresh token and the attacker loses access on the next refresh attempt.
+        <strong>The hidden question:</strong> "Is 15 minutes enough?" -&gt; For most apps, yes. The frontend silently refreshes in the background — the user never notices.</p>
+      </blockquote>
+      <blockquote>
+        <p>[LOST] <strong>If they're lost:</strong> "The simplest JWT summary: (1) Three parts: header, payload, signature. (2) Payload is readable, not encrypted. (3) Signature prevents tampering. (4) Access tokens are short-lived. (5) Refresh tokens are long-lived but revocable. That's 90% of what you need."</p>
+      </blockquote>
+      <hr />
+      <h3><span style={{ background: '#2563eb', color: '#fff', padding: '2px 10px', borderRadius: '12px', fontSize: '0.8em' }}>30 min</span> 4. Code Walkthrough</h3>
+      <blockquote>
+        <p>[TIME] <strong>Pacing:</strong> 30 min (8 min generate -&gt; 8 min validate -&gt; 8 min refresh -&gt; 6 min frontend)</p>
+      </blockquote>
+      <blockquote>
+        <p>[SPEAK] <strong>Script:</strong> "Let's implement JWT auth properly — from token generation to validation to refresh to frontend rotation. Each step builds on the last, and by the end you'll have a production-grade auth system."</p>
+      </blockquote>
+      <blockquote>
+        <p>[SLIDE] <strong>Slide:</strong> Show each step on its own slide. Step 1: Generate JWT (claims, signing, expiration). Step 2: Validate JWT (Program.cs config). Step 3: Refresh token flow (rotate, revoke). Step 4: Frontend auto-refresh.</p>
+      </blockquote>
+      <blockquote>
+        <p>[TIP] <strong>Teaching Tip:</strong> <strong>Type each step live.</strong> For token generation, emphasize: the secret key must NEVER be hardcoded. For validation, emphasize: the order matters — <code>AddAuthentication</code> before <code>UseAuthentication</code>. For refresh, emphasize: rotation is the key security feature — each refresh token is single-use.</p>
+      </blockquote>
+      <blockquote>
+        <p>[BOARD] <strong>Whiteboard:</strong> Draw the auth flow:</p>
+        <pre><code>Login -&gt; POST /auth/login -&gt; &#123; accessToken (15min), refreshToken (7 days) &#125;
+        v
+        API call -&gt; Authorization: Bearer &lt;accessToken&gt; -&gt; 200 OK
+        v
+        accessToken expires -&gt; 401 -&gt; POST /auth/refresh -&gt; new tokens
+        v
+        Old refreshToken revoked -&gt; replay attack prevented
+        v
+        refreshToken expires or revoked -&gt; full logout
+      </code></pre>
+      </blockquote>
+      <blockquote>
+        <p>[ENGAGE] <strong>Gen-Z:</strong> "Building JWT auth is like setting up a VIP club system. Step 1: issue the wristband (generate token). Step 2: check the wristband at the door (validate). Step 3: replace expired wristbands (refresh). Step 4: kick out fake wristbands (signature check)."<br /><strong>-&gt; Type-along:</strong> "Type the token generation first. Test it by decoding on jwt.io. Then the validation config. Then the refresh flow. Then the frontend. Test each step before moving on."</p>
+      </blockquote>
+      <blockquote>
+        <p>[Q&amp;A] <strong>Student Q:</strong> "Why does the refresh token flow revoke the old token BEFORE issuing a new one?"
+        <strong>Short answer:</strong> To prevent replay attacks.
+        <strong>Real answer:</strong> If you issued a new token before revoking the old one, both tokens would be valid simultaneously. An attacker who stole the old token could keep using it. By revoking first, only the new token works. If the refresh fails (old token was already used), you know it was stolen and can force a full logout.
+        <strong>The hidden question:</strong> "What if the request fails between revoke and issue?" -&gt; That's why you do both in a database transaction — either both succeed or both fail.</p>
+      </blockquote>
+      <blockquote>
+        <p>[LOST] <strong>If they're lost:</strong> "Start with just token generation. Get a token, decode it on jwt.io, verify it looks right. Then add validation. Then refresh. Then frontend. One piece at a time."</p>
+      </blockquote>
+      <hr />
+      <h3><span style={{ background: '#2563eb', color: '#fff', padding: '2px 10px', borderRadius: '12px', fontSize: '0.8em' }}>15 min</span> 5. Debugging + Wrap</h3>
+      <blockquote>
+        <p>[TIME] <strong>Pacing:</strong> 15 min (5 min common errors -&gt; 5 min group debug -&gt; 5 min Q&amp;A)</p>
+      </blockquote>
+      <blockquote>
+        <p>[SPEAK] <strong>Script:</strong> "Here are the JWT errors and security traps you'll hit this week. The signature validation failure alone will save you from hours of confusion."</p>
+      </blockquote>
+      <blockquote>
+        <p>[SLIDE] <strong>Slide:</strong> Error cards:</p>
+        <pre><code>+--------------------------------------+
+        | "401 Unauthorized — signature       |
+        | validation failed"                   |
+        | Signing key mismatch between         |
+        | generation and validation            |
+        | Fix: use the same secret in both     |
+        +--------------------------------------+
+        +--------------------------------------+
+        | "Token valid but user not authorized"|
+        | Missing or mismatched role claim     |
+        | Fix: check token payload at jwt.io   |
+        +--------------------------------------+
+      </code></pre>
+      </blockquote>
+      <blockquote>
+        <p>[ENGAGE] <strong>Gen-Z:</strong> "The signature mismatch is like having two different GCash PINs — one for sending, one for receiving. They need to match, or nothing works."</p>
+      </blockquote>
+      <blockquote>
+        <p>[Q&amp;A] <strong>Student Q:</strong> "JWT payload is NOT encrypted? So anyone can read my user data?"
+        <strong>Short answer:</strong> Yes. The signature prevents tampering, not reading.
+        <strong>Real answer:</strong> Base64 encoding is NOT encryption. Anyone with the token can decode the payload. Never put passwords, SSNs, or credit cards in a JWT. The signature only proves the payload hasn't been changed — it doesn't hide it.
+        <strong>The hidden question:</strong> "So how do I protect sensitive data?" -&gt; Don't put it in the token. Store it server-side and only include a user ID in the JWT.</p>
+      </blockquote>
+      <blockquote>
+        <p>[LOST] <strong>If they're lost:</strong> "The #1 issue: token works locally but fails in production. Check: (1) Is the JWT secret the same? (2) Is issuer/audience configured? (3) Is the server clock synchronized? JWT expiration is time-based — if the clock is off, valid tokens appear expired."</p>
+      </blockquote>
+      <blockquote>
+        <p>[BOARD] <strong>Whiteboard:</strong> Same secret key = valid. Different secret key = invalid.</p>
+      </blockquote>
+      <hr />
+      <h3><span style={{ background: '#2563eb', color: '#fff', padding: '2px 10px', borderRadius: '12px', fontSize: '0.8em' }}>55 min</span> 6. In-Class Exercise</h3>
+      <blockquote>
+        <p>[TIME] <strong>Pacing:</strong> 55 min total (5 min setup -&gt; 40 min coding -&gt; 10 min share)</p>
+      </blockquote>
+      <blockquote>
+        <p>[SPEAK] <strong>Script:</strong> "Build a complete JWT auth system with refresh tokens. Generate tokens, store refresh tokens in the database, implement token rotation, protect endpoints with <code>[Authorize]</code>, add role-based access, and build the frontend auto-refresh flow."</p>
+      </blockquote>
+      <blockquote>
+        <p>[SLIDE] <strong>Slide:</strong> Exercise checklist:</p>
+        <ul>
+          <li><input disabled="" type="checkbox" /> JWT generation in ASP.NET Core (login returns access + refresh)</li>
+          <li><input disabled="" type="checkbox" /> Store refresh tokens in DB with expiration and revocation</li>
+          <li><input disabled="" type="checkbox" /> Refresh endpoint with token rotation (revoke old, issue new)</li>
+          <li><input disabled="" type="checkbox" /> <code>[Authorize]</code> on protected endpoints</li>
+          <li><input disabled="" type="checkbox" /> <code>[Authorize(Roles = "Admin")]</code> for role-based access</li>
+          <li><input disabled="" type="checkbox" /> Frontend auto-refresh on 401</li>
+          <li><input disabled="" type="checkbox" /> JWT workshop: decode at jwt.io, modify payload, verify signature breaks</li>
+          <li><input disabled="" type="checkbox" /> Logout endpoint that revokes current refresh token</li>
+        </ul>
+      </blockquote>
+      <blockquote>
+        <p>[TIP] <strong>Teaching Tip:</strong> The token rotation (requirement 3) and frontend auto-refresh (requirement 6) are the hardest parts. Students will struggle with the revoke-then-issue pattern and the retry logic. Circulate and help with these specifically.</p>
+      </blockquote>
+      <blockquote>
+        <p>[ENGAGE] <strong>Gen-Z:</strong> <strong>-&gt; Pair up:</strong> "One person handles the backend (JWT generation, validation, refresh), the other handles the frontend (auto-refresh, 401 handling). Then combine and test the full flow together."</p>
+      </blockquote>
+      <blockquote>
+        <p>[LOST] <strong>If they're lost:</strong> "Start with token generation. Get a valid token. Then add validation. Then the refresh endpoint. Then frontend. Save the jwt.io workshop for last — it's the fun part."</p>
+      </blockquote>
+      <hr />
+      <h3>💻 Online Session (1 hour)</h3>
+      <h3>Industry Reality</h3>
+      <blockquote>
+        <p>[SPEAK] <strong>Script:</strong> "Every major platform uses JWTs. GitHub's API accepts JWTs for authentication. Auth0 and Okta (identity providers used by thousands of companies) issue JWTs. The refresh token pattern you're learning is exactly what GitHub, Google, and Amazon use to keep you logged in without requiring constant re-authentication. The 15-minute access token + 7-day refresh token split is the industry standard."</p>
+      </blockquote>
+      <blockquote>
+        <p>[SLIDE] <strong>Slide:</strong> Auth flow diagram used by major platforms. Logos: GitHub, Google, Amazon, Auth0. Stat: "95%+ of modern web APIs use Bearer token auth with JWT."</p>
+      </blockquote>
+      <blockquote>
+        <p>[TIP] <strong>Teaching Tip:</strong> Keep this to 5 minutes. Show them that the auth pattern they're building is the industry standard — not a classroom invention.</p>
+      </blockquote>
+      <blockquote>
+        <p>[ENGAGE] <strong>Gen-Z:</strong> <strong>-&gt; Poll:</strong> "How many of you have been logged out of an app after a few days of inactivity?" (Most hands.) "That's the refresh token expiring. The app couldn't silently renew your session, so it forced a re-login."</p>
+      </blockquote>
+      <h3>AI Integration</h3>
+      <blockquote>
+        <p>[TIME] <strong>Pacing:</strong> 10 min (5 min demo -&gt; 5 min try)</p>
+      </blockquote>
+      <blockquote>
+        <p>[SPEAK] <strong>Script:</strong> "This week, ask AI to generate JWT code, then audit the secret key handling, token expiration, and refresh token rotation. Ask 'Where is the secret stored?' and 'Can this token be replayed?'"</p>
+      </blockquote>
+      <blockquote>
+        <p>[SLIDE] <strong>Slide:</strong> AI usage guide:</p>
+        <table>
+          <thead>
+            <tr>
+              <th>[OK] Allowed</th>
+              <th>[NO] Not Allowed</th>
+            </tr>
+          </thead>
+          <tbody><tr>
+            <td>"Generate JWT token generation code"</td>
+            <td>"Handle my secret keys"</td>
+          </tr>
+          <tr>
+            <td>"What are the security risks of this refresh flow?"</td>
+            <td>"Configure my signing credentials"</td>
+          </tr>
+        </tbody></table>
+      </blockquote>
+      <blockquote>
+        <p>[TIP] <strong>Teaching Tip:</strong> Point out the common AI mistakes: hardcoded secrets, no refresh token rotation, long access token expiration (24 hours), missing issuer/audience validation. Teach students to audit AI's auth code for security issues.</p>
+      </blockquote>
+      <blockquote>
+        <p>[ENGAGE] <strong>Gen-Z:</strong> "AI writes auth code fast but often skips the security details. It's like building a house with no locks — looks good, but anyone can walk in. Always check: where's the secret? How long does the token last? Can it be replayed?"</p>
+      </blockquote>
+      <hr />
+      <p><em>This week's core arc: JWT anatomy -&gt; concert wristband analogy -&gt; generate -&gt; validate -&gt; refresh -&gt; frontend rotation. Key pitfalls: hardcoded secrets, payload confusion (signed ≠ encrypted), missing refresh token rotation, server clock drift in production.</em></p>
+    </div>
+  )
+}

@@ -1,0 +1,159 @@
+﻿<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Week 14: Testing — Resources & Reference</title><style>
+body { font-family: 'Segoe UI', Arial, sans-serif; max-width: 960px; margin: 2em auto; padding: 0 1.5em; line-height: 1.7; color: #1a1a1a; background: #fafafa; }
+h1 { border-bottom: 2px solid #2563eb; padding-bottom: .3em; margin-top: 1.5em; color: #1e3a5f; }
+h2 { border-bottom: 1px solid #cbd5e1; padding-bottom: .2em; margin-top: 1.5em; color: #1e3a5f; }
+h3 { margin-top: 1.3em; color: #334155; }
+h4 { margin-top: 1.2em; color: #334155; }
+a { color: #2563eb; }
+code { background: #eef2ff; padding: .15em .35em; border-radius: 4px; font-size: .9em; }
+pre { background: #1e293b; color: #e2e8f0; padding: 1em; border-radius: 6px; overflow-x: auto; }
+pre code { background: none; padding: 0; color: inherit; }
+blockquote { border-left: 4px solid #2563eb; margin: 1em 0; padding: .5em 1em; background: #f1f5f9; border-radius: 0 6px 6px 0; }
+table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+th, td { border: 1px solid #cbd5e1; padding: .5em .75em; text-align: left; }
+th { background: #2563eb; color: #fff; }
+tr:nth-child(even) { background: #f8fafc; }
+hr { border: none; border-top: 2px solid #e2e8f0; margin: 2em 0; }
+ul, ol { padding-left: 1.5em; }
+li { margin: .3em 0; }
+</style></head><body>
+<nav><a href="../../index.htm">Home</a> &gt; <a href="../../index.htm#finals">Finals</a> &gt; <a href="../../week-14-testing.htm">Week 14</a></nav>
+<h1>Week 14: Testing — Resources &amp; Reference</h1>
+<h2>Core Concepts Quick Reference</h2>
+<h3>1. The Testing Pyramid</h3>
+<pre><code>       /\
+       /  \     E2E Tests (Playwright) — Slow, realistic, expensive
+      /----\
+     /      \   Integration Tests (WebApplicationFactory) — Medium speed
+    /--------\
+   /          \  Unit Tests (xUnit) — Fast, cheap, isolated
+  /------------\</code></pre>
+<p>
+Many unit tests -&gt; Fewer integration -&gt; Fewest E2E
+</p>
+</p>
+<h3>2. Arrange-Act-Assert Pattern</h3>
+</p>
+</p>
+<pre><code>[Fact]
+public void TestName()
+{
+    // Arrange: Set up test data and dependencies
+    var service = new MyService();
+    var input = new Request { Name = "Test" };
+
+    // Act: Run the code being tested
+    var result = service.Process(input);
+
+    // Assert: Verify the outcome
+    Assert.Equal("Test", result.Name);
+}</code></pre>
+</p>
+</p>
+<h3>3. [Fact] vs [Theory]</h3>
+</p>
+</p>
+<pre><code>// [Fact] — one test case
+[Fact]
+public void Add_TwoPlusTwo_EqualsFour() { ... }
+
+// [Theory] — many test cases with different inputs
+[Theory]
+[InlineData(0)]
+[InlineData(-1)]
+[InlineData(-100)]
+public void CreatePost_NegativeId_Throws(int id) { ... }</code></pre>
+</p>
+</p>
+<h3>4. Integration Tests with WebApplicationFactory</h3>
+</p>
+</p>
+<pre><code>public class ApiTests : IClassFixture&lt;WebApplicationFactory&lt;Program&gt;&gt;
+{
+    private readonly HttpClient _client;
+
+    public ApiTests(WebApplicationFactory&lt;Program&gt; factory)
+    {
+        _client = factory.CreateClient();
+    }
+
+    [Fact]
+    public async Task GetPosts_ReturnsOk()
+    {
+        var response = await _client.GetAsync("/api/posts");
+        response.EnsureSuccessStatusCode();
+    }
+}</code></pre>
+</p>
+</p>
+<h3>5. E2E Tests with Playwright</h3>
+</p>
+</p>
+<pre><code>test('user can login', async ({ page }) =&gt; {
+    await page.goto('/login');
+    await page.getByLabel('Username').fill('admin');
+    await page.getByRole('button', { name: 'Login' }).click();
+    await expect(page).toHaveURL('/dashboard');
+});</code></pre>
+</p>
+<br>Use auto-waiting: <code>await expect(locator).toBeVisible()</code> — NOT <code>waitForTimeout</code>.
+</p>
+</p>
+<h3>6. Code Coverage</h3>
+</p>
+</p>
+<pre><code># .NET
+dotnet test --collect:"XPlat Code Coverage"
+
+# Coverage measures which lines run, NOT which behaviors are tested
+# 70-80% is realistic; 100% is usually not worth the effort</code></pre>
+</p>
+</p>
+<h2>Learning Baseline Checklist</h2>
+</p>
+</p>
+<ul>
+<li>[ ] I can write Arrange-Act-Assert unit tests</li>
+<li>[ ] I can use <code>WebApplicationFactory</code> for integration tests</li>
+<li>[ ] I can automate browser tests with Playwright</li>
+<li>[ ] I can generate coverage reports</li>
+<li>[ ] I understand that coverage ≠ bug-free</li>
+</p>
+</ul>
+</p>
+<h2>Common Errors</h2>
+</p>
+</p>
+<table><thead><tr>
+<th>Error</th>
+<th>Cause</th>
+<th>Fix</th>
+</tr></thead><tbody>
+</p>
+</p>
+<tr>
+<td>"Test host process exited unexpectedly"</td>
+<td>DI issue or null reference</td>
+<td>Run with debugger</td>
+</tr>
+</p>
+<tr>
+<td>Flaky E2E tests</td>
+<td>Timing issue</td>
+<td>Use auto-waiting, not manual sleeps</td>
+</tr>
+</p>
+<tr>
+<td>Tests not isolated</td>
+<td>Shared state between tests</td>
+<td>Each test sets up own data</td>
+</tr>
+</p>
+
+</body></html>
+
+
+
+

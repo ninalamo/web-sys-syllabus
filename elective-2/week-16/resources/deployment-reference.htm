@@ -1,0 +1,90 @@
+﻿<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Week 16: Deployment Reference</title><style>
+body { font-family: 'Segoe UI', Arial, sans-serif; max-width: 960px; margin: 2em auto; padding: 0 1.5em; line-height: 1.7; color: #1a1a1a; background: #fafafa; }
+h1 { border-bottom: 2px solid #2563eb; padding-bottom: .3em; margin-top: 1.5em; color: #1e3a5f; }
+h2 { border-bottom: 1px solid #cbd5e1; padding-bottom: .2em; margin-top: 1.5em; color: #1e3a5f; }
+h3 { margin-top: 1.3em; color: #334155; }
+h4 { margin-top: 1.2em; color: #334155; }
+a { color: #2563eb; }
+code { background: #eef2ff; padding: .15em .35em; border-radius: 4px; font-size: .9em; }
+pre { background: #1e293b; color: #e2e8f0; padding: 1em; border-radius: 6px; overflow-x: auto; }
+pre code { background: none; padding: 0; color: inherit; }
+blockquote { border-left: 4px solid #2563eb; margin: 1em 0; padding: .5em 1em; background: #f1f5f9; border-radius: 0 6px 6px 0; }
+table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+th, td { border: 1px solid #cbd5e1; padding: .5em .75em; text-align: left; }
+th { background: #2563eb; color: #fff; }
+tr:nth-child(even) { background: #f8fafc; }
+hr { border: none; border-top: 2px solid #e2e8f0; margin: 2em 0; }
+ul, ol { padding-left: 1.5em; }
+li { margin: .3em 0; }
+</style></head><body>
+<nav><a href="../../index.htm">Home</a> &gt; <a href="../../index.htm#finals">Finals</a> &gt; <a href="../../week-16-capstone-final-deploy-and-present.htm">Week 16</a></nav>
+<h1>Week 16: Deployment Reference</h1>
+<h2>Production-Ready Program.cs</h2>
+<pre><code>var app = builder.Build();
+
+if (!app.Environment.IsDevelopment())
+{
+    app.UseExceptionHandler("/Home/Error");
+    app.UseHsts();
+}
+
+// Auto-migration on startup (for class projects)
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService&lt;AppDbContext&gt;();
+    db.Database.Migrate();
+}
+
+app.UseHttpsRedirection();
+app.UseStaticFiles();
+app.UseRouting();
+app.UseAuthentication();  // MUST be before UseAuthorization
+app.UseAuthorization();
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
+app.Run();</code></pre>
+<h2>Deployment Checklist</h2>
+<ul>
+<li>[ ] Code pushed to GitHub</li>
+<li>[ ] Connection string set as environment variable (never committed!)</li>
+<li>[ ] Build command configured</li>
+<li>[ ] Start command configured</li>
+<li>[ ] Migrations ready (<code>db.Database.Migrate()</code>)</li>
+<li>[ ] HTTPS enabled</li>
+<li>[ ] No hardcoded secrets in code</li>
+<li>[ ] Error pages don't show stack traces</li>
+</ul>
+<h2>Common Deployment Errors</h2>
+<table><thead><tr>
+<th>Error</th>
+<th>Likely Cause</th>
+</tr></thead><tbody>
+<tr>
+<td>502 Bad Gateway</td>
+<td>App crashed on startup — check logs</td>
+</tr>
+<tr>
+<td>CSS broken</td>
+<td>Missing <code>UseStaticFiles()</code> or wrong paths</td>
+</tr>
+<tr>
+<td>Redirect loop</td>
+<td><code>UseHttpsRedirection()</code> conflicts with platform's HTTPS</td>
+</tr>
+<tr>
+<td>Database errors</td>
+<td>Missing migration or wrong connection string</td>
+</tr>
+<tr>
+<td>500 error</td>
+<td>Missing environment variable</td>
+</tr>
+
+</body></html>
+
+
+
+

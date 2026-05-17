@@ -1,0 +1,131 @@
+﻿<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Week 11: Frontend/Backend Integration — Resources & Reference</title><style>
+body { font-family: 'Segoe UI', Arial, sans-serif; max-width: 960px; margin: 2em auto; padding: 0 1.5em; line-height: 1.7; color: #1a1a1a; background: #fafafa; }
+h1 { border-bottom: 2px solid #2563eb; padding-bottom: .3em; margin-top: 1.5em; color: #1e3a5f; }
+h2 { border-bottom: 1px solid #cbd5e1; padding-bottom: .2em; margin-top: 1.5em; color: #1e3a5f; }
+h3 { margin-top: 1.3em; color: #334155; }
+h4 { margin-top: 1.2em; color: #334155; }
+a { color: #2563eb; }
+code { background: #eef2ff; padding: .15em .35em; border-radius: 4px; font-size: .9em; }
+pre { background: #1e293b; color: #e2e8f0; padding: 1em; border-radius: 6px; overflow-x: auto; }
+pre code { background: none; padding: 0; color: inherit; }
+blockquote { border-left: 4px solid #2563eb; margin: 1em 0; padding: .5em 1em; background: #f1f5f9; border-radius: 0 6px 6px 0; }
+table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+th, td { border: 1px solid #cbd5e1; padding: .5em .75em; text-align: left; }
+th { background: #2563eb; color: #fff; }
+tr:nth-child(even) { background: #f8fafc; }
+hr { border: none; border-top: 2px solid #e2e8f0; margin: 2em 0; }
+ul, ol { padding-left: 1.5em; }
+li { margin: .3em 0; }
+</style></head><body>
+<nav><a href="../../index.htm">Home</a> &gt; <a href="../../index.htm#prefinals">PreFinals</a> &gt; <a href="../../week-11-frontend-backend-integration.htm">Week 11</a></nav>
+<h1>Week 11: Frontend/Backend Integration — Resources &amp; Reference</h1>
+<h2>Core Concepts Quick Reference</h2>
+<h3>1. Two-Server Mental Model</h3>
+<pre><code>+------------------+         JSON/HTTP         +------------------+
+|  React (Frontend) | &lt;---------------------&gt; |  ASP.NET (Backend) |
+|  Port 5173        |                          |  Port 5000/5001    |
+|  npm run dev      |                          |  dotnet run        |
++------------------+                          +------------------+</code></pre>
+<p>
+Two completely separate servers. If the backend isn't running, the frontend fails.
+</p>
+</p>
+<h3>2. Environment Variables</h3>
+</p>
+</p>
+<pre><code># .env file
+VITE_API_URL=https://localhost:5000/api</code></pre>
+</p>
+</p>
+<pre><code>// Inside React
+fetch(`${import.meta.env.VITE_API_URL}/users`)</code></pre>
+</p>
+<br>The <code>VITE_</code> prefix is strictly required.
+</p>
+</p>
+<h3>3. Vite Proxy</h3>
+</p>
+</p>
+<pre><code>// vite.config.js
+export default {
+    server: {
+        proxy: {
+            '/api': 'https://localhost:5000'
+        }
+    }
+};</code></pre>
+</p>
+<br>The proxy forwards <code>/api</code> requests to the ASP.NET server, avoiding CORS during development.
+</p>
+</p>
+<h3>4. Bulletproof Fetching (3 States)</h3>
+</p>
+</p>
+<pre><code>// Loading -&gt; spinner
+// Success -&gt; data
+// Error -&gt; error message
+
+if (isLoading) return &lt;Spinner /&gt;;
+if (error) return &lt;ErrorBox message={error} /&gt;;
+return &lt;DataDisplay data={data} /&gt;;</code></pre>
+</p>
+</p>
+<h3>5. POST Request Pattern</h3>
+</p>
+</p>
+<pre><code>const res = await fetch('/api/todos', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ title: 'New Todo' }),
+});
+if (!res.ok) throw new Error('Failed');
+const created = await res.json();</code></pre>
+</p>
+</p>
+<h2>Learning Baseline Checklist</h2>
+</p>
+</p>
+<ul>
+<li>[ ] I know how to run a frontend and backend server simultaneously</li>
+<li>[ ] I can configure a proxy in <code>vite.config.js</code></li>
+<li>[ ] I can use <code>fetch</code> to GET data from my own API and display it in React</li>
+<li>[ ] I can use <code>fetch</code> to POST data from a React form to my API</li>
+</p>
+</ul>
+</p>
+<h2>Common Errors</h2>
+</p>
+</p>
+<table><thead><tr>
+<th>Error</th>
+<th>Cause</th>
+<th>Fix</th>
+</tr></thead><tbody>
+</p>
+</p>
+<tr>
+<td>"Failed to fetch"</td>
+<td>Backend server isn't running</td>
+<td>Start the ASP.NET server</td>
+</tr>
+</p>
+<tr>
+<td>"Unexpected token &lt; in JSON"</td>
+<td>Backend returned HTML error page</td>
+<td>Check Network tab for backend error</td>
+</tr>
+</p>
+<tr>
+<td>CORS error</td>
+<td>Missing proxy or CORS config</td>
+<td>Add proxy to vite.config.js</td>
+</tr>
+</p>
+
+</body></html>
+
+
+
+

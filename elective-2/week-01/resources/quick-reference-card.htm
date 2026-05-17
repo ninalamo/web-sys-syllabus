@@ -1,0 +1,80 @@
+﻿<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Week 1: Quick-Reference Card</title><style>
+body { font-family: 'Segoe UI', Arial, sans-serif; max-width: 960px; margin: 2em auto; padding: 0 1.5em; line-height: 1.7; color: #1a1a1a; background: #fafafa; }
+h1 { border-bottom: 2px solid #2563eb; padding-bottom: .3em; margin-top: 1.5em; color: #1e3a5f; }
+h2 { border-bottom: 1px solid #cbd5e1; padding-bottom: .2em; margin-top: 1.5em; color: #1e3a5f; }
+h3 { margin-top: 1.3em; color: #334155; }
+h4 { margin-top: 1.2em; color: #334155; }
+a { color: #2563eb; }
+code { background: #eef2ff; padding: .15em .35em; border-radius: 4px; font-size: .9em; }
+pre { background: #1e293b; color: #e2e8f0; padding: 1em; border-radius: 6px; overflow-x: auto; }
+pre code { background: none; padding: 0; color: inherit; }
+blockquote { border-left: 4px solid #2563eb; margin: 1em 0; padding: .5em 1em; background: #f1f5f9; border-radius: 0 6px 6px 0; }
+table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+th, td { border: 1px solid #cbd5e1; padding: .5em .75em; text-align: left; }
+th { background: #2563eb; color: #fff; }
+tr:nth-child(even) { background: #f8fafc; }
+hr { border: none; border-top: 2px solid #e2e8f0; margin: 2em 0; }
+ul, ol { padding-left: 1.5em; }
+li { margin: .3em 0; }
+</style></head><body>
+<nav><a href="../../index.htm">Home</a> &gt; <a href="../../index.htm#prelim">Prelim</a> &gt; <a href="../../week-01-csharp-translation-bootcamp.htm">Week 01</a></nav>
+<h1>Week 1: Quick-Reference Card</h1>
+<h2>C# Syntax at a Glance</h2>
+<h3>Hello World</h3>
+<pre><code>Console.WriteLine("Hello, World!");</code></pre>
+<h3>Variables</h3>
+<pre><code>string name = "Alice";
+int age = 25;
+double price = 19.99;
+var inferred = "C# infers the type";  // string</code></pre>
+<h3>Read Input</h3>
+<pre><code>var input = Console.ReadLine();</code></pre>
+<h3>String Interpolation</h3>
+<pre><code>Console.WriteLine($"Hello, {name}!");</code></pre>
+<h3>If/Else</h3>
+<pre><code>if (condition)
+{
+    // ...
+}
+else if (otherCondition)
+{
+    // ...
+}
+else
+{
+    // ...
+}</code></pre>
+<h3>For Loop</h3>
+<pre><code>for (var i = 0; i &lt; 10; i++)
+{
+    Console.WriteLine(i);
+}</code></pre>
+<h3>Foreach Loop</h3>
+<pre><code>foreach (var item in collection)
+{
+    Console.WriteLine(item);
+}</code></pre>
+<h3>Class with Properties</h3>
+<pre><code>public class Person
+{
+    public string Name { get; set; }
+    public int Age { get; set; }
+}</code></pre>
+<h3>Switch Expression (C# 8+)</h3>
+<pre><code>var result = op switch
+{
+    "+" =&gt; a + b,
+    "-" =&gt; a - b,
+    _ =&gt; 0
+};</code></pre>
+<h3>Build &amp; Run</h3>
+<pre><code>dotnet new console -o MyApp
+dotnet run</code></pre>
+
+</body></html>
+
+
+
+

@@ -1,0 +1,92 @@
+﻿<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Week 2: Presentations — Placeholder</title><style>
+body { font-family: 'Segoe UI', Arial, sans-serif; max-width: 960px; margin: 2em auto; padding: 0 1.5em; line-height: 1.7; color: #1a1a1a; background: #fafafa; }
+h1 { border-bottom: 2px solid #2563eb; padding-bottom: .3em; margin-top: 1.5em; color: #1e3a5f; }
+h2 { border-bottom: 1px solid #cbd5e1; padding-bottom: .2em; margin-top: 1.5em; color: #1e3a5f; }
+h3 { margin-top: 1.3em; color: #334155; }
+h4 { margin-top: 1.2em; color: #334155; }
+a { color: #2563eb; }
+code { background: #eef2ff; padding: .15em .35em; border-radius: 4px; font-size: .9em; }
+pre { background: #1e293b; color: #e2e8f0; padding: 1em; border-radius: 6px; overflow-x: auto; }
+pre code { background: none; padding: 0; color: inherit; }
+blockquote { border-left: 4px solid #2563eb; margin: 1em 0; padding: .5em 1em; background: #f1f5f9; border-radius: 0 6px 6px 0; }
+table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+th, td { border: 1px solid #cbd5e1; padding: .5em .75em; text-align: left; }
+th { background: #2563eb; color: #fff; }
+tr:nth-child(even) { background: #f8fafc; }
+hr { border: none; border-top: 2px solid #e2e8f0; margin: 2em 0; }
+ul, ol { padding-left: 1.5em; }
+li { margin: .3em 0; }
+</style></head><body>
+<nav><a href="../../index.htm">Home</a> &gt; <a href="../../index.htm#prelim">Prelim</a> &gt; <a href="../../week-02-async-javascript-deep-dive.htm">Week 02</a></nav>
+<h1>Week 2: Presentations — Placeholder</h1>
+<h2>Planned Slide Deck Content</h2>
+<h3>Slide 1: Title</h3>
+<ul>
+<li>"Week 2: Async JavaScript Deep-Dive"</li>
+<li>"The engine that keeps your app responsive while talking to servers"</li>
+</ul>
+<h3>Slide 2: The Hook</h3>
+<ul>
+<li>Instagram loads feed first, stories later — browser doesn't freeze</li>
+<li>That's async JavaScript</li>
+</ul>
+<h3>Slide 3: Whiteboard Analogy</h3>
+<ul>
+<li>The Fast-Food Restaurant</li>
+<li>Sync: Order, wait at counter, nobody else can order</li>
+<li>Async: Order, get buzzer, sit down, line keeps moving</li>
+</ul>
+<h3>Slide 4: The Event Loop</h3>
+<ul>
+<li>Call Stack -&gt; Web APIs -&gt; Callback Queue -&gt; Event Loop</li>
+<li>"The Event Loop is a bouncer"</li>
+</ul>
+<h3>Slide 5: Promises</h3>
+<ul>
+<li>Pending, Fulfilled, Rejected</li>
+<li>Online shopping order analogy</li>
+</ul>
+<h3>Slide 6: The fetch API Gotcha</h3>
+<ul>
+<li><code>fetch</code> does NOT reject on 404/500</li>
+<li>Must check <code>response.ok</code></li>
+</ul>
+<h3>Slide 7: async/await</h3>
+<ul>
+<li>Before: <code>.then().then().then()</code> (Callback Hell)</li>
+<li>After: <code>async/await</code> (reads like sync code)</li>
+</ul>
+<h3>Slide 8: Promise.all()</h3>
+<ul>
+<li>Parallel vs Sequential fetches</li>
+<li>Cut loading time in half</li>
+</ul>
+<h3>Slide 9: Live Coding Preview</h3>
+<ul>
+<li>Step 1: Raw <code>.then()</code> chain</li>
+<li>Step 2: Upgrade to <code>async/await</code></li>
+<li>Step 3: Error handling with <code>try/catch</code></li>
+<li>Step 4: <code>Promise.all()</code> for parallel requests</li>
+</ul>
+<h3>Slide 10: Common Errors</h3>
+<ul>
+<li>"Cannot read properties of undefined"</li>
+<li>Infinite loading state</li>
+</ul>
+<h3>Slide 11: Exercise Brief</h3>
+<ul>
+<li>Build async fetcher with JSONPlaceholder</li>
+<li>Fetch posts + comments in parallel</li>
+</ul>
+<h3>Slide 12: Learning Baseline</h3>
+<ul>
+<li>Self-assessment checklist</li>
+</ul>
+
+</body></html>
+
+
+
+

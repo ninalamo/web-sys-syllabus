@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useMemo, useCallback } from 'react'
+import { useState, useEffect, useRef, useMemo, useCallback, Suspense } from 'react'
 import Sidebar from './components/Sidebar'
 import Header from './components/Header'
 import Content from './components/Content'
@@ -16,35 +16,10 @@ export default function App() {
   }, [])
 
   const [index, setIndex] = useState(typeof saved.index === 'number' ? saved.index : 0)
-  const [html, setHtml] = useState(null)
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(null)
   const [sidebarOpen, setSidebarOpen] = useState(true)
   const [theme, setTheme] = useState(saved.theme || 'light')
   const [fontSize, setFontSize] = useState(saved.fontSize || 100)
   const contentRef = useRef(null)
-
-  const load = useCallback(async (i) => {
-    const item = ALL_ITEMS[i]
-    if (!item) return
-    setLoading(true)
-    setError(null)
-    setHtml(null)
-    try {
-      const res = await fetch(item.file)
-      if (!res.ok) throw new Error(`HTTP ${res.status}`)
-      const text = await res.text()
-      const doc = new DOMParser().parseFromString(text, 'text/html')
-      const body = doc.querySelector('body')
-      setHtml(body ? body.innerHTML : '<p>No content.</p>')
-    } catch (e) {
-      setError(`Failed to load "${item.file}": ${e.message}`)
-    } finally {
-      setLoading(false)
-    }
-  }, [])
-
-  useEffect(() => { load(index) }, [index, load])
 
   useEffect(() => {
     try {
@@ -60,15 +35,16 @@ export default function App() {
     if (contentRef.current) contentRef.current.scrollTop = 0
   }, [index])
 
-  const goTo = (n) => {
+  const goTo = useCallback((n) => {
     if (n >= 0 && n < ALL_ITEMS.length) setIndex(n)
-  }
+  }, [])
 
   const cycleTheme = () => {
     setTheme((p) => THEMES[(THEMES.indexOf(p) + 1) % THEMES.length])
   }
 
   const item = ALL_ITEMS[index]
+  const CurrentComponent = item?.component
 
   return (
     <div className="app">
@@ -91,13 +67,14 @@ export default function App() {
           onSelect={(i) => goTo(i)}
           open={sidebarOpen}
         />
-        <Content
-          ref={contentRef}
-          html={html}
-          loading={loading}
-          error={error}
-          fontSize={fontSize}
-        />
+        <Content ref={contentRef} fontSize={fontSize}>
+          <Suspense fallback={<div className="loading">Loading…</div>}>
+            {CurrentComponent
+              ? <CurrentComponent />
+              : <p className="error">Content not found.</p>
+            }
+          </Suspense>
+        </Content>
       </div>
     </div>
   )

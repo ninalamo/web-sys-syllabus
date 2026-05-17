@@ -1,0 +1,198 @@
+export default function AspnetCoreWebApi() {
+  return (
+    <div className="page-content">
+      <h2>Week 10: ASP.NET Core Web API</h2>
+      <div style={{ background: '#fefce8', padding: '15px', borderLeft: '5px solid #ca8a04', marginBottom: '20px' }}>
+        <strong>📋 This Week at a Glance</strong><br />
+        🔁 Last week: "Week 9: API Design Philosophy"<br />
+        🎯 This week: "Build ASP.NET Core Web API endpoints that serve JSON data to our frontend"<br />
+        <br />
+        <strong>LAB (3h) Topics:</strong><br />
+        ▸ A. Web API vs MVC / `ControllerBase` (7 min)<br />
+        ▸ B. The `[ApiController]` Attribute (7 min)<br />
+        ▸ C. CORS (6 min)<br />
+        ▸ D. Asynchronous APIs (5 min)<br />
+        <br />
+        <strong>ONLINE (1h):</strong> Industry Reality + AI Integration + Take-Home Mission (The Secure DTO)<br />
+        <br />
+        ✅ By end of lab: Know `Controller` vs `ControllerBase`; explain CORS; use Postman to test GET/POST; understand `[ApiController]`
+      </div>
+      <blockquote>
+        <p>[TIME] <strong>Session Pacing (Lab - ~150 min)</strong></p>
+        <table>
+          <thead>
+            <tr>
+              <th>Block</th>
+              <th>Time</th>
+              <th>Format</th>
+            </tr>
+          </thead>
+          <tbody><tr>
+            <td>Hook + Analogy</td>
+            <td>15 min</td>
+            <td>Lecture + Whiteboard</td>
+          </tr>
+          <tr>
+            <td>Concept Discussion</td>
+            <td>25 min</td>
+            <td>Lecture + Slides + API Attributes</td>
+          </tr>
+          <tr>
+            <td>Code Walkthrough</td>
+            <td>30 min</td>
+            <td>Live Code (Postman &amp; API Setup)</td>
+          </tr>
+          <tr>
+            <td>Break</td>
+            <td>10 min</td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td>Exercise</td>
+            <td>55 min</td>
+            <td>Lab (solo or pairs)</td>
+          </tr>
+          <tr>
+            <td>Debugging + Wrap</td>
+            <td>15 min</td>
+            <td>Group Debug + Q&amp;A</td>
+          </tr>
+          <tr>
+            <td>Buffer</td>
+            <td>10 min</td>
+            <td>Overflow / Stretch discussion</td>
+          </tr>
+        </tbody></table>
+      </blockquote>
+      <blockquote>
+        <p>[TIP] <strong>Teaching Tip:</strong> Students know MVC (returning Views). Now they need to unlearn the "View" part. APIs don't care about HTML. They are strictly data machines.</p>
+      </blockquote>
+      <hr />
+      <h3><span style={{ background: '#2563eb', color: '#fff', padding: '2px 10px', borderRadius: '12px', fontSize: '0.8em' }}>15 min</span> 1. The Hook &amp; The Analogy</h3>
+      <blockquote>
+        <p>[SPEAK] <strong>Script:</strong> "If you build an MVC app with Razor views, it only works in a web browser. But what if your boss asks you to build a mobile app for iOS? You'd have to rewrite the entire application. Web APIs solve this: they serve raw data, so a website, an iPhone app, and a smart fridge can all use the exact same backend."</p>
+      </blockquote>
+      <blockquote>
+        <p>[BOARD] <strong>Whiteboard Analogy:</strong> The Kitchen (Revisited)</p>
+        <ul>
+          <li><strong>MVC:</strong> The kitchen cooks the food AND plates it beautifully (HTML) before handing it to the waiter.</li>
+          <li><strong>Web API:</strong> The kitchen just hands the waiter a box of raw ingredients (JSON). The customer (React/Mobile App) decides how to plate it.</li>
+        </ul>
+      </blockquote>
+      <hr />
+      <h3><span style={{ background: '#2563eb', color: '#fff', padding: '2px 10px', borderRadius: '12px', fontSize: '0.8em' }}>25 min</span> 2. Core Concepts &amp; Discussion Topics</h3>
+      <h4>▸ A. Web API vs MVC / <code>ControllerBase</code> (7 min)</h4>
+      <blockquote>
+        <p><strong>[SPEAK] Discussion:</strong> "In an API, we don't inherit from <code>Controller</code>. We inherit from <code>ControllerBase</code>. Why? Because <code>ControllerBase</code> strips out all the heavy HTML/View rendering engine that we don't need."</p>
+        <p><strong>[CODE] Example:</strong></p>
+        <pre><code className="language-csharp">// MVC
+        public class WebController : Controller &#123; return View(); &#125;
+      
+        // API
+        public class ApiController : ControllerBase &#123; return Ok(data); &#125;
+      </code></pre>
+      <p><strong>[TIP] Instructor Tip:</strong> Emphasize the word <code>Ok()</code>. We return HTTP status codes explicitly now.</p>
+      </blockquote>
+      <h4>▸ B. The <code>[ApiController]</code> Attribute (7 min)</h4>
+      <blockquote>
+        <p><strong>[SPEAK] Discussion:</strong> "Adding <code>[ApiController]</code> to the top of your class gives it superpowers. It automatically reads data from the request body without you asking, and it automatically returns a <code>400 Bad Request</code> if <code>ModelState</code> is invalid."</p>
+        <p><strong>[CODE] Example:</strong></p>
+        <pre><code className="language-csharp">[ApiController]
+        [Route("api/[controller]")]
+        public class UsersController : ControllerBase &#123; ... &#125;
+      </code></pre>
+      <p><strong>[TIP] Gen-Z Hook:</strong> <code>[ApiController]</code> is the automatic spellcheck for your API. It rejects bad requests before they even hit your actual code.</p>
+      </blockquote>
+      <h4>▸ C. CORS (6 min)</h4>
+      <blockquote>
+        <p><strong>[SPEAK] Discussion:</strong> "If your React app is on <code>localhost:3000</code> and your API is on <code>localhost:5000</code>, the browser will BLOCK the connection. This is CORS. It is a browser security feature to stop malicious websites from secretly calling APIs."</p>
+        <p><strong>[VISUAL] Example:</strong>
+        Show the massive red CORS error in Chrome DevTools.</p>
+        <p><strong>[TIP] Instructor Tip:</strong> Teach them to love the CORS error. It means the browser is protecting them. They just have to configure the server to explicitly allow <code>localhost:3000</code>.</p>
+      </blockquote>
+      <h4>▸ D. Asynchronous APIs (5 min)</h4>
+      <blockquote>
+        <p><strong>[SPEAK] Discussion:</strong> "APIs must handle thousands of requests per second. Every database call MUST be async to free up server threads."</p>
+        <p><strong>[CODE] Example:</strong></p>
+        <pre><code className="language-csharp">[HttpGet]
+        public async Task&lt;IActionResult&gt; GetUsers() &#123;
+        return Ok(await _db.Users.ToListAsync());
+        &#125;
+      </code></pre>
+      </blockquote>
+      <hr />
+      <h3><span style={{ background: '#2563eb', color: '#fff', padding: '2px 10px', borderRadius: '12px', fontSize: '0.8em' }}>30 min</span> 3. Code Walkthrough / Live Coding Blueprint</h3>
+      <blockquote>
+        <p>[SPEAK] <strong>Script:</strong> "Let's build a blank API and test it with Postman. No browsers allowed."</p>
+      </blockquote>
+      <ul>
+        <li><strong>Step 1: Scaffolding the API</strong><ul>
+        <li><em>Action:</em> Create a new ASP.NET Core Web API project. Delete the WeatherForecast controller. Create a <code>ProductsController</code>.</li>
+      </ul>
+      </li>
+      <li><strong>Step 2: Attribute Routing</strong><ul>
+      <li><em>Action:</em> Setup <code>[Route("api/products")]</code>. Create a <code>[HttpGet]</code> and a <code>[HttpGet("&#123;id&#125;")]</code>.</li>
+      </ul>
+      </li>
+      <li><strong>Step 3: Postman Testing</strong><ul>
+      <li><em>Action:</em> Open Postman. Hit the GET endpoint. Then create a <code>[HttpPost]</code> endpoint and use Postman to send a JSON body to it. Show the 201 Created response.</li>
+      </ul>
+      </li>
+      <li><strong>Step 4: CORS Configuration</strong><ul>
+      <li><em>Action:</em> Show the 3 lines of code in <code>Program.cs</code> required to enable CORS for a specific origin.</li>
+      </ul>
+      </li>
+      </ul>
+      <hr />
+      <h3><span style={{ background: '#2563eb', color: '#fff', padding: '2px 10px', borderRadius: '12px', fontSize: '0.8em' }}>15 min</span> 4. Debugging + Wrap</h3>
+      <ul>
+        <li><strong>Common Error 1:</strong> Forgetting <code>[ApiController]</code> attribute. -&gt; Without it, validation doesn't auto-fail. The model will be null but no error is returned.</li>
+        <li><strong>Common Error 2:</strong> CORS errors in browser. -&gt; Start Chrome with <code>--disable-web-security</code> for local testing only, or configure CORS in Program.cs.</li>
+      </ul>
+      <hr />
+      <h3><span style={{ background: '#2563eb', color: '#fff', padding: '2px 10px', borderRadius: '12px', fontSize: '0.8em' }}>55 min</span> 5. In-Class Exercise</h3>
+      <blockquote>
+        <p>[TIME] <strong>In-Class Exercise (55 min):</strong> Build an ASP.NET Core Web API that manages a list of "Video Games." Implement: GET /api/games (list), GET /api/games/&#123;id&#125; (single), POST /api/games (create), PUT /api/games/&#123;id&#125; (update), DELETE /api/games/&#123;id&#125; (delete). Test each endpoint with Postman.</p>
+      </blockquote>
+      <hr />
+      <h3>💻 Online Session (1 hour)</h3>
+      <h3>From the Trenches (Pro-Tip)</h3>
+      <blockquote>
+        <p>[TRENCHES] <strong>Instructor Script:</strong> "Why does CORS even exist? Browsers don't trust one website to talk to another by default. And they shouldn't. Think of it like a bank: just because you have an ID card from one building doesn't mean you should walk into the vault of another building. CORS is the security guard at the second building who checks a list of trusted IDs."</p>
+      </blockquote>
+      <h3>AI Integration</h3>
+      <ul>
+        <li><strong>AI Policy:</strong> Allowed: "Create a simple ProductController with CRUD." Not Allowed: "Build my entire e-commerce site."</li>
+      </ul>
+      <h3>Learning Baseline (Self-Assessment)</h3>
+      <blockquote>
+        <p><strong>[ASSESSMENT]</strong> By the end of this week, students must be able to say "Yes" to:</p>
+        <ul>
+          <li><input disabled="" type="checkbox" /> I can create a Controller in ASP.NET Core for APIs.</li>
+          <li><input disabled="" type="checkbox" /> I can explain why CORS errors happen and how to fix them.</li>
+          <li><input disabled="" type="checkbox" /> I can use Postman to test GET and POST requests.</li>
+          <li><input disabled="" type="checkbox" /> I understand the difference between Controller and ControllerBase.</li>
+        </ul>
+      </blockquote>
+      <h3>Take-Home Mission</h3>
+      <blockquote>
+        <p><strong>[HOMEWORK]</strong> <strong>Mission:</strong> "The Secure DTO"
+        Add a Postman Collection to your Video Games API that includes:</p>
+        <ol>
+          <li>A POST request to create a new game with headers.</li>
+          <li>A PUT request to update a game.</li>
+          <li><strong>The Catch:</strong> Your POST must include a custom header <code>X-Auth-Token: learn-2024</code>.</li>
+          <li><strong>Challenge:</strong> Add a middleware that checks this header and returns 401 if it's missing.</li>
+        </ol>
+      </blockquote>
+      <h3>Instructor Assets Blueprint</h3>
+      <blockquote>
+        <p><strong>[ASSETS]</strong> What to prepare before this class:</p>
+        <ul>
+          <li><strong>Starter Repo:</strong> A blank ASP.NET Core Web API project called VideoGamesMinimal.</li>
+          <li><strong>Solution Repo:</strong> A completed Video Games API with all CRUD endpoints and Postman collection JSON file.</li>
+        </ul>
+      </blockquote>
+    </div>
+  )
+}
