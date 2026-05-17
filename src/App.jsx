@@ -90,6 +90,14 @@ export default function App() {
     return item.title
   }, [item])
 
+  const fileToIndexMap = useMemo(() => {
+    const map = {}
+    ALL_ITEMS.forEach((it, i) => {
+      map[it.file] = i
+    })
+    return map
+  }, [])
+
   return (
     <div className="app">
       <Header
@@ -112,12 +120,21 @@ export default function App() {
           open={sidebarOpen}
         />
         <Content ref={contentRef} fontSize={fontSize}>
+          <Breadcrumbs
+            item={item}
+            fileToIndexMap={fileToIndexMap}
+            onSelect={(i) => goTo(i)}
+          />
           <Suspense fallback={<div className="loading">Loading…</div>}>
             {CurrentComponent
               ? <CurrentComponent />
               : <p className="error">Content not found.</p>
             }
           </Suspense>
+          <PageNavigation
+            currentIndex={index}
+            onSelect={(i) => goTo(i)}
+          />
         </Content>
       </div>
 
@@ -128,6 +145,83 @@ export default function App() {
       >
         ▲
       </button>
+    </div>
+  )
+}
+
+function Breadcrumbs({ item, fileToIndexMap, onSelect }) {
+  const segments = useMemo(() => {
+    if (!item) return []
+    const segs = []
+
+    for (const chapter of CHAPTERS) {
+      for (const week of chapter.items) {
+        if (week.file === item.file) {
+          segs.push({ label: chapter.title.split(':')[0], file: chapter.items[0].file })
+          segs.push({ label: week.title, active: true })
+          return segs
+        }
+        if (week.children) {
+          for (const cat of week.children) {
+            const found = cat.items.find((sub) => sub.file === item.file)
+            if (found) {
+              segs.push({ label: chapter.title.split(':')[0], file: chapter.items[0].file })
+              const weekNum = week.file.match(/week-(\d+)/i)?.[1] || ''
+              segs.push({ label: `Week ${parseInt(weekNum)}`, file: week.file })
+              segs.push({ label: cat.title })
+              segs.push({ label: found.title, active: true })
+              return segs
+            }
+          }
+        }
+      }
+    }
+
+    segs.push({ label: item.title, active: true })
+    return segs
+  }, [item])
+
+  if (segments.length === 0) return null
+
+  return (
+    <div className="breadcrumb-container">
+      {segments.map((seg, idx) => {
+        const isLinkable = seg.file && fileToIndexMap[seg.file] !== undefined && !seg.active
+        return (
+          <span key={idx} style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}>
+            {idx > 0 && <span className="breadcrumb-separator">›</span>}
+            <span
+              className={`breadcrumb-item${isLinkable ? ' linkable' : ''}${seg.active ? ' active' : ''}`}
+              onClick={() => isLinkable && onSelect(fileToIndexMap[seg.file])}
+            >
+              {seg.label}
+            </span>
+          </span>
+        )
+      })}
+    </div>
+  )
+}
+
+function PageNavigation({ currentIndex, onSelect }) {
+  const prevItem = currentIndex > 0 ? ALL_ITEMS[currentIndex - 1] : null
+  const nextItem = currentIndex < ALL_ITEMS.length - 1 ? ALL_ITEMS[currentIndex + 1] : null
+
+  return (
+    <div className="page-nav-container">
+      {prevItem ? (
+        <div className="page-nav-card prev" onClick={() => onSelect(currentIndex - 1)}>
+          <span className="page-nav-label">← Previous</span>
+          <span className="page-nav-title">{prevItem.title}</span>
+        </div>
+      ) : <div className="page-nav-spacer" />}
+
+      {nextItem ? (
+        <div className="page-nav-card next" onClick={() => onSelect(currentIndex + 1)}>
+          <span className="page-nav-label">Next →</span>
+          <span className="page-nav-title">{nextItem.title}</span>
+        </div>
+      ) : <div className="page-nav-spacer" />}
     </div>
   )
 }

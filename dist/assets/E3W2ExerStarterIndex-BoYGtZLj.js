@@ -1,0 +1,1 @@
+import{j as s}from"./index-u8WTylHP.js";function e(){return s.jsxs("div",{className:"page-content",children:[s.jsx("h1",{children:"Async Fetcher Exercise"}),s.jsx("button",{id:"loadBtn",children:"Load Posts"}),s.jsx("div",{id:"status"}),s.jsx("div",{id:"posts"})]})}export{e as default};
