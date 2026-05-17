@@ -1,6 +1,6 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>elective-2\week-01-csharp-translation-bootcamp.md</title><style>
+<title>week-01-csharp-translation-bootcamp.md</title><style>
 body { font-family: 'Segoe UI', Arial, sans-serif; max-width: 960px; margin: 2em auto; padding: 0 1.5em; line-height: 1.7; color: #1a1a1a; background: #fafafa; }
 h1 { border-bottom: 2px solid #2563eb; padding-bottom: .3em; margin-top: 1.5em; color: #1e3a5f; }
 h2 { border-bottom: 1px solid #cbd5e1; padding-bottom: .2em; margin-top: 1.5em; color: #1e3a5f; }
@@ -20,7 +20,6 @@ hr { border: none; border-top: 2px solid #e2e8f0; margin: 2em 0; }
 <h2>Week 1: C# Translation Bootcamp</h2>
 <blockquote>
 <p>[TIME] <strong>Session Pacing (180 min)</strong></p>
-</blockquote>
 <table>
 <thead>
 <tr>
@@ -29,8 +28,7 @@ hr { border: none; border-top: 2px solid #e2e8f0; margin: 2em 0; }
 <th>Format</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>Hook + Analogy</td>
 <td>15 min</td>
 <td>Lecture + Whiteboard</td>
@@ -75,154 +73,152 @@ hr { border: none; border-top: 2px solid #e2e8f0; margin: 2em 0; }
 <td>5 min</td>
 <td>Overflow</td>
 </tr>
-</tbody>
-</table>
-<blockquote>
-<p>[TIP] <strong>Teaching Tip (first week strategy):</strong> This is Week 1 — students are nervous, some haven't written code in months, and a few might have missed the prerequisite. Keep the energy high and the stakes low. The goal is not mastery — it's "I survived and I understand the map." Tell them explicitly: "If you only get one thing from this week, it should be: curly braces, semicolons, and <code>var</code>."</p>
+</tbody></table>
 </blockquote>
-<hr />
-<h3>The Hook</h3>
 <blockquote>
-<p>[SPEAK] <strong>Script:</strong> "You already know .NET concepts through VB. C# is the same ideas, different syntax. Think of it like speaking the same language with a different accent. Let's see how they compare — side by side."</p>
-<p>[SLIDE] <strong>Slide:</strong> Title: "Welcome to C# — You Already Know This"<br />
-Left column: VB logo with "You know this"  |  Right column: C# logo with "Now add this"<br />
-Subtitle: "Same .NET. Different syntax. More options."</p>
-<p>[TIP] <strong>Teaching Tip:</strong> The goal is to bridge from what they know to what the industry uses. Keep it positive — "you already understand OOP and .NET, now here's the syntax that most companies use." Frame it as expanding their toolkit, not replacing what they learned.</p>
-<p>[ENGAGE] <strong>Gen-Z:</strong> "C# and VB are like having two phones — one Android, one iOS. Same apps (Facebook, TikTok), different way of swiping. You already know one, now you're learning the other."<br />
-<strong>-&gt; Poll:</strong> "Raise your hand if you've written code in VB before." (Acknowledge their existing knowledge as valuable.)</p>
-<p>[LOST] <strong>If they're lost:</strong> Some incoming students might not have strong VB. That's fine. Say: "If you don't know VB well, don't worry — we're starting from scratch with C#. VB knowledge is a head start, not a requirement."</p>
+<p>[TIP] <strong>Teaching Tip:</strong> This is Week 1. Students are nervous. Some haven&#39;t written code in months. If they only get one thing from this week, it should be: curly braces, semicolons, and <code>var</code>.</p>
 </blockquote>
-<hr />
-<h3>The Analogy</h3>
+<hr>
+<h3>1. The Hook &amp; The Analogy</h3>
 <blockquote>
-<p>[SPEAK] <strong>Script:</strong> "Learning C# from VB is like switching from an automatic to a manual transmission. The destination is the same — you're still writing .NET code — but you get more direct control over how things work. You declare your types explicitly, close your own curly braces, and decide exactly what's <code>public</code> vs <code>private</code>. It's the same road, just a different driving experience."</p>
-<p>[SLIDE] <strong>Slide:</strong> Side-by-side images: an automatic car gear shift labeled "Familiar (VB)" and a manual stick shift labeled "Expanded (C#)".<br />
-Below: "Same .NET platform. More options in your toolkit."</p>
-<p>[BOARD] <strong>Whiteboard:</strong> Draw a line down the middle. Left: "VB syntax" — write keywords: <code>End Function</code>, <code>Dim</code>, <code>Then</code>. Right: "C# syntax" — write keywords: <code>}</code>, <code>;</code>, <code>var</code>. Draw an arrow from left to right labeled "Translation mode."</p>
-<p>[TIP] <strong>Teaching Tip:</strong> The manual transmission analogy works for about 70% of Filipino students — many have experience with jeepneys or family cars. For the 30% who don't drive, add: "Or like switching from Globe to Smart. Same phone, different network, different settings." Keep the tone neutral — both are valid, you're just adding a skill.</p>
-<p>[ENGAGE] <strong>Gen-Z:</strong> <strong>-&gt; Turn to your neighbor:</strong> "On a scale of 'automatic' to 'manual,' where are you in your coding journey right now?" (10 seconds, then ask 2 people to share.)</p>
-<p>[LOST] <strong>If they're lost:</strong> "Think of it like phone OS updates. Android to iOS. Same apps (Facebook, TikTok), different way of swiping. You know the destination, you just need to learn the new gestures."</p>
+<p>[SPEAK] <strong>Script:</strong> &quot;You already know .NET concepts through VB. C# is the same ideas, different syntax. Think of it like speaking the same language with a different accent. Let&#39;s see how they compare — side by side.&quot;</p>
 </blockquote>
-<hr />
-<h3>Concept Discussion</h3>
 <blockquote>
-<p>[TIME] <strong>Pacing:</strong> 25 min total (15 min lecture -&gt; 5 min side-by-side -&gt; 5 min Q&amp;A)</p>
-<p>[SPEAK] <strong>Script:</strong> "Here's the cheat sheet for this entire week. Print this. Put it on your wall. There are exactly 6 things different between VB and C#: curly braces, semicolons, <code>var</code>, string interpolation, LINQ, and properties. Everything else is the same." (Proceed through the comparison table.)</p>
-<p>[SLIDE] <strong>Slide:</strong> The comparison table from the original content — but reformatted as a single readable slide with one row highlighted at a time. Do NOT show all rows at once (cognitive overload). Reveal one row, explain it, then reveal the next.</p>
-<p>[SLIDE] <strong>Whiteboard:</strong> After the slide, redraw the table from memory. Ask the class to call out differences. This acts as a recall test. "What's one difference?" — write it. "Give me another." Keep going until they cover all 6.</p>
-<p>[TIP] <strong>Teaching Tip:</strong> The comparison table is the nucleus of this section. Spend the most time on <strong>case sensitivity</strong> (it will cause the most errors today) and <strong><code>var</code></strong> (misunderstood concept — students think it means "no type"). For <code>var</code>, emphasize: "It's not typeless. It's 'compiler picks the type.' Very different."</p>
-<p>[ASK] <strong>Ask the class:</strong> "Which of these differences do you think will bite you the most?" (Pause. Let them call out guesses. Someone will say semicolons. Confirm: "Yes. You will forget semicolons. I still forget semicolons.")</p>
-<p>[ENGAGE] <strong>Gen-Z:</strong> "This table is the 'cheat code' for leveling up from VB to C#."<br />
-<strong>-&gt; Phone moment:</strong> "Take a photo of this table. Name it 'csharp-cheatsheet.' You'll reference it every week this term."</p>
-<p>[Q&amp;A] <strong>Student Q:</strong> "Do we have to memorize all these?"
-<strong>Short answer:</strong> No. You'll memorize them by making mistakes.
-<strong>Real answer:</strong> The errors force you to learn. Every missing semicolon or wrong case will throw a compiler error. Read the error, fix it, move on. By Week 3, it's automatic.
-<strong>The hidden question:</strong> "How much effort does this take?" -&gt; Less than you think. Your VB brain just needs retraining.</p>
-<p>[Q&amp;A] <strong>Student Q:</strong> "Why does Microsoft even have two languages?"
-<strong>Short answer:</strong> Historical. VB was for beginners, C# for professionals. They kept both for legacy, but new features only go to C#.
-<strong>The hidden question:</strong> "Why are we switching mid-program?" -&gt; Because the industry did.</p>
-<p>[LOST] <strong>If they're lost:</strong> Some students freeze at the table. Pivot to a <strong>code-only comparison</strong> — show one VB line, immediately show the C# equivalent, repeat. No table, just code side-by-side. Say: "Forget the table. Here's the pattern: VB says <code>End Something</code>, C# says <code>}</code>. That's 90% of it."</p>
+<p>[BOARD] <strong>Whiteboard Analogy:</strong> The Automatic vs. Manual Car</p>
+<ul>
+<li><strong>VB (Automatic):</strong> It handles the shifting for you (<code>End If</code>, <code>End Sub</code>).</li>
+<li><strong>C# (Manual):</strong> You have direct control over the gears. You declare types explicitly, close your own curly braces <code>{}</code>, and define exact access modifiers. Same road, different driving experience.</li>
+</ul>
 </blockquote>
-<hr />
-<h3>Code Walkthrough</h3>
+<hr>
+<h3>2. Core Concepts &amp; Module Discussion</h3>
+<h4>Topic A: Case Sensitivity (The #1 Bug Creator)</h4>
+<p><strong>Module Syllabus Content:</strong>
+Unlike Visual Basic (VB), which is case-insensitive, C# is a strictly case-sensitive language. This means that the compiler treats uppercase and lowercase letters as completely different entities. For example, <code>Console</code>, <code>console</code>, and <code>CONSOLE</code> represent three entirely distinct identifiers in C#. </p>
+<p>Because of this strictness, the C# ecosystem relies heavily on standardized naming conventions to keep code readable:</p>
+<ul>
+<li><strong>PascalCase</strong> (capitalizing the first letter of every word) is used for Classes, Methods, and Properties (e.g., <code>WriteLine</code>, <code>StudentManager</code>).</li>
+<li><strong>camelCase</strong> (lowercase first word, capitalized subsequent words) is used for local variables and method parameters (e.g., <code>firstName</code>, <code>studentAge</code>).</li>
+</ul>
+<p>Failing to match the exact casing will result in a compiler error, specifically <code>CS0103: The name does not exist in the current context</code>.</p>
 <blockquote>
-<p>[TIME] <strong>Pacing:</strong> 35 min (10 min read-along -&gt; 15 min live type -&gt; 10 min trace-through)</p>
-<p>[SPEAK] <strong>Script:</strong> "Let me show you a class you already know in VB. Here it is. Now here it is in C#. Don't read it — <em>scan</em> it. What's the same? What's different?" (Show the VB Student class, then the C# version.)</p>
-<p>[SLIDE] <strong>Slide:</strong> Side-by-side of the VB and C# <code>Student</code> class. The two code blocks on one slide. Use color coding: green = same parts, red = syntax differences.</p>
-<p>[TIP] <strong>Teaching Tip:</strong> Walk through this <strong>line by line</strong>, pointing at each one:
-- "VB says <code>Public Class Student</code> — C# says <code>public class Student</code> (lowercase <code>class</code>!)"
-- "VB says <code>End Class</code> — C# says <code>}</code>"
-- "VB says <code>Public Property Name As String</code> — C# says <code>public string Name { get; set; }</code>"</p>
-<p>The goal is pattern recognition, not memorization.</p>
-<p>[BOARD] <strong>Whiteboard:</strong> Draw the "mental stack" for the console app entry point:
-<code>Program.cs execution (top to bottom)
-+-----------------+
-| Console.WriteLine|  &lt;- line 1
-| var name = ...   |  &lt;- line 2  
-| Console.WriteLine|  &lt;- line 3
-+-----------------+</code>
-Emphasize: "C# 10+ lets you just write code at the top level. No class. No <code>Sub Main</code>. Just code."</p>
-<p>[ASK] <strong>Ask the class:</strong> "What do you notice about the constructor? How is it different from VB?" (Wait 5 seconds. The answer: it doesn't say <code>Sub New</code> — it just says <code>Student(...)</code> because the class name IS the constructor.)</p>
-<p>[ENGAGE] <strong>Gen-Z:</strong> "This is the 'before and after glow-up' of our code."<br />
-<strong>-&gt; Type-along moment:</strong> "Open Visual Studio. Create a new Console App. Type this with me. Do NOT copy-paste — type every line. Typing builds muscle memory." (Walk around the room as they type.)</p>
-<p>[TIP] <strong>Teaching Tip (live coding):</strong> When you type the code live, <strong>make deliberate mistakes</strong>. Type <code>console.writeline</code> with wrong case. Let it fail. Say "See? Case sensitive." Then fix it. Students learn more from watching you debug than from watching you write perfect code.</p>
-<p>[Q&amp;A] <strong>Student Q:</strong> "What are 'top-level statements'?"
-<strong>Short answer:</strong> A shortcut. Instead of wrapping your code in a class, you just write it.
-<strong>Real answer:</strong> Before C# 10, every console app needed <code>class Program { static void Main() { ... } }</code>. Top-level statements let you skip the ceremony. Internally, the compiler wraps it for you.
-<strong>The hidden question:</strong> "Is this cheating?" -&gt; No. It's the modern way. You'll learn the <code>Main</code> method version later.</p>
-<p>[LOST] <strong>If they're lost:</strong> "Let me show you the simplest possible C# program:"<br />
-<code>csharp
-Console.WriteLine("Hi");
-var name = Console.ReadLine();
-Console.WriteLine($"Hello, {name}");</code>
-"That's it. Three lines. Type these three lines. Get them working. Everything else builds on this."</p>
+<p><strong>[SPEAK] Instructor Script:</strong> &quot;VB doesn&#39;t care if you yell at it or whisper. C# is extremely strict. If you miscapitalize a single letter, the compiler will crash.&quot;</p>
+<p><strong>[CODE] Live Example:</strong></p>
+<pre><code class="language-csharp">// WRONG: Throws CS0103
+console.writeline(&quot;Hello&quot;); 
+
+// RIGHT
+Console.WriteLine(&quot;Hello&quot;);
+</code></pre>
+<p><strong>[TIP] Instructor Tip:</strong> Teach them the rule: Classes and Methods are <code>PascalCase</code>. Variables are <code>camelCase</code>. Force them to fix casing errors manually rather than relying on Auto-Correct.</p>
 </blockquote>
-<hr />
-<h3>The "Why Should I Care?"</h3>
+<h4>Topic B: Statement Terminators (The Semicolon)</h4>
+<p><strong>Module Syllabus Content:</strong>
+In VB, the end of a line of code (pressing Enter) tells the compiler that the statement is finished. In C#, whitespace, line breaks, and tabs are completely ignored by the compiler. Instead, C# requires an explicit statement terminator: the semicolon (<code>;</code>).</p>
+<p>Because whitespace is ignored, you have the flexibility to write multiple statements on a single line, or stretch a complex statement across multiple lines for readability. However, forgetting to place a semicolon at the end of a logical statement is the most common syntax error for developers transitioning to C#, resulting in a <code>CS1002: ; expected</code> error.</p>
 <blockquote>
-<p>[SPEAK] <strong>Script:</strong> "C# is the primary language for new .NET development. Most job postings for .NET developers ask for C#. You already understand .NET through VB — learning C# expands your options and makes you more versatile in the job market."</p>
-<p>[SLIDE] <strong>Slide:</strong> A screenshot of a real job posting from Indeed or LinkedIn filtered for ".NET developer." Highlight the "C#" requirement. Bonus points if it mentions the Philippines.</p>
-<p>[TIP] <strong>Teaching Tip:</strong> This section should be short and punchy — 5 minutes max. Don't elaborate. The goal is motivation, not instruction. Students need to hear: "This expands what you can do and where you can work."</p>
-<p>[ENGAGE] <strong>Gen-Z:</strong> <strong>-&gt; Poll:</strong> "By show of hands, how many of you have seen 'C#' in a job posting?" (Almost all hands should go up for senior students. If not, show them live.)</p>
-<p>[Q&amp;A] <strong>Student Q:</strong> "Why are we learning C# if we already know VB?"
-<strong>Short answer:</strong> Most companies build new products in C#. Knowing both makes you more valuable.
-<strong>Real answer:</strong> VB and C# both run on the same .NET framework. The concepts you already know — classes, properties, loops, events — are identical. C# just uses a different syntax that has become the industry standard for new development. Think of it as bilingualism for programmers.</p>
+<p><strong>[SPEAK] Instructor Script:</strong> &quot;In VB, pressing Enter ends the line. In C#, pressing Enter does nothing. You must tell the compiler you are finished speaking by using a semicolon.&quot;</p>
+<p><strong>[CODE] Live Example:</strong></p>
+<pre><code class="language-csharp">var name = &quot;Alice&quot; // ERROR: Missing semicolon
+var age = 25;      // SUCCESS
+</code></pre>
+<p><strong>[TIP] Gen-Z Hook:</strong> The semicolon is the period at the end of a text message. It means &quot;I&#39;m done making my point.&quot;</p>
 </blockquote>
-<hr />
-<h3>Exercise: C# Console App Portfolio</h3>
+<h4>Topic C: Scope Definition (Curly Braces)</h4>
+<p><strong>Module Syllabus Content:</strong>
+Visual Basic defines the start and end of code blocks using verbose word pairs, such as <code>If...End If</code>, <code>Sub...End Sub</code>, or <code>For...Next</code>. C# replaces all of these verbose terminators with curly braces <code>{}</code>.</p>
+<p>The opening brace <code>{</code> marks the beginning of a scope block, and the closing brace <code>}</code> marks the end. This applies to namespaces, classes, methods, loops, and conditional statements. While this makes C# code more concise, it requires developers to be diligent about indentation and formatting to visually track which brace closes which block.</p>
 <blockquote>
-<p>[TIME] <strong>Pacing:</strong> 55 min total (5 min setup -&gt; 40 min coding -&gt; 10 min share)</p>
-<p>[SPEAK] <strong>Script:</strong> "Okay, your turn. Here's what I want you to build. Three programs in one console app. FizzBuzz, Calculator, Student Manager. You have 40 minutes. Work alone or in pairs. I'll be walking around."</p>
-<p>[SLIDE] <strong>Slide:</strong> The exercise requirements as a checklist with checkboxes:
-- [ ] FizzBuzz (loop 1-100, print Fizz/Buzz/FizzBuzz)
-- [ ] Calculator (two numbers + operator -&gt; result)
-- [ ] Student Manager (List<Student>, add/list/search)</p>
-<p>[TIP] <strong>Teaching Tip:</strong> <strong>Circulate.</strong> The first 10 minutes of lab time is when students get stuck on setup. Walk around and unstick them. Spend no more than 30 seconds per person — if it takes longer, bring the whole class together and address the common issue.</p>
-<p>[ENGAGE] <strong>Gen-Z:</strong> <strong>-&gt; Pair up:</strong> "If you're stuck, find the person next to you. Explain your problem. Half the time you'll figure it out by explaining."</p>
-<p>[ASK] <strong>Mid-exercise check-in (at 20 min):</strong> "How many have FizzBuzz working?" (Show of hands.) "How many have Calculator working?" (Show of hands.) "If you have neither, that's okay — let's do a quick group debug."</p>
-<p>[TIP] <strong>Teaching Tip (stretch time):</strong> For students who finish early, have a "stretch goal" ready: "Can you write FizzBuzz with no <code>if</code> statement? Use a ternary expression." or "Can you make your calculator handle continuous operations? (like a real calculator: <code>5 + 3 = 8, then + 2 = 10)</code>"</p>
-<p>[LOST] <strong>If they're lost:</strong> For FizzBuzz specifically, some students freeze at the logic. Walk them through it verbally: "Start with the most specific case first — FizzBuzz (divisible by both). Then Fizz (divisible by 3). Then Buzz (divisible by 5). Then else (just the number). Order matters."</p>
+<p><strong>[SPEAK] Instructor Script:</strong> &quot;Instead of writing <code>End If</code> or <code>End Sub</code>, C# uses curly braces <code>{}</code> to create a visual box around a block of code.&quot;</p>
+<p><strong>[CODE] Live Example:</strong></p>
+<pre><code class="language-csharp">if (isAdmin) 
+{
+    Console.WriteLine(&quot;Welcome back!&quot;);
+    // The brace below replaces &#39;End If&#39;
+}
+</code></pre>
+<p><strong>[TIP] Instructor Tip:</strong> Tell students to ALWAYS format their document (<code>Shift + Alt + F</code> in VS Code) to line up their curly braces. A misaligned brace is the fastest way to break a program.</p>
 </blockquote>
-<hr />
-<h3>AI Integration Note</h3>
+<h4>Topic D: Implicit Typing (<code>var</code>)</h4>
+<p><strong>Module Syllabus Content:</strong>
+In older versions of C#, developers had to explicitly declare the type on both sides of an assignment (e.g., <code>List&lt;string&gt; names = new List&lt;string&gt;();</code>). C# introduced the <code>var</code> keyword to reduce this redundancy. </p>
+<p>It is crucial to understand that <code>var</code> does <strong>not</strong> mean the variable is untyped or dynamic (like in JavaScript). It simply instructs the compiler to infer the data type based on the value on the right side of the equals sign during compilation. Once the type is inferred, it is locked in forever. You cannot assign a string to a variable that was inferred as an integer.</p>
 <blockquote>
-<p>[TIME] <strong>Pacing:</strong> 10 min (5 min demo -&gt; 5 min try)</p>
-<p>[SPEAK] <strong>Script:</strong> "Here's the AI policy for this course: AI is allowed, but only for specific things. This week, you can ask AI to explain syntax differences. You CANNOT ask it to write your exercises. Here's the difference."</p>
-<p>[SLIDE] <strong>Slide:</strong> Two columns:
-| [OK] Allowed | [NO] Not Allowed |
-|-----------|--------------|
-| "What's the C# equivalent of For Each?" | "Write my FizzBuzz for me" |
-| "Why does this say CS1002?" | "Generate the whole Student Manager" |
-| "Explain what this code does" | "Debug this without telling me why" |</p>
-<p>[SPEAK] <strong>Script:</strong> "The prompt template for this week: 'In C#, how do I [thing I knew in VB]?' This builds your translation muscle. Every time you use AI to translate, you learn the pattern. By Week 4, you won't need it."</p>
-<p>[TIP] <strong>Teaching Tip:</strong> Be explicit about <strong>WHY</strong> the restriction exists. "If AI writes your code, you can't debug it. If you can't debug it, you fail the midterm when I take the AI away." Frame it as skill-building, not punishment.</p>
-<p>[ENGAGE] <strong>Gen-Z:</strong> "Think of AI as your 'code-senpai' — it guides, but doesn't do your homework. Using AI isn't cheating. Using AI without understanding IS."</p>
+<p><strong>[SPEAK] Instructor Script:</strong> &quot;This is the most misunderstood feature. <code>var</code> is NOT typeless like JavaScript. It just means &#39;Compiler, figure out the type based on the right side of the equals sign, and lock it in forever.&#39;&quot;</p>
+<p><strong>[CODE] Live Example:</strong></p>
+<pre><code class="language-csharp">var age = 25; // Compiler locks this in as an &#39;int&#39;
+age = &quot;hello&quot;; // ERROR: Cannot implicitly convert type &#39;string&#39; to &#39;int&#39;
+</code></pre>
+<p><strong>[TIP] Instructor Tip:</strong> Show them the error live. Prove that <code>var</code> is strictly typed by hovering over the word <code>var</code> in the IDE to show that the tooltip reads <code>int</code>.</p>
 </blockquote>
-<hr />
-<h3>Debugging / "Watch Out For"</h3>
+<hr>
+<h3>3. Code Walkthrough / Live Coding Blueprint</h3>
 <blockquote>
-<p>[TIME] <strong>Pacing:</strong> 15 min (5 min common errors -&gt; 5 min group debug -&gt; 5 min Q&amp;A)</p>
-<p>[SPEAK] <strong>Script:</strong> "Let's save you the Google searches. Here are the 5 errors you WILL see this week. Memorize their error codes."</p>
-<p>[SLIDE] <strong>Slide:</strong> Error cards — each error gets a box with: error code, what it looks like, how to fix it.
-<code>+---------------------------------+
-| CS1002 — ; expected             |
-| You forgot a semicolon.         |
-| Check the line above too.       |
-+---------------------------------+
-+---------------------------------+
-| CS0103 — name doesn't exist     |
-| Misspelled? Wrong scope?        |
-+---------------------------------+</code></p>
-<p>[ENGAGE] <strong>Gen-Z:</strong> "CS1002 is the 'Tas you forgot your jacket' of C# errors — it happens to everyone, it's annoying, but you just fix it and move on."</p>
-<p>[ASK] <strong>Group debug:</strong> "I'm going to show you some broken code. In 30 seconds with your neighbor, find all the errors." (Show intentionally broken code from the walkthrough.) "Let's fix them together."</p>
-<p>[Q&amp;A] <strong>Student Q:</strong> "Why does the error message say 'expected' — I don't get it."
-<strong>Short answer:</strong> "<code>; expected</code> is compiler-speak for 'you forgot a semicolon here.'
-<strong>Real answer:</strong> The compiler expected to find a semicolon at this position because every statement ends with one. It's reading left to right and saying "I was expecting a <code>;</code> but I found a newline instead."
-<strong>The hidden question:</strong> "Why is the error message so unhelpful?" -&gt; Compiler errors are written for other compilers, not humans. You learn to read them with practice.</p>
-<p>[TIP] <strong>Teaching Tip:</strong> End the debugging section with <strong>one clear action item</strong>: "If you only remember one thing from this section: when in doubt, add <code>;</code>. If that doesn't fix it, check for case."</p>
+<p>[SPEAK] <strong>Script:</strong> &quot;Let me show you a class you already know in VB. Now here it is in C#. Don&#39;t read it — <em>scan</em> it. What&#39;s the same? What&#39;s different?&quot;</p>
 </blockquote>
-<hr />
-<h3>Teaching Script</h3>
-<p>This week's annotations cover: pacing table at top, inline annotations per section ([SPEAK] Script, [SLIDE] Slide, [BOARD] Whiteboard, [TIP] Teaching Tip, [ENGAGE] Gen-Z, [Q&amp;A] Student Q, [LOST] If they're lost), and this summary. Refer to inline annotations during delivery — they are ordered to match the flow of the lesson.</p>
-<hr />
+<ul>
+<li><strong>Step 1: The &quot;Hello World&quot; Translation</strong><ul>
+<li><em>Action:</em> Write a simple VB Console output, then translate to C# Top-Level Statements.</li>
+</ul>
+</li>
+<li><strong>Step 2: Translating a Class</strong><ul>
+<li><em>Action:</em> Show the transition from <code>Public Property Name As String</code> to <code>public string Name { get; set; }</code>.</li>
+</ul>
+</li>
+<li><strong>Step 3: Translating an Array &amp; Loop</strong><ul>
+<li><em>Action:</em> Translate a <code>For Each</code> loop into a C# <code>foreach</code> loop.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3>4. From the Trenches (Pro-Tip)</h3>
+<blockquote>
+<p>[TRENCHES] <strong>Instructor Script:</strong> &quot;Why did the industry switch from VB to C#? Because C# is strictly enforced. When you&#39;re working on a codebase with 50 other developers, you don&#39;t want &#39;loose&#39; code. You want strict rules so that if someone breaks something, the compiler yells at them immediately. C# forces you to be disciplined, which makes you a professional.&quot;</p>
+</blockquote>
+<hr>
+<h3>5. AI Integration &amp; Debugging</h3>
+<ul>
+<li><strong>AI Policy:</strong> Allowed: &quot;In C#, how do I write a For Each loop?&quot; Not Allowed: &quot;Write my FizzBuzz exercise for me.&quot;</li>
+<li><strong>Common Error 1:</strong> <code>CS1002 — ; expected</code>. -&gt; You forgot a semicolon. Check the end of your line.</li>
+<li><strong>Common Error 2:</strong> <code>CS0103 — The name doesn&#39;t exist in the current context</code>. -&gt; 99% of the time, this is a case sensitivity issue. You typed <code>console</code> instead of <code>Console</code>.</li>
+</ul>
+<hr>
+<h3>6. Exercise &amp; Homework</h3>
+<blockquote>
+<p>[TIME] <strong>In-Class Exercise (55 min):</strong> Three small programs in one console app: FizzBuzz, a basic Calculator, and a Student Manager list. Use C# syntax.</p>
+</blockquote>
+<blockquote>
+<h3>Learning Baseline (Self-Assessment)</h3>
+<blockquote>
+<p><strong>[ASSESSMENT]</strong> By the end of this week, students must be able to say &quot;Yes&quot; to:</p>
+<ul>
+<li><input disabled="" type="checkbox"> I know that C# is case-sensitive and can fix capitalization errors.</li>
+<li><input disabled="" type="checkbox"> I remember to end my statements with semicolons.</li>
+<li><input disabled="" type="checkbox"> I can write a basic <code>foreach</code> loop in C#.</li>
+<li><input disabled="" type="checkbox"> I understand how to use <code>var</code> properly.</li>
+<li><input disabled="" type="checkbox"> I can create a simple Class with Properties in C#.</li>
+</ul>
+</blockquote>
+</blockquote>
+<blockquote>
+<h3>Take-Home Mission</h3>
+<blockquote>
+<p><strong>[HOMEWORK]</strong> <strong>Mission:</strong> &quot;The Translation Engine&quot;
+Take the classic &quot;Bank Account&quot; assignment from your previous VB course. </p>
+<ol>
+<li>Rewrite the entire application in C#.</li>
+<li><strong>The Catch:</strong> You must use <code>var</code> for all local variable declarations, and use string interpolation <code>$</code> for all console outputs.</li>
+</ol>
+</blockquote>
+</blockquote>
+<hr>
+<h3>7. Instructor Assets Blueprint</h3>
+<blockquote>
+<p><strong>[ASSETS]</strong> What to prepare before this class:</p>
+<ul>
+<li><strong>Starter Repo:</strong> A PDF or markdown file containing the &quot;Old VB Code&quot; snippets that you will translate live.</li>
+<li><strong>Solution Repo:</strong> A C# Console Application with the completed FizzBuzz, Calculator, and Student Manager code.</li>
+</ul>
+</blockquote>
+
 </body></html>

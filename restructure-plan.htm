@@ -1,6 +1,6 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Restructure Plan: web-sys Split into Week Files</title><style>
+<title>restructure-plan.md</title><style>
 body { font-family: 'Segoe UI', Arial, sans-serif; max-width: 960px; margin: 2em auto; padding: 0 1.5em; line-height: 1.7; color: #1a1a1a; background: #fafafa; }
 h1 { border-bottom: 2px solid #2563eb; padding-bottom: .3em; margin-top: 1.5em; color: #1e3a5f; }
 h2 { border-bottom: 1px solid #cbd5e1; padding-bottom: .2em; margin-top: 1.5em; color: #1e3a5f; }
@@ -19,7 +19,7 @@ hr { border: none; border-top: 2px solid #e2e8f0; margin: 2em 0; }
 <nav><a href="index.htm">Home</a></nav>
 <h1>Restructure Plan: web-sys Split into Week Files</h1>
 <h2>1. Target Folder Structure</h2>
-<pre class="codehilite"><code>web-sys/
+<pre><code>web-sys/
 +-- elective-2/                          &lt;- New folder
 |   +-- index.md                         &lt;- Mother file
 |   +-- week-01-csharp-translation-bootcamp.md
@@ -62,7 +62,6 @@ hr { border: none; border-top: 2px solid #e2e8f0; margin: 2em 0; }
 +-- elective-3-discussions.md            &lt;- Keep original
 +-- teaching-script-format.md           &lt;- Keep original
 </code></pre>
-
 <h2>2. File Naming — All 16 Weeks</h2>
 <h3>Elective 2 (source: <code>elective-2-discussions.md</code>)</h3>
 <table>
@@ -74,8 +73,7 @@ hr { border: none; border-top: 2px solid #e2e8f0; margin: 2em 0; }
 <th>Start Line</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>01</td>
 <td>C# Translation Bootcamp</td>
 <td><code>week-01-csharp-translation-bootcamp.md</code></td>
@@ -171,8 +169,7 @@ hr { border: none; border-top: 2px solid #e2e8f0; margin: 2em 0; }
 <td><code>week-16-capstone-final-deploy-and-present.md</code></td>
 <td>3329</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <h3>Elective 3 (source: <code>elective-3-discussions.md</code>)</h3>
 <table>
 <thead>
@@ -183,8 +180,7 @@ hr { border: none; border-top: 2px solid #e2e8f0; margin: 2em 0; }
 <th>Start Line</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>01</td>
 <td>Modern JavaScript Review</td>
 <td><code>week-01-modern-javascript-review.md</code></td>
@@ -280,11 +276,10 @@ hr { border: none; border-top: 2px solid #e2e8f0; margin: 2em 0; }
 <td><code>week-16-capstone-final.md</code></td>
 <td>3290</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <h2>3. Mother File (index.md) Content Template</h2>
 <h3><code>elective-2/index.md</code></h3>
-<pre class="codehilite"><code class="language-markdown"># Elective 2: Building Web Products — Full Lesson Content
+<pre><code class="language-markdown"># Elective 2: Building Web Products — Full Lesson Content
 
 &gt; **Course:** C# for ASP.NET Core MVC — from VB.NET foundations to shipping a full-stack web product.
 
@@ -343,9 +338,8 @@ hr { border: none; border-top: 2px solid #e2e8f0; margin: 2em 0; }
 
 *Source: [elective-2-discussions.md](../elective-2-discussions.md) (full original)*
 </code></pre>
-
 <h3><code>elective-3/index.md</code></h3>
-<pre class="codehilite"><code class="language-markdown"># Elective 3: Production-Grade Products — Full Lesson Content
+<pre><code class="language-markdown"># Elective 3: Production-Grade Products — Full Lesson Content
 
 &gt; **Course:** React + ASP.NET Core Web API — from modern JavaScript to shipping a production-grade full-stack application.
 
@@ -404,7 +398,6 @@ hr { border: none; border-top: 2px solid #e2e8f0; margin: 2em 0; }
 
 *Source: [elective-3-discussions.md](../elective-3-discussions.md) (full original)*
 </code></pre>
-
 <h2>4. Extraction Approach</h2>
 <h3>Tool: Use a Python script (or PowerShell script)</h3>
 <p><strong>Recommended approach:</strong> Write a Python script at <code>D:\loa\web-sys\split-weeks.py</code> that:</p>
@@ -413,17 +406,17 @@ hr { border: none; border-top: 2px solid #e2e8f0; margin: 2em 0; }
 <li>Detects week boundaries via regex: <code>^## Week \d+:</code></li>
 <li>Extracts the week title from the heading</li>
 <li>Derives the filename using the kebab-case conversion rules</li>
-<li>Writes each week's content (from its heading to the next week heading or end of file) to the appropriate file</li>
+<li>Writes each week&#39;s content (from its heading to the next week heading or end of file) to the appropriate file</li>
 </ol>
 <h3>Week boundary identification</h3>
 <ul>
 <li><strong>Start of a week:</strong> Line matching <code>^## Week \d+:</code></li>
 <li><strong>End of a week:</strong> Next <code>^## Week \d+:</code> line, OR next <code>^## TERM \d+:</code> line (E2 only), OR end of file</li>
-<li><strong>Week title:</strong> Extract text after <code>## Week N:</code> (e.g., <code>C# Translation Bootcamp</code>)</li>
+<li><strong>Week title:</strong> Extract text after <code>## Week N: </code> (e.g., <code>C# Translation Bootcamp</code>)</li>
 <li><strong>Content to include:</strong> Everything from the <code>## Week N:</code> heading line up to (but not including) the next week heading</li>
 </ul>
 <h3>Kebab-case conversion rules</h3>
-<pre class="codehilite"><code>Input: &quot;C# Translation Bootcamp&quot;
+<pre><code>Input: &quot;C# Translation Bootcamp&quot;
 -&gt; lowercase: &quot;c# translation bootcamp&quot;
 -&gt; replace # with sharp: &quot;csharp translation bootcamp&quot;
 -&gt; replace spaces/special with hyphens: &quot;csharp-translation-bootcamp&quot;
@@ -432,23 +425,24 @@ hr { border: none; border-top: 2px solid #e2e8f0; margin: 2em 0; }
 -&gt; trim leading/trailing hyphens
 -&gt; prefix with &quot;week-NN-&quot;
 </code></pre>
-
-<p><strong>Edge cases to handle:</strong>
-- <code>&amp;</code> -&gt; <code>and</code> (e.g., "HTTP &amp; The Web" -&gt; "http-and-the-web")
-- <code>#</code> -&gt; <code>sharp</code> (e.g., "C#" -&gt; "csharp") 
-- <code>/</code> -&gt; hyphen (e.g., "CI/CD &amp; Deployment" -&gt; "ci-cd-and-deployment")
-- <code>—</code> / <code>--</code> -&gt; hyphen (e.g., "Capstone Final — Deploy &amp; Present" -&gt; "capstone-final-deploy-and-present")
-- Non-alphanumeric characters -&gt; remove or convert
-- Collapse consecutive hyphens</p>
+<p><strong>Edge cases to handle:</strong></p>
+<ul>
+<li><code>&amp;</code> -&gt; <code>and</code> (e.g., &quot;HTTP &amp; The Web&quot; -&gt; &quot;http-and-the-web&quot;)</li>
+<li><code>#</code> -&gt; <code>sharp</code> (e.g., &quot;C#&quot; -&gt; &quot;csharp&quot;) </li>
+<li><code>/</code> -&gt; hyphen (e.g., &quot;CI/CD &amp; Deployment&quot; -&gt; &quot;ci-cd-and-deployment&quot;)</li>
+<li><code>—</code> / <code>--</code> -&gt; hyphen (e.g., &quot;Capstone Final — Deploy &amp; Present&quot; -&gt; &quot;capstone-final-deploy-and-present&quot;)</li>
+<li>Non-alphanumeric characters -&gt; remove or convert</li>
+<li>Collapse consecutive hyphens</li>
+</ul>
 <h3>Term headings (E2 discussions only)</h3>
-<p>The <code>elective-2-discussions.md</code> file has <code>## TERM N: TITLE</code> lines that serve as section breaks. These should <strong>not</strong> be extracted into week files. They exist only in the original. The mother file's term breakdown is sufficient.</p>
+<p>The <code>elective-2-discussions.md</code> file has <code>## TERM N: TITLE</code> lines that serve as section breaks. These should <strong>not</strong> be extracted into week files. They exist only in the original. The mother file&#39;s term breakdown is sufficient.</p>
 <h3>Appendix sections</h3>
 <p>Both files have trailing appendices (AI Integration Guide, cross-cutting practices, etc.) after Week 16. These appendices should <strong>not</strong> be extracted into week files. Only the 16 week sections should be extracted. The content after the last <code>## Week 16:</code> heading is the appendix.</p>
 <h3>Validation after split</h3>
 <ul>
 <li>Count: exactly 16 files per folder (totalling 32 week files + 2 index files)</li>
 <li>Each file should start with <code>## Week N:</code> (the heading)</li>
-<li>Each file should end with a <code>---</code> separator before the footer (or E2's security checklist)</li>
+<li>Each file should end with a <code>---</code> separator before the footer (or E2&#39;s security checklist)</li>
 <li>Verify no week file is empty</li>
 <li>Verify original discussion files are unchanged</li>
 </ul>
@@ -463,10 +457,10 @@ hr { border: none; border-top: 2px solid #e2e8f0; margin: 2em 0; }
 </ol>
 <h2>6. Weekly File Footer</h2>
 <p>Each week file should end with a return-to-index link:</p>
-<pre class="codehilite"><code class="language-markdown">---
+<pre><code class="language-markdown">---
 
 *Source: [elective-2-discussions.md](../elective-2-discussions.md) — [Back to index](index.md)*
 </code></pre>
-
 <p>(For E3, use <code>elective-3-discussions.md</code> as the source.)</p>
+
 </body></html>

@@ -1,6 +1,6 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>elective-3\week-11-frontend-backend-integration.md</title><style>
+<title>week-11-frontend-backend-integration.md</title><style>
 body { font-family: 'Segoe UI', Arial, sans-serif; max-width: 960px; margin: 2em auto; padding: 0 1.5em; line-height: 1.7; color: #1a1a1a; background: #fafafa; }
 h1 { border-bottom: 2px solid #2563eb; padding-bottom: .3em; margin-top: 1.5em; color: #1e3a5f; }
 h2 { border-bottom: 1px solid #cbd5e1; padding-bottom: .2em; margin-top: 1.5em; color: #1e3a5f; }
@@ -17,10 +17,24 @@ tr:nth-child(even) { background: #f8fafc; }
 hr { border: none; border-top: 2px solid #e2e8f0; margin: 2em 0; }
 </style></head><body>
 <nav><a href="index.htm">Home</a></nav>
-<h2>Week 11: Frontend-Backend Integration</h2>
+<h2>Week 11: Frontend/Backend Integration</h2>
+<div style="background: #fefce8; padding: 15px; border-left: 5px solid #ca8a04; margin-bottom: 20px;">
+    <strong>📋 This Week at a Glance</strong><br>
+    🔁 Last week: &quot;Week 10: ASP.NET Core Web API&quot;<br>
+    🎯 This week: &quot;Connect React frontend to ASP.NET backend — full stack integration in the browser&quot;<br>
+    <br>
+    <strong>LAB (3h) Topics:</strong><br>
+    ▸ A. Two-Server Mental Model (7 min)<br>
+    ▸ B. Environment Variables (6 min)<br>
+    ▸ C. Vite Proxy (7 min)<br>
+    ▸ D. Bulletproof Fetching (5 min)<br>
+    <br>
+    <strong>ONLINE (1h):</strong> Industry Reality + AI Integration + Take-Home Mission (The Full Stack Delete)<br>
+    <br>
+    ✅ By end of lab: Run frontend + backend together; configure Vite proxy; fetch GET/POST from React; handle loading/error states
+</div>
 <blockquote>
-<p>[TIME] <strong>Session Pacing (180 min)</strong></p>
-</blockquote>
+<p>[TIME] <strong>Session Pacing (Lab - ~150 min)</strong></p>
 <table>
 <thead>
 <tr>
@@ -29,8 +43,7 @@ hr { border: none; border-top: 2px solid #e2e8f0; margin: 2em 0; }
 <th>Format</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>Hook + Analogy</td>
 <td>15 min</td>
 <td>Lecture + Whiteboard</td>
@@ -38,17 +51,12 @@ hr { border: none; border-top: 2px solid #e2e8f0; margin: 2em 0; }
 <tr>
 <td>Concept Discussion</td>
 <td>25 min</td>
-<td>Lecture + Slides + CORS + Auth Flow Diagram</td>
+<td>Lecture + Slides + Port Architecture</td>
 </tr>
 <tr>
 <td>Code Walkthrough</td>
 <td>30 min</td>
-<td>Live Code (CORS -&gt; Auth Context -&gt; useAuthFetch -&gt; ProtectedRoute)</td>
-</tr>
-<tr>
-<td>Industry Reality</td>
-<td>10 min</td>
-<td>Lecture + Discussion</td>
+<td>Live Code (React calling ASP.NET)</td>
 </tr>
 <tr>
 <td>Break</td>
@@ -61,11 +69,6 @@ hr { border: none; border-top: 2px solid #e2e8f0; margin: 2em 0; }
 <td>Lab (solo or pairs)</td>
 </tr>
 <tr>
-<td>AI Integration</td>
-<td>10 min</td>
-<td>Demo + Prompt Walkthrough</td>
-</tr>
-<tr>
 <td>Debugging + Wrap</td>
 <td>15 min</td>
 <td>Group Debug + Q&amp;A</td>
@@ -75,157 +78,130 @@ hr { border: none; border-top: 2px solid #e2e8f0; margin: 2em 0; }
 <td>10 min</td>
 <td>Overflow / Stretch discussion</td>
 </tr>
-</tbody>
-</table>
-<blockquote>
-<p>[TIP] <strong>Teaching Tip (Week 11 strategy):</strong> This is the "full-stack comes together" week — the most anticipated and most frustrating week. CORS errors will appear immediately. The two-building office analogy is essential for CORS. Build progressively: CORS config -&gt; auth context -&gt; authenticated fetch -&gt; protected routes. Emphasize: CORS is a BROWSER thing, not a server thing. The 401 -&gt; logout flow is the most important security pattern. Students will struggle with token flow — trace it step by step on the whiteboard.</p>
+</tbody></table>
 </blockquote>
-<h3>1. The Hook</h3>
 <blockquote>
-<p>[SPEAK] <strong>Script:</strong> "You have a React frontend and an ASP.NET Core backend. They're both running. But when you try to connect them, the browser blocks it with a CORS error. Welcome to the most common full-stack developer experience. Connecting frontend to backend isn't just about making HTTP calls — it's about authentication, token management, error handling, and dealing with the browser's security model. This week is where your app becomes a real full-stack application."</p>
-<p>[SLIDE] <strong>Slide:</strong> Title: "The CORS Error That Every Full-Stack Developer Sees"<br />
-Big red browser console error: <code>Access to fetch at 'http://localhost:5000' from origin 'http://localhost:3000' has been blocked by CORS policy</code>. Subtitle: "If you haven't seen this yet, you will today."</p>
-<p>[TIP] <strong>Teaching Tip:</strong> Make the CORS error feel normal — not a failure, but a rite of passage. "Every developer sees this. Today you learn why it exists and how to fix it."</p>
-<p>[ENGAGE] <strong>Gen-Z:</strong> "The CORS error is like your phone's Face ID rejecting you because you're wearing a mask. It's a security feature, not a bug. The browser is protecting you from malicious sites. You just need to tell it which sites are safe."<br />
-<strong>-&gt; Phone moment:</strong> "Open your browser console right now. Try to fetch from your API running on a different port. Watch the CORS error appear in red. That's your starting point."</p>
-<p>[LOST] <strong>If they're lost:</strong> "CORS sounds scary but it's simple: the browser blocks requests between different ports/domains by default. You just need to tell the server to allow your frontend's URL. One line of config fixes it."</p>
+<p>[TIP] <strong>Teaching Tip:</strong> This is the &quot;Aha!&quot; moment of the entire semester. The moment a student clicks a button in React and sees the database update via C#, they finally understand Full Stack development.</p>
 </blockquote>
-<hr />
-<h3>2. The Analogy</h3>
+<hr>
+<h3><span style="background:#2563eb;color:#fff;padding:2px 10px;border-radius:12px;font-size:0.8em;">15 min</span> 1. The Hook &amp; The Analogy</h3>
 <blockquote>
-<p>[SPEAK] <strong>Script:</strong> "Connecting frontend to backend is like two offices in different buildings trying to communicate. CORS is the security guard at the frontend building who says 'I don't trust that other building.' You need to give the guard a list of approved buildings (CORS policy). Authentication is the ID badge — every request needs to show it belongs. Token storage is where you keep the badge (localStorage, cookies, memory). Error handling is what happens when the other building's elevator is broken — you need a plan B."</p>
-<p>[BOARD] <strong>Whiteboard:</strong> Draw the two-building comparison:
-<code>BUILDING A (Frontend - localhost:3000)
-  +-------------------------+
-  | Security Guard (CORS)   |
-  | Approved: Building B [OK]  |
-  | Approved: Building C [NO]  |
-  +--------+----------------+
-           | HTTP request + ID badge (token)
-           =&gt;
-BUILDING B (Backend - localhost:5000)
-  +-------------------------+
-  | Reception (Controller)  |
-  | Checks ID badge (JWT)   |
-  | Grants/denies access    |
-  +-------------------------+</code></p>
-<p>[TIP] <strong>Teaching Tip:</strong> The two-building analogy maps perfectly: CORS = security guard, token = ID badge, controller = reception. Draw it and reference it throughout. Emphasize: the guard (browser) blocks first, then the reception (server) checks the badge.</p>
-<p>[ENGAGE] <strong>Gen-Z:</strong> "CORS is like your subdivision's gate guard. Even if the house inside wants to receive you, the guard won't let you in unless your name is on the approved list. The CORS policy IS that approved list."<br />
-<strong>-&gt; Turn to your neighbor:</strong> "In the two-building analogy, what's the token? What's the CORS policy? 15 seconds, discuss!"</p>
-<p>[LOST] <strong>If they're lost:</strong> "Forget the buildings. CORS = browser blocks cross-origin requests. Fix = server sends 'allow this origin' header. Auth = every request needs a token. That's the whole thing."</p>
+<p>[SPEAK] <strong>Script:</strong> &quot;For 10 weeks, you&#39;ve been building half a bridge. The frontend team built the UI. The backend team built the API. Today, we connect the bridge. But they are speaking two different languages (JS and C#) and running in two different cities (Port 5173 and Port 5000).&quot;</p>
 </blockquote>
-<hr />
-<h3>3. Concept Discussion</h3>
 <blockquote>
-<p>[TIME] <strong>Pacing:</strong> 25 min total (5 min CORS -&gt; 5 min token-based auth -&gt; 5 min token storage -&gt; 5 min useContext for auth -&gt; 5 min error handling consistency)</p>
-<p>[SPEAK] <strong>Script:</strong> "Your frontend and backend are separate applications running on different ports. The browser's same-origin policy blocks cross-origin requests by default. You need to configure CORS, handle authentication tokens, manage error states consistently, and keep the two apps in sync. Let me show you how each piece works."</p>
-<p>[SLIDE] <strong>Slide:</strong> Show one concept at a time. For each: (1) the concept, (2) a diagram, (3) what happens if you get it wrong. Don't show all concepts at once.</p>
-<p>[TIP] <strong>Teaching Tip:</strong> Spend the most time on CORS and token storage — these are where 80% of bugs happen. For CORS, emphasize: it's a BROWSER feature, not a server feature. For token storage, show the tradeoff triangle: localStorage (easy but XSS-vulnerable) vs httpOnly cookies (secure but complex) vs memory (safest but lost on refresh).</p>
-<p>[ASK] <strong>Ask the class:</strong> "What happens when React on port 3000 tries to fetch from API on port 5000?" (Browser sends OPTIONS preflight request first.) "What does the server need to respond with?" (<code>Access-Control-Allow-Origin: http://localhost:3000</code>.) "What if it doesn't?" (Browser blocks the request — you see the CORS error.)</p>
-<p>[ENGAGE] <strong>Gen-Z:</strong> "Token storage is like where you keep your house keys. localStorage = under the doormat (easy to find). httpOnly cookies = in a safe (harder to access). Memory = in your pocket (safest but you might drop them). Each has tradeoffs."<br />
-<strong>-&gt; Phone moment:</strong> "Open your browser's DevTools -&gt; Application tab -&gt; Local Storage. See any tokens stored there? That's how many apps keep you logged in."</p>
-<p>[Q&amp;A] <strong>Student Q:</strong> "Why is localStorage vulnerable to XSS?"
-<strong>Short answer:</strong> Because any JavaScript running on your page can read it.
-<strong>Real answer:</strong> If an attacker injects malicious JavaScript into your page (through a vulnerable dependency, user input, etc.), that script can read <code>localStorage.getItem('token')</code> and send it to the attacker's server. With httpOnly cookies, JavaScript can't read them — the browser sends them automatically with requests. The tradeoff: httpOnly cookies are harder to use with SPAs on different domains.
-<strong>The hidden question:</strong> "So should I use cookies instead?" -&gt; For production, yes. For this class, localStorage is fine — but understand the tradeoff.</p>
-<p>[Q&amp;A] <strong>Student Q:</strong> "Why use <code>useContext</code> for auth instead of passing props?"
-<strong>Short answer:</strong> Because auth state is needed everywhere — prop drilling would be a nightmare.
-<strong>Real answer:</strong> If you pass <code>user</code> and <code>isAuthenticated</code> through props, every component in the tree needs to receive and forward them. With <code>useContext</code>, any component can access auth state directly, no matter how deep it is in the tree. It's like a global variable but reactive — when the context changes, all consuming components re-render.
-<strong>The hidden question:</strong> "Isn't context slower than props?" -&gt; Slightly, but the convenience outweighs the cost for auth state.</p>
-<p>[LOST] <strong>If they're lost:</strong> "The simplest integration summary: (1) CORS = server allows frontend's origin. (2) Token = sent with every request in Authorization header. (3) Auth context = shares login state across the app. (4) 401 = logout. That's 90% of what you need."</p>
+<p>[BOARD] <strong>Whiteboard Analogy:</strong> The Translator</p>
+<ul>
+<li><strong>React (Frontend):</strong> Speaks JavaScript. Runs on Port 5173.</li>
+<li><strong>ASP.NET (Backend):</strong> Speaks C#. Runs on Port 5000/5001.</li>
+<li><strong>HTTP / JSON:</strong> The universal translator in the middle. The only way they can talk is by sending JSON text back and forth.</li>
+</ul>
 </blockquote>
-<hr />
-<h3>4. Code Walkthrough</h3>
+<hr>
+<h3><span style="background:#2563eb;color:#fff;padding:2px 10px;border-radius:12px;font-size:0.8em;">25 min</span> 2. Core Concepts &amp; Discussion Topics</h3>
+<h4>▸ A. Two-Server Mental Model (7 min)</h4>
 <blockquote>
-<p>[TIME] <strong>Pacing:</strong> 30 min (5 min CORS config -&gt; 10 min Auth context -&gt; 10 min useAuthFetch -&gt; 5 min ProtectedRoute)</p>
-<p>[SPEAK] <strong>Script:</strong> "Let's connect React to the ASP.NET Core API with authentication. We'll start with CORS on the backend, then build the auth context, then the authenticated fetch hook, then protected routes. Each step builds on the last."</p>
-<p>[SLIDE] <strong>Slide:</strong> Show each step on its own slide. Step 1: CORS policy in Program.cs. Step 2: AuthContext with login/logout. Step 3: useAuthFetch with token header. Step 4: ProtectedRoute with Navigate.</p>
-<p>[TIP] <strong>Teaching Tip:</strong> <strong>Type each step live.</strong> For the auth context, trace the token flow: login -&gt; store token -&gt; include in header -&gt; 401 -&gt; logout. For useAuthFetch, emphasize the AbortController cleanup (from Week 7).</p>
-<p>[BOARD] <strong>Whiteboard:</strong> Draw the auth flow:
-<code>Login page -&gt; POST /api/auth/login -&gt; { token, user }
-  v
-Store token in localStorage + React state
-  v
-useAuthFetch -&gt; adds Authorization: Bearer &lt;token&gt;
-  v
-API validates token -&gt; returns data (200) or invalid (401)
-  v
-If 401 -&gt; logout() -&gt; clear token -&gt; redirect to /login</code></p>
-<p>[ENGAGE] <strong>Gen-Z:</strong> "Building the auth flow is like setting up your GCash account. You log in once (get token), then every transaction uses that token automatically. If your session expires (401), you need to log in again. The auth context is like GCash keeping you logged in across pages."<br />
-<strong>-&gt; Type-along:</strong> "Type the CORS config first. Test it — the CORS error should disappear. Then the auth context. Then useAuthFetch. Then ProtectedRoute. Test each step before moving on."</p>
-<p>[Q&amp;A] <strong>Student Q:</strong> "Why does <code>useAuthFetch</code> need <code>token</code> and <code>logout</code> in the dependency array?"
-<strong>Short answer:</strong> Because the effect needs to re-run when the token changes or logout function changes.
-<strong>Real answer:</strong> If the token changes (user logs in/out), the effect needs to re-fetch with the new token. If <code>logout</code> changes (unlikely but possible), the effect needs the latest version. Without these in the dependency array, the effect would use stale values — the old token or old logout function.
-<strong>The hidden question:</strong> "What if I omit them?" -&gt; The effect won't re-run when the token changes. You'd see stale data or failed requests.</p>
-<p>[LOST] <strong>If they're lost:</strong> "Start with just the CORS config. Get the frontend talking to the backend — even without auth. Then add the login page. Then the auth context. Then useAuthFetch. Then ProtectedRoute. One piece at a time."</p>
+<p><strong>[SPEAK] Discussion:</strong> &quot;You are no longer running one application. You are running two completely separate servers simultaneously on your laptop. If the backend server isn&#39;t running, the frontend will fail.&quot;</p>
+<p><strong>[VISUAL] Example:</strong>
+Draw two completely separate boxes on the board. One says <code>npm run dev</code>. The other says <code>dotnet run</code>.</p>
 </blockquote>
-<hr />
-<h3>5. The "Industry Reality"</h3>
+<h4>▸ B. Environment Variables (6 min)</h4>
 <blockquote>
-<p>[SPEAK] <strong>Script:</strong> "Every full-stack app at every company follows this exact pattern: CORS configuration, token-based auth, protected routes, and consistent error handling. The <code>Authorization: Bearer &lt;token&gt;</code> header is the universal language of web APIs. When you log into any app and stay logged in across page refreshes, that's token storage working. When you get kicked back to the login page after your session expires, that's the 401 handler. This is the backbone of every modern web application."</p>
-<p>[SLIDE] <strong>Slide:</strong> Auth flow diagram used by major platforms. Logos: Google, GitHub, Discord. Stat: "Bearer token auth is used by 95%+ of modern web APIs."</p>
-<p>[TIP] <strong>Teaching Tip:</strong> Keep this to 5 minutes. Show them that the pattern they're building is the industry standard — not a classroom invention.</p>
-<p>[ENGAGE] <strong>Gen-Z:</strong> <strong>-&gt; Poll:</strong> "How many of you have been logged out of an app because your session expired?" (All hands.) "That's the exact 401 handler you're building today. You're learning how the apps you use every day actually work."</p>
-<p>[LOST] <strong>If they're lost:</strong> "You don't need to know every platform's auth system. Just understand: the pattern you're building is what every company uses. CORS + tokens + protected routes = full-stack auth."</p>
+<p><strong>[SPEAK] Discussion:</strong> &quot;Never hardcode <code>https://localhost:5000/api</code> into your React components. When you deploy to production, the API won&#39;t be on localhost. We use <code>.env</code> files to store URLs that change depending on where the app is running.&quot;</p>
+<p><strong>[CODE] Example:</strong></p>
+<pre><code class="language-text"># .env file
+VITE_API_URL=https://localhost:5000/api
+</code></pre>
+<pre><code class="language-jsx">// Inside React
+fetch(`${import.meta.env.VITE_API_URL}/users`)
+</code></pre>
+<p><strong>[TIP] Instructor Tip:</strong> Explain that the <code>VITE_</code> prefix is strictly required, or Vite will hide the variable for security reasons.</p>
 </blockquote>
-<hr />
-<h3>6. Exercise</h3>
+<h4>▸ C. Vite Proxy (7 min)</h4>
 <blockquote>
-<p>[TIME] <strong>Pacing:</strong> 55 min total (5 min setup -&gt; 40 min coding -&gt; 10 min share)</p>
-<p>[SPEAK] <strong>Script:</strong> "Connect your React frontend to your ASP.NET Core API with authentication. Set up CORS, build a login page, create auth context, implement token-based API calls, and protect routes."</p>
-<p>[SLIDE] <strong>Slide:</strong> Exercise checklist:
-- [ ] CORS policy in ASP.NET Core allowing React dev server
-- [ ] Auth endpoint: <code>POST /api/auth/login</code> returns JWT
-- [ ] Login page with email/password form
-- [ ] <code>AuthProvider</code> context managing login/logout state
-- [ ] Token stored in localStorage after login
-- [ ] <code>useAuthFetch</code> hook including token in every request
-- [ ] <code>ProtectedRoute</code> component redirecting unauthenticated users
-- [ ] Dashboard page fetching protected data from API
-- [ ] Token expiration handling: 401 -&gt; redirect to login
-- [ ] Logout button clearing token and redirecting</p>
-<p>[TIP] <strong>Teaching Tip:</strong> The token expiration handling (requirement 9) and <code>ProtectedRoute</code> with <code>replace</code> (requirement 7) are the hardest parts. Students will struggle with the 401 -&gt; logout -&gt; redirect flow. Circulate and help with this specifically.</p>
-<p>[ENGAGE] <strong>Gen-Z:</strong> <strong>-&gt; Pair up:</strong> "One person handles the backend (CORS + auth endpoint), the other handles the frontend (auth context + protected routes). Then combine and test the full login flow together."</p>
-<p>[LOST] <strong>If they're lost:</strong> "Start with CORS. Get the frontend talking to the backend without auth. Then add a simple login that just stores a fake token. Then build the auth context. Then useAuthFetch. Then ProtectedRoute. Build incrementally."</p>
+<p><strong>[SPEAK] Discussion:</strong> &quot;Instead of configuring CORS on the backend for local development, we can tell the Vite frontend server to act as a proxy. When React calls <code>/api</code>, Vite silently forwards it to port 5000.&quot;</p>
+<p><strong>[CODE] Example:</strong></p>
+<pre><code class="language-javascript">// vite.config.js
+server: {
+  proxy: { &#39;/api&#39;: &#39;https://localhost:5000&#39; }
+}
+</code></pre>
+<p><strong>[TIP] Gen-Z Hook:</strong> A proxy is like having a friend pass a note for you in class. The backend thinks the request came from the proxy (friend), not from React (you).</p>
 </blockquote>
-<hr />
-<h3>7. AI Integration Note</h3>
+<h4>▸ D. Bulletproof Fetching (5 min)</h4>
 <blockquote>
-<p>[TIME] <strong>Pacing:</strong> 10 min (5 min demo -&gt; 5 min try)</p>
-<p>[SPEAK] <strong>Script:</strong> "This week, ask AI to generate auth flow code, then audit the token storage approach. Ask 'What happens if there's an XSS vulnerability?' and 'Is localStorage the right choice for this token?'"</p>
-<p>[SLIDE] <strong>Slide:</strong> AI usage guide:
-| [OK] Allowed | [NO] Not Allowed |
-|-----------|--------------|
-| "Generate an auth context for React" | "Handle my authentication flow" |
-| "What are the XSS risks of localStorage?" | "Fix my CORS configuration" |</p>
-<p>[TIP] <strong>Teaching Tip:</strong> Point out the common AI mistakes: storing tokens in localStorage without mentioning XSS, <code>AllowAnyOrigin()</code> with <code>AllowCredentials()</code> (invalid combination), missing 401 handling. Teach students to audit AI's auth code for security issues.</p>
-<p>[ENGAGE] <strong>Gen-Z:</strong> "AI writes auth code fast but often skips the security considerations. It's like building a house with no locks on the doors — looks good, but anyone can walk in. Always check the security implications."</p>
+<p><strong>[SPEAK] Discussion:</strong> &quot;A request to the backend takes time. Your UI must handle the 3 states of a network request: Loading, Success, and Error.&quot;</p>
+<p><strong>[VISUAL] Example:</strong>
+Show a React component that displays a spinner while fetching, the data on success, and a red error box if the backend is turned off.</p>
 </blockquote>
-<hr />
-<h3>8. Debugging / "Watch Out For" Section</h3>
+<hr>
+<h3><span style="background:#2563eb;color:#fff;padding:2px 10px;border-radius:12px;font-size:0.8em;">30 min</span> 3. Code Walkthrough / Live Coding Blueprint</h3>
 <blockquote>
-<p>[TIME] <strong>Pacing:</strong> 15 min (5 min common errors -&gt; 5 min group debug -&gt; 5 min Q&amp;A)</p>
-<p>[SPEAK] <strong>Script:</strong> "Here are the integration errors and mental model traps you'll hit this week. The CORS error alone will save you from hours of confusion."</p>
-<p>[SLIDE] <strong>Slide:</strong> Error cards:
-<code>+--------------------------------------+
-| "Access blocked by CORS policy"      |
-| API doesn't allow frontend's origin  |
-| Fix: add CORS policy in Program.cs   |
-+--------------------------------------+
-+--------------------------------------+
-| "401 Unauthorized on every request"  |
-| Token not sent or malformed header   |
-| Fix: check Authorization header format|
-+--------------------------------------+</code></p>
-<p>[ENGAGE] <strong>Gen-Z:</strong> "The CORS error is like your phone blocking an unknown number. You need to add the number to your contacts (CORS policy) before it can reach you."</p>
-<p>[Q&amp;A] <strong>Student Q:</strong> "Why does CORS work in Postman but not in the browser?"
-<strong>Short answer:</strong> Because Postman doesn't enforce CORS. Browsers do.
-<strong>Real answer:</strong> CORS is a browser security feature, not a server feature. The server sends headers saying "this origin is allowed," but the browser is what actually checks and blocks. Postman, curl, and server-to-server requests don't have this check. That's why your API works in Postman but fails in the browser.
-<strong>The hidden question:</strong> "So the server is fine?" -&gt; Yes. The server is working. The browser is blocking the request for security.</p>
-<p>[LOST] <strong>If they're lost:</strong> "The #1 issue: CORS errors. If you see 'blocked by CORS policy,' add a CORS policy in your ASP.NET Core Program.cs that allows your frontend's URL (e.g., <code>http://localhost:3000</code>). That fixes it 90% of the time."</p>
+<p>[SPEAK] <strong>Script:</strong> &quot;I have the API running in one window, and React in the other. Let&#39;s make them talk.&quot;</p>
 </blockquote>
-<hr />
-<h3>Teaching Script</h3>
-<p>This week's annotations cover: pacing table at top, inline annotations per section, and this summary. The core arc is: CORS -&gt; auth context -&gt; useAuthFetch -&gt; protected routes. The two-building analogy is the key mental model. CORS and token storage are the two most important teaching points — trace the token flow step by step on the whiteboard. Emphasize: CORS is a BROWSER thing, not a server thing. The 401 -&gt; logout -&gt; redirect flow is the most important security pattern. Common pitfalls: CORS errors (missing policy), 401 on every request (malformed Authorization header), <code>AllowAnyOrigin()</code> with <code>AllowCredentials()</code> (invalid combination), missing <code>replace</code> in Navigate (redirect loops).</p>
-<hr />
+<ul>
+<li><strong>Step 1: The Setup</strong><ul>
+<li><em>Action:</em> Start the ASP.NET API from last week. Start a blank Vite React app. Show them running side-by-side.</li>
+</ul>
+</li>
+<li><strong>Step 2: The Proxy</strong><ul>
+<li><em>Action:</em> Configure <code>vite.config.js</code> to proxy <code>/api</code> requests to the ASP.NET server.</li>
+</ul>
+</li>
+<li><strong>Step 3: The Fetch</strong><ul>
+<li><em>Action:</em> In React, use <code>useEffect</code> to fetch <code>/api/todos</code>. Map over the response and render an HTML list.</li>
+</ul>
+</li>
+<li><strong>Step 4: The POST</strong><ul>
+<li><em>Action:</em> Create a simple form in React. Hook it up to a <code>handleSubmit</code> function that uses <code>fetch</code> with <code>method: &#39;POST&#39;</code> and <code>JSON.stringify(data)</code> to send data to the backend. Show it updating the database.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3><span style="background:#2563eb;color:#fff;padding:2px 10px;border-radius:12px;font-size:0.8em;">15 min</span> 4. Debugging + Wrap</h3>
+<ul>
+<li><strong>Common Error 1:</strong> <code>Failed to fetch</code> -&gt; The ASP.NET server isn&#39;t running. You forgot to hit &#39;Run&#39; in Visual Studio.</li>
+<li><strong>Common Error 2:</strong> <code>SyntaxError: Unexpected token &lt; in JSON</code> -&gt; The backend threw an error page (HTML) instead of JSON, and React tried to parse HTML as JSON. Check the network tab to see the backend error.</li>
+</ul>
+<hr>
+<h3><span style="background:#2563eb;color:#fff;padding:2px 10px;border-radius:12px;font-size:0.8em;">55 min</span> 5. In-Class Exercise</h3>
+<blockquote>
+<p>[TIME] <strong>In-Class Exercise (55 min):</strong> Connect the dots. Take the &quot;Todo API&quot; from last week, and build a simple React frontend for it. You must be able to view a list of Todos, and add a new Todo that persists to the backend database.</p>
+</blockquote>
+<hr>
+<h3>💻 Online Session (1 hour)</h3>
+<h3>From the Trenches (Pro-Tip)</h3>
+<blockquote>
+<p>[TRENCHES] <strong>Instructor Script:</strong> &quot;The most common bug when integrating frontend and backend is a spelling mistake. The backend sends <code>firstName</code>, but the frontend looks for <code>FirstName</code>. JSON is case-sensitive! In the industry, we use tools like Swagger or TypeScript generators to automatically create our frontend interfaces based on the backend code so we never make a spelling mistake again.&quot;</p>
+</blockquote>
+<h3>AI Integration</h3>
+<ul>
+<li><strong>AI Policy:</strong> Allowed: &quot;How do I configure proxy in vite config?&quot; Not Allowed: &quot;Write the fetch wrapper for my entire app.&quot;</li>
+</ul>
+<h3>Learning Baseline (Self-Assessment)</h3>
+<blockquote>
+<p><strong>[ASSESSMENT]</strong> By the end of this week, students must be able to say &quot;Yes&quot; to:</p>
+<ul>
+<li><input disabled="" type="checkbox"> I know how to run a frontend and backend server simultaneously.</li>
+<li><input disabled="" type="checkbox"> I can configure a proxy in <code>vite.config.js</code>.</li>
+<li><input disabled="" type="checkbox"> I can use <code>fetch</code> to GET data from my own API and display it in React.</li>
+<li><input disabled="" type="checkbox"> I can use <code>fetch</code> to POST data from a React form to my API.</li>
+</ul>
+</blockquote>
+<h3>Take-Home Mission</h3>
+<blockquote>
+<p><strong>[HOMEWORK]</strong> <strong>Mission:</strong> &quot;The Full Stack Delete&quot;</p>
+<ol>
+<li>Start with the Todo integration built in class.</li>
+<li>Add a &quot;Delete&quot; button next to every Todo item in React.</li>
+<li><strong>The Catch:</strong> When clicked, it must send a <code>DELETE</code> HTTP request to the API. If the API returns a success status code (200/204), the React UI must update automatically to remove the item from the screen <em>without</em> refreshing the page.</li>
+</ol>
+</blockquote>
+<h3>Instructor Assets Blueprint</h3>
+<blockquote>
+<p><strong>[ASSETS]</strong> What to prepare before this class:</p>
+<ul>
+<li><strong>Starter Repo:</strong> Two folders: An API and a React App, but they don&#39;t talk to each other yet.</li>
+<li><strong>Solution Repo:</strong> A fully integrated Full Stack app with Vite Proxy configured, Environment variables set, and full CRUD operations working.</li>
+</ul>
+</blockquote>
 </body></html>

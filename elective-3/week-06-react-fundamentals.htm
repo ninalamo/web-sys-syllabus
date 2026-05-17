@@ -1,6 +1,6 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>elective-3\week-06-react-fundamentals.md</title><style>
+<title>week-06-react-fundamentals.md</title><style>
 body { font-family: 'Segoe UI', Arial, sans-serif; max-width: 960px; margin: 2em auto; padding: 0 1.5em; line-height: 1.7; color: #1a1a1a; background: #fafafa; }
 h1 { border-bottom: 2px solid #2563eb; padding-bottom: .3em; margin-top: 1.5em; color: #1e3a5f; }
 h2 { border-bottom: 1px solid #cbd5e1; padding-bottom: .2em; margin-top: 1.5em; color: #1e3a5f; }
@@ -18,9 +18,23 @@ hr { border: none; border-top: 2px solid #e2e8f0; margin: 2em 0; }
 </style></head><body>
 <nav><a href="index.htm">Home</a></nav>
 <h2>Week 6: React Fundamentals</h2>
+<div style="background: #fefce8; padding: 15px; border-left: 5px solid #ca8a04; margin-bottom: 20px;">
+    <strong>📋 This Week at a Glance</strong><br>
+    🔁 Last week: &quot;Week 5: Component Thinking in Vanilla JS&quot;<br>
+    🎯 This week: &quot;Learn React — components, props, state, and JSX — the framework behind Netflix and Instagram&quot;<br>
+    <br>
+    <strong>LAB (3h) Topics:</strong><br>
+    ▸ A. JSX — Not HTML! (7 min)<br>
+    ▸ B. Components (6 min)<br>
+    ▸ C. Props (7 min)<br>
+    ▸ D. State — useState (5 min)<br>
+    <br>
+    <strong>ONLINE (1h):</strong> Industry Reality + AI Integration + Take-Home Mission (The State Toggler)<br>
+    <br>
+    ✅ By end of lab: Understand JSX rules; create functional components; pass props; use useState for dynamic UI
+</div>
 <blockquote>
-<p>[TIME] <strong>Session Pacing (180 min)</strong></p>
-</blockquote>
+<p>[TIME] <strong>Session Pacing (Lab - ~150 min)</strong></p>
 <table>
 <thead>
 <tr>
@@ -29,8 +43,7 @@ hr { border: none; border-top: 2px solid #e2e8f0; margin: 2em 0; }
 <th>Format</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>Hook + Analogy</td>
 <td>15 min</td>
 <td>Lecture + Whiteboard</td>
@@ -38,17 +51,12 @@ hr { border: none; border-top: 2px solid #e2e8f0; margin: 2em 0; }
 <tr>
 <td>Concept Discussion</td>
 <td>25 min</td>
-<td>Lecture + Slides + JSX Comparison</td>
+<td>Lecture + Slides + JSX Rules</td>
 </tr>
 <tr>
 <td>Code Walkthrough</td>
 <td>30 min</td>
-<td>Live Code (Counter -&gt; Button -&gt; Card)</td>
-</tr>
-<tr>
-<td>Industry Reality</td>
-<td>10 min</td>
-<td>Lecture + Discussion</td>
+<td>Live Code (Components + Props)</td>
 </tr>
 <tr>
 <td>Break</td>
@@ -61,11 +69,6 @@ hr { border: none; border-top: 2px solid #e2e8f0; margin: 2em 0; }
 <td>Lab (solo or pairs)</td>
 </tr>
 <tr>
-<td>AI Integration</td>
-<td>10 min</td>
-<td>Demo + Prompt Walkthrough</td>
-</tr>
-<tr>
 <td>Debugging + Wrap</td>
 <td>15 min</td>
 <td>Group Debug + Q&amp;A</td>
@@ -75,154 +78,132 @@ hr { border: none; border-top: 2px solid #e2e8f0; margin: 2em 0; }
 <td>10 min</td>
 <td>Overflow / Stretch discussion</td>
 </tr>
-</tbody>
-</table>
-<blockquote>
-<p>[TIP] <strong>Teaching Tip (Week 6 strategy):</strong> This is the "aha" week — students finally see why React exists. Side-by-side comparison with Week 5's vanilla Counter is essential. Show the vanilla version first, then the React version. The contrast makes the value obvious. Emphasize: JSX is just <code>createElement</code>, <code>useState</code> is the closure pattern automated, re-render is automatic.</p>
+</tbody></table>
 </blockquote>
-<hr />
-<h3>1. The Hook</h3>
 <blockquote>
-<p>[SPEAK] <strong>Script:</strong> "Remember building that Counter component in vanilla JS last week? You had to manually create DOM elements, attach event listeners, and write a render function that updated the display. In React, that same Counter is 8 lines of code. React isn't just less code — it's a completely different way of thinking about UI. Instead of telling the browser <em>how</em> to update the DOM, you tell React <em>what</em> the UI should look like for any given state, and React figures out the rest."</p>
-<p>[SLIDE] <strong>Slide:</strong> Side-by-side: Week 5 vanilla Counter (~40 lines) on left, React Counter (8 lines) on right. Highlight the reduction.</p>
-<p>[TIP] <strong>Teaching Tip:</strong> The side-by-side comparison is your strongest teaching tool this week. Let students sit with the visual contrast for a moment before explaining anything.</p>
-<p>[ENGAGE] <strong>Gen-Z:</strong> "Vanilla JS is like manually editing every frame of an animation. React is like telling Canva 'make it smooth' and it handles the tweening. Same result, 10x less effort."<br />
-<strong>-&gt; Phone moment:</strong> "Open the Instagram app. Tap the like button on a post. That heart animation? In vanilla JS that's 20+ lines. In React it's one <code>useState</code> call."</p>
-<p>[LOST] <strong>If they're lost:</strong> "React is just a library that does the DOM manipulation for you. You describe what you want, React makes it happen. That's the whole idea."</p>
+<p>[TIP] <strong>Teaching Tip:</strong> Students will find JSX weird (&quot;Why is HTML in my JS?&quot;). Remind them of last week&#39;s string templates. React just makes that pattern official and safer.</p>
 </blockquote>
-<hr />
-<h3>2. The Analogy</h3>
+<hr>
+<h3><span style="background:#2563eb;color:#fff;padding:2px 10px;border-radius:12px;font-size:0.8em;">15 min</span> 1. The Hook &amp; The Analogy</h3>
 <blockquote>
-<p>[SPEAK] <strong>Script:</strong> "Vanilla JS is like giving a chef step-by-step instructions: 'Pick up the knife, cut the onion into 5mm pieces, heat the pan to 180C, add oil, wait 30 seconds...' React is like telling the chef 'I want a stir-fry' and trusting them to handle the details. You describe the desired outcome (the UI for a given state), and React handles the DOM manipulation. You don't care <em>how</em> React updates the DOM — you just care that it does."</p>
-<p>[BOARD] <strong>Whiteboard:</strong> Draw the declarative vs imperative comparison:
-```
-IMPERATIVE (Vanilla JS):
-1. createElement('button')
-2. button.textContent = '+'
-3. button.addEventListener('click', fn)
-4. container.appendChild(button)
-5. count++
-6. display.textContent = count</p>
-<p>DECLARATIVE (React):
-<button onClick={() => setCount(c+1)}&gt;+</button>
-<span>{count}</span>
-```</p>
-<p>[TIP] <strong>Teaching Tip:</strong> The chef analogy works because everyone understands the difference between micromanaging and delegating. Emphasize: declarative = describe the outcome, imperative = describe the steps.</p>
-<p>[ENGAGE] <strong>Gen-Z:</strong> "Imperative is like giving your Grab driver turn-by-turn directions. Declarative is like entering the destination in the app and letting Waze figure out the route."<br />
-<strong>-&gt; Turn to your neighbor:</strong> "Give an imperative vs declarative example from real life. 15 seconds, discuss!"</p>
-<p>[LOST] <strong>If they're lost:</strong> "Forget the analogy. Imperative = tell the computer every step. Declarative = tell the computer what you want. React is declarative."</p>
+<p>[SPEAK] <strong>Script:</strong> &quot;Last week we built our own clunky, string-based UI engine. Today, we throw that away and use the tool that powers Netflix, Instagram, and Airbnb. Welcome to React.&quot;</p>
 </blockquote>
-<hr />
-<h3>3. Concept Discussion</h3>
 <blockquote>
-<p>[TIME] <strong>Pacing:</strong> 25 min total (5 min JSX -&gt; 5 min functional components -&gt; 5 min useState -&gt; 3 min props drilling -&gt; 3 min one-way data flow -&gt; 4 min reconciliation)</p>
-<p>[SPEAK] <strong>Script:</strong> "Manual DOM manipulation is tedious, error-prone, and hard to reason about. When your app has 20 interactive elements, tracking which DOM nodes need updating when state changes becomes impossible. React solves this with a declarative model: you describe the UI as a function of state, and React handles the DOM updates efficiently."</p>
-<p>[SLIDE] <strong>Slide:</strong> Show one concept at a time. For each: (1) the concept, (2) a code example, (3) what problem it solves. Don't show all concepts at once.</p>
-<p>[TIP] <strong>Teaching Tip:</strong> Spend the most time on <code>useState</code> — this is the biggest mental shift from Week 5. Students need to understand: calling <code>setCount</code> doesn't change the variable immediately, it schedules a re-render. Also emphasize: JSX is NOT HTML — it's JavaScript that looks like HTML.</p>
-<p>[ASK] <strong>Ask the class:</strong> "In the vanilla Counter, what happened when you clicked '+'?" (count++, then render().) "In React, what happens when you click '+'?" (setCount() is called, React re-renders the component automatically.) "See the difference? You don't call render — React does it for you."</p>
-<p>[ENGAGE] <strong>Gen-Z:</strong> "JSX is like a template — it looks like HTML but it's actually JavaScript. <code>className</code> instead of <code>class</code> because <code>class</code> is a reserved word. Curly braces <code>{}</code> to embed JavaScript expressions."<br />
-<strong>-&gt; Phone moment:</strong> "Open VS Code. Create a new React file. Type <code>&lt;div&gt;Hello&lt;/div&gt;</code>. See how it's colored differently? That's JSX — your editor knows it's not regular HTML."</p>
-<p>[Q&amp;A] <strong>Student Q:</strong> "Why can't I use <code>class</code> in JSX? HTML uses <code>class</code>."
-<strong>Short answer:</strong> Because <code>class</code> is a reserved word in JavaScript.
-<strong>Real answer:</strong> JSX is JavaScript, not HTML. In JavaScript, <code>class</code> is used for class declarations. So React uses <code>className</code> instead. Same for <code>for</code> -&gt; <code>htmlFor</code>, <code>onclick</code> -&gt; <code>onClick</code> (camelCase).
-<strong>The hidden question:</strong> "That's annoying." -&gt; It is, but you'll get used to it. Your editor's autocomplete will help.</p>
-<p>[Q&amp;A] <strong>Student Q:</strong> "What's props drilling and why is it bad?"
-<strong>Short answer:</strong> Passing data through too many levels of components.
-<strong>Real answer:</strong> If <code>App</code> has user data and <code>Button</code> (5 levels deep) needs it, every component in between must pass it down even if they don't use it. It's like passing a note through 5 people — the middle people are just carriers. We'll fix this later with Context.
-<strong>The hidden question:</strong> "Is it actually a problem?" -&gt; For small apps, no. For large apps, yes. Don't worry about it yet.</p>
-<p>[LOST] <strong>If they're lost:</strong> "The simplest React summary: (1) JSX = HTML-like syntax in JS. (2) Components = functions returning JSX. (3) <code>useState</code> = state that triggers re-render. (4) Props = data from parent. (5) One-way flow = parent to child."</p>
+<p>[BOARD] <strong>Whiteboard Analogy:</strong> Custom HTML Tags</p>
+<ul>
+<li>You know <code>&lt;h1&gt;</code> makes a big header.</li>
+<li>You know <code>&lt;button&gt;</code> makes a button.</li>
+<li>React lets you create <code>&lt;UserProfile /&gt;</code>. It looks like HTML, but it&#39;s a custom, reusable piece of code that you defined.</li>
+</ul>
 </blockquote>
-<hr />
-<h3>4. Code Walkthrough</h3>
+<hr>
+<h3><span style="background:#2563eb;color:#fff;padding:2px 10px;border-radius:12px;font-size:0.8em;">25 min</span> 2. Core Concepts &amp; Discussion Topics</h3>
+<h4>▸ A. JSX — Not HTML! (7 min)</h4>
 <blockquote>
-<p>[TIME] <strong>Pacing:</strong> 30 min (10 min Counter conversion -&gt; 10 min Button with props -&gt; 10 min Card composition)</p>
-<p>[SPEAK] <strong>Script:</strong> "Let's convert the vanilla JS Counter from Week 5 into React. Watch how each manual step disappears. Then we'll build a Button with props and a Card that uses Button — just like last week, but in React."</p>
-<p>[SLIDE] <strong>Slide:</strong> Show each step on its own slide. Step 1: Counter (compare with vanilla). Step 2: Button (props + variants). Step 3: Card (composition with spread props).</p>
-<p>[TIP] <strong>Teaching Tip:</strong> <strong>Type the Counter live and compare with Week 5's version side by side.</strong> Point out each elimination: no <code>createElement</code>, no <code>addEventListener</code>, no manual <code>render()</code>. This is the most powerful moment of the week.</p>
-<p>[BOARD] <strong>Whiteboard:</strong> Draw the React data flow:
-<code>Parent: &lt;Counter /&gt;
-  v
-Counter() -&gt; useState(0) -&gt; count = 0
-  v
-JSX: &lt;button onClick={() =&gt; setCount(count+1)}&gt;+&lt;/button&gt;
-  v
-Click -&gt; setCount(1) -&gt; React re-renders Counter()
-  v
-Counter() -&gt; count = 1 -&gt; new JSX -&gt; React updates only changed DOM</code></p>
-<p>[ENGAGE] <strong>Gen-Z:</strong> "Converting vanilla to React is like upgrading from a manual car to automatic. Same destination, but you don't need to think about the gears (DOM manipulation)."<br />
-<strong>-&gt; Type-along:</strong> "Type the Counter with me. Notice what you DON'T have to type: no createElement, no addEventListener, no render function. React handles all of that."</p>
-<p>[Q&amp;A] <strong>Student Q:</strong> "Why does <code>{actions.map((action, index) =&gt; (&lt;Button key={index} {...action} /&gt;))}</code> work?"
-<strong>Short answer:</strong> <code>.map()</code> returns an array of JSX elements, and React renders arrays.
-<strong>Real answer:</strong> <code>actions.map()</code> transforms each action object into a <code>&lt;Button&gt;</code> element. The <code>{...action}</code> spread passes each property as a prop. So <code>{ label: "Save", onClick: fn }</code> becomes <code>&lt;Button label="Save" onClick={fn} /&gt;</code>. The <code>key</code> helps React track which items changed.
-<strong>The hidden question:</strong> "Why do I need a key?" -&gt; Without it, React can't efficiently update the list when items are added, removed, or reordered.</p>
-<p>[LOST] <strong>If they're lost:</strong> "Start with just the Counter. Get <code>useState</code> working. Then add the Button — it's just a function returning JSX. Then Card — it's JSX with <code>{actions.map(...)}</code>. One component at a time."</p>
+<p><strong>[SPEAK] Discussion:</strong> &quot;JSX looks exactly like HTML, but it is JavaScript. Under the hood, Babel transforms <code>&lt;h1&gt;Hi&lt;/h1&gt;</code> into <code>React.createElement(&#39;h1&#39;, null, &#39;Hi&#39;)</code>.&quot;</p>
+<p><strong>[CODE] Example:</strong></p>
+<pre><code class="language-jsx">// The curly braces let you &quot;escape&quot; back into JavaScript
+const name = &quot;Nina&quot;;
+return &lt;h1&gt;Hello, {name}&lt;/h1&gt;;
+</code></pre>
+<p><strong>[TIP] Instructor Tip:</strong> Emphasize the exact rules of JSX: 1. Must return a single parent element. 2. <code>class</code> becomes <code>className</code>. 3. Tags must be closed (<code>&lt;img /&gt;</code>).</p>
 </blockquote>
-<hr />
-<h3>5. The "Industry Reality"</h3>
+<h4>▸ B. Components (6 min)</h4>
 <blockquote>
-<p>[SPEAK] <strong>Script:</strong> "React powers the Facebook newsfeed, Instagram web, Netflix UI, Airbnb, Uber Eats, and thousands of other products. The <code>useState</code> hook you're learning this week is the same hook used in every React component at every company that uses React. When you see a like button increment on Instagram, that's <code>useState</code> (or <code>useReducer</code>) updating a counter. The component model you're learning is the industry standard for frontend development."</p>
-<p>[SLIDE] <strong>Slide:</strong> Logos: Facebook, Instagram, Netflix, Airbnb, Uber Eats. Stat: "React is used by 40%+ of professional frontend developers worldwide."</p>
-<p>[TIP] <strong>Teaching Tip:</strong> Keep this to 5 minutes. Show them that React isn't academic — it's the most popular frontend library in the world.</p>
-<p>[ENGAGE] <strong>Gen-Z:</strong> <strong>-&gt; Poll:</strong> "How many of you have seen 'React' in a job posting on JobStreet or LinkedIn?" (Most hands.) "That's because it's the #1 frontend skill employers want."</p>
-<p>[LOST] <strong>If they're lost:</strong> "You don't need to know every company using React. Just understand: learning React makes you employable. Period."</p>
+<p><strong>[SPEAK] Discussion:</strong> &quot;A React component is just a JavaScript function that returns JSX. That&#39;s it. It&#39;s not magic.&quot;</p>
+<p><strong>[CODE] Example:</strong></p>
+<pre><code class="language-jsx">function Button() {
+    return &lt;button className=&quot;btn&quot;&gt;Click&lt;/button&gt;;
+}
+</code></pre>
+<p><strong>[TIP] Instructor Tip:</strong> Warn them: The function name MUST be capitalized. If they write <code>function button()</code>, React will assume it&#39;s a standard HTML tag and break.</p>
 </blockquote>
-<hr />
-<h3>6. Exercise</h3>
+<h4>▸ C. Props (7 min)</h4>
 <blockquote>
-<p>[TIME] <strong>Pacing:</strong> 55 min total (5 min setup -&gt; 40 min coding -&gt; 10 min share)</p>
-<p>[SPEAK] <strong>Script:</strong> "Convert your Week 5 vanilla JS component library to React. Same three components — Button, Card, Modal — but now with JSX, useState, and TypeScript props interfaces."</p>
-<p>[SLIDE] <strong>Slide:</strong> Exercise checklist:
-- [ ] Set up Vite + React + TypeScript project
-- [ ] Convert Button to React with TypeScript props interface
-- [ ] Convert Card to React, using React Button internally
-- [ ] Convert Modal to React — use <code>useState</code> for <code>isOpen</code>
-- [ ] Demo page: all three components working together
-- [ ] TypeScript interfaces for all props
-- [ ] Modal opens when Button inside Card is clicked (state lifting)</p>
-<p>[TIP] <strong>Teaching Tip:</strong> State lifting (requirement 7) is the hardest part. Students need to move <code>isOpen</code> state from Modal to the parent component and pass it down as props + a callback. Circulate and help with this pattern specifically.</p>
-<p>[ENGAGE] <strong>Gen-Z:</strong> <strong>-&gt; Pair up:</strong> "One person handles Button + Card, the other handles Modal + state lifting. Then combine. It's like a collab — each person owns their component."</p>
-<p>[LOST] <strong>If they're lost:</strong> "Start with the project setup (<code>npm create vite@latest</code>). Then convert Button — it's the simplest. Then Card. Then Modal. Save state lifting for last."</p>
+<p><strong>[SPEAK] Discussion:</strong> &quot;How do we make components reusable? We pass them data. Props are like parameters for a function, or attributes on an HTML tag.&quot;</p>
+<p><strong>[CODE] Example:</strong></p>
+<pre><code class="language-jsx">// Passing Props
+&lt;UserCard name=&quot;Alice&quot; age={25} /&gt;
+
+// Receiving Props (Destructured)
+function UserCard({ name, age }) { ... }
+</code></pre>
+<p><strong>[TIP] Gen-Z Hook:</strong> Props flow down like a waterfall from parent to child. The child cannot push water back up the waterfall. Props are read-only.</p>
 </blockquote>
-<hr />
-<h3>7. AI Integration Note</h3>
+<h4>▸ D. State — useState (5 min)</h4>
 <blockquote>
-<p>[TIME] <strong>Pacing:</strong> 10 min (5 min demo -&gt; 5 min try)</p>
-<p>[SPEAK] <strong>Script:</strong> "This week, ask AI to convert a vanilla JS component to React. Then compare its approach with yours. Ask 'Why did you use useState here instead of passing it as a prop?'"</p>
-<p>[SLIDE] <strong>Slide:</strong> AI usage guide:
-| [OK] Allowed | [NO] Not Allowed |
-|-----------|--------------|
-| "Convert this vanilla JS component to React" | "Write my component hierarchy" |
-| "Why useState here vs prop?" | "Design my state management" |</p>
-<p>[TIP] <strong>Teaching Tip:</strong> Point out the common AI mistakes: class components (outdated), too much state in one component, missing TypeScript types, suggesting <code>useEffect</code> for derived state. Teach students to question AI's architecture choices.</p>
-<p>[ENGAGE] <strong>Gen-Z:</strong> "AI is like a senior dev who sometimes gives outdated advice. It might suggest class components from 2018. Always check: is this the modern hooks pattern?"</p>
+<p><strong>[SPEAK] Discussion:</strong> &quot;If props are read-only, how does a component change? State. State is the component&#39;s personal memory. When state changes, React automatically re-renders the component.&quot;</p>
+<p><strong>[CODE] Example:</strong></p>
+<pre><code class="language-jsx">const [count, setCount] = useState(0);
+return &lt;button onClick={() =&gt; setCount(count + 1)}&gt;{count}&lt;/button&gt;;
+</code></pre>
+<p><strong>[TIP] Instructor Tip:</strong> Drill this: NEVER mutate state directly (<code>count = 5</code>). You must use the setter function (<code>setCount(5)</code>) or React won&#39;t know it needs to re-render.</p>
 </blockquote>
-<hr />
-<h3>8. Debugging / "Watch Out For" Section</h3>
+<hr>
+<h3><span style="background:#2563eb;color:#fff;padding:2px 10px;border-radius:12px;font-size:0.8em;">30 min</span> 3. Code Walkthrough / Live Coding Blueprint</h3>
 <blockquote>
-<p>[TIME] <strong>Pacing:</strong> 15 min (5 min common errors -&gt; 5 min group debug -&gt; 5 min Q&amp;A)</p>
-<p>[SPEAK] <strong>Script:</strong> "Here are the React errors and mental model traps you'll hit this week. The undefined <code>.map()</code> error alone will save you hours of Googling."</p>
-<p>[SLIDE] <strong>Slide:</strong> Error cards:
-<code>+--------------------------------------+
-| "Cannot read properties of undefined |
-| (reading 'map')"                     |
-| Data hasn't loaded yet               |
-| Fix: optional chaining or default [] |
-+--------------------------------------+
-+--------------------------------------+
-| "React Hook 'useState' is called     |
-| conditionally"                       |
-| Hook inside if/loop/nested function  |
-| Fix: move hook to top of component   |
-+--------------------------------------+</code></p>
-<p>[ENGAGE] <strong>Gen-Z:</strong> "The undefined <code>.map()</code> error is like trying to count items in your Shopee cart before it loads. You need to check if the cart exists first: <code>items?.map(...)</code>."</p>
-<p>[Q&amp;A] <strong>Student Q:</strong> "Why does <code>setCount(count + 1); console.log(count);</code> still log the old value?"
-<strong>Short answer:</strong> Because state updates are batched — they don't happen immediately.
-<strong>Real answer:</strong> React batches state updates for performance. When you call <code>setCount</code>, React schedules a re-render but doesn't update <code>count</code> right away. The <code>console.log</code> runs before the re-render, so it sees the old value. If you need the new value, use <code>useEffect</code> or the functional update pattern: <code>setCount(c =&gt; c + 1)</code>.
-<strong>The hidden question:</strong> "So state isn't actually synchronous?" -&gt; No. It's scheduled. The new value appears on the next render.</p>
-<p>[LOST] <strong>If they're lost:</strong> "The #1 issue: calling <code>.map()</code> on undefined data. Always add a loading check: <code>if (!items) return &lt;p&gt;Loading...&lt;/p&gt;</code> or use optional chaining <code>items?.map(...)</code>."</p>
+<p>[SPEAK] <strong>Script:</strong> &quot;Let&#39;s build a React app using Vite. We&#39;ll make a reusable <code>ProfileCard</code> component and give it some state.&quot;</p>
 </blockquote>
-<hr />
-<h3>Teaching Script</h3>
-<p>This week's annotations cover: pacing table at top, inline annotations per section, and this summary. The core teaching move is the side-by-side comparison: Week 5 vanilla Counter vs Week 6 React Counter. Students should viscerally feel the reduction in boilerplate. Key pitfalls: undefined <code>.map()</code>, conditional hooks, and the async nature of state updates. State lifting in the exercise is the hardest concept — plan extra time for it.</p>
-<hr />
+<ul>
+<li><strong>Step 1: Scaffolding</strong><ul>
+<li><em>Action:</em> Run <code>npm create vite@latest my-react-app -- --template react</code>. Show the file structure.</li>
+</ul>
+</li>
+<li><strong>Step 2: Building the Component &amp; Props</strong><ul>
+<li><em>Action:</em> Create a <code>ProfileCard.jsx</code>. Give it <code>name</code> and <code>role</code> props. Render it three times in <code>App.jsx</code> with different data.</li>
+</ul>
+</li>
+<li><strong>Step 3: Adding State</strong><ul>
+<li><em>Action:</em> Add a &quot;Like&quot; button to the <code>ProfileCard</code> using <code>useState</code>. Show how clicking one card&#39;s like button doesn&#39;t affect the other cards (State is isolated per instance).</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3><span style="background:#2563eb;color:#fff;padding:2px 10px;border-radius:12px;font-size:0.8em;">15 min</span> 4. Debugging + Wrap</h3>
+<ul>
+<li><strong>Common Error 1:</strong> <code>Adjacent JSX elements must be wrapped in an enclosing tag.</code> -&gt; You tried to return two elements without wrapping them in a <code>&lt;div&gt;</code> or <code>&lt;&gt; &lt;/&gt;</code> (fragment).</li>
+<li><strong>Common Error 2:</strong> State seems one step behind. -&gt; State updates are asynchronous. If you <code>setCount(count + 1)</code> and immediately <code>console.log(count)</code>, it will show the old value.</li>
+</ul>
+<hr>
+<h3><span style="background:#2563eb;color:#fff;padding:2px 10px;border-radius:12px;font-size:0.8em;">55 min</span> 5. In-Class Exercise</h3>
+<blockquote>
+<p>[TIME] <strong>In-Class Exercise (55 min):</strong> Build a <code>Counter</code> component with <code>+</code> and <code>-</code> buttons. Render 3 Counters on the screen. Add a Prop <code>step</code> so the first counter counts by 1, the second by 5, and the third by 10.</p>
+</blockquote>
+<hr>
+<h3>💻 Online Session (1 hour)</h3>
+<h3>From the Trenches (Pro-Tip)</h3>
+<blockquote>
+<p>[TRENCHES] <strong>Instructor Script:</strong> &quot;The hardest thing to learn in React isn&#39;t the syntax; it&#39;s &#39;Thinking in React&#39;. Junior devs try to reach into the DOM to grab an input value using <code>document.getElementById</code>. In React, this is an anti-pattern. You bind the input to a piece of State, and you read the State. If you are touching the DOM directly in React, you are fighting the framework, and you will lose.&quot;</p>
+</blockquote>
+<h3>AI Integration</h3>
+<ul>
+<li><strong>AI Policy:</strong> Allowed: &quot;Why is my useState not updating immediately?&quot; Not Allowed: &quot;Build this React component for me.&quot;</li>
+</ul>
+<h3>Learning Baseline (Self-Assessment)</h3>
+<blockquote>
+<p><strong>[ASSESSMENT]</strong> By the end of this week, students must be able to say &quot;Yes&quot; to:</p>
+<ul>
+<li><input disabled="" type="checkbox"> I know the 3 rules of JSX (return 1 element, className, self-close tags).</li>
+<li><input disabled="" type="checkbox"> I can create a functional component.</li>
+<li><input disabled="" type="checkbox"> I can pass props from a Parent to a Child.</li>
+<li><input disabled="" type="checkbox"> I can initialize and update state using the <code>useState</code> hook.</li>
+</ul>
+</blockquote>
+<h3>Take-Home Mission</h3>
+<blockquote>
+<p><strong>[HOMEWORK]</strong> <strong>Mission:</strong> &quot;The State Toggler&quot;</p>
+<ol>
+<li>Create a <code>LightSwitch</code> component.</li>
+<li>It should have a piece of state called <code>isOn</code> (boolean).</li>
+<li><strong>The Catch:</strong> Based on the state, the component should completely change its CSS class (e.g., <code>&lt;div className={isOn ? &#39;bg-yellow&#39; : &#39;bg-dark&#39;}&gt;</code>). The button text must also change between &quot;Turn Off&quot; and &quot;Turn On&quot;.</li>
+</ol>
+</blockquote>
+<h3>Instructor Assets Blueprint</h3>
+<blockquote>
+<p><strong>[ASSETS]</strong> What to prepare before this class:</p>
+<ul>
+<li><strong>Starter Repo:</strong> A blank Vite React app.</li>
+<li><strong>Solution Repo:</strong> A completed <code>ProfileCard</code> and <code>LightSwitch</code> showing proper prop destructuring and boolean state toggling.</li>
+</ul>
+</blockquote>
 </body></html>

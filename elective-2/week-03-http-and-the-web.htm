@@ -1,6 +1,6 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>elective-2\week-03-http-and-the-web.md</title><style>
+<title>week-03-http-and-the-web.md</title><style>
 body { font-family: 'Segoe UI', Arial, sans-serif; max-width: 960px; margin: 2em auto; padding: 0 1.5em; line-height: 1.7; color: #1a1a1a; background: #fafafa; }
 h1 { border-bottom: 2px solid #2563eb; padding-bottom: .3em; margin-top: 1.5em; color: #1e3a5f; }
 h2 { border-bottom: 1px solid #cbd5e1; padding-bottom: .2em; margin-top: 1.5em; color: #1e3a5f; }
@@ -18,9 +18,29 @@ hr { border: none; border-top: 2px solid #e2e8f0; margin: 2em 0; }
 </style></head><body>
 <nav><a href="index.htm">Home</a></nav>
 <h2>Week 3: HTTP &amp; The Web</h2>
+<div style="background: #e0f2fe; padding: 15px; border-left: 5px solid #0284c7; margin-bottom: 20px;">
+    <strong>Learning Objectives:</strong>
+    <ul>
+        <li>Explain the HTTP request-response cycle and the structure of URLs.</li>
+        <li>Identify and correctly use core HTTP methods (GET, POST, PUT, DELETE).</li>
+        <li>Interpret HTTP status codes (200, 400, 404, 500) and headers using browser DevTools.</li>
+        <li>Understand the stateless nature of HTTP and its implications for web development.</li>
+    </ul>
+</div>
+<div style="background: #fefce8; padding: 15px; border-left: 5px solid #ca8a04; margin-bottom: 20px;">
+    <strong>📋 This Week at a Glance</strong><br>
+    🔁 Last week: &quot;Week 2: Interfaces &amp; DI Mental Model&quot;<br>
+    🎯 This week: &quot;We explore HTTP — the protocol that powers the web — and see how browsers and servers communicate&quot;<br>
+    <br>
+    <strong>LAB (3h) Topics:</strong><br>
+    ▸ A. The Request-Response Cycle (7 min)<br>▸ B. HTTP Methods / Verbs (7 min)<br>▸ C. Status Codes (6 min)<br>▸ D. Statelessness (5 min)<br>
+    <br>
+    <strong>ONLINE (1h):</strong> From the Trenches (401 vs 403) + AI Integration + Take-Home Mission (Postman Challenge)<br>
+    <br>
+    ✅ By end of lab: Open Network Tab; explain GET vs POST; know 200/404/500; understand HTTP is stateless
+</div>
 <blockquote>
-<p>[TIME] <strong>Session Pacing (180 min)</strong></p>
-</blockquote>
+<p>[TIME] <strong>Session Pacing (Lab - ~150 min)</strong></p>
 <table>
 <thead>
 <tr>
@@ -29,8 +49,7 @@ hr { border: none; border-top: 2px solid #e2e8f0; margin: 2em 0; }
 <th>Format</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>Hook + Analogy</td>
 <td>15 min</td>
 <td>Lecture + Whiteboard</td>
@@ -46,11 +65,6 @@ hr { border: none; border-top: 2px solid #e2e8f0; margin: 2em 0; }
 <td>Live Demo (DevTools + C# code)</td>
 </tr>
 <tr>
-<td>Industry Reality</td>
-<td>10 min</td>
-<td>Lecture + Discussion</td>
-</tr>
-<tr>
 <td>Break</td>
 <td>10 min</td>
 <td>—</td>
@@ -59,11 +73,6 @@ hr { border: none; border-top: 2px solid #e2e8f0; margin: 2em 0; }
 <td>Exercise</td>
 <td>55 min</td>
 <td>Lab (solo or pairs)</td>
-</tr>
-<tr>
-<td>AI Integration</td>
-<td>10 min</td>
-<td>Demo + Prompt Walkthrough</td>
 </tr>
 <tr>
 <td>Debugging + Wrap</td>
@@ -75,153 +84,143 @@ hr { border: none; border-top: 2px solid #e2e8f0; margin: 2em 0; }
 <td>10 min</td>
 <td>Overflow / Stretch discussion</td>
 </tr>
-</tbody>
-</table>
-<blockquote>
-<p>[TIP] <strong>Teaching Tip (Week 3 strategy):</strong> This is the first week that moves beyond C# syntax into how the web actually works. Students who struggled with C# may find this refreshing — it's conceptual, not syntactic. Use DevTools heavily; seeing real HTTP traffic makes the abstract concrete.</p>
+</tbody></table>
 </blockquote>
-<hr />
-<h3>The Hook</h3>
 <blockquote>
-<p>[SPEAK] <strong>Script:</strong> "When you tapped that Like button on your crush's post, about 47 things happened in under 200ms. Your phone sent a secret message to a server somewhere, the server updated a database, and sent back a response. That's HTTP. And yes, you'll be tested on it."</p>
-<p>[SLIDE] <strong>Slide:</strong> Title: "What Happens When You Tap 'Like'"<br />
-A timeline visualization: Tap -&gt; HTTP Request -&gt; Server -&gt; Database -&gt; HTTP Response -&gt; Heart appears. Total: 200ms.</p>
-<p>[TIP] <strong>Teaching Tip:</strong> This hook works because it connects to something students do daily. Don't over-explain — just plant the curiosity. They'll learn the details in the concept discussion.</p>
-<p>[ENGAGE] <strong>Gen-Z:</strong> "Every TikTok like, every Instagram story view, every GCash transaction — all HTTP. You're already using this protocol hundreds of times a day. Today you learn how it works behind the scenes."<br />
-<strong>-&gt; Phone moment:</strong> "Pull up your phone. Open Instagram. Every time you scroll and new content loads? That's an HTTP request. You're looking at HTTP responses right now."</p>
-<p>[LOST] <strong>If they're lost:</strong> "HTTP is just how computers talk to each other on the internet. Like texting, but for apps. You send a message, you get a reply."</p>
+<p>[TIP] <strong>Teaching Tip:</strong> This is the first week moving beyond syntax into how the web actually works. Use DevTools heavily; seeing real HTTP traffic makes the abstract concrete.</p>
 </blockquote>
-<hr />
-<h3>The Analogy</h3>
+<hr>
+<h3><span style="background:#2563eb;color:#fff;padding:2px 10px;border-radius:12px;font-size:0.8em;">15 min</span> 1. The Hook &amp; The Analogy</h3>
 <blockquote>
-<p>[SPEAK] <strong>Script:</strong> "HTTP is like sending a letter. You write a letter with a method (GET = asking for something, POST = sending something), an address (URL), headers (return address), and maybe a body (the actual content). The server reads it and sends back a response with a status code."</p>
-<p>[BOARD] <strong>Whiteboard:</strong> Draw the letter analogy visually:
-<code>+--------------------------------+
-| ENVELOPE (HTTP Request)        |
-| Method: GET                    |
-| Address: /api/users            |
-| Headers: Auth, Content-Type    |
-| Body: (empty for GET)          |
-+--------------------------------+
-        v
-+--------------------------------+
-| RESPONSE (HTTP Response)       |
-| Status: 200 OK                 |
-| Headers: Content-Type: JSON    |
-| Body: [{name: "Juan", ...}]    |
-+--------------------------------+</code></p>
-<p>[TIP] <strong>Teaching Tip:</strong> The letter analogy is universal but can feel abstract. Make it concrete by showing a real HTTP request in DevTools right after the analogy. Connect the parts: "See this 'GET'? That's the method. See this URL? That's the address."</p>
-<p>[ENGAGE] <strong>Gen-Z:</strong> "HTTP methods are like the different buttons on a food delivery app. GET = browse the menu. POST = place an order. PUT = change your entire order. PATCH = just remove the onions. DELETE = cancel the order."<br />
-<strong>-&gt; Turn to your neighbor:</strong> "What HTTP method is 'adding a comment on Facebook'? What about 'deleting a post'? 10 seconds, go!"</p>
-<p>[LOST] <strong>If they're lost:</strong> "Forget the letter. Think of ordering from Jollibee. GET = looking at the menu board. POST = giving your order to the cashier. The cashier gives you a number (status code). 200 = your food is ready. 404 = they don't have that item. 500 = the kitchen caught fire."</p>
+<p>[SPEAK] <strong>Script:</strong> &quot;When you tapped that Like button on your crush&#39;s post, about 47 things happened in under 200ms. Your phone sent a secret message to a server, the server updated a DB, and sent back a response. That&#39;s HTTP.&quot;</p>
 </blockquote>
-<hr />
-<h3>Concept Discussion</h3>
 <blockquote>
-<p>[TIME] <strong>Pacing:</strong> 25 min total (10 min request-response cycle -&gt; 8 min methods table -&gt; 5 min status codes -&gt; 2 min statelessness)</p>
-<p>[SPEAK] <strong>Script:</strong> "Here's the request-response cycle in six steps. This is the foundation of everything web-related. Memorize this flow — you'll use it every week for the rest of the semester."</p>
-<p>[SLIDE] <strong>Slide:</strong> Show the 6-step request-response cycle as a flow diagram. Animate each step: Browser -&gt; Build Request -&gt; Travel -&gt; Server Process -&gt; Build Response -&gt; Browser Render.</p>
-<p>[TIP] <strong>Teaching Tip:</strong> The methods table and status codes are the two things students MUST memorize. Spend the most time here. For methods, emphasize: GET and POST are the ones they'll use 90% of the time. PUT, PATCH, DELETE come later with APIs.</p>
-<p>[ASK] <strong>Ask the class:</strong> "What status code do you think you'll see most often?" (Answer: 200. Then ask: "What about the one you'll see when you mistype a URL?" Answer: 404.)</p>
-<p>[ENGAGE] <strong>Gen-Z:</strong> "Status codes are like your relationship status. 200 = 'It's good.' 401 = 'Who are you again?' 403 = 'I know you but no.' 404 = 'Not here, not coming.' 500 = 'It's not you, it's me (the server).'"<br />
-<strong>-&gt; Phone moment:</strong> "Open DevTools on your laptop right now. F12 -&gt; Network tab. Refresh any page. See all those entries? Each one is an HTTP request. Click one. Look at the status code."</p>
-<p>[Q&amp;A] <strong>Student Q:</strong> "What's the difference between 401 and 403?"
-<strong>Short answer:</strong> 401 = "I don't know who you are." 403 = "I know who you are but you can't do this."
-<strong>Real answer:</strong> 401 means authentication failed (you need to log in). 403 means authorization failed (you're logged in but don't have permission).
-<strong>The hidden question:</strong> "Why two codes for 'no'?" -&gt; Because the fix is different. 401 -&gt; log in. 403 -&gt; get permission.</p>
-<p>[Q&amp;A] <strong>Student Q:</strong> "What does 'stateless' mean?"
-<strong>Short answer:</strong> The server doesn't remember you between requests.
-<strong>Real answer:</strong> Each HTTP request is independent. If you log in on request 1, the server doesn't automatically know you're logged in on request 2. That's why we need cookies/sessions (covered in Week 13).
-<strong>The hidden question:</strong> "But websites remember me — how?" -&gt; Cookies. We'll get there.</p>
-<p>[LOST] <strong>If they're lost:</strong> "HTTP is a conversation. You ask, I answer. Then I forget you existed. Next time you ask, I treat you like a stranger. That's stateless. Cookies are like a name tag — 'Hi, I'm Juan, I was here before.'"</p>
+<p>[BOARD] <strong>Whiteboard Analogy:</strong> The Digital Mail System</p>
+<ul>
+<li><strong>The Envelope (HTTP Request):</strong> You need an address (URL), a method (GET/POST), and headers (return address).</li>
+<li><strong>The Letter (Body):</strong> The actual data you are sending (like login credentials).</li>
+<li><strong>The Reply (HTTP Response):</strong> The server sends back a status code (200 OK) and the requested data.</li>
+</ul>
 </blockquote>
-<hr />
-<h3>Code Walkthrough</h3>
+<hr>
+<h3><span style="background:#2563eb;color:#fff;padding:2px 10px;border-radius:12px;font-size:0.8em;">25 min</span> 2. Core Concepts &amp; Discussion Topics</h3>
+<h4>▸ A. The Request-Response Cycle (7 min)</h4>
+<p><strong>Module Syllabus Content:</strong> The World Wide Web runs on the Hypertext Transfer Protocol (HTTP), which operates strictly on a request-response model. A client (usually a web browser or mobile app) sends an HTTP Request to a specific URL hosted on a server. The server processes this request, performs any necessary business logic or database queries, and sends back an HTTP Response containing the requested resource (like HTML, JSON, or an image). Crucially, the server cannot independently push data to the client using standard HTTP; the conversation must always be initiated by the client's request.</p>
 <blockquote>
-<p>[TIME] <strong>Pacing:</strong> 30 min (10 min DevTools demo -&gt; 10 min raw HTTP -&gt; 10 min C# HttpClient)</p>
-<p>[SPEAK] <strong>Script:</strong> "Let's see HTTP in action. Open DevTools, go to the Network tab, and refresh any page. Every line you see is an HTTP request. Let's look at one together."</p>
-<p>[SLIDE] <strong>Slide:</strong> Split screen: left side shows DevTools Network tab, right side shows the raw HTTP request/response text.</p>
-<p>[TIP] <strong>Teaching Tip:</strong> Do the DevTools demo FIRST — it's visual and immediate. Then show the raw HTTP text to demystify what's happening under the hood. Finally, show the C# HttpClient code to connect it back to programming.</p>
-<p>[BOARD] <strong>Whiteboard:</strong> Draw the HttpClient flow:
-<code>HttpClient created
-  v
-GET request sent to api.github.com
-  v
-Response received (check status code!)
-  v
-If success -&gt; read body as string
-If fail -&gt; print error</code></p>
-<p>[ENGAGE] <strong>Gen-Z:</strong> "DevTools is like X-ray vision for websites. You can see every request, every response, every cookie. It's the closest thing to hacker mode you'll get without actually hacking."<br />
-<strong>-&gt; Live demo:</strong> "Everyone open DevTools now. F12. Network tab. Refresh. Click the first request. Look at the Headers tab. Find the 'Request Method' — it should say GET."</p>
-<p>[Q&amp;A] <strong>Student Q:</strong> "Why does the first HttpClient example get a 403?"
-<strong>Short answer:</strong> GitHub's API requires a User-Agent header to identify who's making the request.
-<strong>Real answer:</strong> Without a User-Agent, GitHub can't tell if the request is from a real app or a bot. They block unidentified requests to prevent abuse.
-<strong>The hidden question:</strong> "Why do APIs have these requirements?" -&gt; Rate limiting, abuse prevention, and analytics.</p>
-<p>[LOST] <strong>If they're lost:</strong> "Forget the code for a second. The flow is: (1) Create a client. (2) Tell it what URL to visit. (3) Get the response. (4) Check if it worked. (5) Read the data. That's it. The code just implements these five steps."</p>
+<p><strong>[SPEAK] Discussion:</strong> &quot;HTTP is a conversation. The client (browser/phone) asks a question. The server answers. The server can NEVER start the conversation.&quot;</p>
+<p><strong>[VISUAL] Example:</strong>
+Draw: <code>Client ---(Request)---&gt; Server</code> then <code>Server ---(Response)---&gt; Client</code>.</p>
+<p><strong>[TIP] Instructor Tip:</strong> Emphasize this because students often think the server can magically push data to the client (which requires WebSockets, not standard HTTP).</p>
 </blockquote>
-<hr />
-<h3>The "Why Should I Care?"</h3>
+<h4>▸ B. HTTP Methods (Verbs) (7 min)</h4>
+<p><strong>Module Syllabus Content:</strong> While the URL specifies <em>where</em> the request is going, the HTTP Method (or Verb) tells the server <em>what</em> action the client wants to perform. The four most common methods align with CRUD operations: <code>GET</code> retrieves data without modifying it (Read), <code>POST</code> submits data to create a new resource (Create), <code>PUT</code> (or <code>PATCH</code>) modifies an existing resource (Update), and <code>DELETE</code> removes a resource (Delete). Following standard REST principles, <code>GET</code> and <code>DELETE</code> requests should not contain a payload body, whereas <code>POST</code> and <code>PUT</code> requests include the data payload in their body.</p>
 <blockquote>
-<p>[SPEAK] <strong>Script:</strong> "Every app you've ever used runs on HTTP. Instagram? HTTP. TikTok? HTTP. Canvas? HTTP. Understanding the request-response cycle is understanding how the internet works."</p>
-<p>[SLIDE] <strong>Slide:</strong> Show a screenshot of DevTools Network tab with 50+ requests from a single page load. Label: "One page load = 50+ HTTP conversations."</p>
-<p>[TIP] <strong>Teaching Tip:</strong> Keep this to 5 minutes. The goal is to make HTTP feel essential, not academic. Connect it to debugging: "When your app breaks, 80% of the time it's an HTTP issue."</p>
-<p>[ENGAGE] <strong>Gen-Z:</strong> <strong>-&gt; Poll:</strong> "How many of you have seen a 404 error before?" (All hands.) "That's HTTP. You already know more than you think."</p>
-<p>[LOST] <strong>If they're lost:</strong> "You don't need to memorize everything today. Just remember: request -&gt; response. That's the core. Everything else is details."</p>
+<p><strong>[SPEAK] Discussion:</strong> &quot;The URL tells the server WHERE to go. The method tells the server WHAT to do.&quot;</p>
+<p><strong>[CODE] Example:</strong></p>
+<ul>
+<li><strong>GET:</strong> Read only. (No body allowed).</li>
+<li><strong>POST:</strong> Create new. (Contains a body).</li>
+<li><strong>PUT/PATCH:</strong> Update existing.</li>
+<li><strong>DELETE:</strong> Destroy.</li>
+</ul>
+<p><strong>[TIP] Gen-Z Hook:</strong> GET is browsing the menu. POST is ordering the food. DELETE is canceling the order.</p>
 </blockquote>
-<hr />
-<h3>Exercise: HTTP Trace Report</h3>
+<h4>▸ C. Status Codes (6 min)</h4>
+<p><strong>Module Syllabus Content:</strong> Every HTTP response includes a three-digit status code that instantly communicates the result of the request. These are grouped into logical ranges: 2xx means Success (e.g., 200 OK, 201 Created), 3xx indicates Redirection (the resource has moved), 4xx signifies a Client Error (the user sent a bad request, like a 404 Not Found or a 400 Bad Request with invalid data), and 5xx represents a Server Error (the client's request was valid, but the server's code crashed, e.g., 500 Internal Server Error). Knowing these codes allows developers to quickly isolate whether a bug is on the frontend or the backend.</p>
 <blockquote>
-<p>[TIME] <strong>Pacing:</strong> 55 min total (5 min setup -&gt; 40 min tracing -&gt; 10 min share)</p>
-<p>[SPEAK] <strong>Script:</strong> "Your mission: be a web detective. Visit three websites, open DevTools, and document every HTTP request they make. You'll be surprised how many requests a single page makes."</p>
-<p>[SLIDE] <strong>Slide:</strong> Exercise checklist:
-- [ ] Open DevTools Network tab
-- [ ] Visit 3 different websites
-- [ ] Capture all requests for first page load
-- [ ] Identify: HTML, CSS, JS, images, API calls
-- [ ] Note status codes and what they mean
-- [ ] Write a short report</p>
-<p>[TIP] <strong>Teaching Tip:</strong> This exercise is observational, not coding-heavy. Circulate and help students interpret what they see. The "aha" moment is when they realize a simple page makes 50+ requests.</p>
-<p>[ENGAGE] <strong>Gen-Z:</strong> <strong>-&gt; Pair up:</strong> "Work with a partner. One person navigates, the other records. Then switch. Compare notes — did both sites make the same types of requests?"</p>
-<p>[LOST] <strong>If they're lost:</strong> "Start with just ONE website. Google.com is the simplest. Open DevTools, refresh, and count how many requests you see. Then categorize them: which are HTML? Which are images? Build from there."</p>
+<p><strong>[SPEAK] Discussion:</strong> &quot;Status codes are the server&#39;s mood. 200s are happy. 400s mean you messed up. 500s mean the server messed up.&quot;</p>
+<p><strong>[CODE] Example:</strong></p>
+<ul>
+<li><strong>200 OK:</strong> Everything worked.</li>
+<li><strong>400 Bad Request:</strong> You sent bad JSON or missing data.</li>
+<li><strong>404 Not Found:</strong> The URL doesn&#39;t exist.</li>
+<li><strong>500 Internal Error:</strong> The server crashed.</li>
+</ul>
+<p><strong>[TIP] Instructor Tip:</strong> Drill 404 vs 500. 404 is a routing problem. 500 is a code logic problem.</p>
 </blockquote>
-<hr />
-<h3>AI Integration Note</h3>
+<h4>▸ D. Statelessness (5 min)</h4>
+<p><strong>Module Syllabus Content:</strong> By design, HTTP is a stateless protocol. This means that every single request is processed in complete isolation. The server does not inherently remember anything about the client from previous requests. If you authenticate yourself on Request #1, the server will forget who you are by Request #2 unless you explicitly remind it. To maintain state—such as keeping a user logged in or keeping items in a shopping cart—web developers must implement external mechanisms like Cookies, Session IDs, or JSON Web Tokens (JWTs) that are attached to every subsequent request.</p>
 <blockquote>
-<p>[TIME] <strong>Pacing:</strong> 10 min (5 min demo -&gt; 5 min try)</p>
-<p>[SPEAK] <strong>Script:</strong> "This week, you can ask AI to explain status codes, HTTP headers, or why a request failed. You cannot ask it to generate your trace report — you need to observe and document yourself."</p>
-<p>[SLIDE] <strong>Slide:</strong> Allowed vs Not Allowed:
-| [OK] Allowed | [NO] Not Allowed |
-|-----------|--------------|
-| "What does status code 304 mean?" | "Write my HTTP trace report" |
-| "Explain the User-Agent header" | "Generate fake network data for me" |</p>
-<p>[TIP] <strong>Teaching Tip:</strong> The key skill this week is observation. AI can explain concepts, but it can't look at your DevTools screen and tell you what you're seeing. That's the learning.</p>
-<p>[ENGAGE] <strong>Gen-Z:</strong> "AI is like having a tutor who knows HTTP but can't see your screen. Ask it questions, but do the observation yourself."</p>
+<p><strong>[SPEAK] Discussion:</strong> &quot;HTTP has amnesia. Every request is completely isolated. If you log in on request 1, request 2 has no idea who you are.&quot;</p>
+<p><strong>[VISUAL] Example:</strong>
+&quot;Hi, I&#39;m Nina.&quot; -&gt; &quot;Hello Nina.&quot;
+(Next request) &quot;What&#39;s my balance?&quot; -&gt; &quot;Who are you?&quot;</p>
+<p><strong>[TIP] Instructor Tip:</strong> This sets up the concept of Cookies/Tokens for later in the semester. </p>
 </blockquote>
-<hr />
-<h3>Debugging / "Watch Out For"</h3>
+<hr>
+<h3><span style="background:#2563eb;color:#fff;padding:2px 10px;border-radius:12px;font-size:0.8em;">30 min</span> 3. Code Walkthrough / Live Coding Blueprint</h3>
 <blockquote>
-<p>[TIME] <strong>Pacing:</strong> 15 min (5 min common issues -&gt; 5 min group debug -&gt; 5 min Q&amp;A)</p>
-<p>[SPEAK] <strong>Script:</strong> "Here are the HTTP-related issues you'll encounter. Most of them aren't bugs — they're features you need to understand."</p>
-<p>[SLIDE] <strong>Slide:</strong> Issue cards:
-<code>+-------------------------------------+
-| CORS Error                          |
-| Browser blocks cross-domain request |
-| Fix: Server must allow it           |
-+-------------------------------------+
-+-------------------------------------+
-| 304 Not Modified                    |
-| NOT an error — it's caching!        |
-| Browser says "I already have this"  |
-+-------------------------------------+</code></p>
-<p>[ENGAGE] <strong>Gen-Z:</strong> "CORS errors are like trying to enter a building with someone else's ID. The building (server) says 'I don't recognize you.' The fix isn't to sneak in — it's to get the building to recognize your ID."</p>
-<p>[Q&amp;A] <strong>Student Q:</strong> "Why does the browser block cross-domain requests? That seems annoying."
-<strong>Short answer:</strong> It's a security feature, not a bug.
-<strong>Real answer:</strong> Without CORS, any website could make requests to your bank's API on your behalf. CORS prevents unauthorized cross-site requests.
-<strong>The hidden question:</strong> "How do I fix it?" -&gt; The server needs to send the right CORS headers. You can't fix it from the client side alone.</p>
-<p>[LOST] <strong>If they're lost:</strong> "Red entries in DevTools = errors. Click on them. Read the status code. Read the response body. 90% of debugging is just reading what the error tells you."</p>
+<p>[SPEAK] <strong>Script:</strong> &quot;Let&#39;s see HTTP in action. We aren&#39;t going to look at C# first. We&#39;re going to look at the browser.&quot;</p>
 </blockquote>
-<hr />
-<h3>Teaching Script</h3>
-<p>This week's annotations cover: pacing table at top, inline annotations per section, and this summary. The DevTools demo is the most important part — make sure every student opens Network tab and sees real HTTP traffic.</p>
-<hr />
+<ul>
+<li><strong>Step 1: The DevTools X-Ray</strong><ul>
+<li><em>Action:</em> Open Chrome, hit F12, go to the Network Tab. Refresh google.com. Show the class the 50+ requests. Click on one and show the Headers and Response.</li>
+</ul>
+</li>
+<li><strong>Step 2: C# <code>HttpClient</code></strong><ul>
+<li><em>Action:</em> Write a simple C# Console App that makes a GET request to a public API.</li>
+</ul>
+<pre><code class="language-csharp">using var client = new HttpClient();
+var response = await client.GetAsync(&quot;https://api.github.com/users/octocat&quot;);
+response.EnsureSuccessStatusCode();
+var body = await response.Content.ReadAsStringAsync();
+Console.WriteLine(body);
+</code></pre>
+</li>
+</ul>
+<hr>
+<h3><span style="background:#2563eb;color:#fff;padding:2px 10px;border-radius:12px;font-size:0.8em;">55 min</span> 6. Exercise &amp; Homework</h3>
+<blockquote>
+<p>[TIME] <strong>In-Class Exercise (55 min):</strong> The DevTools Detective. Visit 3 different websites (e.g., Netflix, GitHub, a local news site). Open the Network tab and trace the first page load. Identify HTML requests, API calls, and find at least one 404 or 304 code.</p>
+</blockquote>
+<hr>
+<h3>💻 Online Session (1 hour)</h3>
+<hr>
+<h3><span style="background:#2563eb;color:#fff;padding:2px 10px;border-radius:12px;font-size:0.8em;">15 min</span> 4. From the Trenches (Pro-Tip)</h3>
+<blockquote>
+<p>[TRENCHES] <strong>Instructor Script:</strong> &quot;In an interview, someone will ask you &#39;What is the difference between a 401 and a 403?&#39; 90% of candidates freeze. Here is the industry cheat code: 401 means &#39;I don&#39;t know who you are (Authentication failed).&#39; 403 means &#39;I know exactly who you are, but you are not allowed to do this (Authorization failed).&#39; Memorize that, and you&#39;ll pass the technical screen.&quot;</p>
+</blockquote>
+<hr>
+<h3><span style="background:#2563eb;color:#fff;padding:2px 10px;border-radius:12px;font-size:0.8em;">10 min</span> 5. AI Integration &amp; Debugging</h3>
+<ul>
+<li><strong>AI Policy:</strong> Allowed: &quot;Explain the User-Agent HTTP header.&quot; Not Allowed: &quot;Write my HTTP trace report for me.&quot;</li>
+<li><strong>Common Error 1:</strong> <code>403 Forbidden</code> on GitHub API. -&gt; You didn&#39;t supply a <code>User-Agent</code> header, so GitHub blocked your script thinking it was a malicious bot.</li>
+<li><strong>Common Error 2:</strong> <code>CORS Error</code>. -&gt; Not a bug. The browser actively blocked your request because the server didn&#39;t explicitly allow your domain to talk to it.</li>
+</ul>
+<hr>
+<h3><span style="background:#2563eb;color:#fff;padding:2px 10px;border-radius:12px;font-size:0.8em;">55 min</span> 6. Exercise &amp; Homework</h3>
+<blockquote>
+<h3>Learning Baseline (Self-Assessment)</h3>
+<blockquote>
+<p><strong>[ASSESSMENT]</strong> By the end of this week, students must be able to say &quot;Yes&quot; to:</p>
+<ul>
+<li><input disabled="" type="checkbox"> I can open the Network Tab and inspect an HTTP request.</li>
+<li><input disabled="" type="checkbox"> I can explain the difference between GET and POST.</li>
+<li><input disabled="" type="checkbox"> I know what 200, 404, and 500 status codes mean.</li>
+<li><input disabled="" type="checkbox"> I understand that HTTP is stateless.</li>
+</ul>
+</blockquote>
+</blockquote>
+<blockquote>
+<h3>Take-Home Mission</h3>
+<blockquote>
+<p><strong>[HOMEWORK]</strong> <strong>Mission:</strong> &quot;The Postman Challenge&quot;
+Instead of writing C# code, download Postman (or Insomnia).</p>
+<ol>
+<li>Make a GET request to JSONPlaceholder (<code>/users</code>).</li>
+<li>Make a POST request to JSONPlaceholder (<code>/posts</code>) with a JSON body containing a title and body.</li>
+<li><strong>The Catch:</strong> Take a screenshot of the 201 Created response, proving you successfully sent the JSON body with the correct <code>Content-Type</code> header.</li>
+</ol>
+</blockquote>
+</blockquote>
+<hr>
+<h3><span style="background:#2563eb;color:#fff;padding:2px 10px;border-radius:12px;font-size:0.8em;">15 min</span> 7. Instructor Assets Blueprint</h3>
+<blockquote>
+<p><strong>[ASSETS]</strong> What to prepare before this class:</p>
+<ul>
+<li><strong>Starter Repo:</strong> No starter repo needed today. Focus on Chrome DevTools.</li>
+<li><strong>Solution Repo:</strong> A C# script showing how to inject headers into <code>HttpClient</code> to bypass the GitHub 403 error.</li>
+</ul>
+</blockquote>
+
 </body></html>

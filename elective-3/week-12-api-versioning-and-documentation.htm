@@ -1,6 +1,6 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>elective-3\week-12-api-versioning-and-documentation.md</title><style>
+<title>week-12-api-versioning-and-documentation.md</title><style>
 body { font-family: 'Segoe UI', Arial, sans-serif; max-width: 960px; margin: 2em auto; padding: 0 1.5em; line-height: 1.7; color: #1a1a1a; background: #fafafa; }
 h1 { border-bottom: 2px solid #2563eb; padding-bottom: .3em; margin-top: 1.5em; color: #1e3a5f; }
 h2 { border-bottom: 1px solid #cbd5e1; padding-bottom: .2em; margin-top: 1.5em; color: #1e3a5f; }
@@ -18,9 +18,23 @@ hr { border: none; border-top: 2px solid #e2e8f0; margin: 2em 0; }
 </style></head><body>
 <nav><a href="index.htm">Home</a></nav>
 <h2>Week 12: API Versioning &amp; Documentation</h2>
+<div style="background: #fefce8; padding: 15px; border-left: 5px solid #ca8a04; margin-bottom: 20px;">
+    <strong>📋 This Week at a Glance</strong><br>
+    🔁 Last week: &quot;Week 11: Frontend/Backend Integration&quot;<br>
+    🎯 This week: &quot;Learn why API versioning matters and how to document APIs with Swagger&quot;<br>
+    <br>
+    <strong>LAB (3h) Topics:</strong><br>
+    ▸ A. Why Version APIs? (7 min)<br>
+    ▸ B. URL Versioning (6 min)<br>
+    ▸ C. Swagger / OpenAPI (7 min)<br>
+    ▸ D. XML Comments (5 min)<br>
+    <br>
+    <strong>ONLINE (1h):</strong> Industry Reality + AI Integration + Take-Home Mission (The Professional Contract)<br>
+    <br>
+    ✅ By end of lab: Understand why APIs need versioning; configure URL-based versioning; use Swagger UI; write XML doc comments
+</div>
 <blockquote>
-<p>[TIME] <strong>Session Pacing (180 min)</strong></p>
-</blockquote>
+<p>[TIME] <strong>Session Pacing (Lab - ~150 min)</strong></p>
 <table>
 <thead>
 <tr>
@@ -29,8 +43,7 @@ hr { border: none; border-top: 2px solid #e2e8f0; margin: 2em 0; }
 <th>Format</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>Hook + Analogy</td>
 <td>15 min</td>
 <td>Lecture + Whiteboard</td>
@@ -38,17 +51,12 @@ hr { border: none; border-top: 2px solid #e2e8f0; margin: 2em 0; }
 <tr>
 <td>Concept Discussion</td>
 <td>25 min</td>
-<td>Lecture + Slides + Versioning Strategy Diagram</td>
+<td>Lecture + Slides + Versioning Strats</td>
 </tr>
 <tr>
 <td>Code Walkthrough</td>
 <td>30 min</td>
-<td>Live Code (versioning setup -&gt; v2 controller -&gt; Swagger -&gt; deprecation)</td>
-</tr>
-<tr>
-<td>Industry Reality</td>
-<td>10 min</td>
-<td>Lecture + Discussion</td>
+<td>Live Code (Swagger &amp; XML Comments)</td>
 </tr>
 <tr>
 <td>Break</td>
@@ -61,11 +69,6 @@ hr { border: none; border-top: 2px solid #e2e8f0; margin: 2em 0; }
 <td>Lab (solo or pairs)</td>
 </tr>
 <tr>
-<td>AI Integration</td>
-<td>10 min</td>
-<td>Demo + Prompt Walkthrough</td>
-</tr>
-<tr>
 <td>Debugging + Wrap</td>
 <td>15 min</td>
 <td>Group Debug + Q&amp;A</td>
@@ -75,156 +78,127 @@ hr { border: none; border-top: 2px solid #e2e8f0; margin: 2em 0; }
 <td>10 min</td>
 <td>Overflow / Stretch discussion</td>
 </tr>
-</tbody>
-</table>
-<blockquote>
-<p>[TIP] <strong>Teaching Tip (Week 12 strategy):</strong> This is the "professional API" week — students learn how real companies evolve APIs without breaking clients. The restaurant menu update analogy is essential. Build progressively: versioning setup -&gt; v1 + v2 controllers -&gt; Swagger multi-version -&gt; deprecation headers. Emphasize: versioning is for EVOLUTION, not for fixing bad design. The deprecation headers (RFC 8594) are a nice professional touch that impresses. Students will struggle with Swagger showing duplicate endpoints — this is the most common bug.</p>
+</tbody></table>
 </blockquote>
-<h3>1. The Hook</h3>
 <blockquote>
-<p>[SPEAK] <strong>Script:</strong> "Remember when Twitter changed its API and your favorite third-party app just... stopped working? Or when Google deprecated an API you were using and gave you 6 months to migrate? API versioning is how companies change their APIs without breaking everyone's apps. It's the difference between 'we updated our API' and 'we broke your app.' You're going to learn how to evolve an API gracefully — because in the real world, APIs never stay the same."</p>
-<p>[SLIDE] <strong>Slide:</strong> Title: "How to Change Your API Without Breaking the World"<br />
-Left: Twitter API v1 -&gt; v2 migration — broken apps, angry tweets. Right: Stripe API versioning — "pin to any version, works forever." Subtitle: "The difference is versioning strategy."</p>
-<p>[TIP] <strong>Teaching Tip:</strong> This hook creates stakes — students realize that API changes have real consequences for real users. Make it personal: "Raise your hand if you've ever had an app stop working after an update."</p>
-<p>[ENGAGE] <strong>Gen-Z:</strong> "API versioning is like your phone's OS update. iOS 17 doesn't delete your iOS 16 apps — they still work. Apple gives developers time to update their apps for the new version. That's versioning: old stuff keeps working while new stuff rolls out."<br />
-<strong>-&gt; Phone moment:</strong> "Open your phone's settings -&gt; About -&gt; Software version. See that number? That's versioning. Your apps don't break when the OS updates because Apple maintains backward compatibility."</p>
-<p>[LOST] <strong>If they're lost:</strong> "Don't worry if you've never versioned an API. It's simpler than it sounds: you keep the old version working while you build the new one. Clients choose which version to use."</p>
+<p>[TIP] <strong>Teaching Tip:</strong> Documentation sounds boring to students. Frame it as a weapon: &quot;Good documentation is how you prove to your boss that your code works without them having to read the code.&quot;</p>
 </blockquote>
-<hr />
-<h3>2. The Analogy</h3>
+<hr>
+<h3><span style="background:#2563eb;color:#fff;padding:2px 10px;border-radius:12px;font-size:0.8em;">15 min</span> 1. The Hook &amp; The Analogy</h3>
 <blockquote>
-<p>[SPEAK] <strong>Script:</strong> "API versioning is like a restaurant updating its menu. The old menu had 'Burger #1' for $5. The new menu has 'Gourmet Burger' for $12. If you just swap the menus, customers who ordered 'Burger #1' get confused. Instead, you keep both menus available for a while. Regular customers can still order from the old menu. New customers get the new menu. Eventually, you phase out the old one — but you give everyone time to adjust. API versioning does the same thing for developers."</p>
-<p>[BOARD] <strong>Whiteboard:</strong> Draw the menu comparison:
-```
-OLD MENU (v1):                  NEW MENU (v2):
-+------------------+            +------------------+
-| Burger #1   $5   |            | Gourmet Burger $12|
-| Fries       $3   |            | Truffle Fries  $6 |
-| Soda        $2   |            | Craft Soda     $4 |
-+------------------+            +------------------+</p>
-<p>BOTH MENUS AVAILABLE -&gt; customers choose
-Eventually: OLD MENU retires with notice
-"Burger #1 discontinued Jan 1, 2027"
-```</p>
-<p>[TIP] <strong>Teaching Tip:</strong> The menu analogy maps perfectly: old menu = v1 API, new menu = v2 API, "both available" = parallel versions, "discontinued notice" = deprecation headers. Draw it and reference it throughout.</p>
-<p>[ENGAGE] <strong>Gen-Z:</strong> "The deprecation headers are like your Shopee item showing 'This product will be delisted on Jan 1.' You can still buy it, but you know it's going away and should find an alternative."<br />
-<strong>-&gt; Turn to your neighbor:</strong> "In the restaurant analogy, what's the API version? What's the deprecation header? 15 seconds, discuss!"</p>
-<p>[LOST] <strong>If they're lost:</strong> "Forget the restaurant. Versioning = keep old API working while building new one. Deprecation = tell clients "this version is going away, use the new one." That's the whole thing."</p>
+<p>[SPEAK] <strong>Script:</strong> &quot;Imagine you change the URL of your API from <code>/users</code> to <code>/customers</code>. Tomorrow, 10,000 people open your mobile app on their phones. The app tries to fetch <code>/users</code>. It gets a 404. Your app crashes on 10,000 devices. How do we upgrade APIs without breaking existing apps? Versioning.&quot;</p>
 </blockquote>
-<hr />
-<h3>3. Concept Discussion</h3>
 <blockquote>
-<p>[TIME] <strong>Pacing:</strong> 25 min total (5 min URL versioning -&gt; 5 min header versioning -&gt; 5 min deprecation strategy -&gt; 5 min Swagger per version -&gt; 5 min breaking vs non-breaking changes)</p>
-<p>[SPEAK] <strong>Script:</strong> "APIs change. You add fields, remove fields, change data types, rename endpoints. If you just push changes, every client that depends on the old behavior breaks. Versioning lets you introduce changes while keeping the old version working for existing clients. Let me show you the strategies."</p>
-<p>[SLIDE] <strong>Slide:</strong> Show one concept at a time. For each: (1) the concept, (2) a code example, (3) when to use it. Don't show all concepts at once.</p>
-<p>[TIP] <strong>Teaching Tip:</strong> Spend the most time on breaking vs non-breaking changes — this is the most important concept. Students need to understand: adding a field is safe, removing a field is breaking. Draw a decision tree on the whiteboard.</p>
-<p>[ASK] <strong>Ask the class:</strong> "If I add a new field <code>imageUrl</code> to the Post response, is that a breaking change?" (No — old clients ignore unknown fields.) "If I rename <code>title</code> to <code>name</code>?" (Yes — old clients expect <code>title</code> and will crash.) "If I change <code>id</code> from integer to string?" (Yes — old clients expect a number.)</p>
-<p>[ENGAGE] <strong>Gen-Z:</strong> "URL versioning is like having v1 and v2 of a game app on your phone. Both work, but v2 has new features. Header versioning is like the same app but with a settings toggle for 'new UI' — same URL, different behavior."<br />
-<strong>-&gt; Phone moment:</strong> "Look at any API URL with a version in it. <code>/api/v1/users</code> vs <code>/api/v2/users</code>. See how the version is in the path? That's URL versioning — the most common approach."</p>
-<p>[Q&amp;A] <strong>Student Q:</strong> "Why not just always use the latest version and force everyone to update?"
-<strong>Short answer:</strong> Because you can't control when clients update.
-<strong>Real answer:</strong> Third-party developers, mobile apps (which need app store approval), and enterprise clients all have their own release cycles. You can't force them to update on your timeline. Versioning lets YOU change your API on YOUR schedule while clients migrate at THEIR pace.
-<strong>The hidden question:</strong> "How long should I maintain old versions?" -&gt; Depends on your clients. AWS maintains v1 APIs that are 15+ years old. Stripe lets you pin to any version forever.</p>
-<p>[Q&amp;A] <strong>Student Q:</strong> "What counts as a breaking change?"
-<strong>Short answer:</strong> Anything that makes existing client code stop working.
-<strong>Real answer:</strong> Breaking: removing a field, renaming a field, changing a field type, removing an endpoint, changing an error format. Non-breaking: adding a field, adding an endpoint, adding a query parameter, adding an optional field. The rule: if existing client code still works without changes, it's non-breaking.
-<strong>The hidden question:</strong> "What about adding a required field?" -&gt; That's breaking. Old clients won't send it, so their requests will fail.</p>
-<p>[LOST] <strong>If they're lost:</strong> "The simplest versioning summary: (1) URL versioning = <code>/api/v1/</code> vs <code>/api/v2/</code>. (2) Keep old version working. (3) Deprecation headers tell clients to migrate. (4) Breaking changes = new version. Non-breaking = same version. That's 90% of what you need."</p>
+<p>[BOARD] <strong>Whiteboard Analogy:</strong> The Restaurant Menu</p>
+<ul>
+<li><strong>v1 Menu:</strong> Burgers and Fries. (Mobile App 1.0 reads this).</li>
+<li><strong>v2 Menu:</strong> Tacos and Salad. (Mobile App 2.0 reads this).</li>
+<li>If you just replace the menu, the person who ordered a Burger gets angry. You must keep BOTH menus active until everyone has upgraded to the new app.</li>
+</ul>
 </blockquote>
-<hr />
-<h3>4. Code Walkthrough</h3>
+<hr>
+<h3><span style="background:#2563eb;color:#fff;padding:2px 10px;border-radius:12px;font-size:0.8em;">25 min</span> 2. Core Concepts &amp; Discussion Topics</h3>
+<h4>▸ A. Why Version APIs? (7 min)</h4>
 <blockquote>
-<p>[TIME] <strong>Pacing:</strong> 30 min (5 min install packages -&gt; 10 min versioning setup -&gt; 10 min v1 + v2 controllers -&gt; 5 min Swagger + deprecation)</p>
-<p>[SPEAK] <strong>Script:</strong> "Let's add versioning to the ASP.NET Core API. We'll install the versioning package, configure it in Program.cs, create v1 and v2 controllers, set up multi-version Swagger, and add deprecation headers. Each step builds on the last."</p>
-<p>[SLIDE] <strong>Slide:</strong> Show each step on its own slide. Step 1: install packages. Step 2: Program.cs versioning config. Step 3: PostsController (v1) + PostsV2Controller (v2). Step 4: Swagger multi-version + deprecation headers.</p>
-<p>[TIP] <strong>Teaching Tip:</strong> <strong>Type each step live.</strong> For the Swagger setup, emphasize: each version needs its own <code>SwaggerDoc</code> and <code>SwaggerEndpoint</code>. For deprecation, show the headers being added manually — <code>Deprecated = true</code> alone doesn't add response headers.</p>
-<p>[BOARD] <strong>Whiteboard:</strong> Draw the versioning architecture:
-```
-/api/v1/posts -&gt; PostsController (v1)
-/api/v2/posts -&gt; PostsV2Controller (v2)</p>
-<p>Swagger UI:
-  Dropdown: [Blog API v1 =&gt;]
-            Blog API v1
-            Blog API v2</p>
-<p>Deprecation headers (v1 responses):
-  Deprecation: true
-  Sunset: Sat, 01 Jan 2027 00:00:00 GMT
-  Link: </api/v2/posts>; rel="successor-version"
-```</p>
-<p>[ENGAGE] <strong>Gen-Z:</strong> "Setting up API versioning is like maintaining two branches of a game. v1 is the stable release everyone plays. v2 is the beta with new features. Both run on the same server, players choose which version to use."<br />
-<strong>-&gt; Type-along:</strong> "Install the packages first. Then configure versioning in Program.cs. Then create the v1 controller (your existing one). Then create the v2 controller with a breaking change. Then set up Swagger for both versions."</p>
-<p>[Q&amp;A] <strong>Student Q:</strong> "Why do I need two separate controllers? Can't I put version logic in one controller?"
-<strong>Short answer:</strong> You can, but separate controllers are cleaner and easier to maintain.
-<strong>Real answer:</strong> With separate controllers, each version is isolated. V1 stays exactly as it is. V2 can have completely different logic, response shapes, and validation rules. If you put version logic in one controller, you get if/else branches for every endpoint — messy and hard to maintain. Separate controllers = clean separation.
-<strong>The hidden question:</strong> "What if the change is small?" -&gt; For small changes, you can handle it in one controller. But for this class, use separate controllers to learn the pattern.</p>
-<p>[LOST] <strong>If they're lost:</strong> "Start with just the versioning setup in Program.cs. Get <code>/api/v1/posts</code> working (your existing controller). Then add the v2 controller. Then set up Swagger for both. Then add deprecation headers. One step at a time."</p>
+<p><strong>[SPEAK] Discussion:</strong> &quot;Websites (React) update instantly when the user refreshes. Mobile apps do not. Users might not update your app for 6 months. Your backend MUST support multiple versions simultaneously.&quot;</p>
+<p><strong>[TIP] Instructor Tip:</strong> Emphasize that &quot;Breaking Changes&quot; (deleting a field, changing a type from string to int) require a new version. Adding a <em>new</em> field does not.</p>
 </blockquote>
-<hr />
-<h3>5. The "Industry Reality"</h3>
+<h4>▸ B. URL Versioning (6 min)</h4>
 <blockquote>
-<p>[SPEAK] <strong>Script:</strong> "AWS has APIs that are over 15 years old and still running v1 alongside v12. They never break existing clients — they add new versions and deprecate old ones with years of notice. Stripe's API versioning is so good that you can pin your integration to a specific version and it will work forever. The deprecation headers you're learning are an IETF standard (RFC 8594) used by Google, GitHub, and Microsoft."</p>
-<p>[SLIDE] <strong>Slide:</strong> AWS API versioning timeline (v1 from 2006 still running). Stripe API versioning dashboard. Stat: "AWS maintains 12+ API versions simultaneously. Stripe: pin to any version, works forever."</p>
-<p>[TIP] <strong>Teaching Tip:</strong> Keep this to 5 minutes. Show them that versioning isn't academic — it's what every major platform does to maintain trust with developers.</p>
-<p>[ENGAGE] <strong>Gen-Z:</strong> <strong>-&gt; Poll:</strong> "How many of you have used an API that just... changed without warning?" (Some hands.) "That's why versioning exists. Companies that don't version lose developer trust. Companies that do (Stripe, AWS, GitHub) keep developers happy for years."</p>
-<p>[LOST] <strong>If they're lost:</strong> "You don't need to know AWS's entire versioning strategy. Just understand: versioning = keep old working, add new, deprecate gracefully. That's the professional standard."</p>
+<p><strong>[SPEAK] Discussion:</strong> &quot;The most common way to version an API is to literally put the version number in the URL.&quot;</p>
+<p><strong>[CODE] Example:</strong></p>
+<pre><code class="language-csharp">[ApiVersion(&quot;1.0&quot;)]
+[Route(&quot;api/v{version:apiVersion}/users&quot;)]
+public class UsersV1Controller : ControllerBase { ... }
+</code></pre>
+<p><strong>[TIP] Gen-Z Hook:</strong> Versioning is like branching off a new cinematic universe. Earth-1 (v1) and Earth-2 (v2) exist at the same time, doing different things.</p>
 </blockquote>
-<hr />
-<h3>6. Exercise</h3>
+<h4>▸ C. Swagger / OpenAPI (7 min)</h4>
 <blockquote>
-<p>[TIME] <strong>Pacing:</strong> 55 min total (5 min setup -&gt; 40 min implementation -&gt; 10 min share)</p>
-<p>[SPEAK] <strong>Script:</strong> "Add versioning to your existing ASP.NET Core API. Create a v2 with at least one breaking change, keep v1 working, configure multi-version Swagger, add deprecation headers, and write a migration guide."</p>
-<p>[SLIDE] <strong>Slide:</strong> Exercise checklist:
-- [ ] Install and configure <code>Asp.Versioning.Mvc</code>
-- [ ] Create v2 of API with at least one breaking change
-- [ ] Keep v1 working alongside v2
-- [ ] Configure Swagger UI to show both versions
-- [ ] Mark v1 as deprecated with deprecation headers
-- [ ] Write migration guide (v1 -&gt; v2 changes)
-- [ ] Test both versions in Swagger UI
-- [ ] Verify <code>api-supported-versions</code> and <code>api-deprecated-versions</code> headers</p>
-<p>[TIP] <strong>Teaching Tip:</strong> The Swagger multi-version setup (requirement 4) and deprecation headers (requirement 5) are the hardest parts. Students will struggle with <code>GroupNameFormat</code> and manually adding response headers. Circulate and help with these specifically.</p>
-<p>[ENGAGE] <strong>Gen-Z:</strong> <strong>-&gt; Pair up:</strong> "One person handles the versioning setup and v2 controller, the other handles Swagger config and deprecation headers. Then combine and test both versions together."</p>
-<p>[LOST] <strong>If they're lost:</strong> "Start with installing the packages and configuring versioning in Program.cs. Get v1 working with the versioned URL. Then add v2. Then Swagger. Then deprecation. Build incrementally."</p>
+<p><strong>[SPEAK] Discussion:</strong> &quot;If you build an API, how does the frontend team know what endpoints exist? You don&#39;t email them a Word document. You use Swagger—a tool that automatically reads your C# code and generates a beautiful, interactive webpage documenting your API.&quot;</p>
+<p><strong>[VISUAL] Example:</strong>
+Show the standard Swagger UI interface with the GET/POST blocks. Emphasize the &quot;Try it out&quot; button.</p>
 </blockquote>
-<hr />
-<h3>7. AI Integration Note</h3>
+<h4>▸ D. XML Comments (5 min)</h4>
 <blockquote>
-<p>[TIME] <strong>Pacing:</strong> 10 min (5 min demo -&gt; 5 min try)</p>
-<p>[SPEAK] <strong>Script:</strong> "This week, ask AI to generate a versioning strategy for your API, then review it for breaking vs non-breaking changes. Ask 'Is this change actually breaking?' and 'What's the migration path for existing clients?'"</p>
-<p>[SLIDE] <strong>Slide:</strong> AI usage guide:
-| [OK] Allowed | [NO] Not Allowed |
-|-----------|--------------|
-| "Generate versioning setup for ASP.NET Core" | "Decide what's a breaking change" |
-| "Is adding a field a breaking change?" | "Write my migration guide" |</p>
-<p>[TIP] <strong>Teaching Tip:</strong> Point out the common AI mistakes: suggesting deleting old version immediately, not understanding URL vs header versioning tradeoffs, generating Swagger configs that don't separate versions. Teach students to question AI's versioning decisions.</p>
-<p>[ENGAGE] <strong>Gen-Z:</strong> "AI is like a consultant who suggests big changes without understanding the cost to your users. It might say 'just delete v1' — but that breaks everyone using it. Always review: who does this affect?"</p>
+<p><strong>[SPEAK] Discussion:</strong> &quot;Code tells you &#39;How&#39;, comments tell you &#39;Why&#39;. By adding three slashes <code>///</code> above a method, we can write descriptions that Swagger will automatically display to the frontend developers.&quot;</p>
+<p><strong>[CODE] Example:</strong></p>
+<pre><code class="language-csharp">/// &lt;summary&gt;
+/// Retrieves a specific user by their ID.
+/// &lt;/summary&gt;
+[HttpGet(&quot;{id}&quot;)]
+public IActionResult GetUser(int id) { ... }
+</code></pre>
 </blockquote>
-<hr />
-<h3>8. Debugging / "Watch Out For" Section</h3>
+<hr>
+<h3><span style="background:#2563eb;color:#fff;padding:2px 10px;border-radius:12px;font-size:0.8em;">30 min</span> 3. Code Walkthrough / Live Coding Blueprint</h3>
 <blockquote>
-<p>[TIME] <strong>Pacing:</strong> 15 min (5 min common errors -&gt; 5 min group debug -&gt; 5 min Q&amp;A)</p>
-<p>[SPEAK] <strong>Script:</strong> "Here are the versioning errors and mental model traps you'll hit this week. The duplicate Swagger endpoints alone will save you from a confusing debugging session."</p>
-<p>[SLIDE] <strong>Slide:</strong> Error cards:
-<code>+--------------------------------------+
-| "Swagger shows duplicate endpoints"  |
-| API explorer grouping incorrectly    |
-| Fix: GroupNameFormat +               |
-| SubstituteApiVersionInUrl            |
-+--------------------------------------+
-+--------------------------------------+
-| "400 — API version not found"        |
-| Calling /api/posts without version   |
-| Fix: use /api/v1/posts or set default|
-+--------------------------------------+</code></p>
-<p>[ENGAGE] <strong>Gen-Z:</strong> "The duplicate Swagger issue is like having two identical items on your Shopee cart — you can't tell which is which. GroupNameFormat separates them into v1 and v2 sections."</p>
-<p>[Q&amp;A] <strong>Student Q:</strong> "Versioning is not a substitute for good design? So I can't use versioning to fix bad APIs?"
-<strong>Short answer:</strong> You can, but it's not the right tool.
-<strong>Real answer:</strong> If your v1 API is poorly designed, versioning just lets you ship v2 that's also poorly designed. Versioning is for EVOLUTION — adding features, improving response shapes, supporting new use cases. It's not for fixing fundamental design mistakes. If v1 is bad, the right approach is to design v2 well and migrate clients — not to keep versioning your way out of bad decisions.
-<strong>The hidden question:</strong> "So what if I already have a bad v1?" -&gt; Design v2 well. Write a clear migration guide. Give clients time to move. Learn from v1's mistakes.</p>
-<p>[LOST] <strong>If they're lost:</strong> "The #1 issue: Swagger shows duplicate endpoints. Check that <code>GroupNameFormat = "'v'VV"</code> is set and <code>SubstituteApiVersionInUrl = true</code> is enabled. Each version should have its own Swagger document. That fixes 90% of Swagger versioning issues."</p>
+<p>[SPEAK] <strong>Script:</strong> &quot;Let&#39;s break an API, realize we need versioning, and then generate documentation for it.&quot;</p>
 </blockquote>
-<hr />
-<h3>Teaching Script</h3>
-<p>This week's annotations cover: pacing table at top, inline annotations per section, and this summary. The core arc is: versioning need -&gt; restaurant menu analogy -&gt; URL versioning -&gt; v1 + v2 controllers -&gt; multi-version Swagger -&gt; deprecation headers. The restaurant menu analogy is the key mental model. Breaking vs non-breaking changes is the most important concept — draw the decision tree on the whiteboard. Emphasize: versioning is for evolution, not for fixing bad design. The deprecation headers (RFC 8594) are a professional touch. Common pitfalls: Swagger showing duplicate endpoints (missing GroupNameFormat), 400 errors (missing version in URL), deprecation headers not appearing (need manual header addition, not just <code>Deprecated = true</code>).</p>
-<hr />
+<ul>
+<li><strong>Step 1: The Breaking Change</strong><ul>
+<li><em>Action:</em> Have an API that returns <code>{ &quot;name&quot;: &quot;John Doe&quot; }</code>. Change it to return <code>{ &quot;firstName&quot;: &quot;John&quot;, &quot;lastName&quot;: &quot;Doe&quot; }</code>. Show how this breaks the React frontend instantly.</li>
+</ul>
+</li>
+<li><strong>Step 2: Implementing Versioning</strong><ul>
+<li><em>Action:</em> Install the <code>Asp.Versioning.Mvc</code> package. Set up <code>AddApiVersioning()</code>. Create a <code>v1</code> controller (old data) and a <code>v2</code> controller (new data). Show Postman calling both.</li>
+</ul>
+</li>
+<li><strong>Step 3: Enabling XML Comments</strong><ul>
+<li><em>Action:</em> Open the <code>.csproj</code> file and enable <code>&lt;GenerateDocumentationFile&gt;true&lt;/GenerateDocumentationFile&gt;</code>. Write XML comments above the endpoints.</li>
+</ul>
+</li>
+<li><strong>Step 4: Swagger UI</strong><ul>
+<li><em>Action:</em> Run the app. Open the <code>/swagger</code> endpoint. Show how the XML comments now appear on the webpage.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3><span style="background:#2563eb;color:#fff;padding:2px 10px;border-radius:12px;font-size:0.8em;">15 min</span> 4. Debugging + Wrap</h3>
+<ul>
+<li><strong>Common Error 1:</strong> XML comments don&#39;t show up in Swagger. -&gt; You forgot to tell the Swagger configuration in <code>Program.cs</code> to explicitly include the <code>.xml</code> file path generated by the compiler.</li>
+<li><strong>Common Error 2:</strong> <code>AmbiguousMatchException</code>. -&gt; You have a v1 and v2 controller, but you forgot to add the <code>[ApiVersion]</code> attribute, so the framework doesn&#39;t know which one to use.</li>
+</ul>
+<hr>
+<h3><span style="background:#2563eb;color:#fff;padding:2px 10px;border-radius:12px;font-size:0.8em;">55 min</span> 5. In-Class Exercise</h3>
+<blockquote>
+<p>[TIME] <strong>In-Class Exercise (55 min):</strong> Take last week&#39;s API. Install API Versioning. Move your existing controller to <code>v1.0</code>. Create a <code>v2.0</code> controller that returns slightly different data. Enable XML comments and write a <code>&lt;summary&gt;</code> for every endpoint.</p>
+</blockquote>
+<hr>
+<h3>💻 Online Session (1 hour)</h3>
+<h3>From the Trenches (Pro-Tip)</h3>
+<blockquote>
+<p>[TRENCHES] <strong>Instructor Script:</strong> &quot;In a professional environment, frontend developers will literally refuse to work on a feature if the Swagger documentation isn&#39;t updated first. If I have to read your backend C# code to figure out what JSON to send you, you have failed as an API designer. Swagger is the contract you sign with the rest of the company.&quot;</p>
+</blockquote>
+<h3>AI Integration</h3>
+<ul>
+<li><strong>AI Policy:</strong> Allowed: &quot;Generate XML summary comments for this controller method.&quot; Not Allowed: &quot;Write the logic to duplicate my v1 controller to v2.&quot;</li>
+</ul>
+<h3>Learning Baseline (Self-Assessment)</h3>
+<blockquote>
+<p><strong>[ASSESSMENT]</strong> By the end of this week, students must be able to say &quot;Yes&quot; to:</p>
+<ul>
+<li><input disabled="" type="checkbox"> I understand why API versioning is necessary for mobile apps.</li>
+<li><input disabled="" type="checkbox"> I can configure URL-based API versioning in ASP.NET Core.</li>
+<li><input disabled="" type="checkbox"> I know how to navigate and use the Swagger UI.</li>
+<li><input disabled="" type="checkbox"> I can write XML <code>///</code> comments that appear in Swagger.</li>
+</ul>
+</blockquote>
+<h3>Take-Home Mission</h3>
+<blockquote>
+<p><strong>[HOMEWORK]</strong> <strong>Mission:</strong> &quot;The Professional Contract&quot;</p>
+<ol>
+<li>Create a brand new &quot;Inventory API&quot;.</li>
+<li>It must have 3 endpoints.</li>
+<li><strong>The Catch:</strong> You don&#39;t need to actually write the database logic. The endpoints can just return fake data. But you MUST write pristine XML comments containing a <code>&lt;summary&gt;</code>, <code>&lt;param&gt;</code>, and <code>&lt;returns&gt;</code> tag for every endpoint, and submit a screenshot of the beautiful Swagger UI page showing your documentation.</li>
+</ol>
+</blockquote>
+<h3>Instructor Assets Blueprint</h3>
+<blockquote>
+<p><strong>[ASSETS]</strong> What to prepare before this class:</p>
+<ul>
+<li><strong>Starter Repo:</strong> A working API without any versioning or documentation.</li>
+<li><strong>Solution Repo:</strong> The API configured with <code>v1</code> and <code>v2</code> endpoints, fully documented with XML comments hooked up to Swagger.</li>
+</ul>
+</blockquote>
 </body></html>

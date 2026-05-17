@@ -1,6 +1,6 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>elective-2\week-08-model-binding-and-validation.md</title><style>
+<title>week-08-model-binding-and-validation.md</title><style>
 body { font-family: 'Segoe UI', Arial, sans-serif; max-width: 960px; margin: 2em auto; padding: 0 1.5em; line-height: 1.7; color: #1a1a1a; background: #fafafa; }
 h1 { border-bottom: 2px solid #2563eb; padding-bottom: .3em; margin-top: 1.5em; color: #1e3a5f; }
 h2 { border-bottom: 1px solid #cbd5e1; padding-bottom: .2em; margin-top: 1.5em; color: #1e3a5f; }
@@ -18,9 +18,29 @@ hr { border: none; border-top: 2px solid #e2e8f0; margin: 2em 0; }
 </style></head><body>
 <nav><a href="index.htm">Home</a></nav>
 <h2>Week 8: Model Binding &amp; Validation</h2>
+<div style="background: #e0f2fe; padding: 15px; border-left: 5px solid #0284c7; margin-bottom: 20px;">
+    <strong>Learning Objectives:</strong>
+    <ul>
+        <li>Understand how the ASP.NET Core Model Binder maps HTTP request data to C# parameters.</li>
+        <li>Bind complex HTML forms directly to strongly-typed C# object models.</li>
+        <li>Apply Data Annotations to enforce strict validation rules on data models.</li>
+        <li>Utilize <code>ModelState.IsValid</code> to prevent saving invalid data and return validation errors to the UI.</li>
+    </ul>
+</div>
+<div style="background: #fefce8; padding: 15px; border-left: 5px solid #ca8a04; margin-bottom: 20px;">
+    <strong>📋 This Week at a Glance</strong><br>
+    🔁 Last week: &quot;Week 7: Views &amp; Layouts&quot;<br>
+    🎯 This week: &quot;Connect forms to the backend — model binding connects HTML to C# objects, and validation keeps bad data out&quot;<br>
+    <br>
+    <strong>LAB (3h) Topics:</strong><br>
+    ▸ A. The `name` Attribute Magic (7 min)<br>▸ B. Complex Object Binding (7 min)<br>▸ C. Data Annotations (6 min)<br>▸ D. `ModelState.IsValid` (5 min)<br>
+    <br>
+    <strong>ONLINE (1h):</strong> From the Trenches (validation in production) + AI Integration + Take-Home Mission (Form with Validation)<br>
+    <br>
+    ✅ By end of lab: Know how `name` connects HTML to C#; bind HTTP POST to C# object; apply `[Required]`; use `ModelState.IsValid`
+</div>
 <blockquote>
-<p>[TIME] <strong>Session Pacing (180 min)</strong></p>
-</blockquote>
+<p>[TIME] <strong>Session Pacing (Lab - ~150 min)</strong></p>
 <table>
 <thead>
 <tr>
@@ -29,8 +49,7 @@ hr { border: none; border-top: 2px solid #e2e8f0; margin: 2em 0; }
 <th>Format</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>Hook + Analogy</td>
 <td>15 min</td>
 <td>Lecture + Whiteboard</td>
@@ -38,17 +57,12 @@ hr { border: none; border-top: 2px solid #e2e8f0; margin: 2em 0; }
 <tr>
 <td>Concept Discussion</td>
 <td>25 min</td>
-<td>Lecture + Slides + Live Form Demo</td>
+<td>Lecture + Slides + HTML Forms</td>
 </tr>
 <tr>
 <td>Code Walkthrough</td>
 <td>30 min</td>
-<td>Live Code (instructor + students type)</td>
-</tr>
-<tr>
-<td>Industry Reality</td>
-<td>10 min</td>
-<td>Lecture + Discussion</td>
+<td>Live Code (Binding &amp; Annotations)</td>
 </tr>
 <tr>
 <td>Break</td>
@@ -61,11 +75,6 @@ hr { border: none; border-top: 2px solid #e2e8f0; margin: 2em 0; }
 <td>Lab (solo or pairs)</td>
 </tr>
 <tr>
-<td>AI Integration</td>
-<td>10 min</td>
-<td>Demo + Prompt Walkthrough</td>
-</tr>
-<tr>
 <td>Debugging + Wrap</td>
 <td>15 min</td>
 <td>Group Debug + Q&amp;A</td>
@@ -75,146 +84,153 @@ hr { border: none; border-top: 2px solid #e2e8f0; margin: 2em 0; }
 <td>10 min</td>
 <td>Overflow / Stretch discussion</td>
 </tr>
-</tbody>
-</table>
-<blockquote>
-<p>[TIP] <strong>Teaching Tip (Week 8 strategy):</strong> This is the first week students build forms that accept user input. The magic of model binding ("it just populates my object!") is exciting, but validation is where real learning happens. Students will struggle with <code>ModelState.IsValid</code> — walk through the validation flow slowly and deliberately.</p>
+</tbody></table>
 </blockquote>
-<hr />
-<h3>The Hook</h3>
 <blockquote>
-<p>[SPEAK] <strong>Script:</strong> "That 'Email is required' red text that makes you feel personally attacked? That's validation. And today you're not just seeing it — you're building it. Your form will reject empty fields before your server even breaks a sweat."</p>
-<p>[SLIDE] <strong>Slide:</strong> Title: "You've Been Validated"<br />
-Left: Screenshot of a form with red error messages ("Name is required", "Invalid email").<br />
-Right: Same form with all green checkmarks.<br />
-Subtitle: "Today you build both."</p>
-<p>[ENGAGE] <strong>Gen-Z:</strong> "Every form you've ever filled out — GCash signup, Shopee checkout, even your college enrollment — they all use validation. Today you become the one who decides what 'valid' means."<br />
-<strong>-&gt; Poll:</strong> "Raise your hand if you've ever submitted a form and got an error that made no sense. Today you'll learn how to write better error messages."</p>
-<p>[LOST] <strong>If they're lost:</strong> "Validation is just checking if the data makes sense before saving it. Empty name? Reject. Bad email? Reject. That's it. We're just learning how to code those checks."</p>
+<p>[TIP] <strong>Teaching Tip:</strong> Model Binding is &quot;magic&quot; to students. They won&#39;t understand how the HTML form data automatically becomes a C# object. Walk through the <code>name</code> attribute matching process very slowly.</p>
 </blockquote>
-<hr />
-<h3>The Analogy</h3>
+<hr>
+<h3><span style="background:#2563eb;color:#fff;padding:2px 10px;border-radius:12px;font-size:0.8em;">15 min</span> 1. The Hook &amp; The Analogy</h3>
 <blockquote>
-<p>[SPEAK] <strong>Script:</strong> "Model binding is like airport immigration. The officer (model binder) looks at your passport (form data) and automatically fills out a visitor record (C# model). If the name field is blank, they stamp 'REQUIRED' in red. If the email doesn't have an @ symbol, they flag it. All this happens before you even leave the airport counter."</p>
-<p>[BOARD] <strong>Whiteboard:</strong> Draw the immigration analogy:
-<code>Form Data (Passport)          C# Model (Visitor Record)
-+-----------------+           +-----------------+
-| Name: "Juan"    |  -------&gt;  | Name = "Juan"   | [OK]
-| Email: "juan@"  |  -------&gt;  | Email = "juan@" | [NO] Invalid!
-| Age: "abc"      |  -------&gt;  | Age = ???       | [NO] Not a number!
-+-----------------+           +-----------------+</code></p>
-<p>[ENGAGE] <strong>Gen-Z:</strong> <strong>-&gt; Turn to your neighbor:</strong> "If you submit a form with an empty name field — what should happen? Should the server save it? 10 seconds, go!" (Answer: No — validation rejects it.)</p>
-<p>[LOST] <strong>If they're lost:</strong> "Think of it like a bouncer checking IDs at a club. Model binding = reading the ID. Validation = checking if you're 18+. If you pass, you get in. If not, you get an error message."</p>
+<p>[SPEAK] <strong>Script:</strong> &quot;In older languages, if a user submitted a form with 20 fields, you had to write 20 lines of code to manually extract each piece of data from the HTTP request. ASP.NET Core does this automatically. It&#39;s called Model Binding.&quot;</p>
 </blockquote>
-<hr />
-<h3>Concept Discussion</h3>
 <blockquote>
-<p>[TIME] <strong>Pacing:</strong> 25 min total (10 min model binding -&gt; 10 min data annotations -&gt; 5 min client-side validation)</p>
-<p>[SPEAK] <strong>Script:</strong> "Model binding is the magic that turns form fields into C# objects automatically. You don't write <code>Request.Form['Name']</code> — ASP.NET does it for you. Then data annotations add validation rules right on your model. And client-side validation catches errors before the form even submits."</p>
-<p>[SLIDE] <strong>Slide:</strong> Show the model binding flow first: HTML form -&gt; C# object. Then reveal data annotations one at a time: <code>[Required]</code>, <code>[EmailAddress]</code>, <code>[StringLength]</code>, <code>[Range]</code>. Finally show the form with Tag Helpers.</p>
-<p>[TIP] <strong>Teaching Tip:</strong> The most important concept: <strong>property names must match form field names</strong>. If your model has <code>Name</code> but your input has <code>name="UserName"</code>, binding fails. Tag Helpers (<code>asp-for="Name"</code>) handle this automatically — emphasize this benefit.</p>
-<p>[ASK] <strong>Ask the class:</strong> "What happens if someone submits a form with <code>Name: ''</code> (empty string) and the model has <code>[Required]</code>?" (Answer: <code>ModelState.IsValid</code> is false. The form returns with an error message.)</p>
-<p>[ENGAGE] <strong>Gen-Z:</strong> "Data annotations are like TikTok's content filters. <code>[Required]</code> = 'you must fill this in.' <code>[EmailAddress]</code> = 'this better look like an email.' <code>[Range(1,5)]</code> = 'pick a number between 1 and 5, no cheating.' The model enforces the rules."<br />
-<strong>-&gt; Phone moment:</strong> "Open any app with a signup form. The red error messages? Those are data annotations in action."</p>
-<p>[Q&amp;A] <strong>Student Q:</strong> "Why do I need server-side validation if I have client-side validation?"
-<strong>Short answer:</strong> Client-side can be bypassed.
-<strong>Real answer:</strong> Anyone can disable JavaScript or use tools like Postman to send requests directly to your server. Client-side validation is for user experience. Server-side validation is for security. You need both.
-<strong>The hidden question:</strong> "Isn't client-side enough?" -&gt; Never. It's a convenience feature, not a security feature.</p>
-<p>[Q&amp;A] <strong>Student Q:</strong> "What does <code>ModelState.IsValid</code> actually check?"
-<strong>Short answer:</strong> All data annotations on the model.
-<strong>Real answer:</strong> It checks every property's validation attributes (<code>[Required]</code>, <code>[EmailAddress]</code>, etc.) AND checks if the model binder could convert the form values to the correct types. If either fails, <code>IsValid</code> is false.
-<strong>The hidden question:</strong> "How do I know which field failed?" -&gt; <code>ModelState.Values.SelectMany(v =&gt; v.Errors)</code> gives you all errors.</p>
-<p>[LOST] <strong>If they're lost:</strong> "Forget the technical terms. The flow is: (1) User fills form. (2) ASP.NET creates a C# object from the form data. (3) Check if the object passes all rules. (4) If yes, save it. If no, show errors. That's the entire concept."</p>
+<p>[BOARD] <strong>Whiteboard Analogy:</strong> The Translator</p>
+<ul>
+<li><strong>The Form (Spanish):</strong> The browser sends raw text data via HTTP (<code>name=Alice&amp;age=25</code>).</li>
+<li><strong>Model Binder (The Translator):</strong> ASP.NET catches this text, looks at your C# method, and automatically translates the text into a C# <code>User</code> object.</li>
+<li><strong>The Controller (English):</strong> You just use the object. No parsing required.</li>
+</ul>
 </blockquote>
-<hr />
-<h3>Code Walkthrough</h3>
+<hr>
+<h3><span style="background:#2563eb;color:#fff;padding:2px 10px;border-radius:12px;font-size:0.8em;">25 min</span> 2. Core Concepts &amp; Discussion Topics</h3>
+<h4>▸ A. The <code>name</code> Attribute Magic (7 min)</h4>
+<p><strong>Module Syllabus Content:</strong> Model Binding is the magical bridge between the stateless, text-based nature of HTTP and the strongly-typed, object-oriented world of C#. When an HTML form is submitted, the browser sends the data as simple key-value pairs (e.g., <code>firstName=John</code>). The ASP.NET Core Model Binder intercepts this request, looks at the parameters defined in your Controller's Action method, and automatically attempts to map the HTML <code>name</code> attributes to the C# variable names. If the names match, the framework parses the strings and converts them into the appropriate C# types (like <code>int</code> or <code>DateTime</code>) before your code even begins executing.</p>
 <blockquote>
-<p>[TIME] <strong>Pacing:</strong> 30 min (5 min model -&gt; 10 min controller -&gt; 10 min view -&gt; 5 min trace-through)</p>
-<p>[SPEAK] <strong>Script:</strong> "Let's build a complete contact form with validation. Model, controller, view — the full stack. Watch how the pieces connect and how validation errors flow back to the user."</p>
-<p>[SLIDE] <strong>Slide:</strong> Show <code>ContactFormModel</code> first with all annotations. Then the controller with GET and POST actions. Then the view with Tag Helpers. Reveal one piece at a time.</p>
-<p>[TIP] <strong>Teaching Tip:</strong> <strong>Type this live.</strong> After building the form, deliberately submit it with empty fields to show validation errors appearing. Then submit with valid data to show the success redirect. Students need to see both paths.</p>
-<p>[BOARD] <strong>Whiteboard:</strong> Trace the validation flow:
-<code>User submits form (POST /contact)
-  v
-Model binding: form data -&gt; ContactFormModel
-  v
-Validation: check [Required], [EmailAddress], etc.
-  v
-ModelState.IsValid?
-  +- NO -&gt; return View(model) -&gt; form shows errors
-  +- YES -&gt; process data -&gt; RedirectToAction("ThankYou")</code></p>
-<p>[ENGAGE] <strong>Gen-Z:</strong> <strong>-&gt; Type-along:</strong> "Build the contact form with me. Model first, then controller, then view. After each piece, we'll test it. Submit with empty fields — watch the red errors appear."</p>
-<p>[Q&amp;A] <strong>Student Q:</strong> "Why do I need <code>@Html.AntiForgeryToken()</code>?"
-<strong>Short answer:</strong> It prevents CSRF attacks.
-<strong>Real answer:</strong> Without it, a malicious website could submit a form to your app on behalf of a logged-in user. The anti-forgery token proves the form came from your actual page, not a third-party site.
-<strong>The hidden question:</strong> "Is this really necessary for a contact form?" -&gt; Yes. It's a security best practice for all POST forms.</p>
-<p>[LOST] <strong>If they're lost:</strong> "Let's focus on just the model and the <code>ModelState.IsValid</code> check first. Get those working. Then add the form. Then add the validation scripts. Build up gradually."</p>
+<p><strong>[SPEAK] Discussion:</strong> &quot;How does the framework know which input goes to which C# variable? It matches the HTML <code>name</code> attribute exactly to the C# parameter name.&quot;</p>
+<p><strong>[CODE] Example:</strong></p>
+<pre><code class="language-html">&lt;!-- HTML --&gt;
+&lt;input type=&quot;text&quot; name=&quot;firstName&quot; /&gt;
+</code></pre>
+<pre><code class="language-csharp">// C# Controller
+[HttpPost]
+public IActionResult Save(string firstName) { ... }
+</code></pre>
+<p><strong>[TIP] Instructor Tip:</strong> Tell them: &quot;If your HTML says <code>name=&quot;userAge&quot;</code> but your C# says <code>int age</code>, it will fail. They must match perfectly.&quot;</p>
 </blockquote>
-<hr />
-<h3>The "Why Should I Care?"</h3>
+<h4>▸ B. Complex Object Binding (7 min)</h4>
+<p><strong>Module Syllabus Content:</strong> When dealing with large forms containing dozens of inputs, adding dozens of parameters to a controller method becomes unmaintainable. Instead, developers create a dedicated C# Class (often called a Data Transfer Object or DTO) whose properties match the form fields. The Model Binder is intelligent enough to instantiate this class, iterate through the incoming form data, and populate the class properties automatically. The controller method then simply accepts a single parameter—the fully populated complex object—making the code incredibly clean and easy to read.</p>
 <blockquote>
-<p>[SPEAK] <strong>Script:</strong> "Bad data breaks databases, crashes apps, and makes users angry. Validation is your first line of defense. Every production app validates input — not just on the client (easily bypassed) but on the server (mandatory)."</p>
-<p>[SLIDE] <strong>Slide:</strong> Screenshot of a news headline about a data breach caused by unvalidated input. Label: "This could have been prevented with <code>[Required]</code> and <code>[EmailAddress]</code>."</p>
-<p>[TIP] <strong>Teaching Tip:</strong> Keep this to 5 minutes. The security angle is the strongest argument: "Validation isn't about being mean to users. It's about protecting your database from bad data."</p>
-<p>[ENGAGE] <strong>Gen-Z:</strong> <strong>-&gt; Poll:</strong> "How many of you have signed up for something and got a confirmation email with weird characters in your name? That's what happens without validation."</p>
-<p>[LOST] <strong>If they're lost:</strong> "You don't need to memorize every annotation today. Just understand: validation = check data before saving. <code>[Required]</code> is the most important one. Start there."</p>
+<p><strong>[SPEAK] Discussion:</strong> &quot;If a form has 10 fields, we don&#39;t write a C# method with 10 parameters. We create a Class, and the model binder maps the form directly into the Class properties.&quot;</p>
+<p><strong>[CODE] Example:</strong></p>
+<pre><code class="language-csharp">public class RegistrationDto {
+    public string Email { get; set; }
+    public string Password { get; set; }
+}
+
+[HttpPost]
+public IActionResult Register(RegistrationDto request) { ... }
+</code></pre>
+<p><strong>[TIP] Gen-Z Hook:</strong> Object binding is like auto-fill on your phone. As long as the labels match, the framework fills out the C# object for you instantly.</p>
 </blockquote>
-<hr />
-<h3>Exercise: Working Contact Form</h3>
+<h4>▸ C. Data Annotations (6 min)</h4>
+<p><strong>Module Syllabus Content:</strong> Trusting user input is a critical security flaw. Data Annotations allow developers to define strict validation rules directly on their model classes using attributes like <code>[Required]</code>, <code>[StringLength]</code>, or <code>[EmailAddress]</code>. By attaching these rules to the model rather than writing complex <code>if</code> statements in the controller, you ensure a clear separation of concerns. The framework uses these annotations to validate the data immediately after Model Binding occurs, ensuring that malformed data never makes its way into your core business logic or database.</p>
 <blockquote>
-<p>[TIME] <strong>Pacing:</strong> 55 min total (5 min setup -&gt; 40 min coding -&gt; 10 min share)</p>
-<p>[SPEAK] <strong>Script:</strong> "Build a contact form with full validation. Model with data annotations, GET and POST actions, Tag Helpers, and client-side validation. You have 40 minutes."</p>
-<p>[SLIDE] <strong>Slide:</strong> Exercise checklist:
-- [ ] Model: <code>ContactFormModel</code> with Name, Email, Subject, Message, Priority
-- [ ] GET action: Display empty form
-- [ ] POST action: Validate -&gt; show errors or redirect to "Thank You"
-- [ ] View: Tag Helpers for all form elements
-- [ ] Client-side validation (jQuery validation scripts)
-- [ ] Field-level AND summary validation errors</p>
-<p>[TIP] <strong>Teaching Tip:</strong> Circulate during the first 10 minutes — students will get stuck on including the jQuery validation scripts. The "aha" moment is when they submit with empty fields and see red errors appear instantly (client-side) without a postback.</p>
-<p>[ENGAGE] <strong>Gen-Z:</strong> <strong>-&gt; Pair up:</strong> "One person builds the model and controller, the other builds the view with Tag Helpers. Then test together — submit invalid data and watch the errors appear."</p>
-<p>[ASK] <strong>Mid-exercise check-in (at 20 min):</strong> "How many have the form displaying?" (Show of hands.) "How many have validation errors appearing?" "If neither, let's do a quick group debug."</p>
-<p>[LOST] <strong>If they're lost:</strong> "Start with just the model and the GET action. Get the form displaying. Then add the POST action with <code>ModelState.IsValid</code>. Then add validation attributes. Don't try to build everything at once."</p>
+<p><strong>[SPEAK] Discussion:</strong> &quot;We don&#39;t want users submitting blank emails or passwords that are 2 characters long. Instead of writing massive <code>if</code> statements in the controller, we attach rules directly to the Model using Attributes.&quot;</p>
+<p><strong>[CODE] Example:</strong></p>
+<pre><code class="language-csharp">[Required(ErrorMessage = &quot;Email is required&quot;)]
+[EmailAddress]
+public string Email { get; set; }
+</code></pre>
+<p><strong>[TIP] Instructor Tip:</strong> Explain Separation of Concerns. The Controller routes traffic; it shouldn&#39;t be responsible for knowing what makes a password valid.</p>
 </blockquote>
-<hr />
-<h3>AI Integration Note</h3>
+<h4>▸ D. <code>ModelState.IsValid</code> (5 min)</h4>
+<p><strong>Module Syllabus Content:</strong> While Data Annotations define the rules, the Controller must actively enforce them. This is done by checking the <code>ModelState.IsValid</code> property. If the incoming data violates any of the Data Annotations, <code>ModelState.IsValid</code> becomes false, and the framework automatically populates an internal dictionary with the specific error messages. The controller should then immediately return the View, passing the rejected data back to it. ASP.NET Core's Tag Helpers (like <code>asp-validation-for</code>) will intercept these errors and dynamically display them next to the form fields, guiding the user to fix their mistakes without losing the data they already typed.</p>
 <blockquote>
-<p>[TIME] <strong>Pacing:</strong> 10 min (5 min demo -&gt; 5 min try)</p>
-<p>[SPEAK] <strong>Script:</strong> "This week, AI helps you debug validation issues. Ask it why <code>ModelState.IsValid</code> is false, why error messages aren't showing, or why client-side validation isn't working. But don't ask it to generate your form."</p>
-<p>[SLIDE] <strong>Slide:</strong> Prompt template:
-"I'm submitting a form but ModelState.IsValid is false. Here's my model [paste] and form [paste]. What am I missing?"</p>
-<p>[TIP] <strong>Teaching Tip:</strong> Demonstrate a good debugging prompt. Show how AI can identify a missing <code>[Required]</code> attribute or a mismatched property name. This is practical, not cheating.</p>
-<p>[ENGAGE] <strong>Gen-Z:</strong> "AI is your 'validation detective' — it helps you figure out why the form is rejecting data. Use it to find the bug, not to write the code."</p>
+<p><strong>[SPEAK] Discussion:</strong> &quot;Annotations define the rules, but the Controller has to enforce them. <code>ModelState.IsValid</code> checks if the incoming data passed all the annotation tests.&quot;</p>
+<p><strong>[CODE] Example:</strong></p>
+<pre><code class="language-csharp">if (!ModelState.IsValid) {
+    return View(request); // Kick them back to the form with errors
+}
+</code></pre>
+<p><strong>[TIP] Instructor Tip:</strong> Emphasize that returning the <code>request</code> back to the view is what keeps the user&#39;s typed data in the boxes so they don&#39;t have to start over.</p>
 </blockquote>
-<hr />
-<h3>Debugging / "Watch Out For"</h3>
+<hr>
+<h3><span style="background:#2563eb;color:#fff;padding:2px 10px;border-radius:12px;font-size:0.8em;">30 min</span> 3. Code Walkthrough / Live Coding Blueprint</h3>
 <blockquote>
-<p>[TIME] <strong>Pacing:</strong> 15 min (5 min common errors -&gt; 5 min group debug -&gt; 5 min Q&amp;A)</p>
-<p>[SPEAK] <strong>Script:</strong> "Here are the validation errors you'll see this week. Most are about property names or missing scripts."</p>
-<p>[SLIDE] <strong>Slide:</strong> Error cards:
-<code>+------------------------------------------+
-| ModelState.IsValid is false but no       |
-| errors visible                           |
-| Use ModelState.Values.SelectMany         |
-| (v =&gt; v.Errors) to find hidden errors    |
-+------------------------------------------+
-+------------------------------------------+
-| Client-side validation not working       |
-| Missing jQuery Validation scripts        |
-| Check: _Layout includes the scripts      |
-+------------------------------------------+</code></p>
-<p>[ENGAGE] <strong>Gen-Z:</strong> "Hidden validation errors are like a group chat where someone is mad but won't say why. <code>ModelState.Values.SelectMany(v =&gt; v.Errors)</code> is you asking 'okay, what's actually wrong?'"</p>
-<p>[Q&amp;A] <strong>Student Q:</strong> "Why does my form give a 400 error when I submit?"
-<strong>Short answer:</strong> Missing anti-forgery token.
-<strong>Real answer:</strong> ASP.NET Core requires <code>[ValidateAntiForgeryToken]</code> on POST actions by default. If your form doesn't include <code>@Html.AntiForgeryToken()</code>, the server rejects the request with a 400 error.
-<strong>The hidden question:</strong> "Can I turn this off?" -&gt; Yes, but don't. It's a critical security feature.</p>
-<p>[LOST] <strong>If they're lost:</strong> "The three things to check: (1) Does your model have <code>[Required]</code> on the right properties? (2) Does your form use <code>asp-for</code> Tag Helpers? (3) Does your POST action check <code>ModelState.IsValid</code>? Those fix 90% of validation issues."</p>
-<p>[TIP] <strong>Teaching Tip:</strong> End with one action item: "If you only remember one thing: always check <code>ModelState.IsValid</code> before processing form data. Never trust user input."</p>
+<p>[SPEAK] <strong>Script:</strong> &quot;Let&#39;s build a registration form, break it on purpose, and then secure it with validation.&quot;</p>
 </blockquote>
-<hr />
-<h3>Teaching Script</h3>
-<p>This week's annotations cover: pacing table at top, inline annotations per section ([SPEAK] Script, [SLIDE] Slide, [BOARD] Whiteboard, [TIP] Teaching Tip, [ENGAGE] Gen-Z, [Q&amp;A] Student Q, [LOST] If they're lost), and this summary. The validation flow (form -&gt; bind -&gt; validate -&gt; isValid -&gt; process/return) is the core mental model. Test both paths — valid and invalid submissions — so students see the full cycle. The #1 pitfall is forgetting jQuery validation scripts for client-side validation.</p>
-<hr />
-<h2>TERM 3: PREFINALS — Data &amp; Persistence + Consuming APIs</h2>
-<hr />
+<ul>
+<li><strong>Step 1: The Raw Form</strong><ul>
+<li><em>Action:</em> Create a simple HTML form for a User (Name, Age). Point it to a <code>[HttpPost]</code> action. Show the debugger catching the populated C# object.</li>
+</ul>
+</li>
+<li><strong>Step 2: Adding Annotations</strong><ul>
+<li><em>Action:</em> Add <code>[Required]</code> and <code>[Range(18, 99)]</code> to the Age property. Submit the form with age 12.</li>
+</ul>
+</li>
+<li><strong>Step 3: Enforcing <code>ModelState</code></strong><ul>
+<li><em>Action:</em> Add the <code>if (!ModelState.IsValid)</code> block.</li>
+</ul>
+</li>
+<li><strong>Step 4: Tag Helpers</strong><ul>
+<li><em>Action:</em> Add <code>&lt;span asp-validation-for=&quot;Age&quot;&gt;&lt;/span&gt;</code> to the HTML to show the error message dynamically on the screen.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3><span style="background:#2563eb;color:#fff;padding:2px 10px;border-radius:12px;font-size:0.8em;">55 min</span> 6. Exercise &amp; Homework</h3>
+<blockquote>
+<p>[TIME] <strong>In-Class Exercise (55 min):</strong> Build a &quot;Contact Us&quot; form. Bind it to a <code>ContactMessage</code> class. Require the Name, make the Email a valid email address, and ensure the Message is at least 20 characters long. Display the validation errors on the form.</p>
+</blockquote>
+<hr>
+<h3>💻 Online Session (1 hour)</h3>
+<hr>
+<h3><span style="background:#2563eb;color:#fff;padding:2px 10px;border-radius:12px;font-size:0.8em;">15 min</span> 4. From the Trenches (Pro-Tip)</h3>
+<blockquote>
+<p>[TRENCHES] <strong>Instructor Script:</strong> &quot;Never, ever trust client-side validation. You can write HTML5 <code>required</code> attributes and JavaScript validation all day. But I can open Chrome DevTools, delete your JavaScript, and submit a blank form to your server. Client-side validation is for User Experience (making it fast). Server-side validation (<code>ModelState</code>) is for Security. You must always have both.&quot;</p>
+</blockquote>
+<hr>
+<h3><span style="background:#2563eb;color:#fff;padding:2px 10px;border-radius:12px;font-size:0.8em;">10 min</span> 5. AI Integration &amp; Debugging</h3>
+<ul>
+<li><strong>AI Policy:</strong> Allowed: &quot;What Data Annotation do I use for a phone number?&quot; Not Allowed: &quot;Write the controller logic for my login form.&quot;</li>
+<li><strong>Common Error 1:</strong> Object properties are all null. -&gt; Your HTML <code>name</code> attributes don&#39;t match your C# property names.</li>
+<li><strong>Common Error 2:</strong> The form clears out when there&#39;s an error. -&gt; You returned <code>View()</code> instead of <code>View(model)</code> in your <code>!ModelState.IsValid</code> block.</li>
+</ul>
+<hr>
+<h3><span style="background:#2563eb;color:#fff;padding:2px 10px;border-radius:12px;font-size:0.8em;">55 min</span> 6. Exercise &amp; Homework</h3>
+<blockquote>
+<h3>Learning Baseline (Self-Assessment)</h3>
+<blockquote>
+<p><strong>[ASSESSMENT]</strong> By the end of this week, students must be able to say &quot;Yes&quot; to:</p>
+<ul>
+<li><input disabled="" type="checkbox"> I know how the <code>name</code> attribute connects HTML to C#.</li>
+<li><input disabled="" type="checkbox"> I can bind an HTTP POST to a complex C# object.</li>
+<li><input disabled="" type="checkbox"> I can apply Data Annotations like <code>[Required]</code> to a class.</li>
+<li><input disabled="" type="checkbox"> I can use <code>ModelState.IsValid</code> to prevent bad data from saving.</li>
+<li><input disabled="" type="checkbox"> I can explain why server-side validation is mandatory.</li>
+</ul>
+</blockquote>
+</blockquote>
+<blockquote>
+<h3>Take-Home Mission</h3>
+<blockquote>
+<p><strong>[HOMEWORK]</strong> <strong>Mission:</strong> &quot;The Strict Sign-Up&quot;</p>
+<ol>
+<li>Create a User Registration form.</li>
+<li>Model: Username, Password, ConfirmPassword, Age.</li>
+<li><strong>The Catch:</strong> Use the <code>[Compare(&quot;Password&quot;)]</code> annotation to ensure ConfirmPassword matches. Create a custom validation rule (or use Regex annotation) to ensure the Password contains at least one uppercase letter and one number.</li>
+</ol>
+</blockquote>
+</blockquote>
+<hr>
+<h3><span style="background:#2563eb;color:#fff;padding:2px 10px;border-radius:12px;font-size:0.8em;">15 min</span> 7. Instructor Assets Blueprint</h3>
+<blockquote>
+<p><strong>[ASSETS]</strong> What to prepare before this class:</p>
+<ul>
+<li><strong>Starter Repo:</strong> An HTML form that submits to a controller, but has zero validation.</li>
+<li><strong>Solution Repo:</strong> The form fully wired up with Tag Helpers, Model binding, Data Annotations, and ModelState checking.</li>
+</ul>
+</blockquote>
+
 </body></html>

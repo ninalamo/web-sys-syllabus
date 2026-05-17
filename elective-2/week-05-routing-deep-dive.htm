@@ -1,6 +1,6 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>elective-2\week-05-routing-deep-dive.md</title><style>
+<title>week-05-routing-deep-dive.md</title><style>
 body { font-family: 'Segoe UI', Arial, sans-serif; max-width: 960px; margin: 2em auto; padding: 0 1.5em; line-height: 1.7; color: #1a1a1a; background: #fafafa; }
 h1 { border-bottom: 2px solid #2563eb; padding-bottom: .3em; margin-top: 1.5em; color: #1e3a5f; }
 h2 { border-bottom: 1px solid #cbd5e1; padding-bottom: .2em; margin-top: 1.5em; color: #1e3a5f; }
@@ -17,10 +17,30 @@ tr:nth-child(even) { background: #f8fafc; }
 hr { border: none; border-top: 2px solid #e2e8f0; margin: 2em 0; }
 </style></head><body>
 <nav><a href="index.htm">Home</a></nav>
-<h2>Week 5: Routing Deep-Dive</h2>
+<h2>Week 5: Routing Deep Dive</h2>
+<div style="background: #e0f2fe; padding: 15px; border-left: 5px solid #0284c7; margin-bottom: 20px;">
+    <strong>Learning Objectives:</strong>
+    <ul>
+        <li>Understand the role of routing in mapping URLs to Controller actions.</li>
+        <li>Implement Conventional Routing to establish global application URL patterns.</li>
+        <li>Implement Attribute Routing for highly specific, SEO-friendly, and API-centric endpoints.</li>
+        <li>Apply Route Constraints to enforce data types and prevent invalid requests from executing code.</li>
+    </ul>
+</div>
+<div style="background: #fefce8; padding: 15px; border-left: 5px solid #ca8a04; margin-bottom: 20px;">
+    <strong>📋 This Week at a Glance</strong><br>
+    🔁 Last week: &quot;Week 4: MVC Big Picture&quot;<br>
+    🎯 This week: &quot;Go deeper into routing — the traffic cop that maps URLs to controller actions&quot;<br>
+    <br>
+    <strong>LAB (3h) Topics:</strong><br>
+    ▸ A. Conventional Routing (9 min)<br>▸ B. Attribute Routing (9 min)<br>▸ C. Route Constraints (7 min)<br>
+    <br>
+    <strong>ONLINE (1h):</strong> Pro-Tip with real-world scenario + AI Integration + Take-Home Mission (Route Designer)<br>
+    <br>
+    ✅ By end of lab: Read a conventional route pattern; apply `[Route]`, `[HttpGet]`; make route params optional; use route constraints like `:int`
+</div>
 <blockquote>
-<p>[TIME] <strong>Session Pacing (180 min)</strong></p>
-</blockquote>
+<p>[TIME] <strong>Session Pacing (Lab - ~150 min)</strong></p>
 <table>
 <thead>
 <tr>
@@ -29,8 +49,7 @@ hr { border: none; border-top: 2px solid #e2e8f0; margin: 2em 0; }
 <th>Format</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>Hook + Analogy</td>
 <td>15 min</td>
 <td>Lecture + Whiteboard</td>
@@ -38,17 +57,12 @@ hr { border: none; border-top: 2px solid #e2e8f0; margin: 2em 0; }
 <tr>
 <td>Concept Discussion</td>
 <td>25 min</td>
-<td>Lecture + Slides + Live Route Matching</td>
+<td>Lecture + Slides + Pattern Matching</td>
 </tr>
 <tr>
 <td>Code Walkthrough</td>
 <td>30 min</td>
-<td>Live Code (instructor + students type)</td>
-</tr>
-<tr>
-<td>Industry Reality</td>
-<td>10 min</td>
-<td>Lecture + Discussion</td>
+<td>Live Code (Conventional vs Attribute)</td>
 </tr>
 <tr>
 <td>Break</td>
@@ -61,11 +75,6 @@ hr { border: none; border-top: 2px solid #e2e8f0; margin: 2em 0; }
 <td>Lab (solo or pairs)</td>
 </tr>
 <tr>
-<td>AI Integration</td>
-<td>10 min</td>
-<td>Demo + Prompt Walkthrough</td>
-</tr>
-<tr>
 <td>Debugging + Wrap</td>
 <td>15 min</td>
 <td>Group Debug + Q&amp;A</td>
@@ -75,148 +84,130 @@ hr { border: none; border-top: 2px solid #e2e8f0; margin: 2em 0; }
 <td>10 min</td>
 <td>Overflow / Stretch discussion</td>
 </tr>
-</tbody>
-</table>
-<blockquote>
-<p>[TIP] <strong>Teaching Tip (Week 5 strategy):</strong> Routing is the first "invisible" thing students encounter — it either works or gives a 404 with no explanation. Spend extra time on route matching order and <code>MapControllers()</code>. Use the whiteboard heavily to trace URLs to controllers.</p>
+</tbody></table>
 </blockquote>
-<hr />
-<h3>The Hook</h3>
 <blockquote>
-<p>[SPEAK] <strong>Script:</strong> "TikTok's 'For You' page is just a really well-optimized route. <code>/fyp?user=me</code> -&gt; algorithm does its thing -&gt; video. Your app's routing is the same idea but with less machine learning and more curly braces."</p>
-<p>[SLIDE] <strong>Slide:</strong> Title: "You Already Use Routing Every Day"<br />
-Left: TikTok URL <code>/fyp</code> | Right: GrabFood URL <code>/restaurant/jollibee/order</code><br />
-Subtitle: "Every app you use is just fancy routing."</p>
-<p>[ENGAGE] <strong>Gen-Z:</strong> "Every URL you've ever typed, every link you've ever clicked — that's routing. You're not learning something new. You're learning how the thing you already use actually works."<br />
-<strong>-&gt; Poll:</strong> "Raise your hand if you've ever gotten a 404 and just closed the tab. Today you'll learn why that happened."</p>
-<p>[LOST] <strong>If they're lost:</strong> "Routing is just matching a URL to the right code. That's it. Type <code>/about</code> -&gt; show about page. Type <code>/contact</code> -&gt; show contact page. We're just adding rules."</p>
+<p>[TIP] <strong>Teaching Tip:</strong> Routing is about pattern matching. Students often struggle when a URL returns a 404 despite the controller existing. Focus heavily on how the engine matches a string to a C# method.</p>
 </blockquote>
-<hr />
-<h3>The Analogy</h3>
+<hr>
+<h3><span style="background:#2563eb;color:#fff;padding:2px 10px;border-radius:12px;font-size:0.8em;">15 min</span> 1. The Hook &amp; The Analogy</h3>
 <blockquote>
-<p>[SPEAK] <strong>Script:</strong> "Routing is like GPS navigation. You type an address (URL), the GPS (router) figures out which road to take (controller), which house to go to (action), and whether you need a gate code (route parameter). If the address doesn't match anything, GPS says 'address not found' — that's your 404."</p>
-<p>[BOARD] <strong>Whiteboard:</strong> Draw three boxes connected by arrows:
-<code>URL -&gt; Router -&gt; Controller.Action
-"/store/details/42" -&gt; matches -&gt; StoreController.Details(id=42)</code>
-Below: "GPS analogy: Address = URL, Route = Controller, House = Action, Gate code = Parameters"</p>
-<p>[ENGAGE] <strong>Gen-Z:</strong> <strong>-&gt; Turn to your neighbor:</strong> "If <code>/store/details/42</code> is an address, what's the controller? What's the action? 10 seconds, go!" (Answer: Controller = Store, Action = Details, Parameter = 42.)</p>
-<p>[LOST] <strong>If they're lost:</strong> "Think of it like a school directory. You want 'Juan in Room 301.' The directory (router) tells you: building (controller) = Main, room (action) = 301, person (parameter) = Juan."</p>
+<p>[SPEAK] <strong>Script:</strong> &quot;How does the server know that <code>youtube.com/watch?v=123</code> goes to the video player, but <code>youtube.com/shorts</code> goes to the short-form feed? That&#39;s routing. It&#39;s the traffic cop of your application.&quot;</p>
 </blockquote>
-<hr />
-<h3>Concept Discussion</h3>
 <blockquote>
-<p>[TIME] <strong>Pacing:</strong> 25 min total (10 min convention routing -&gt; 10 min attribute routing -&gt; 5 min constraints)</p>
-<p>[SPEAK] <strong>Script:</strong> "There are exactly two ways to define routes in ASP.NET Core. Convention-based: one rule for everything. Attribute-based: each controller declares its own. We'll use attribute routing because it's explicit and easier to debug."</p>
-<p>[SLIDE] <strong>Slide:</strong> Show convention routing first — single <code>MapControllerRoute</code> line. Then reveal attribute routing with the <code>ShopController</code> example. Highlight: "Same result, different approach."</p>
-<p>[BOARD] <strong>Whiteboard:</strong> Draw the route matching table:
-<code>URL                  -&gt; Route Pattern              -&gt; Controller.Action
-/shop                -&gt; [Route("")]                -&gt; ShopController.Index
-/shop/item/5         -&gt; [Route("item/{id}")]       -&gt; ShopController.Product(id=5)
-/shop/category/games -&gt; [Route("category/{name}")] -&gt; ShopController.ByCategory(name="games")</code></p>
-<p>[TIP] <strong>Teaching Tip:</strong> Students will confuse convention vs attribute routing. Emphasize: <strong>you can use both, but attribute routing is clearer for beginners.</strong> The constraint section (<code>{id:int}</code>) is where most errors happen — spend extra time here.</p>
-<p>[ASK] <strong>Ask the class:</strong> "What happens if I visit <code>/shop/item/abc</code> with the <code>{id:int}</code> constraint?" (Pause. Answer: 404 — "abc" isn't an integer, so the route doesn't match.)</p>
-<p>[ENGAGE] <strong>Gen-Z:</strong> "Route constraints are like TikTok's age filter — <code>{id:int}</code> means 'only integers allowed.' If you're not an int, you don't get in. No explanation, just 404."<br />
-<strong>-&gt; Phone moment:</strong> "Pull up any URL on your phone. The part after the domain? That's what we're matching today."</p>
-<p>[Q&amp;A] <strong>Student Q:</strong> "Can I use both convention and attribute routing in the same app?"
-<strong>Short answer:</strong> Yes, but don't.
-<strong>Real answer:</strong> Mixing them creates confusion about which route matches first. Pick one convention. For MVC apps, attribute routing is cleaner.
-<strong>The hidden question:</strong> "Which one should I use?" -&gt; Attribute routing. It's explicit and self-documenting.</p>
-<p>[Q&amp;A] <strong>Student Q:</strong> "What does the <code>?</code> mean in <code>{id?}</code>?"
-<strong>Short answer:</strong> It makes the parameter optional.
-<strong>Real answer:</strong> <code>/store/details</code> and <code>/store/details/42</code> both match. Without <code>?</code>, only the version with the ID matches.
-<strong>The hidden question:</strong> "When should I make parameters optional?" -&gt; When the action has sensible defaults.</p>
-<p>[LOST] <strong>If they're lost:</strong> "Forget the syntax for a second. Routing answers one question: 'When someone visits this URL, which method should run?' That's the entire concept. Everything else is just how you write the rule."</p>
+<p>[BOARD] <strong>Whiteboard Analogy:</strong> The Post Office Sorter</p>
+<ul>
+<li>The URL is the zip code on an envelope.</li>
+<li>Routing is the post office sorting machine. It looks at the zip code and throws it into the correct bin (Controller/Action). If it doesn&#39;t match any known pattern, it throws it in the trash (404 Not Found).</li>
+</ul>
 </blockquote>
-<hr />
-<h3>Code Walkthrough</h3>
+<hr>
+<h3><span style="background:#2563eb;color:#fff;padding:2px 10px;border-radius:12px;font-size:0.8em;">25 min</span> 2. Core Concepts &amp; Discussion Topics</h3>
+<h4>▸ A. Conventional Routing (9 min)</h4>
+<p><strong>Module Syllabus Content:</strong> Conventional routing relies on a global template (typically defined in <code>Program.cs</code>) to map URLs to code. The default pattern, <code>{controller=Home}/{action=Index}/{id?}</code>, acts as a master rule. The routing engine breaks the incoming URL into segments based on the slashes. It looks at the first segment to find a matching Controller class, the second segment to find the Action method within that class, and the third segment as an optional parameter. This approach is highly efficient for standard web applications because a single rule can route thousands of pages automatically without requiring you to explicitly define every single URL.</p>
 <blockquote>
-<p>[TIME] <strong>Pacing:</strong> 30 min (5 min Program.cs setup -&gt; 15 min controller + routes -&gt; 10 min trace-through)</p>
-<p>[SPEAK] <strong>Script:</strong> "Let's build a multi-page site with explicit attribute routing. Watch how each <code>[Route]</code> attribute maps to a URL. Then we'll trace exactly what happens when a request comes in."</p>
-<p>[SLIDE] <strong>Slide:</strong> Show <code>Program.cs</code> first — highlight <code>app.MapControllers()</code>. Then reveal <code>StoreController</code> one action at a time. Don't show the whole controller at once.</p>
-<p>[TIP] <strong>Teaching Tip:</strong> <strong>Type this live, don't paste.</strong> When you type <code>app.MapControllers()</code>, pause: "Without this line, your <code>[Route]</code> attributes do nothing. This is the #1 mistake this week." Then trace <code>/store/details/42</code> step by step on the whiteboard.</p>
-<p>[BOARD] <strong>Whiteboard:</strong> Trace the full request path:
-<code>GET /store/details/42
-  v
-[Route("store")] on StoreController -&gt; prefix match [OK]
-  v
-[Route("details/{id:int}")] -&gt; pattern match [OK]
-  v
-42 is int -&gt; constraint passes [OK]
-  v
-Details(int id) runs with id = 42
-  v
-Returns View with ViewBag.ProductId = 42</code></p>
-<p>[ENGAGE] <strong>Gen-Z:</strong> <strong>-&gt; Type-along:</strong> "Open your project. Type the <code>StoreController</code> with me. Every route attribute. Every action. Don't copy-paste — typing builds the muscle memory."</p>
-<p>[Q&amp;A] <strong>Student Q:</strong> "Why do I need both <code>[Route("")]</code> and <code>[Route("index")]</code> on the same action?"
-<strong>Short answer:</strong> So both <code>/store</code> and <code>/store/index</code> work.
-<strong>Real answer:</strong> Multiple <code>[Route]</code> attributes on one action let you support multiple URLs for the same page. Useful for backward compatibility.
-<strong>The hidden question:</strong> "Is this overkill?" -&gt; Maybe. But it's a useful pattern to know.</p>
-<p>[LOST] <strong>If they're lost:</strong> "Let's trace the simplest route first: <code>GET /store</code>. The controller has <code>[Route("store")]</code> — that's the prefix. The action has <code>[Route("")]</code> — that means 'no extra path.' So <code>/store</code> = prefix + empty = match. That's it."</p>
+<p><strong>[SPEAK] Discussion:</strong> &quot;Conventional routing sets a master rule in <code>Program.cs</code> that applies to the whole app. It assumes you will name your classes and methods perfectly.&quot;</p>
+<p><strong>[CODE] Example:</strong> </p>
+<pre><code class="language-csharp">app.MapControllerRoute(
+    name: &quot;default&quot;,
+    pattern: &quot;{controller=Home}/{action=Index}/{id?}&quot;);
+</code></pre>
+<p><strong>[TIP] Instructor Tip:</strong> Explain the <code>{id?}</code>. The <code>?</code> means it&#39;s optional. If they don&#39;t provide an ID, the route still works!</p>
 </blockquote>
-<hr />
-<h3>The "Why Should I Care?"</h3>
+<h4>▸ B. Attribute Routing (9 min)</h4>
+<p><strong>Module Syllabus Content:</strong> While conventional routing is great for broad strokes, Attribute Routing offers surgical precision. By placing <code>[Route]</code>, <code>[HttpGet]</code>, or <code>[HttpPost]</code> attributes directly above a controller class or method, developers can define exact URL paths that ignore the global convention. This is absolutely essential for building REST APIs, where the URL structure must strictly follow resource-based naming conventions (e.g., <code>/api/v1/users/5/orders</code>). Attribute routing also allows for the creation of highly readable, SEO-optimized URLs that don't necessarily match the underlying C# class names.</p>
 <blockquote>
-<p>[SPEAK] <strong>Script:</strong> "Routing is the first thing that happens when a request hits your app. If routing is broken, nothing else matters. At companies like Microsoft and Uber, routing misconfigurations have caused entire site outages."</p>
-<p>[SLIDE] <strong>Slide:</strong> Screenshot of a real 404 error page from a major site (e.g., GitHub's 404 page with their octocat). Label: "Even big companies get routing wrong sometimes."</p>
-<p>[TIP] <strong>Teaching Tip:</strong> Keep this to 5 minutes. The SEO point is the most practical — <code>/product/nike-shoes</code> vs <code>/product?id=3982</code>. Show them a real Google search result to make it concrete.</p>
-<p>[ENGAGE] <strong>Gen-Z:</strong> "Clean URLs are like having a clean Instagram bio. <code>/product/nike-shoes</code> tells Google and humans exactly what the page is. <code>/product?id=3982</code> looks sketchy and ranks lower."</p>
-<p>[LOST] <strong>If they're lost:</strong> "You don't need to memorize everything today. Just remember: routing = URL to code. If routing works, your app works. If it doesn't, nothing else matters."</p>
+<p><strong>[SPEAK] Discussion:</strong> &quot;Conventional routing is great for websites. Attribute routing is required for APIs. It gives you microscopic control over exactly what URL triggers a specific method by putting a tag directly above the code.&quot;</p>
+<p><strong>[CODE] Example:</strong></p>
+<pre><code class="language-csharp">[Route(&quot;api/users&quot;)]
+public class UsersController : Controller {
+    [HttpGet(&quot;profile/{username}&quot;)]
+    public IActionResult GetProfile(string username) { ... }
+}
+</code></pre>
+<p><strong>[TIP] Gen-Z Hook:</strong> Attribute routing is like setting a custom URL for your social media profile. Instead of the default <code>/user?id=5123</code>, you force it to be exactly <code>/ninalamo</code>.</p>
 </blockquote>
-<hr />
-<h3>Exercise: Multi-Page Site with 3+ Routes</h3>
+<h4>▸ C. Route Constraints (7 min)</h4>
+<p><strong>Module Syllabus Content:</strong> Route Constraints act as a first line of defense for your application. By adding type constraints like <code>:int</code> or <code>:guid</code> directly into the route template (e.g., <code>{id:int}</code>), you instruct the routing engine to only match the route if the parameter is of the correct data type. If a user attempts to navigate to <code>/products/details/apple</code> instead of an ID number, the route constraint prevents the request from even reaching the controller, safely returning a 404 Not Found instead of crashing the application with a Type Conversion error.</p>
 <blockquote>
-<p>[TIME] <strong>Pacing:</strong> 55 min total (5 min setup -&gt; 40 min coding -&gt; 10 min share)</p>
-<p>[SPEAK] <strong>Script:</strong> "Build a GameZone store with four routes. Each route should display different info. Use attribute routing. You have 40 minutes."</p>
-<p>[SLIDE] <strong>Slide:</strong> Exercise checklist:
-- [ ] Create <code>GamesController</code> with <code>[Route("games")]</code>
-- [ ] <code>/games</code> — list all games (hardcoded <code>List&lt;Game&gt;</code>)
-- [ ] <code>/games/details/{id:int}</code> — show game details
-- [ ] <code>/games/genre/{genre}</code> — filter by genre
-- [ ] <code>/games/search/{query:required}</code> — search by name</p>
-<p>[TIP] <strong>Teaching Tip:</strong> Circulate during the first 10 minutes — students will get stuck on <code>MapControllers()</code> or route constraints. The "aha" moment is when they visit <code>/games/details/5</code> and see dynamic content.</p>
-<p>[ENGAGE] <strong>Gen-Z:</strong> <strong>-&gt; Pair up:</strong> "One person writes the controller, the other creates the views. Then swap. You'll learn faster by seeing both sides."</p>
-<p>[ASK] <strong>Mid-exercise check-in (at 20 min):</strong> "How many have <code>/games</code> working?" (Show of hands.) "How many have <code>/games/details/{id}</code> working?" "If neither, let's do a quick group debug."</p>
-<p>[LOST] <strong>If they're lost:</strong> "Start with just ONE route: <code>/games</code>. Get that working. Then add <code>/games/details/{id:int}</code>. Don't try to build all four at once."</p>
+<p><strong>[SPEAK] Discussion:</strong> &quot;What if someone types <code>/products/details/hello</code>? &#39;hello&#39; is not an ID number. The app will crash when it tries to look up &#39;hello&#39; in the database. Route constraints stop the request before it even hits the controller.&quot;</p>
+<p><strong>[CODE] Example:</strong></p>
+<pre><code class="language-csharp">[HttpGet(&quot;details/{id:int}&quot;)]
+public IActionResult Details(int id) { ... }
+</code></pre>
+<p><strong>[TIP] Instructor Tip:</strong> Emphasize security. Constraints prevent bad data from ever executing your C# logic.</p>
 </blockquote>
-<hr />
-<h3>AI Integration Note</h3>
+<hr>
+<h3><span style="background:#2563eb;color:#fff;padding:2px 10px;border-radius:12px;font-size:0.8em;">30 min</span> 3. Code Walkthrough / Live Coding Blueprint</h3>
 <blockquote>
-<p>[TIME] <strong>Pacing:</strong> 10 min (5 min demo -&gt; 5 min try)</p>
-<p>[SPEAK] <strong>Script:</strong> "This week marks a policy shift: AI is now your debugging tutor. Ask it why a route isn't matching. Ask it to explain 404s. But you still can't ask it to generate your controller."</p>
-<p>[SLIDE] <strong>Slide:</strong> Allowed vs Not Allowed:
-| [OK] Allowed | [NO] Not Allowed |
-|-----------|--------------|
-| "Why is this route not matching?" | "Generate my GamesController" |
-| "Why am I getting 404 on /games/details/abc?" | "Write all my routes for me" |</p>
-<p>[TIP] <strong>Teaching Tip:</strong> Frame the policy shift positively: "You've earned more AI freedom because you understand the basics now. But debugging with AI is a skill — you need to know what to ask."</p>
-<p>[ENGAGE] <strong>Gen-Z:</strong> "AI is your 'route detective' — it helps you figure out why things break, but it doesn't build things for you. Use it like Google, not like a ghostwriter."</p>
+<p>[SPEAK] <strong>Script:</strong> &quot;Let&#39;s break the routing engine intentionally, and then fix it using both Conventional and Attribute routing.&quot;</p>
 </blockquote>
-<hr />
-<h3>Debugging / "Watch Out For"</h3>
+<ul>
+<li><strong>Step 1: The Conventional Trap</strong><ul>
+<li><em>Action:</em> Create <code>ProductsController</code>. Add a method <code>ShowItem(int id)</code>. Try to visit <code>/Products/ShowItem</code>. It works. Now try <code>/Products</code>. It 404s because there is no <code>Index</code> method.</li>
+</ul>
+</li>
+<li><strong>Step 2: Mixing the Rules</strong><ul>
+<li><em>Action:</em> Add <code>[Route(&quot;catalog&quot;)]</code> to the <code>ProductsController</code>. Show that the conventional route <code>/Products/ShowItem</code> is now dead, and only <code>/catalog/ShowItem</code> works.</li>
+</ul>
+</li>
+<li><strong>Step 3: Adding Constraints</strong><ul>
+<li><em>Action:</em> Add <code>{id:int:min(1)}</code> to a route. Visit <code>/catalog/ShowItem/0</code> and watch it fail safely.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3><span style="background:#2563eb;color:#fff;padding:2px 10px;border-radius:12px;font-size:0.8em;">55 min</span> 6. Exercise &amp; Homework</h3>
 <blockquote>
-<p>[TIME] <strong>Pacing:</strong> 15 min (5 min common errors -&gt; 5 min group debug -&gt; 5 min Q&amp;A)</p>
-<p>[SPEAK] <strong>Script:</strong> "Here are the routing errors you WILL see this week. Let's go through them so you don't spend 20 minutes Googling."</p>
-<p>[SLIDE] <strong>Slide:</strong> Error cards:
-<code>+-----------------------------------------+
-| 404 on valid route                      |
-| Did you call app.MapControllers()?      |
-| Did you restart the app?                |
-+-----------------------------------------+
-+-----------------------------------------+
-| AmbiguousMatchException                 |
-| Two routes match the same URL.          |
-| Fix: Make one route more specific.      |
-+-----------------------------------------+</code></p>
-<p>[ENGAGE] <strong>Gen-Z:</strong> "AmbiguousMatchException is like two people answering your call at the same time. ASP.NET says 'I don't know who to talk to' and throws an error. Fix: make one route more specific."</p>
-<p>[Q&amp;A] <strong>Student Q:</strong> "Why does a constraint failure give 404 instead of 400?"
-<strong>Short answer:</strong> Because the route doesn't match — it's "not found," not "bad request."
-<strong>Real answer:</strong> A constraint is part of the route pattern. If the constraint fails, ASP.NET treats it as if the route doesn't exist. Another route might match, so it keeps looking.
-<strong>The hidden question:</strong> "That's confusing." -&gt; Yes. It's a known quirk of ASP.NET Core routing.</p>
-<p>[LOST] <strong>If they're lost:</strong> "The two things to check first: (1) Did you call <code>app.MapControllers()</code> in Program.cs? (2) Did you restart the app after changing routes? Those fix 90% of routing issues."</p>
-<p>[TIP] <strong>Teaching Tip:</strong> End with one action item: "If you only remember one thing: <code>MapControllers()</code> enables attribute routing. Without it, your <code>[Route]</code> attributes are ignored."</p>
+<p>[TIME] <strong>In-Class Exercise (55 min):</strong> Create a <code>BlogController</code>. Define attribute routes so that <code>/blog/2026/05</code> goes to an archive method, and <code>/blog/post/hello-world</code> goes to a specific article method. Use route constraints so the year must be 4 digits.</p>
 </blockquote>
-<hr />
-<h3>Teaching Script</h3>
-<p>This week's annotations cover: pacing table at top, inline annotations per section ([SPEAK] Script, [SLIDE] Slide, [BOARD] Whiteboard, [TIP] Teaching Tip, [ENGAGE] Gen-Z, [Q&amp;A] Student Q, [LOST] If they're lost), and this summary. The #1 pitfall is forgetting <code>app.MapControllers()</code> — emphasize it repeatedly. Use the whiteboard to trace URLs to actions — visual route matching is the fastest way to build the mental model.</p>
-<hr />
+<hr>
+<h3>💻 Online Session (1 hour)</h3>
+<hr>
+<h3><span style="background:#2563eb;color:#fff;padding:2px 10px;border-radius:12px;font-size:0.8em;">15 min</span> 4. From the Trenches (Pro-Tip)</h3>
+<blockquote>
+<p>[TRENCHES] <strong>Instructor Script:</strong> &quot;In the real world, URLs are a massive part of SEO (Search Engine Optimization). If your e-commerce site uses <code>/item?id=8273</code>, Google hates it. If you use Attribute Routing to create <code>/products/laptops/macbook-pro</code>, Google loves it and ranks it higher. We don&#39;t just use Attribute Routing for organization; we use it to make money by driving search traffic.&quot;</p>
+</blockquote>
+<hr>
+<h3><span style="background:#2563eb;color:#fff;padding:2px 10px;border-radius:12px;font-size:0.8em;">10 min</span> 5. AI Integration &amp; Debugging</h3>
+<ul>
+<li><strong>AI Policy:</strong> Allowed: &quot;Why is this route returning a 404?&quot; Not Allowed: &quot;Write all the attribute routes for my project.&quot;</li>
+<li><strong>Common Error 1:</strong> <code>AmbiguousMatchException</code>. -&gt; Two different action methods match the exact same URL. The engine doesn&#39;t know which one to pick, so it crashes.</li>
+</ul>
+<hr>
+<h3><span style="background:#2563eb;color:#fff;padding:2px 10px;border-radius:12px;font-size:0.8em;">55 min</span> 6. Exercise &amp; Homework</h3>
+<blockquote>
+<h3>Learning Baseline (Self-Assessment)</h3>
+<blockquote>
+<p><strong>[ASSESSMENT]</strong> By the end of this week, students must be able to say &quot;Yes&quot; to:</p>
+<ul>
+<li><input disabled="" type="checkbox"> I can read a conventional route pattern and predict the URL.</li>
+<li><input disabled="" type="checkbox"> I can apply <code>[Route]</code>, <code>[HttpGet]</code>, and <code>[HttpPost]</code> attributes to a controller.</li>
+<li><input disabled="" type="checkbox"> I know how to make a route parameter optional (<code>?</code>).</li>
+<li><input disabled="" type="checkbox"> I can use route constraints like <code>:int</code> to enforce data types.</li>
+</ul>
+</blockquote>
+</blockquote>
+<blockquote>
+<h3>Take-Home Mission</h3>
+<blockquote>
+<p><strong>[HOMEWORK]</strong> <strong>Mission:</strong> &quot;The SEO Overhaul&quot;
+Take the &quot;Portfolio&quot; project from last week.</p>
+<ol>
+<li>Convert ALL conventional routing to Attribute Routing.</li>
+<li>Remove the word &quot;Portfolio&quot; from the URLs. </li>
+<li><strong>The Catch:</strong> Make sure <code>/</code> (the root of the site) loads the <code>AboutMe</code> action using an empty <code>[Route(&quot;&quot;)]</code> attribute.</li>
+</ol>
+</blockquote>
+</blockquote>
+<hr>
+<h3><span style="background:#2563eb;color:#fff;padding:2px 10px;border-radius:12px;font-size:0.8em;">15 min</span> 7. Instructor Assets Blueprint</h3>
+<blockquote>
+<p><strong>[ASSETS]</strong> What to prepare before this class:</p>
+<ul>
+<li><strong>Starter Repo:</strong> A broken MVC app where clicking navigation links results in <code>AmbiguousMatchException</code> and <code>404 Not Found</code> errors.</li>
+<li><strong>Solution Repo:</strong> The same app fixed with strict Attribute Routing and type constraints.</li>
+</ul>
+</blockquote>
+
 </body></html>

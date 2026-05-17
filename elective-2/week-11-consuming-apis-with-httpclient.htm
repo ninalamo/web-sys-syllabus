@@ -1,6 +1,6 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>elective-2\week-11-consuming-apis-with-httpclient.md</title><style>
+<title>week-11-consuming-apis-with-httpclient.md</title><style>
 body { font-family: 'Segoe UI', Arial, sans-serif; max-width: 960px; margin: 2em auto; padding: 0 1.5em; line-height: 1.7; color: #1a1a1a; background: #fafafa; }
 h1 { border-bottom: 2px solid #2563eb; padding-bottom: .3em; margin-top: 1.5em; color: #1e3a5f; }
 h2 { border-bottom: 1px solid #cbd5e1; padding-bottom: .2em; margin-top: 1.5em; color: #1e3a5f; }
@@ -18,9 +18,20 @@ hr { border: none; border-top: 2px solid #e2e8f0; margin: 2em 0; }
 </style></head><body>
 <nav><a href="index.htm">Home</a></nav>
 <h2>Week 11: Consuming APIs with HttpClient</h2>
+<div style="background: #fefce8; padding: 15px; border-left: 5px solid #ca8a04; margin-bottom: 20px;">
+    <strong>📋 This Week at a Glance</strong><br>
+    🔁 Last week: &quot;Week 10: Relationships &amp; Data Display&quot;<br>
+    🎯 This week: &quot;Reach outward — consuming third-party APIs using HttpClient to bring external data into our app&quot;<br>
+    <br>
+    <strong>LAB (3h) Topics:</strong><br>
+    ▸ A. `IHttpClientFactory` (7 min)<br>▸ B. JSON Deserialization (7 min)<br>▸ C. Async/Await in Controllers (6 min)<br>▸ D. DTOs (5 min)<br>
+    <br>
+    <strong>ONLINE (1h):</strong> From the Trenches (rate limiting) + AI Integration + Take-Home Mission (External API Dashboard)<br>
+    <br>
+    ✅ By end of lab: Know why we use `IHttpClientFactory`; write `async Task<IActionResult>`; use `JsonSerializer.Deserialize`; understand DTO class purpose
+</div>
 <blockquote>
-<p>[TIME] <strong>Session Pacing (180 min)</strong></p>
-</blockquote>
+<p>[TIME] <strong>Session Pacing (Lab - ~150 min)</strong></p>
 <table>
 <thead>
 <tr>
@@ -29,8 +40,7 @@ hr { border: none; border-top: 2px solid #e2e8f0; margin: 2em 0; }
 <th>Format</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>Hook + Analogy</td>
 <td>15 min</td>
 <td>Lecture + Whiteboard</td>
@@ -38,17 +48,12 @@ hr { border: none; border-top: 2px solid #e2e8f0; margin: 2em 0; }
 <tr>
 <td>Concept Discussion</td>
 <td>25 min</td>
-<td>Lecture + Slides + Live API Demo</td>
+<td>Lecture + Slides + Async/Await</td>
 </tr>
 <tr>
 <td>Code Walkthrough</td>
-<td>35 min</td>
-<td>Live Code (instructor + students type)</td>
-</tr>
-<tr>
-<td>Industry Reality</td>
-<td>10 min</td>
-<td>Lecture + Discussion</td>
+<td>30 min</td>
+<td>Live Code (IHttpClientFactory)</td>
 </tr>
 <tr>
 <td>Break</td>
@@ -61,168 +66,149 @@ hr { border: none; border-top: 2px solid #e2e8f0; margin: 2em 0; }
 <td>Lab (solo or pairs)</td>
 </tr>
 <tr>
-<td>AI Integration</td>
-<td>10 min</td>
-<td>Demo + Prompt Walkthrough</td>
-</tr>
-<tr>
 <td>Debugging + Wrap</td>
 <td>15 min</td>
 <td>Group Debug + Q&amp;A</td>
 </tr>
 <tr>
 <td>Buffer</td>
-<td>5 min</td>
-<td>Overflow</td>
+<td>10 min</td>
+<td>Overflow / Stretch discussion</td>
 </tr>
-</tbody>
-</table>
-<blockquote>
-<p>[TIP] <strong>Teaching Tip (Week 11 strategy):</strong> This week is fun — students finally see their apps talk to the outside world. But JSON deserialization will frustrate them. The mismatch between snake_case JSON and PascalCase C# properties is the #1 error. Have them paste real API responses into json2csharp.com or use AI to generate models. Also: <code>IHttpClientFactory</code> vs <code>new HttpClient()</code> is a conceptual leap — use the socket exhaustion demo to make it concrete.</p>
+</tbody></table>
 </blockquote>
-<hr />
-<h3>The Hook</h3>
 <blockquote>
-<p>[SPEAK] <strong>Script:</strong> "Your app is lonely. It's been talking to its own database all semester. Time to make friends. Your app can talk to other apps — get weather data, GitHub stats, cat pictures. Your app is about to get a lot more interesting."</p>
-<p>[SLIDE] <strong>Slide:</strong> Title: "Your App Is About to Get a Lot More Interesting"<br />
-Three screenshots side by side: a weather widget, a GitHub profile card, and a Bitcoin price ticker.<br />
-Subtitle: "All fetched from external APIs. All in C#. All today."</p>
-<p>[TIP] <strong>Teaching Tip:</strong> This hook should feel exciting — it's the week where apps stop being exercises and start being products. Show a live demo if possible: hit an API from your laptop and display the result in 30 seconds.</p>
-<p>[ENGAGE] <strong>Gen-Z:</strong> "Every app you use is just a fancy API consumer. TikTok fetches videos from an API. GCash fetches your balance from an API. Shopee fetches product listings from an API. Today you learn how to do the same thing."<br />
-<strong>-&gt; Poll:</strong> "Raise your hand if you've ever wondered how apps get real-time data like weather or stock prices. It's all APIs."</p>
-<p>[LOST] <strong>If they're lost:</strong> "An API is just a URL that returns data instead of a webpage. You visit it, it gives you JSON (a data format), and your app uses that data. That's the entire concept."</p>
+<p>[TIP] <strong>Teaching Tip:</strong> We touched on <code>HttpClient</code> in Week 3, but today we formalize it in an MVC Controller. Focus heavily on JSON deserialization — mapping random API text into strict C# classes.</p>
 </blockquote>
-<hr />
-<h3>The Analogy</h3>
+<hr>
+<h3><span style="background:#2563eb;color:#fff;padding:2px 10px;border-radius:12px;font-size:0.8em;">15 min</span> 1. The Hook &amp; The Analogy</h3>
 <blockquote>
-<p>[SPEAK] <strong>Script:</strong> "Consuming an API is like ordering food delivery. Your app calls a restaurant (the API), tells them what it wants (the request), they cook it (process), and deliver it (response). If the restaurant is closed, you get an error (500). If you asked for something not on the menu, they say 'we don't have that' (404). If everything works, you eat (display data)."</p>
-<p>[BOARD] <strong>Whiteboard:</strong> Draw the food delivery analogy:
-<code>Your App (Customer)
-    v "I want weather data for Manila"
-HttpClient (Delivery rider)
-    v GET request to API URL
-External API (Restaurant)
-    v Cooks the data
-JSON Response (Food delivered)
-    v Deserialize into C# objects
-Your App displays it (You eat)</code></p>
-<p>[TIP] <strong>Teaching Tip:</strong> The food delivery analogy works for Filipino students — everyone uses Foodpanda or GrabFood. Emphasize the key insight: <strong>your app is the customer, not the restaurant.</strong> It's consuming, not providing.</p>
-<p>[ENGAGE] <strong>Gen-Z:</strong> <strong>-&gt; Turn to your neighbor:</strong> "If your app is ordering from GrabFood, what's the request? What's the response? What's a 404? 10 seconds, go!" (Request = order, Response = food, 404 = item not on menu.)</p>
-<p>[LOST] <strong>If they're lost:</strong> "Think of it like asking Google a question. You type a query (request), Google searches (process), and shows results (response). APIs work the same way, just with data instead of search results."</p>
+<p>[SPEAK] <strong>Script:</strong> &quot;Not every app owns its data. If you build a travel site, you don&#39;t build a global weather database. You ask someone else&#39;s server for the weather. Today, our C# backend acts as a client, requesting data from the outside world.&quot;</p>
 </blockquote>
-<hr />
-<h3>Concept Discussion</h3>
 <blockquote>
-<p>[TIME] <strong>Pacing:</strong> 25 min total (5 min what is an API -&gt; 8 min IHttpClientFactory -&gt; 7 min JSON serialization -&gt; 5 min error handling)</p>
-<p>[SPEAK] <strong>Script:</strong> "Here's the entire API consumption mental model: APIs return JSON, <code>IHttpClientFactory</code> makes HTTP calls safely, JSON serialization turns JSON into C# objects, and error handling keeps your app from crashing when APIs fail. Let's go through each."</p>
-<p>[SLIDE] <strong>Slide:</strong> Show the weather API URL first, then the raw JSON response, then the C# model that matches it. Reveal each step: raw JSON -&gt; <code>[JsonPropertyName]</code> mapping -&gt; C# properties.</p>
-<p>[TIP] <strong>Teaching Tip:</strong> The most important concept: <strong><code>IHttpClientFactory</code> over <code>new HttpClient()</code>.</strong> Socket exhaustion is real and hard to debug. Show them the one-line difference: <code>builder.Services.AddHttpClient()</code> vs <code>new HttpClient()</code>. For JSON serialization, emphasize: "Property names must match JSON field names. Use <code>[JsonPropertyName]</code> when they don't."</p>
-<p>[ASK] <strong>Ask the class:</strong> "What happens if the API is down when your app tries to fetch data?" (Answer: It crashes — unless you handle the error. That's why we need try-catch and status code checks.)</p>
-<p>[ENGAGE] <strong>Gen-Z:</strong> "JSON serialization is like translating from English to Tagalog. The API speaks English (snake_case JSON). Your C# code speaks Tagalog (PascalCase). <code>[JsonPropertyName]</code> is the dictionary that maps between them."<br />
-<strong>-&gt; Phone moment:</strong> "Open any API URL in your browser. See that JSON text? That's what your app will receive. Your job is to turn that into C# objects."</p>
-<p>[Q&amp;A] <strong>Student Q:</strong> "Why can't I just use <code>new HttpClient()</code>? It works."
-<strong>Short answer:</strong> It works until it doesn't — then your app crashes with socket exhaustion.
-<strong>Real answer:</strong> <code>HttpClient</code> holds onto system sockets even after you dispose it. Creating many instances exhausts available sockets. <code>IHttpClientFactory</code> manages a pool of reusable connections. It's the difference between buying a new phone for every call vs using the same phone.
-<strong>The hidden question:</strong> "Is this really a problem?" -&gt; In development with 5 requests, no. In production with 10,000 requests per minute, yes.</p>
-<p>[Q&amp;A] <strong>Student Q:</strong> "What if the JSON structure changes?"
-<strong>Short answer:</strong> Your deserialization breaks.
-<strong>Real answer:</strong> That's why you need error handling. If the API changes, <code>ReadFromJsonAsync&lt;T&gt;()</code> returns null or throws. Catch it, log it, and show a graceful error message to the user instead of a crash.
-<strong>The hidden question:</strong> "How do I protect against this?" -&gt; Always check for null after deserialization. Always have a fallback.</p>
-<p>[LOST] <strong>If they're lost:</strong> "Forget the technical terms. The flow is: (1) Create an HttpClient from the factory. (2) Call the API URL. (3) Get JSON back. (4) Turn JSON into C# objects. (5) Display the data. That's it."</p>
+<p>[BOARD] <strong>Whiteboard Analogy:</strong> The Subcontractor</p>
+<ul>
+<li><strong>Browser:</strong> The client ordering a house.</li>
+<li><strong>Your Controller:</strong> The General Contractor.</li>
+<li><strong>External API:</strong> The Electrician.</li>
+<li>Your controller takes the order, pauses its work, calls the electrician (API) to get the wiring done, and then finishes the house (HTML) to give back to the client.</li>
+</ul>
 </blockquote>
-<hr />
-<h3>Code Walkthrough</h3>
+<hr>
+<h3><span style="background:#2563eb;color:#fff;padding:2px 10px;border-radius:12px;font-size:0.8em;">25 min</span> 2. Core Concepts &amp; Discussion Topics</h3>
+<h4>▸ A. <code>IHttpClientFactory</code> (7 min)</h4>
 <blockquote>
-<p>[TIME] <strong>Pacing:</strong> 35 min (5 min Program.cs setup -&gt; 10 min single API call -&gt; 10 min JSON models -&gt; 10 min parallel dashboard)</p>
-<p>[SPEAK] <strong>Script:</strong> "Let's build a dashboard that fetches from three APIs at the same time. First a simple single API call, then we'll add JSON models, then we'll do all three in parallel with <code>Task.WhenAll</code>."</p>
-<p>[SLIDE] <strong>Slide:</strong> Show the single API call first (WeatherController). Then reveal the JSON model classes with <code>[JsonPropertyName]</code>. Finally show the parallel DashboardController with <code>Task.WhenAll</code>.</p>
-<p>[TIP] <strong>Teaching Tip:</strong> <strong>Type this live.</strong> After the single API call, run it and show the result. Then add the JSON model and show how <code>GetFromJsonAsync&lt;T&gt;()</code> replaces manual deserialization. For the parallel dashboard, emphasize: "Three calls at the same time = faster than three calls one after another."</p>
-<p>[BOARD] <strong>Whiteboard:</strong> Draw the parallel execution timeline:
-```
-Sequential (slow):
-[---Weather 500ms---][---GitHub 500ms---][---News 500ms---] = 1500ms</p>
-<p>Parallel with Task.WhenAll (fast):
-[---Weather 500ms---]
-[---GitHub  500ms---]  = 500ms (all at once)
-[---News    500ms---]
-```</p>
-<p>[ENGAGE] <strong>Gen-Z:</strong> <strong>-&gt; Type-along:</strong> "Type the WeatherController with me. Register <code>AddHttpClient()</code> in Program.cs. Run it. See the weather data appear. Now add the GitHub call. Now do both in parallel. Watch the speed difference."</p>
-<p>[Q&amp;A] <strong>Student Q:</strong> "Why does GitHub API require a User-Agent header?"
-<strong>Short answer:</strong> To identify who's making the request.
-<strong>Real answer:</strong> Without a User-Agent, GitHub can't distinguish between legitimate apps and bots. They block unidentified requests to prevent abuse. It's like showing your ID at a building entrance.
-<strong>The hidden question:</strong> "Do all APIs require this?" -&gt; Not all, but many do. Always check the API documentation.</p>
-<p>[LOST] <strong>If they're lost:</strong> "Start with just one API call. Get the weather API working. See the JSON in your browser. Then create the C# model. Then deserialize. Don't try to build the parallel dashboard first."</p>
+<p><strong>[SPEAK] Discussion:</strong> &quot;You might see tutorials use <code>new HttpClient()</code>. Never do this. It leaves network sockets open and will crash a production server. We inject a factory that safely manages connections for us.&quot;</p>
+<p><strong>[CODE] Example:</strong></p>
+<pre><code class="language-csharp">// In Program.cs
+builder.Services.AddHttpClient();
+
+// In Controller Constructor
+public MyController(IHttpClientFactory factory) {
+    _client = factory.CreateClient();
+}
+</code></pre>
+<p><strong>[TIP] Instructor Tip:</strong> Connect this back to Week 2 (Dependency Injection). This is the ultimate proof of why DI is powerful.</p>
 </blockquote>
-<hr />
-<h3>The "Why Should I Care?"</h3>
+<h4>▸ B. JSON Deserialization (7 min)</h4>
 <blockquote>
-<p>[SPEAK] <strong>Script:</strong> "No web app is an island. Modern apps integrate 5-15 external APIs on average: payment gateways, maps, notifications, social login, weather, shipping, email. If you can't consume an API, you can't build real products. Every SaaS company has an integration team that does exactly this."</p>
-<p>[SLIDE] <strong>Slide:</strong> A real app architecture diagram showing: Your App -&gt; Stripe (payments), Google Maps (location), SendGrid (email), OpenWeather (weather), GitHub (auth). Label: "One app, five APIs."</p>
-<p>[TIP] <strong>Teaching Tip:</strong> Keep this to 5 minutes. Connect it to their capstone: "Your capstone will need at least one external API. This week teaches you how."</p>
-<p>[ENGAGE] <strong>Gen-Z:</strong> <strong>-&gt; Poll:</strong> "How many of you have used GCash? It integrates with banks, telecom providers, and merchants — all through APIs. That's the scale of API integration in the real world."</p>
-<p>[LOST] <strong>If they're lost:</strong> "You don't need to understand enterprise architecture today. Just know: APIs let your app use other services. That's a superpower. Learn it now, use it forever."</p>
+<p><strong>[SPEAK] Discussion:</strong> &quot;APIs return JSON text. C# wants Objects. We use a Deserializer to map the text to our C# class.&quot;</p>
+<p><strong>[CODE] Example:</strong></p>
+<pre><code class="language-csharp">var jsonText = await response.Content.ReadAsStringAsync();
+var user = JsonSerializer.Deserialize&lt;ApiUser&gt;(jsonText, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+</code></pre>
+<p><strong>[TIP] Instructor Tip:</strong> Emphasize the <code>PropertyNameCaseInsensitive = true</code>. Without it, JSON <code>firstName</code> won&#39;t map to C# <code>FirstName</code> and everything will be null.</p>
 </blockquote>
-<hr />
-<h3>Exercise: API Dashboard</h3>
+<h4>▸ C. Async/Await in Controllers (6 min)</h4>
 <blockquote>
-<p>[TIME] <strong>Pacing:</strong> 55 min total (5 min setup -&gt; 40 min coding -&gt; 10 min share)</p>
-<p>[SPEAK] <strong>Script:</strong> "Build a dashboard with three API integrations. Weather, GitHub, and one you choose. Handle errors gracefully — if one API is down, the others still work. You have 40 minutes."</p>
-<p>[SLIDE] <strong>Slide:</strong> Exercise checklist:
-- [ ] Register <code>IHttpClientFactory</code> in Program.cs
-- [ ] Fetch Open-Meteo Weather API (free, no key)
-- [ ] Fetch GitHub User API (free, needs User-Agent)
-- [ ] Choose a third API (CoinDesk, Dog Facts, Jikan Anime)
-- [ ] Create <code>DashboardViewModel</code> to hold all three data sets
-- [ ] Handle errors: if one API fails, others still display
-- [ ] Display all data in a single view</p>
-<p>[TIP] <strong>Teaching Tip:</strong> Circulate during the first 15 minutes — JSON model creation is where students get stuck. Encourage them to paste the API response into a JSON-to-C# tool or ask AI to generate the model. The "aha" moment is when they see live external data on their page.</p>
-<p>[ENGAGE] <strong>Gen-Z:</strong> <strong>-&gt; Pair up:</strong> "One person handles the weather and GitHub APIs, the other handles the third API. Then combine into one dashboard view."</p>
-<p>[ASK] <strong>Mid-exercise check-in (at 20 min):</strong> "How many have the weather API working?" (Show of hands.) "How many have all three working?" "If you're stuck on JSON models, paste the API response into json2csharp.com or ask AI."</p>
-<p>[LOST] <strong>If they're lost:</strong> "Start with just the weather API. It's the simplest — no key needed, straightforward JSON. Get that working. Then add GitHub. Then the third one. One API at a time."</p>
+<p><strong>[SPEAK] Discussion:</strong> &quot;When you make a network request, it might take 2 seconds. A Web Server shouldn&#39;t freeze for 2 seconds. <code>async/await</code> frees up the server to handle other users while waiting for the API to reply.&quot;</p>
+<p><strong>[CODE] Example:</strong></p>
+<pre><code class="language-csharp">public async Task&lt;IActionResult&gt; FetchData() {
+    var res = await _client.GetAsync(&quot;https://api.com/data&quot;);
+    return View();
+}
+</code></pre>
+<p><strong>[TIP] Gen-Z Hook:</strong> Async is like putting someone on hold. The server puts User A on hold while the API fetches, answers User B&#39;s quick question, then goes back to User A.</p>
 </blockquote>
-<hr />
-<h3>AI Integration Note</h3>
+<h4>▸ D. Data Transfer Objects (DTOs) (5 min)</h4>
 <blockquote>
-<p>[TIME] <strong>Pacing:</strong> 10 min (5 min demo -&gt; 5 min try)</p>
-<p>[SPEAK] <strong>Script:</strong> "This week, AI is your JSON model generator. Paste an API response and ask AI to create the C# model. But comment every generated line — show me you understand what <code>[JsonPropertyName]</code> does."</p>
-<p>[SLIDE] <strong>Slide:</strong> Prompt template:
-"I want to call this API [URL]. Generate the C# model and deserialization code. Here's the JSON response [paste]."</p>
-<p>[TIP] <strong>Teaching Tip:</strong> Demonstrate the workflow: (1) Visit API URL in browser, (2) Copy JSON response, (3) Paste into AI prompt, (4) Get C# model, (5) Add comments to every property. This is a real-world skill — developers do this daily.</p>
-<p>[ENGAGE] <strong>Gen-Z:</strong> "AI is your 'JSON translator' — it turns API responses into C# models. But if you can't explain why <code>[JsonPropertyName('temperature')]</code> maps to <code>public double Temperature</code>, you didn't learn."</p>
-<p>[LOST] <strong>If they're lost:</strong> "Start by asking AI to explain: 'What is JSON deserialization?' 'How does GetFromJsonAsync work?' Build understanding first, then use AI for model generation."</p>
+<p><strong>[SPEAK] Discussion:</strong> &quot;Don&#39;t reuse your Database models for external APIs. An API might send you 50 fields, but you only care about 3. Create a DTO class specifically to catch the exact API data you want.&quot;</p>
 </blockquote>
-<hr />
-<h3>Debugging / "Watch Out For"</h3>
+<hr>
+<h3><span style="background:#2563eb;color:#fff;padding:2px 10px;border-radius:12px;font-size:0.8em;">30 min</span> 3. Code Walkthrough / Live Coding Blueprint</h3>
 <blockquote>
-<p>[TIME] <strong>Pacing:</strong> 15 min (5 min common errors -&gt; 5 min group debug -&gt; 5 min Q&amp;A)</p>
-<p>[SPEAK] <strong>Script:</strong> "Here are the API errors you WILL see this week. Most are JSON mismatches or missing headers."</p>
-<p>[SLIDE] <strong>Slide:</strong> Error cards:
-<code>+------------------------------------------+
-| 403 Forbidden on GitHub API              |
-| You didn't set User-Agent header         |
-| Fix: client.DefaultRequestHeaders.Add    |
-| ("User-Agent", "MyApp")                  |
-+------------------------------------------+
-+------------------------------------------+
-| JSON deserialization returns null        |
-| Property names don't match JSON fields   |
-| Fix: use [JsonPropertyName("field_name")]|
-+------------------------------------------+
-+------------------------------------------+
-| Socket exhaustion                        |
-| You used new HttpClient() in a loop      |
-| Fix: use IHttpClientFactory              |
-+------------------------------------------+</code></p>
-<p>[ENGAGE] <strong>Gen-Z:</strong> "403 on GitHub API is like trying to enter a club without ID. The bouncer (GitHub) says 'I don't know who you are.' Fix: show your ID (User-Agent header)."</p>
-<p>[Q&amp;A] <strong>Student Q:</strong> "Why does my JSON model have all null values?"
-<strong>Short answer:</strong> Property names don't match the JSON field names.
-<strong>Real answer:</strong> JSON uses <code>snake_case</code> (e.g., <code>current_weather</code>), C# uses <code>PascalCase</code> (e.g., <code>CurrentWeather</code>). Without <code>[JsonPropertyName("current_weather")]</code>, the deserializer can't map them.
-<strong>The hidden question:</strong> "How do I check?" -&gt; Print the raw JSON string before deserializing. Compare it to your model property names.</p>
-<p>[LOST] <strong>If they're lost:</strong> "The three things to check: (1) Did you register <code>AddHttpClient()</code> in Program.cs? (2) Does your C# model match the JSON structure? (3) Are you checking <code>IsSuccessStatusCode</code> before deserializing? Those fix 90% of API errors."</p>
-<p>[TIP] <strong>Teaching Tip:</strong> End with one action item: "If you only remember one thing: always use <code>IHttpClientFactory</code>, never <code>new HttpClient()</code>. That prevents socket exhaustion."</p>
+<p>[SPEAK] <strong>Script:</strong> &quot;Let&#39;s build a page that shows a random Chuck Norris joke every time you refresh.&quot;</p>
 </blockquote>
-<hr />
-<h3>Teaching Script</h3>
-<p>This week's annotations cover: pacing table at top, inline annotations per section ([SPEAK] Script, [SLIDE] Slide, [BOARD] Whiteboard, [TIP] Teaching Tip, [ENGAGE] Gen-Z, [Q&amp;A] Student Q, [LOST] If they're lost), and this summary. The "aha" moment is seeing live external data on the page — make sure every student gets at least one API working. The #1 error is JSON deserialization returning null due to property name mismatches — teach <code>[JsonPropertyName]</code> early. <code>IHttpClientFactory</code> is non-negotiable — drill this in. Use the parallel vs sequential timeline on the whiteboard to show why <code>Task.WhenAll</code> matters.</p>
-<hr />
+<ul>
+<li><strong>Step 1: The Setup</strong><ul>
+<li><em>Action:</em> Register <code>AddHttpClient()</code> in <code>Program.cs</code>. Inject it into a <code>JokeController</code>.</li>
+</ul>
+</li>
+<li><strong>Step 2: The DTO</strong><ul>
+<li><em>Action:</em> Look at the JSON from <code>api.chucknorris.io</code>. Create a C# <code>JokeDto</code> class with a <code>value</code> string property.</li>
+</ul>
+</li>
+<li><strong>Step 3: The Fetch and Map</strong><ul>
+<li><em>Action:</em> Write the <code>async</code> method. Call <code>GetAsync</code>. Ensure success status code. Deserialize the JSON string into the <code>JokeDto</code>.</li>
+</ul>
+</li>
+<li><strong>Step 4: The View</strong><ul>
+<li><em>Action:</em> Pass the <code>JokeDto.value</code> to the Razor View and render it in an <code>&lt;h1&gt;</code>.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3><span style="background:#2563eb;color:#fff;padding:2px 10px;border-radius:12px;font-size:0.8em;">55 min</span> 6. Exercise &amp; Homework</h3>
+<blockquote>
+<p>[TIME] <strong>In-Class Exercise (55 min):</strong> Build a &quot;Pokemon Viewer&quot;. Create a form where a user types a Pokemon ID (e.g., 25). Submit it to a controller. Use <code>HttpClient</code> to fetch <code>https://pokeapi.co/api/v2/pokemon/25</code>. Deserialize the <code>name</code> and <code>weight</code>, and show them on the View.</p>
+</blockquote>
+<hr>
+<h3>💻 Online Session (1 hour)</h3>
+<hr>
+<h3><span style="background:#2563eb;color:#fff;padding:2px 10px;border-radius:12px;font-size:0.8em;">15 min</span> 4. From the Trenches (Pro-Tip)</h3>
+<blockquote>
+<p>[TRENCHES] <strong>Instructor Script:</strong> &quot;Third-party APIs will go down. If you build an app that completely crashes because the Weather API is offline, your architecture is weak. Always wrap external HTTP calls in a <code>try/catch</code> block. If it fails, log the error and show the user a graceful fallback message (&#39;Weather data temporarily unavailable&#39;) instead of throwing a massive 500 Server Error.&quot;</p>
+</blockquote>
+<hr>
+<h3><span style="background:#2563eb;color:#fff;padding:2px 10px;border-radius:12px;font-size:0.8em;">10 min</span> 5. AI Integration &amp; Debugging</h3>
+<ul>
+<li><strong>AI Policy:</strong> Allowed: &quot;Generate a C# class based on this JSON payload.&quot; Not Allowed: &quot;Write the controller logic to fetch and display.&quot;</li>
+<li><strong>Common Error 1:</strong> All properties in the DTO are null. -&gt; The API JSON uses camelCase (<code>firstName</code>) but your C# properties are PascalCase (<code>FirstName</code>) and you forgot <code>PropertyNameCaseInsensitive = true</code>.</li>
+<li><strong>Common Error 2:</strong> <code>SocketException: No such host is known.</code> -&gt; You misspelled the API URL or your laptop isn&#39;t connected to the internet.</li>
+</ul>
+<hr>
+<h3><span style="background:#2563eb;color:#fff;padding:2px 10px;border-radius:12px;font-size:0.8em;">55 min</span> 6. Exercise &amp; Homework</h3>
+<blockquote>
+<h3>Learning Baseline (Self-Assessment)</h3>
+<blockquote>
+<p><strong>[ASSESSMENT]</strong> By the end of this week, students must be able to say &quot;Yes&quot; to:</p>
+<ul>
+<li><input disabled="" type="checkbox"> I know why we use <code>IHttpClientFactory</code> instead of <code>new HttpClient()</code>.</li>
+<li><input disabled="" type="checkbox"> I can write an <code>async Task&lt;IActionResult&gt;</code> controller method.</li>
+<li><input disabled="" type="checkbox"> I can use <code>JsonSerializer.Deserialize</code> to convert JSON to a C# object.</li>
+<li><input disabled="" type="checkbox"> I understand the purpose of a DTO class.</li>
+</ul>
+</blockquote>
+</blockquote>
+<blockquote>
+<h3>Take-Home Mission</h3>
+<blockquote>
+<p><strong>[HOMEWORK]</strong> <strong>Mission:</strong> &quot;The GitHub Profiler&quot;</p>
+<ol>
+<li>Create a Search Page.</li>
+<li>The user types a GitHub username and hits search.</li>
+<li><strong>The Catch:</strong> You must fetch from <code>https://api.github.com/users/{username}</code>. You MUST add a <code>User-Agent</code> header to the <code>HttpClient</code> request (GitHub requires this). Deserialize their Avatar URL, Name, and Public Repos count, and display it in a nice Bootstrap card.</li>
+</ol>
+</blockquote>
+</blockquote>
+<hr>
+<h3><span style="background:#2563eb;color:#fff;padding:2px 10px;border-radius:12px;font-size:0.8em;">15 min</span> 7. Instructor Assets Blueprint</h3>
+<blockquote>
+<p><strong>[ASSETS]</strong> What to prepare before this class:</p>
+<ul>
+<li><strong>Starter Repo:</strong> An MVC app with an empty <code>JokeController</code>.</li>
+<li><strong>Solution Repo:</strong> A fully robust API consumer demonstrating <code>IHttpClientFactory</code>, <code>try/catch</code> error handling, and JSON deserialization.</li>
+</ul>
+</blockquote>
+
 </body></html>

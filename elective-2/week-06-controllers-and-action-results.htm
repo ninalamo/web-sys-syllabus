@@ -1,6 +1,6 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>elective-2\week-06-controllers-and-action-results.md</title><style>
+<title>week-06-controllers-and-action-results.md</title><style>
 body { font-family: 'Segoe UI', Arial, sans-serif; max-width: 960px; margin: 2em auto; padding: 0 1.5em; line-height: 1.7; color: #1a1a1a; background: #fafafa; }
 h1 { border-bottom: 2px solid #2563eb; padding-bottom: .3em; margin-top: 1.5em; color: #1e3a5f; }
 h2 { border-bottom: 1px solid #cbd5e1; padding-bottom: .2em; margin-top: 1.5em; color: #1e3a5f; }
@@ -18,9 +18,29 @@ hr { border: none; border-top: 2px solid #e2e8f0; margin: 2em 0; }
 </style></head><body>
 <nav><a href="index.htm">Home</a></nav>
 <h2>Week 6: Controllers &amp; Action Results</h2>
+<div style="background: #e0f2fe; padding: 15px; border-left: 5px solid #0284c7; margin-bottom: 20px;">
+    <strong>Learning Objectives:</strong>
+    <ul>
+        <li>Understand the purpose of the <code>IActionResult</code> interface in controller actions.</li>
+        <li>Return appropriate HTTP status codes (e.g., NotFound, BadRequest) for edge cases.</li>
+        <li>Implement the Post-Redirect-Get (PRG) pattern to prevent duplicate form submissions.</li>
+        <li>Return raw data (JSON) and files directly from a controller, bypassing Razor views entirely.</li>
+    </ul>
+</div>
+<div style="background: #fefce8; padding: 15px; border-left: 5px solid #ca8a04; margin-bottom: 20px;">
+    <strong>📋 This Week at a Glance</strong><br>
+    🔁 Last week: &quot;Week 5: Routing Deep Dive&quot;<br>
+    🎯 This week: &quot;Learn what controllers can return — not just views, but JSON, redirects, files, and status codes&quot;<br>
+    <br>
+    <strong>LAB (3h) Topics:</strong><br>
+    ▸ A. The `IActionResult` Interface (9 min)<br>▸ B. Redirection Patterns (8 min)<br>▸ C. Returning Data / JSON (8 min)<br>
+    <br>
+    <strong>ONLINE (1h):</strong> Pro-Tip on return types + AI Integration + Take-Home Mission (API Endpoint)<br>
+    <br>
+    ✅ By end of lab: Explain why controllers return `IActionResult`; return NotFound(); redirect to a different action; return raw JSON instead of Razor
+</div>
 <blockquote>
-<p>[TIME] <strong>Session Pacing (180 min)</strong></p>
-</blockquote>
+<p>[TIME] <strong>Session Pacing (Lab - ~150 min)</strong></p>
 <table>
 <thead>
 <tr>
@@ -29,8 +49,7 @@ hr { border: none; border-top: 2px solid #e2e8f0; margin: 2em 0; }
 <th>Format</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>Hook + Analogy</td>
 <td>15 min</td>
 <td>Lecture + Whiteboard</td>
@@ -38,17 +57,12 @@ hr { border: none; border-top: 2px solid #e2e8f0; margin: 2em 0; }
 <tr>
 <td>Concept Discussion</td>
 <td>25 min</td>
-<td>Lecture + Slides + Code Comparison</td>
+<td>Lecture + Slides + Return Types</td>
 </tr>
 <tr>
 <td>Code Walkthrough</td>
 <td>30 min</td>
-<td>Live Code (instructor + students type)</td>
-</tr>
-<tr>
-<td>Industry Reality</td>
-<td>10 min</td>
-<td>Lecture + Discussion</td>
+<td>Live Code (IActionResult variants)</td>
 </tr>
 <tr>
 <td>Break</td>
@@ -61,11 +75,6 @@ hr { border: none; border-top: 2px solid #e2e8f0; margin: 2em 0; }
 <td>Lab (solo or pairs)</td>
 </tr>
 <tr>
-<td>AI Integration</td>
-<td>10 min</td>
-<td>Demo + Prompt Walkthrough</td>
-</tr>
-<tr>
 <td>Debugging + Wrap</td>
 <td>15 min</td>
 <td>Group Debug + Q&amp;A</td>
@@ -75,145 +84,140 @@ hr { border: none; border-top: 2px solid #e2e8f0; margin: 2em 0; }
 <td>10 min</td>
 <td>Overflow / Stretch discussion</td>
 </tr>
-</tbody>
-</table>
-<blockquote>
-<p>[TIP] <strong>Teaching Tip (Week 6 strategy):</strong> Students will want to put all logic in the controller. Resist this urge early — frame the controller as a "traffic cop" that delegates, not a "kitchen" that cooks. The key mental model: every action returns an <code>IActionResult</code>, and the specific type determines what the browser receives.</p>
+</tbody></table>
 </blockquote>
-<hr />
-<h3>The Hook</h3>
 <blockquote>
-<p>[SPEAK] <strong>Script:</strong> "Your controller is the bouncer of your web app. It decides who gets in (View), who gets kicked out (Redirect), who gets a VIP pass (Json), and who's dead to the app (StatusCode 404)."</p>
-<p>[SLIDE] <strong>Slide:</strong> Title: "The Controller is the Bouncer"<br />
-Visual: A bouncer at a club door with four signs: "View -&gt; Inside," "Redirect -&gt; Next door," "Json -&gt; VIP lounge," "404 -&gt; Not on the list."</p>
-<p>[ENGAGE] <strong>Gen-Z:</strong> "Every response your app sends is the controller making a decision. View = 'you're welcome in.' Redirect = 'go somewhere else.' Json = 'here's the data, no HTML.' 404 = 'you don't exist to me.'"<br />
-<strong>-&gt; Poll:</strong> "Raise your hand if you've ever clicked a link and got redirected to a login page. That's <code>RedirectToAction</code> in action."</p>
-<p>[LOST] <strong>If they're lost:</strong> "A controller is just a class that handles web requests. You type a URL, the controller runs a method, and that method decides what to send back. That's it."</p>
+<p>[TIP] <strong>Teaching Tip:</strong> Up until now, students have only used <code>return View()</code>. Today they learn a controller can return JSON, files, redirects, or raw status codes. </p>
 </blockquote>
-<hr />
-<h3>The Analogy</h3>
+<hr>
+<h3><span style="background:#2563eb;color:#fff;padding:2px 10px;border-radius:12px;font-size:0.8em;">15 min</span> 1. The Hook &amp; The Analogy</h3>
 <blockquote>
-<p>[SPEAK] <strong>Script:</strong> "A controller is a fast-food drive-thru speaker. The customer (browser) says 'I'll have a #5' (the URL). The speaker (controller) can respond in different ways: 'Here's your food' is View, 'We're out, go to the other location' is Redirect, 'Here's the nutritional info' is Json, and 'Sorry, we're closed' is StatusCode."</p>
-<p>[BOARD] <strong>Whiteboard:</strong> Draw the drive-thru analogy:
-<code>Customer (Browser) -&gt; "I want /shop/details/5"
-    v
-Speaker (Controller) -&gt; Details(int id)
-    v
-Response options:
-  [BURGER] View()     -&gt; "Here's the page"
-  [REFRESH] Redirect() -&gt; "Go to /shop instead"
-  [CLIPBOARD] Json()     -&gt; "Here's the data"
-  [NOENTRY] StatusCode -&gt; "Not found / Closed"</code></p>
-<p>[ENGAGE] <strong>Gen-Z:</strong> <strong>-&gt; Turn to your neighbor:</strong> "If you visit <code>/shop/details/5</code> and the product doesn't exist — what should the controller return? 10 seconds, go!" (Answer: <code>NotFound()</code> or <code>StatusCode(404)</code>.)</p>
-<p>[LOST] <strong>If they're lost:</strong> "Think of it like GCash. You request money transfer. The app responds: success (View), insufficient funds (StatusCode 400), or server error (StatusCode 500). Same request, different responses."</p>
+<p>[SPEAK] <strong>Script:</strong> &quot;If you ask a waiter for a menu, they hand you paper. If you ask for water, they hand you a glass. If you ask where the bathroom is, they point you in a direction. Controllers do the exact same thing based on what the browser asks for.&quot;</p>
 </blockquote>
-<hr />
-<h3>Concept Discussion</h3>
 <blockquote>
-<p>[TIME] <strong>Pacing:</strong> 25 min total (15 min action results -&gt; 10 min model binding primitives)</p>
-<p>[SPEAK] <strong>Script:</strong> "Every action method returns <code>IActionResult</code>. Think of it as 'something the browser can work with.' There are about 8 types you'll use 90% of the time. Let's go through each one."</p>
-<p>[SLIDE] <strong>Slide:</strong> Show each action result type one at a time — not all at once. For each: the method name, what it returns, and a one-line example. Use a table format.</p>
-<p>[TIP] <strong>Teaching Tip:</strong> The most important distinction: <code>View()</code> returns HTML, <code>Json()</code> returns data, <code>Redirect()</code> sends the browser elsewhere. Students confuse these constantly. Emphasize: "View = page. Json = data. Redirect = go somewhere else."</p>
-<p>[ASK] <strong>Ask the class:</strong> "If I'm building an API for a mobile app — which action result will I use most?" (Answer: <code>Json()</code> and <code>StatusCode()</code>. Mobile apps don't render HTML.)</p>
-<p>[ENGAGE] <strong>Gen-Z:</strong> "Action results are like the different ways you respond to a text. View = a full reply. Json = just the facts. Redirect = 'check this link instead.' 404 = left on read."<br />
-<strong>-&gt; Phone moment:</strong> "Think about the last 5 apps you used. Which ones showed you pages (View)? Which ones showed you data feeds (Json)? Both are action results."</p>
-<p>[Q&amp;A] <strong>Student Q:</strong> "Why <code>IActionResult</code> and not just <code>string</code> or <code>ViewResult</code>?"
-<strong>Short answer:</strong> So one method can return different types depending on conditions.
-<strong>Real answer:</strong> If you return <code>ViewResult</code>, you can only return views. <code>IActionResult</code> lets you return a view, a redirect, or an error — all from the same method. This is essential for real-world logic like "if not found, return 404."
-<strong>The hidden question:</strong> "Isn't that over-engineering?" -&gt; Not when you need conditional responses.</p>
-<p>[Q&amp;A] <strong>Student Q:</strong> "What's the difference between <code>Redirect()</code> and <code>RedirectToAction()</code>?"
-<strong>Short answer:</strong> <code>Redirect</code> takes a URL. <code>RedirectToAction</code> takes a controller and action name.
-<strong>Real answer:</strong> <code>RedirectToAction</code> uses routing to build the URL. If your routes change, <code>RedirectToAction</code> still works. <code>Redirect("https://...")</code> breaks if the URL changes.
-<strong>The hidden question:</strong> "Which should I use?" -&gt; <code>RedirectToAction</code> for internal routes. <code>Redirect</code> for external URLs.</p>
-<p>[LOST] <strong>If they're lost:</strong> "Forget the interface name. Just remember: <code>return View()</code> shows a page. <code>return Json()</code> shows data. <code>return Redirect()</code> sends you elsewhere. <code>return NotFound()</code> says 'not here.' Start with these four."</p>
+<p>[BOARD] <strong>Whiteboard Analogy:</strong> The Waiter&#39;s Responses</p>
+<ul>
+<li><code>return View()</code> -&gt; Handing you the menu (HTML).</li>
+<li><code>return Json()</code> -&gt; Handing you raw ingredients (Data for APIs).</li>
+<li><code>return Redirect()</code> -&gt; Pointing you to another table.</li>
+<li><code>return NotFound()</code> -&gt; &quot;We&#39;re out of stock.&quot;</li>
+<li><code>return File()</code> -&gt; Handing you a printed receipt (PDF).</li>
+</ul>
 </blockquote>
-<hr />
-<h3>Code Walkthrough</h3>
+<hr>
+<h3><span style="background:#2563eb;color:#fff;padding:2px 10px;border-radius:12px;font-size:0.8em;">25 min</span> 2. Core Concepts &amp; Discussion Topics</h3>
+<h4>▸ A. The <code>IActionResult</code> Interface (9 min)</h4>
+<p><strong>Module Syllabus Content:</strong> Controllers are not forced to return HTML. The <code>IActionResult</code> interface is a powerful abstraction that allows a single controller method to return entirely different types of responses based on the request's context. Depending on the logic, a controller can return a <code>View()</code> to render an HTML page, a <code>BadRequest()</code> to signal a 400 status code for invalid input, or a <code>NotFound()</code> for a 404 status code if a database record is missing. Because all these specific result types implement the <code>IActionResult</code> interface, the method signature remains clean and highly flexible.</p>
 <blockquote>
-<p>[TIME] <strong>Pacing:</strong> 30 min (5 min setup -&gt; 15 min live type -&gt; 10 min trace-through)</p>
-<p>[SPEAK] <strong>Script:</strong> "Let's build a controller that demonstrates every major action result type. Watch how each one produces a different response in the browser."</p>
-<p>[SLIDE] <strong>Slide:</strong> Show the <code>DemoController</code> one action at a time. After each action, show what the browser sees when you visit that route.</p>
-<p>[TIP] <strong>Teaching Tip:</strong> <strong>Type this live.</strong> After typing each action, immediately run the app and visit the route. Students need to see the actual browser output — not just the code. For <code>Json()</code>, show the raw JSON in the browser. For <code>Redirect()</code>, show the browser actually navigating.</p>
-<p>[BOARD] <strong>Whiteboard:</strong> Trace <code>/demos/json</code>:
-<code>GET /demos/json
-  v
-DemoController.GetJson()
-  v
-Creates anonymous object { Id=1, Name="Wireless Mouse", Price=49.99 }
-  v
-return Json(product) -&gt; serializes to JSON
-  v
-Response: Content-Type: application/json
-Body: {"id":1,"name":"Wireless Mouse","price":49.99}</code></p>
-<p>[ENGAGE] <strong>Gen-Z:</strong> <strong>-&gt; Type-along:</strong> "Type the <code>DemoController</code> with me. After each action, we'll test it in the browser. Don't skip any — each one teaches a different response type."</p>
-<p>[Q&amp;A] <strong>Student Q:</strong> "Why does the <code>Json()</code> result look different in different browsers?"
-<strong>Short answer:</strong> Browsers render JSON differently.
-<strong>Real answer:</strong> Chrome shows raw JSON. Firefox might try to download it. Edge might format it. The data is the same — only the display differs. Use the Network tab to see the raw response.
-<strong>The hidden question:</strong> "Is my JSON broken?" -&gt; No. It's the browser's rendering.</p>
-<p>[LOST] <strong>If they're lost:</strong> "Let's focus on just two actions first: <code>View()</code> and <code>Content()</code>. Get those working. Then add <code>Redirect()</code>. Then <code>Json()</code>. Build up gradually."</p>
+<p><strong>[SPEAK] Discussion:</strong> &quot;Why do our methods return <code>IActionResult</code> instead of <code>string</code> or <code>HTML</code>? Because <code>IActionResult</code> is an interface that allows us to return <em>anything</em>. It gives us maximum flexibility.&quot;</p>
+<p><strong>[CODE] Example:</strong> </p>
+<pre><code class="language-csharp">public IActionResult GetUser(int id) {
+    if (id == 0) return BadRequest(); // 400
+    if (id &gt; 100) return NotFound(); // 404
+    return View(); // 200 OK + HTML
+}
+</code></pre>
+<p><strong>[TIP] Instructor Tip:</strong> Emphasize that <code>IActionResult</code> is just a box. What goes inside the box dictates the HTTP status code and the body content.</p>
 </blockquote>
-<hr />
-<h3>The "Why Should I Care?"</h3>
+<h4>▸ B. Redirection (8 min)</h4>
+<p><strong>Module Syllabus Content:</strong> Redirection is a crucial navigational tool. Instead of returning content directly, a controller can return a <code>Redirect()</code> or <code>RedirectToAction()</code>, which sends an HTTP 302 (Found) response back to the browser. The browser then automatically makes a brand new GET request to the provided URL. This is universally used in the Post-Redirect-Get (PRG) pattern: after a user successfully submits a form via POST, the server redirects them to a success page. This ensures that if the user refreshes the success page, they do not accidentally resubmit the POST data and duplicate a transaction.</p>
 <blockquote>
-<p>[SPEAK] <strong>Script:</strong> "Every response your app sends is one of these types. Understanding action results means you control exactly what the browser gets. Modern apps increasingly return JSON — SPAs, mobile apps, APIs. They all use the same controllers you're learning today."</p>
-<p>[SLIDE] <strong>Slide:</strong> Screenshot of a real API response (e.g., GitHub API returning JSON for a user). Label: "This is just a controller returning <code>Json()</code>. Same pattern you learned today."</p>
-<p>[TIP] <strong>Teaching Tip:</strong> Connect to the job market: "Every .NET job posting mentions APIs. APIs are just controllers that return <code>Json()</code> instead of <code>View()</code>. You're learning API development right now."</p>
-<p>[ENGAGE] <strong>Gen-Z:</strong> <strong>-&gt; Poll:</strong> "How many of you have used an API before?" (Some hands.) "You just learned how to build one. Every <code>Json()</code> return is an API endpoint."</p>
-<p>[LOST] <strong>If they're lost:</strong> "You don't need to master all action results today. Just understand: the controller decides what the browser gets. That decision is the return statement."</p>
+<p><strong>[SPEAK] Discussion:</strong> &quot;Sometimes the job of an action is just to send the user somewhere else. After a user logs in, you don&#39;t return a &#39;Login Success&#39; view; you redirect them to the Dashboard.&quot;</p>
+<p><strong>[CODE] Example:</strong></p>
+<pre><code class="language-csharp">public IActionResult ProcessLogin() {
+    // logic...
+    return RedirectToAction(&quot;Dashboard&quot;, &quot;Admin&quot;);
+}
+</code></pre>
+<p><strong>[TIP] Gen-Z Hook:</strong> Redirection is like tapping a link in TikTok that forces Safari to open. The app says &#39;I can&#39;t handle this here, let me bounce you to the right place.&#39;</p>
 </blockquote>
-<hr />
-<h3>Exercise: Controller Portfolio</h3>
+<h4>▸ C. Returning Data (JSON) (8 min)</h4>
+<p><strong>Module Syllabus Content:</strong> Modern web applications heavily rely on JavaScript frameworks (like React or Vue) or mobile apps that consume raw data rather than HTML. Controllers handle this effortlessly using the <code>Json()</code> action result. When a developer passes a C# object or list into <code>return Json(myData)</code>, the ASP.NET Core framework automatically serializes the C# object into a JSON string and sets the HTTP response header <code>Content-Type</code> to <code>application/json</code>. This allows the exact same backend infrastructure to serve both traditional web pages and dynamic API data.</p>
 <blockquote>
-<p>[TIME] <strong>Pacing:</strong> 55 min total (5 min setup -&gt; 40 min coding -&gt; 10 min share)</p>
-<p>[SPEAK] <strong>Script:</strong> "Build a <code>PortfolioController</code> with at least 5 different action result types. Each route should demonstrate a different response. You have 40 minutes."</p>
-<p>[SLIDE] <strong>Slide:</strong> Exercise checklist:
-- [ ] <code>/portfolio</code> -&gt; <code>Content()</code> with intro text
-- [ ] <code>/portfolio/projects</code> -&gt; <code>View()</code> with project list
-- [ ] <code>/portfolio/project/{id:int}</code> -&gt; <code>View()</code> or <code>NotFound()</code>
-- [ ] <code>/portfolio/api/projects</code> -&gt; <code>Json()</code> with project data
-- [ ] <code>/portfolio/redirect</code> -&gt; <code>Redirect()</code> to GitHub
-- [ ] <code>/portfolio/error</code> -&gt; <code>StatusCode(500)</code></p>
-<p>[TIP] <strong>Teaching Tip:</strong> Circulate during the first 10 minutes. Students will get stuck on the <code>NotFound()</code> conditional logic — "how do I check if the project exists?" Help them with the pattern: <code>if (project == null) return NotFound();</code>.</p>
-<p>[ENGAGE] <strong>Gen-Z:</strong> <strong>-&gt; Pair up:</strong> "One person builds the View and Content actions, the other builds Json and Redirect. Then combine and test all routes together."</p>
-<p>[ASK] <strong>Mid-exercise check-in (at 20 min):</strong> "How many have 3 action types working?" (Show of hands.) "The JSON endpoint — visit it in the browser. Do you see raw data with no HTML? That's the API pattern."</p>
-<p>[LOST] <strong>If they're lost:</strong> "Start with just <code>Content()</code> and <code>View()</code>. Get those working. Then add <code>Redirect()</code>. Don't try to build all 5 at once."</p>
+<p><strong>[SPEAK] Discussion:</strong> &quot;If your front-end is React or a mobile app, it doesn&#39;t want HTML. It wants raw data. We can bypass Razor views entirely and just dump objects as JSON.&quot;</p>
+<p><strong>[CODE] Example:</strong></p>
+<pre><code class="language-csharp">public IActionResult ApiGetItem() {
+    var item = new { Name = &quot;Laptop&quot;, Price = 999 };
+    return Json(item);
+}
+</code></pre>
+<p><strong>[TIP] Instructor Tip:</strong> Remind them of Week 3 (HTTP). <code>return Json()</code> automatically sets the header <code>Content-Type: application/json</code>. The framework handles the heavy lifting.</p>
 </blockquote>
-<hr />
-<h3>AI Integration Note</h3>
+<hr>
+<h3><span style="background:#2563eb;color:#fff;padding:2px 10px;border-radius:12px;font-size:0.8em;">30 min</span> 3. Code Walkthrough / Live Coding Blueprint</h3>
 <blockquote>
-<p>[TIME] <strong>Pacing:</strong> 10 min (5 min demo -&gt; 5 min try)</p>
-<p>[SPEAK] <strong>Script:</strong> "This week, AI is your debugging partner. Ask it why your View returns 404, why Json downloads instead of displaying, or why your redirect loops. But don't ask it to generate your controller."</p>
-<p>[SLIDE] <strong>Slide:</strong> Prompt template:
-"I called [route] and expected [result type] but got [actual result]. Here's my controller code [paste]."</p>
-<p>[TIP] <strong>Teaching Tip:</strong> Demonstrate a good AI prompt vs a bad one. Good: "My View() returns 404 for Shop/Index. Here's my controller and view path." Bad: "Build me a portfolio controller."</p>
-<p>[ENGAGE] <strong>Gen-Z:</strong> "AI is your 'response type checker' — it helps you figure out why the browser shows something unexpected. Use it to debug, not to build."</p>
+<p>[SPEAK] <strong>Script:</strong> &quot;Let&#39;s build one controller that returns four completely different things based on the input.&quot;</p>
 </blockquote>
-<hr />
-<h3>Debugging / "Watch Out For"</h3>
+<ul>
+<li><strong>Step 1: The Swiss Army Controller</strong><ul>
+<li><em>Action:</em> Create <code>DownloadController</code>.</li>
+</ul>
+</li>
+<li><strong>Step 2: Testing Status Codes</strong><ul>
+<li><em>Action:</em> Write a method <code>GetDocument(int id)</code>. If id is negative, <code>return BadRequest()</code>. If id is 99, <code>return Unauthorized()</code>. Show DevTools so students see the real HTTP codes changing.</li>
+</ul>
+</li>
+<li><strong>Step 3: The Redirect Chain</strong><ul>
+<li><em>Action:</em> Write a method that does <code>RedirectToAction()</code>. Trace the Network tab to show the <code>302 Found</code> response bouncing the browser to the new URL.</li>
+</ul>
+</li>
+<li><strong>Step 4: Returning a File</strong><ul>
+<li><em>Action:</em> Use <code>return File()</code> to send a <code>.txt</code> file to the browser and force a download prompt.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3><span style="background:#2563eb;color:#fff;padding:2px 10px;border-radius:12px;font-size:0.8em;">55 min</span> 6. Exercise &amp; Homework</h3>
 <blockquote>
-<p>[TIME] <strong>Pacing:</strong> 15 min (5 min common errors -&gt; 5 min group debug -&gt; 5 min Q&amp;A)</p>
-<p>[SPEAK] <strong>Script:</strong> "Here are the action result errors you'll see this week. Most are path issues or type confusion."</p>
-<p>[SLIDE] <strong>Slide:</strong> Error cards:
-<code>+------------------------------------------+
-| View() returns 404                       |
-| View file not at Views/{Controller}/     |
-| {Action}.cshtml                          |
-+------------------------------------------+
-+------------------------------------------+
-| Redirect() loops forever                 |
-| You redirected to the same URL that      |
-| triggers the redirect.                   |
-+------------------------------------------+</code></p>
-<p>[ENGAGE] <strong>Gen-Z:</strong> "A redirect loop is like being stuck in a group chat where everyone keeps tagging each other. A -&gt; B -&gt; A -&gt; B -&gt; crash. Fix: make sure the redirect goes somewhere different."</p>
-<p>[Q&amp;A] <strong>Student Q:</strong> "Why does <code>NotFound()</code> return an empty page?"
-<strong>Short answer:</strong> By default, it returns no body.
-<strong>Real answer:</strong> Pass an object to include a message: <code>return NotFound(new { error = "Not found" })</code>. This returns JSON with the error message.
-<strong>The hidden question:</strong> "How do I show a custom 404 page?" -&gt; That's middleware, covered later.</p>
-<p>[LOST] <strong>If they're lost:</strong> "The two things to check first: (1) Is your view file in the right folder? (2) Does your action method name match the view file name? Those fix 90% of action result issues."</p>
-<p>[TIP] <strong>Teaching Tip:</strong> End with one action item: "If you only remember one thing: <code>View()</code> looks for <code>Views/{Controller}/{Action}.cshtml</code>. If that file doesn't exist, you get 404."</p>
+<p>[TIME] <strong>In-Class Exercise (55 min):</strong> Build a <code>SearchController</code>. If the user searches for &quot;Google&quot;, redirect them to <code>https://google.com</code>. If they search for empty string, return <code>BadRequest()</code>. If they search for &quot;Secret&quot;, return <code>Json()</code> with hidden data. Otherwise, return a normal <code>View()</code>.</p>
 </blockquote>
-<hr />
-<h3>Teaching Script</h3>
-<p>This week's annotations cover: pacing table at top, inline annotations per section ([SPEAK] Script, [SLIDE] Slide, [BOARD] Whiteboard, [TIP] Teaching Tip, [ENGAGE] Gen-Z, [Q&amp;A] Student Q, [LOST] If they're lost), and this summary. The key mental model is "controller = traffic cop." Test every action result in the browser immediately after typing it — seeing the actual response is worth more than reading about it.</p>
-<hr />
+<hr>
+<h3>💻 Online Session (1 hour)</h3>
+<hr>
+<h3><span style="background:#2563eb;color:#fff;padding:2px 10px;border-radius:12px;font-size:0.8em;">15 min</span> 4. From the Trenches (Pro-Tip)</h3>
+<blockquote>
+<p>[TRENCHES] <strong>Instructor Script:</strong> &quot;A classic junior developer mistake is returning a <code>View()</code> when a database save fails. If the user submits a form to buy a ticket, and it fails, and you just <code>return View()</code>, the URL remains the POST URL. If they hit &#39;Refresh&#39; on their browser, it will submit the payment again! Always use the PRG pattern: <strong>Post-Redirect-Get</strong>. After a POST, always <code>RedirectToAction()</code>. Never return a view directly from a POST.&quot;</p>
+</blockquote>
+<hr>
+<h3><span style="background:#2563eb;color:#fff;padding:2px 10px;border-radius:12px;font-size:0.8em;">10 min</span> 5. AI Integration &amp; Debugging</h3>
+<ul>
+<li><strong>AI Policy:</strong> Allowed: &quot;What is the difference between Redirect and RedirectToAction?&quot; Not Allowed: &quot;Write the PRG pattern logic for my homework.&quot;</li>
+<li><strong>Common Error 1:</strong> <code>Cannot implicitly convert type &#39;string&#39; to &#39;IActionResult&#39;</code>. -&gt; You forgot to wrap your string in a helper method like <code>Ok(&quot;string&quot;)</code> or <code>Content(&quot;string&quot;)</code>.</li>
+</ul>
+<hr>
+<h3><span style="background:#2563eb;color:#fff;padding:2px 10px;border-radius:12px;font-size:0.8em;">55 min</span> 6. Exercise &amp; Homework</h3>
+<blockquote>
+<h3>Learning Baseline (Self-Assessment)</h3>
+<blockquote>
+<p><strong>[ASSESSMENT]</strong> By the end of this week, students must be able to say &quot;Yes&quot; to:</p>
+<ul>
+<li><input disabled="" type="checkbox"> I can explain why controllers return <code>IActionResult</code>.</li>
+<li><input disabled="" type="checkbox"> I can return an explicit HTTP status code like <code>NotFound()</code>.</li>
+<li><input disabled="" type="checkbox"> I can redirect a user to a different controller action.</li>
+<li><input disabled="" type="checkbox"> I can return raw JSON data instead of a Razor view.</li>
+</ul>
+</blockquote>
+</blockquote>
+<blockquote>
+<h3>Take-Home Mission</h3>
+<blockquote>
+<p><strong>[HOMEWORK]</strong> <strong>Mission:</strong> &quot;The Safe Form Submission&quot;
+Build a basic HTML form that POSTs to a <code>ContactController</code>.</p>
+<ol>
+<li>If the message is empty, return a <code>BadRequest</code>.</li>
+<li>If the message is valid, pretend to save it, and then implement the <strong>PRG Pattern</strong> (Post-Redirect-Get) to redirect the user to a &quot;Success&quot; action.</li>
+<li><strong>The Catch:</strong> The &quot;Success&quot; action must return a <code>View</code> that says &quot;Thank you!&quot;, and hitting refresh on that page should NOT trigger the form resubmission warning in the browser.</li>
+</ol>
+</blockquote>
+</blockquote>
+<hr>
+<h3><span style="background:#2563eb;color:#fff;padding:2px 10px;border-radius:12px;font-size:0.8em;">15 min</span> 7. Instructor Assets Blueprint</h3>
+<blockquote>
+<p><strong>[ASSETS]</strong> What to prepare before this class:</p>
+<ul>
+<li><strong>Starter Repo:</strong> A Controller that returns strings and raw HTML strings, looking messy.</li>
+<li><strong>Solution Repo:</strong> The <code>SearchController</code> exercise completed, showcasing 4 different <code>IActionResult</code> return types.</li>
+</ul>
+</blockquote>
+
 </body></html>

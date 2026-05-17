@@ -1,6 +1,6 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>elective-3\week-01-modern-javascript-review.md</title><style>
+<title>week-01-modern-javascript-review.md</title><style>
 body { font-family: 'Segoe UI', Arial, sans-serif; max-width: 960px; margin: 2em auto; padding: 0 1.5em; line-height: 1.7; color: #1a1a1a; background: #fafafa; }
 h1 { border-bottom: 2px solid #2563eb; padding-bottom: .3em; margin-top: 1.5em; color: #1e3a5f; }
 h2 { border-bottom: 1px solid #cbd5e1; padding-bottom: .2em; margin-top: 1.5em; color: #1e3a5f; }
@@ -20,7 +20,6 @@ hr { border: none; border-top: 2px solid #e2e8f0; margin: 2em 0; }
 <h2>Week 1: Modern JavaScript Review</h2>
 <blockquote>
 <p>[TIME] <strong>Session Pacing (180 min)</strong></p>
-</blockquote>
 <table>
 <thead>
 <tr>
@@ -29,8 +28,7 @@ hr { border: none; border-top: 2px solid #e2e8f0; margin: 2em 0; }
 <th>Format</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>Hook + Analogy</td>
 <td>15 min</td>
 <td>Lecture + Whiteboard</td>
@@ -75,144 +73,141 @@ hr { border: none; border-top: 2px solid #e2e8f0; margin: 2em 0; }
 <td>10 min</td>
 <td>Overflow / Stretch discussion</td>
 </tr>
-</tbody>
-</table>
-<blockquote>
-<p>[TIP] <strong>Teaching Tip (first week strategy):</strong> This is a "review" week but don't assume mastery. Many students learned JS from outdated tutorials. The goal is to replace bad habits (<code>var</code>, for loops for everything) with modern patterns (<code>const</code>, <code>.filter()</code>, <code>.map()</code>). Keep energy high — this is the foundation for React.</p>
+</tbody></table>
 </blockquote>
-<hr />
-<h3>1. The Hook</h3>
 <blockquote>
-<p>[SPEAK] <strong>Script:</strong> "You know how TikTok doesn't reload the whole page when you switch from your For You feed to Following? That's not magic — it's modern JavaScript doing exactly what you're about to learn. Every app you use daily is built on the ES6+ features we're covering this week."</p>
-<p>[SLIDE] <strong>Slide:</strong> Title: "The JavaScript You Know Is Outdated"<br />
-Left: "ES5 (2009)" with <code>var</code>, <code>function()</code>, string concat. Right: "ES6+ (2015-now)" with <code>const</code>, <code>() =&gt;</code>, template literals.</p>
-<p>[TIP] <strong>Teaching Tip:</strong> This hook creates productive discomfort — students realize their JS knowledge might be outdated. Frame it positively: "You're about to level up."</p>
-<p>[ENGAGE] <strong>Gen-Z:</strong> "Old JavaScript is like using a flip phone in the smartphone era. It works, but you're missing out on everything that makes modern apps feel smooth. ES6+ is the upgrade."<br />
-<strong>-&gt; Phone moment:</strong> "Open TikTok on your phone. Switch between For You and Following. Notice it doesn't reload? That's the JavaScript we're learning today."</p>
-<p>[LOST] <strong>If they're lost:</strong> "Don't worry if your JS feels rusty. This week is a review — we're starting from the basics and building up. By the end, you'll write JS that looks like production code."</p>
+<p>[TIP] <strong>Teaching Tip:</strong> This is a &quot;review&quot; week but don&#39;t assume mastery. Many students learned JS from outdated tutorials. The goal is to replace bad habits (<code>var</code>, for loops for everything) with modern patterns (<code>const</code>, <code>.filter()</code>, <code>.map()</code>). Keep energy high.</p>
 </blockquote>
-<hr />
-<h3>2. The Analogy</h3>
+<hr>
+<h3>1. The Hook &amp; The Analogy</h3>
 <blockquote>
-<p>[SPEAK] <strong>Script:</strong> "Think of old JavaScript like a kitchen where everything is in one giant drawer. <code>var</code> is that drawer — anything you put in it bleeds into everything else. Modern JS is like a kitchen with labeled containers: <code>let</code> is refillable, <code>const</code> is sealed, and modules are separate drawers for baking vs. cooking."</p>
-<p>[BOARD] <strong>Whiteboard:</strong> Draw the kitchen analogy:
-```
-OLD (ES5): One giant drawer labeled "var"
-  [users, i, temp, data, results] — all mixed up</p>
-<p>NEW (ES6+): Labeled containers
-  [const users] — sealed jar
-  [let i] — refillable container
-  [module: data.js] — separate drawer
-  [module: utils.js] — separate drawer
-```</p>
-<p>[TIP] <strong>Teaching Tip:</strong> The kitchen analogy works well because everyone understands organization. Emphasize: <code>const</code> = sealed (can't swap the container), <code>let</code> = refillable (can change contents), <code>var</code> = everything dumped together.</p>
-<p>[ENGAGE] <strong>Gen-Z:</strong> "<code>var</code> is like your GCash transaction history — everything's in one long list and it's hard to find anything. <code>const</code> and <code>let</code> are like categorized folders: payments, received, sent. Much cleaner."<br />
-<strong>-&gt; Turn to your neighbor:</strong> "Explain why <code>var</code> is bad using the kitchen analogy in 10 seconds. Go!"</p>
-<p>[LOST] <strong>If they're lost:</strong> "Forget the kitchen. Think of it this way: <code>var</code> lets variables escape where they shouldn't be. <code>const</code> and <code>let</code> keep them contained. That's the whole point."</p>
+<p>[SPEAK] <strong>Script:</strong> &quot;You know how TikTok doesn&#39;t reload the whole page when you switch from your For You feed to Following? That&#39;s not magic — it&#39;s modern JavaScript. Every app you use daily is built on the ES6+ features we&#39;re covering this week.&quot;</p>
 </blockquote>
-<hr />
-<h3>3. Concept Discussion</h3>
 <blockquote>
-<p>[TIME] <strong>Pacing:</strong> 25 min total (8 min let/const/var -&gt; 5 min arrow functions -&gt; 4 min template literals -&gt; 4 min destructuring/spread -&gt; 4 min modules)</p>
-<p>[SPEAK] <strong>Script:</strong> "ES6+ didn't just add features — it added structure. Before ES6, JavaScript had no real way to organize code. Everything leaked into the global scope. Let me show you what changed and why each feature matters."</p>
-<p>[SLIDE] <strong>Slide:</strong> Show one feature at a time. For each: (1) the old way, (2) the new way, (3) why it's better. Don't show all features at once — cognitive overload.</p>
-<p>[TIP] <strong>Teaching Tip:</strong> Spend the most time on <code>let</code> vs <code>const</code> vs <code>var</code> — this is the foundation. Students will use this every day. For arrow functions, emphasize the <code>this</code> difference, not just the shorter syntax.</p>
-<p>[ASK] <strong>Ask the class:</strong> "Who here has used <code>var</code> before?" (Most hands.) "Who's gotten a bug because a variable was accessible where it shouldn't be?" (Some hands.) "That's why we have <code>let</code> and <code>const</code>."</p>
-<p>[ENGAGE] <strong>Gen-Z:</strong> "The rule of thumb: <code>const</code> by default, <code>let</code> when you must, <code>var</code> never. It's like your phone settings — leave everything on default unless you have a reason to change it."<br />
-<strong>-&gt; Phone moment:</strong> "Open your browser console right now (F12 -&gt; Console). Type <code>var x = 5</code> then <code>console.log(x)</code>. Now type <code>let y = 10</code> then <code>console.log(y)</code>. Same result. But try accessing them outside a <code>{}</code> block — that's where they differ."</p>
-<p>[Q&amp;A] <strong>Student Q:</strong> "Why can't I just use <code>let</code> for everything?"
-<strong>Short answer:</strong> You can, but <code>const</code> communicates intent.
-<strong>Real answer:</strong> <code>const</code> tells other developers (and yourself) "this value won't change." It's documentation through code. It also prevents accidental reassignment bugs.
-<strong>The hidden question:</strong> "Is this really that important?" -&gt; In a 2,000-line file, knowing what can and can't change saves hours of debugging.</p>
-<p>[Q&amp;A] <strong>Student Q:</strong> "When would I actually use spread vs rest? They look the same."
-<strong>Short answer:</strong> Same syntax (<code>...</code>), different context.
-<strong>Real answer:</strong> Spread expands: <code>[...arr1, ...arr2]</code> merges arrays. Rest collects: <code>function(a, b, ...rest)</code> gathers remaining args into an array. Context tells you which one it is.
-<strong>The hidden question:</strong> "Why use the same symbol for two things?" -&gt; Because they're inverse operations. Spread puts things out, rest brings things in.</p>
-<p>[LOST] <strong>If they're lost:</strong> "The simplest summary: <code>const</code> = can't reassign. <code>let</code> = can reassign. <code>var</code> = don't use. Arrow functions = shorter + different <code>this</code>. Template literals = backticks with <code>${}</code>. Destructuring = pull values out in one line. Modules = split code across files."</p>
+<p>[BOARD] <strong>Whiteboard Analogy:</strong> The Messy Drawer vs The Organizer</p>
+<ul>
+<li><strong>OLD (ES5):</strong> One giant drawer labeled &quot;var&quot;. <code>users</code>, <code>i</code>, <code>temp</code>, <code>data</code> are all mixed up.</li>
+<li><strong>NEW (ES6+):</strong> Labeled containers. <code>const users</code> is a sealed jar. <code>let i</code> is a refillable container. <code>module.js</code> is a separate drawer entirely.</li>
+</ul>
 </blockquote>
-<hr />
-<h3>4. Code Walkthrough</h3>
+<hr>
+<h3>2. Core Concepts &amp; Discussion Topics</h3>
+<h4>Topic A: Variable Declaration (<code>let</code>/<code>const</code> vs <code>var</code>)</h4>
 <blockquote>
-<p>[TIME] <strong>Pacing:</strong> 30 min (5 min show old code -&gt; 15 min refactor line by line -&gt; 10 min explain why each change matters)</p>
-<p>[SPEAK] <strong>Script:</strong> "Let's refactor a messy piece of old JavaScript into modern ES6+. This is the kind of code you'd find in a legacy codebase. Watch how each change makes the code cleaner."</p>
-<p>[SLIDE] <strong>Slide:</strong> Side-by-side: old ES5 code on left, modern ES6+ on right. Use color coding: red for old patterns, green for new patterns.</p>
-<p>[TIP] <strong>Teaching Tip:</strong> <strong>Type the refactor live, don't paste.</strong> Explain each change as you make it: "I'm replacing <code>var</code> with <code>const</code> because we never reassign this." "I'm replacing the for loop with <code>.filter()</code> because it's declarative."</p>
-<p>[BOARD] <strong>Whiteboard:</strong> Draw the transformation flow:
-<code>for loop + if -&gt; .filter()
-manual push + string concat -&gt; .map() + template literal
-var -&gt; const
-function() -&gt; () =&gt;</code></p>
-<p>[ENGAGE] <strong>Gen-Z:</strong> "This refactor is like a glow-up transformation video. Before: messy, outdated, hard to read. After: clean, modern, professional. Same functionality, completely different vibe."<br />
-<strong>-&gt; Type-along:</strong> "Open your editor. Type the ES5 code first. Then refactor it with me, line by line. Don't copy-paste — type every change."</p>
-<p>[Q&amp;A] <strong>Student Q:</strong> "Why use <code>.filter()</code> and <code>.map()</code> instead of a for loop? Isn't the for loop faster?"
-<strong>Short answer:</strong> For loops are marginally faster, but the difference is negligible.
-<strong>Real answer:</strong> <code>.filter()</code> and <code>.map()</code> are declarative — you say WHAT you want, not HOW to get it. They're more readable, less error-prone (no index tracking), and chainable. Performance difference is microseconds.
-<strong>The hidden question:</strong> "Is this just a style preference?" -&gt; No. Declarative code is easier to reason about and harder to bug.</p>
-<p>[LOST] <strong>If they're lost:</strong> "Let me show you the simplest refactor: just replace <code>var</code> with <code>const</code>. That's one change. Run it. It works. Now replace the for loop with <code>.filter()</code>. Run it. It works. One change at a time."</p>
+<p><strong>[SPEAK] Discussion:</strong> &quot;Before ES6, <code>var</code> was the only way to declare variables. The problem? <code>var</code> ignores block scope like <code>if</code> statements and loops. It leaks everywhere. <code>let</code> and <code>const</code> fix this by staying trapped inside their curly braces.&quot;</p>
+<p><strong>[CODE] Example:</strong></p>
+<pre><code class="language-javascript">if (true) {
+    var a = 5; // Leaks!
+    const b = 10; // Trapped!
+}
+console.log(a); // Prints 5
+console.log(b); // ReferenceError
+</code></pre>
+<p><strong>[TIP] Instructor Tip:</strong> Teach the strict hierarchy: Always use <code>const</code>. Only use <code>let</code> if the value <em>must</em> be reassigned (like a loop counter). Never use <code>var</code>.</p>
 </blockquote>
-<hr />
-<h3>5. The "Industry Reality"</h3>
+<h4>Topic B: Arrow Functions &amp; Context</h4>
 <blockquote>
-<p>[SPEAK] <strong>Script:</strong> "Every React component you'll write this semester uses destructuring for props, arrow functions for handlers, template literals for dynamic strings, and modules for file organization. If you can't read modern JS, you can't read any production codebase."</p>
-<p>[SLIDE] <strong>Slide:</strong> Screenshot of a real React component showing destructured props, arrow function handlers, and template literals. Label each ES6+ feature.</p>
-<p>[TIP] <strong>Teaching Tip:</strong> Keep this to 5 minutes. Show them that modern JS isn't academic — it's in every production codebase they'll encounter.</p>
-<p>[ENGAGE] <strong>Gen-Z:</strong> <strong>-&gt; Poll:</strong> "How many of you have looked at a React tutorial and felt lost because of the syntax?" (Many hands.) "That's ES6+ syntax. After this week, you'll understand it."</p>
-<p>[LOST] <strong>If they're lost:</strong> "You don't need to master everything today. Just understand: modern JS is the standard. Every job, every framework, every tutorial uses it."</p>
+<p><strong>[SPEAK] Discussion:</strong> &quot;Arrow functions aren&#39;t just a shorter way to write code. They solve a massive headache in older JS: losing the <code>this</code> context inside callbacks like <code>setTimeout</code>.&quot;</p>
+<p><strong>[CODE] Example:</strong></p>
+<pre><code class="language-javascript">// ES5
+var self = this; // The hacky old way
+setTimeout(function() { console.log(self.name); }, 1000);
+
+// ES6 Arrow Function
+setTimeout(() =&gt; { console.log(this.name); }, 1000);
+</code></pre>
+<p><strong>[TIP] Gen-Z Hook:</strong> An arrow function is like a loyal friend. It remembers where it came from (inherits <code>this</code>), while traditional functions get confused depending on who called them.</p>
 </blockquote>
-<hr />
-<h3>6. Exercise</h3>
+<h4>Topic C: Declarative Arrays (<code>map</code>, <code>filter</code>)</h4>
 <blockquote>
-<p>[TIME] <strong>Pacing:</strong> 55 min total (5 min setup -&gt; 40 min coding -&gt; 10 min share)</p>
-<p>[SPEAK] <strong>Script:</strong> "Your task: refactor this ES5 product code to modern ES6+. Replace all <code>var</code>, convert functions to arrows, use <code>.filter()</code> and <code>.map()</code>, add destructuring, template literals, and split into two files with import/export."</p>
-<p>[SLIDE] <strong>Slide:</strong> Exercise requirements as a checklist:
-- [ ] Replace all <code>var</code> with <code>const</code> or <code>let</code>
-- [ ] Convert functions to arrow functions
-- [ ] Use <code>.filter()</code> and <code>.map()</code> instead of for loops
-- [ ] Use destructuring where possible
-- [ ] Use template literals for all string building
-- [ ] Split into <code>data.js</code> and <code>utils.js</code> with <code>import</code>/<code>export</code></p>
-<p>[TIP] <strong>Teaching Tip:</strong> The module split (requirement 6) is the hardest part. Students will struggle with <code>import</code>/<code>export</code> syntax. Circulate and help with this specifically.</p>
-<p>[ENGAGE] <strong>Gen-Z:</strong> <strong>-&gt; Pair up:</strong> "One person handles the data file, the other handles the utils file. Then combine them with import/export. It's like a collab — each person owns their part."</p>
-<p>[LOST] <strong>If they're lost:</strong> "Start with the easy wins: replace <code>var</code> with <code>const</code>. Then convert the functions to arrows. Then tackle <code>.filter()</code> and <code>.map()</code>. Save the module split for last."</p>
+<p><strong>[SPEAK] Discussion:</strong> &quot;Imperative code tells the computer <em>how</em> to do something (a <code>for</code> loop). Declarative code tells it <em>what</em> you want. Modern JS relies on declarative array methods.&quot;</p>
+<p><strong>[CODE] Example:</strong></p>
+<pre><code class="language-javascript">// Transform an array (map)
+const names = users.map(user =&gt; user.name);
+
+// Keep only active users (filter)
+const active = users.filter(user =&gt; user.isActive);
+</code></pre>
+<p><strong>[TIP] Instructor Tip:</strong> Emphasize that these methods do NOT change the original array; they return a brand new array. This is critical for React state later.</p>
 </blockquote>
-<hr />
-<h3>7. AI Integration Note</h3>
+<h4>Topic D: Destructuring</h4>
 <blockquote>
-<p>[TIME] <strong>Pacing:</strong> 10 min (5 min demo -&gt; 5 min try)</p>
-<p>[SPEAK] <strong>Script:</strong> "This week, you can ask AI to refactor your ES5 code and then compare its output with yours. Ask 'Why did you choose <code>.reduce()</code> here instead of <code>.map()</code>?' Don't let AI write your module imports without understanding them."</p>
-<p>[SLIDE] <strong>Slide:</strong> AI usage guide:
-| [OK] Allowed | [NO] Not Allowed |
-|-----------|--------------|
-| "Refactor this ES5 code to ES6+" | "Write my module imports for me" |
-| "Why did you use <code>.reduce()</code> here?" | "Do the entire exercise" |</p>
-<p>[TIP] <strong>Teaching Tip:</strong> Point out the common AI mistakes listed in the content. AI overuses <code>.reduce()</code> — teach students to question AI's choices.</p>
-<p>[ENGAGE] <strong>Gen-Z:</strong> "AI is like having a senior dev review your code. It can suggest improvements, but you need to understand WHY the improvement is better."</p>
+<p><strong>[SPEAK] Discussion:</strong> &quot;Destructuring is a shortcut to extract properties from an object without writing <code>user.</code> ten times.&quot;</p>
+<p><strong>[CODE] Example:</strong></p>
+<pre><code class="language-javascript">const user = { name: &quot;Nina&quot;, role: &quot;Admin&quot; };
+const { name, role } = user;
+</code></pre>
+<p><strong>[TIP] Instructor Tip:</strong> Mention that they will use this exact syntax every single day in React to extract &quot;props&quot;.</p>
 </blockquote>
-<hr />
-<h3>8. Debugging / "Watch Out For" Section</h3>
+<hr>
+<h3>3. Code Walkthrough / Live Coding Blueprint</h3>
 <blockquote>
-<p>[TIME] <strong>Pacing:</strong> 15 min (5 min common errors -&gt; 5 min group debug -&gt; 5 min Q&amp;A)</p>
-<p>[SPEAK] <strong>Script:</strong> "Here are the errors and mental model traps you'll hit this week. Let's go through them so you don't spend 20 minutes Googling."</p>
-<p>[SLIDE] <strong>Slide:</strong> Error cards:
-<code>+--------------------------------------+
-| "Assignment to constant variable"    |
-| You used const and tried to reassign |
-| Fix: use let, or restructure code    |
-+--------------------------------------+
-+--------------------------------------+
-| "Cannot use import outside a module" |
-| Missing type="module" or package.json|
-| Fix: add type="module" to script tag |
-+--------------------------------------+</code></p>
-<p>[ENGAGE] <strong>Gen-Z:</strong> "The 'const reassignment' error is like trying to change a sealed GCash PIN — it's locked for a reason. If you need to change it, use <code>let</code> (the unlockable version)."</p>
-<p>[Q&amp;A] <strong>Student Q:</strong> "Why does <code>const user = {}; user.name = 'Bob'</code> work? I thought const means it can't change?"
-<strong>Short answer:</strong> <code>const</code> prevents reassignment of the variable, not mutation of the value.
-<strong>Real answer:</strong> <code>const</code> means the variable always points to the same object. But the object's properties can still change. Think of it as: the address is fixed, but what's inside the house can change.
-<strong>The hidden question:</strong> "So const doesn't mean immutable?" -&gt; Correct. For immutability, use <code>Object.freeze()</code> or a library like Immer.</p>
-<p>[LOST] <strong>If they're lost:</strong> "The #1 issue this week is the import/module error. If you see 'Cannot use import statement outside a module,' add <code>type="module"</code> to your script tag. That fixes it 90% of the time."</p>
+<p>[SPEAK] <strong>Script:</strong> &quot;Let&#39;s refactor a messy piece of legacy JavaScript into modern ES6+. I&#39;ll type, you type along.&quot;</p>
 </blockquote>
-<hr />
-<h3>Teaching Script</h3>
-<p>This week's annotations cover: pacing table at top, inline annotations per section, and this summary. The ES5-to-ES6+ refactor is the core activity — type it live and have students follow along.</p>
-<hr />
+<ul>
+<li><strong>Step 1: Scoping Fixes</strong><ul>
+<li><em>Action:</em> Change all <code>var</code> to <code>const</code>. Run the script to show where reassignments break, then change those specific variables to <code>let</code>.</li>
+</ul>
+</li>
+<li><strong>Step 2: The <code>for</code> Loop Eradication</strong><ul>
+<li><em>Action:</em> Find a messy <code>for</code> loop that pushes items to a new array. Delete it entirely and replace it with a one-line <code>.filter()</code> or <code>.map()</code>.</li>
+</ul>
+</li>
+<li><strong>Step 3: String Interpolation</strong><ul>
+<li><em>Action:</em> Replace messy <code>greeting = &quot;Hi &quot; + user.name + &quot;!&quot;</code> concatenations with template literals <code>`Hi ${user.name}!`</code>.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3>4. From the Trenches (Pro-Tip)</h3>
+<blockquote>
+<p>[TRENCHES] <strong>Instructor Script:</strong> &quot;In university, you might lose 5 points on a rubric for using <code>var</code>. In the industry, using <code>var</code> in a modern React codebase will cause your Pull Request to be instantly rejected by the Senior Developer. It&#39;s not just a style preference; <code>var</code> causes massive memory leaks and state bugs in complex applications. Writing modern JS isn&#39;t about looking cool; it&#39;s about proving you are safe to work in a production codebase.&quot;</p>
+</blockquote>
+<hr>
+<h3>5. AI Integration &amp; Debugging</h3>
+<ul>
+<li><strong>AI Policy:</strong> Allowed: &quot;Refactor this ES5 code to ES6+&quot;. Not Allowed: &quot;Write my module imports for me.&quot;</li>
+<li><strong>Common Error 1:</strong> &quot;Assignment to constant variable&quot; -&gt; You used <code>const</code> but tried to reassign it. <em>Fix: Use <code>let</code>.</em></li>
+<li><strong>Common Error 2:</strong> &quot;Cannot use import statement outside a module.&quot; -&gt; <em>Fix: Add <code>type=&quot;module&quot;</code> to the script tag in your HTML.</em></li>
+</ul>
+<hr>
+<h3>6. Exercise &amp; Homework</h3>
+<blockquote>
+<p>[TIME] <strong>In-Class Exercise (55 min):</strong> Refactor a provided ES5 product inventory script to modern ES6+. Replace all <code>var</code>, convert to arrow functions, use <code>.filter()/.map()</code>, use template literals, and split into two files (<code>data.js</code> and <code>utils.js</code>).</p>
+</blockquote>
+<blockquote>
+<h3>Learning Baseline (Self-Assessment)</h3>
+<blockquote>
+<p><strong>[ASSESSMENT]</strong> By the end of this week, students must be able to say &quot;Yes&quot; to:</p>
+<ul>
+<li><input disabled="" type="checkbox"> I can explain why <code>var</code> is bad and when to use <code>let</code> vs <code>const</code>.</li>
+<li><input disabled="" type="checkbox"> I can write an arrow function with implicit return.</li>
+<li><input disabled="" type="checkbox"> I can use <code>.map()</code> to render a list, and <code>.filter()</code> to search it.</li>
+<li><input disabled="" type="checkbox"> I can destructure an object to extract specific properties.</li>
+<li><input disabled="" type="checkbox"> I can split JavaScript code into separate files using <code>import</code>/<code>export</code>.</li>
+</ul>
+</blockquote>
+</blockquote>
+<blockquote>
+<h3>Take-Home Mission</h3>
+<blockquote>
+<p><strong>[HOMEWORK]</strong> <strong>Mission:</strong> &quot;The Legacy Code Rescue&quot;
+I have provided a 100-line &quot;spaghetti&quot; JavaScript file that handles a shopping cart. It uses <code>var</code>, manual <code>for</code> loops, string concatenation (<code>+</code>), and is all in one massive file. </p>
+<ol>
+<li>Refactor it entirely into ES6+.</li>
+<li>Break it down into at least 3 module files (<code>cart.js</code>, <code>products.js</code>, <code>app.js</code>).</li>
+<li><strong>The Catch:</strong> You cannot use a single <code>for</code> loop or <code>var</code> keyword anywhere.</li>
+</ol>
+</blockquote>
+</blockquote>
+<hr>
+<h3>7. Instructor Assets Blueprint</h3>
+<blockquote>
+<p><strong>[ASSETS]</strong> What to prepare before this class:</p>
+<ul>
+<li><strong>Starter Repo:</strong> <code>legacy-cart.js</code> (The messy ES5 file for the live walkthrough).</li>
+<li><strong>Solution Repo:</strong> The refactored ES6+ versions, split into clean modules using modern syntax.</li>
+</ul>
+</blockquote>
+
 </body></html>

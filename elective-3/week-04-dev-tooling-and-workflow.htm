@@ -1,6 +1,6 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>elective-3\week-04-dev-tooling-and-workflow.md</title><style>
+<title>week-04-dev-tooling-and-workflow.md</title><style>
 body { font-family: 'Segoe UI', Arial, sans-serif; max-width: 960px; margin: 2em auto; padding: 0 1.5em; line-height: 1.7; color: #1a1a1a; background: #fafafa; }
 h1 { border-bottom: 2px solid #2563eb; padding-bottom: .3em; margin-top: 1.5em; color: #1e3a5f; }
 h2 { border-bottom: 1px solid #cbd5e1; padding-bottom: .2em; margin-top: 1.5em; color: #1e3a5f; }
@@ -18,9 +18,23 @@ hr { border: none; border-top: 2px solid #e2e8f0; margin: 2em 0; }
 </style></head><body>
 <nav><a href="index.htm">Home</a></nav>
 <h2>Week 4: Dev Tooling &amp; Workflow</h2>
+<div style="background: #fefce8; padding: 15px; border-left: 5px solid #ca8a04; margin-bottom: 20px;">
+    <strong>📋 This Week at a Glance</strong><br>
+    🔁 Last week: &quot;Week 3: TypeScript Essentials&quot;<br>
+    🎯 This week: &quot;Professionalize our workflow — NPM, Vite, and Git branches are the tools every real project uses&quot;<br>
+    <br>
+    <strong>LAB (3h) Topics:</strong><br>
+    ▸ A. NPM &amp; `package.json` (7 min)<br>
+    ▸ B. The `node_modules` Black Hole (6 min)<br>
+    ▸ C. Bundlers / Vite (7 min)<br>
+    ▸ D. Git Feature Branches (5 min)<br>
+    <br>
+    <strong>ONLINE (1h):</strong> Industry Reality + AI Integration + The Linter's Revenge homework<br>
+    <br>
+    ✅ By end of lab: Know why we use `package.json`; understand `.gitignore` for `node_modules`; scaffold with Vite; install NPM packages; create Git feature branch
+</div>
 <blockquote>
-<p>[TIME] <strong>Session Pacing (180 min)</strong></p>
-</blockquote>
+<p>[TIME] <strong>Session Pacing (Lab - ~150 min)</strong></p>
 <table>
 <thead>
 <tr>
@@ -29,8 +43,7 @@ hr { border: none; border-top: 2px solid #e2e8f0; margin: 2em 0; }
 <th>Format</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>Hook + Analogy</td>
 <td>15 min</td>
 <td>Lecture + Whiteboard</td>
@@ -38,17 +51,12 @@ hr { border: none; border-top: 2px solid #e2e8f0; margin: 2em 0; }
 <tr>
 <td>Concept Discussion</td>
 <td>25 min</td>
-<td>Lecture + Slides + Tool Comparison</td>
+<td>Lecture + Slides + Terminal Demos</td>
 </tr>
 <tr>
 <td>Code Walkthrough</td>
 <td>30 min</td>
-<td>Live Setup (step-by-step scaffold)</td>
-</tr>
-<tr>
-<td>Industry Reality</td>
-<td>10 min</td>
-<td>Lecture + Discussion</td>
+<td>Live Code (NPM init to Vite build)</td>
 </tr>
 <tr>
 <td>Break</td>
@@ -61,11 +69,6 @@ hr { border: none; border-top: 2px solid #e2e8f0; margin: 2em 0; }
 <td>Lab (solo or pairs)</td>
 </tr>
 <tr>
-<td>AI Integration</td>
-<td>10 min</td>
-<td>Demo + Prompt Walkthrough</td>
-</tr>
-<tr>
 <td>Debugging + Wrap</td>
 <td>15 min</td>
 <td>Group Debug + Q&amp;A</td>
@@ -75,145 +78,124 @@ hr { border: none; border-top: 2px solid #e2e8f0; margin: 2em 0; }
 <td>10 min</td>
 <td>Overflow / Stretch discussion</td>
 </tr>
-</tbody>
-</table>
-<blockquote>
-<p>[TIP] <strong>Teaching Tip (Week 4 strategy):</strong> This is a setup-heavy week. Students will get stuck on npm installs, config files, and CI setup. The goal isn't mastery — it's "I've seen it work and I know where to look when I need it." Keep the pace moving; don't get bogged down in config details.</p>
+</tbody></table>
 </blockquote>
-<hr />
-<h3>1. The Hook</h3>
 <blockquote>
-<p>[SPEAK] <strong>Script:</strong> "You know how VS Code auto-formats your code when you save, highlights errors in red before you even run anything, and suggests imports as you type? None of that is built into JavaScript itself. It's all tooling. Without these tools, you'd be debugging typos at 2 AM instead of building features."</p>
-<p>[SLIDE] <strong>Slide:</strong> Title: "The Invisible Tools Behind Your Editor"<br />
-Show VS Code with red underlines, auto-format on save, and import suggestions. Label each feature with the tool behind it: ESLint, Prettier, TypeScript.</p>
-<p>[TIP] <strong>Teaching Tip:</strong> Make students realize that the "magic" of their editor is actually tooling. This creates curiosity about how it works.</p>
-<p>[ENGAGE] <strong>Gen-Z:</strong> "Dev tools are like the autopilot on your phone's camera. You don't think about exposure, focus, or white balance — the tool handles it. ESLint, Prettier, and Vite are autopilot for your code."<br />
-<strong>-&gt; Poll:</strong> "How many of you have 'Format on Save' enabled in VS Code?" (Most hands.) "That's Prettier working behind the scenes."</p>
-<p>[LOST] <strong>If they're lost:</strong> "Tooling just means 'tools that make coding easier.' You already use them — you just didn't know their names."</p>
+<p>[TIP] <strong>Teaching Tip:</strong> This week involves a lot of terminal usage. Students will get frustrated with <code>npm ERR!</code>. Walk around and help them read the actual error messages instead of just typing fixes for them.</p>
 </blockquote>
-<hr />
-<h3>2. The Analogy</h3>
+<hr>
+<h3><span style="background:#2563eb;color:#fff;padding:2px 10px;border-radius:12px;font-size:0.8em;">15 min</span> 1. The Hook &amp; The Analogy</h3>
 <blockquote>
-<p>[SPEAK] <strong>Script:</strong> "Building a web app without tooling is like building a house without power tools. You can do it with a hand saw and a hammer, but it'll take forever and the results will be uneven. Dev tools are your power tools."</p>
-<p>[BOARD] <strong>Whiteboard:</strong> Draw the tool mapping:
-<code>Vite -&gt; Table saw (cuts and assembles fast)
-ESLint -&gt; Level (keeps everything straight)
-Prettier -&gt; Sander (makes everything smooth)
-Git -&gt; Blueprint tracker (records every change)</code></p>
-<p>[TIP] <strong>Teaching Tip:</strong> The power tools analogy works well because everyone understands the difference between hand tools and power tools. Emphasize: "You CAN code without these tools. But why would you?"</p>
-<p>[ENGAGE] <strong>Gen-Z:</strong> "Setting up tooling is like setting up your gaming PC. You don't NEED RGB lighting, but it makes everything feel professional and organized. ESLint is your anti-cheat — it catches you before you make a dumb mistake."<br />
-<strong>-&gt; Turn to your neighbor:</strong> "Which tool sounds most useful to you? Vite, ESLint, Prettier, or Git? 10 seconds, discuss!"</p>
-<p>[LOST] <strong>If they're lost:</strong> "Forget the analogy. Tooling = tools that automate boring stuff. Formatting, error checking, bundling. That's it."</p>
+<p>[SPEAK] <strong>Script:</strong> &quot;You&#39;ve been writing HTML, CSS, and JS in separate files and opening them in a browser. That works for a 3-page website. It fails catastrophically for an app with 5,000 files. Today we learn the industrial machines that build modern web apps.&quot;</p>
 </blockquote>
-<hr />
-<h3>3. Concept Discussion</h3>
 <blockquote>
-<p>[TIME] <strong>Pacing:</strong> 25 min total (5 min npm -&gt; 5 min Vite -&gt; 5 min ESLint -&gt; 5 min Prettier -&gt; 5 min Git/PR workflow)</p>
-<p>[SPEAK] <strong>Script:</strong> "JavaScript has no built-in way to check code quality, format code consistently, or bundle files for the browser. Tooling fills these gaps. Let me show you what each tool does and why you need it."</p>
-<p>[SLIDE] <strong>Slide:</strong> Show one tool at a time. For each: (1) what it does, (2) what happens without it, (3) a quick demo.</p>
-<p>[TIP] <strong>Teaching Tip:</strong> Don't go deep into config files — that's for the code walkthrough. Focus on the mental model: what problem does each tool solve?</p>
-<p>[ASK] <strong>Ask the class:</strong> "What happens if two developers on a team format code differently?" (Answer: Merge conflicts, inconsistent code, wasted time in code review arguing about style.)</p>
-<p>[ENGAGE] <strong>Gen-Z:</strong> "npm is like the App Store for code. You don't write everything from scratch — you download packages other people wrote. <code>package.json</code> is your shopping list."<br />
-<strong>-&gt; Phone moment:</strong> "Open any npm package page on your browser. Look at the 'Dependencies' section. That's how real projects manage their code."</p>
-<p>[Q&amp;A] <strong>Student Q:</strong> "Why do I need both ESLint and Prettier? Don't they do the same thing?"
-<strong>Short answer:</strong> No. ESLint checks for bugs, Prettier handles formatting.
-<strong>Real answer:</strong> ESLint catches code quality issues: unused variables, potential bugs, bad patterns. Prettier makes code look consistent: spacing, line breaks, quotes. They overlap on some formatting rules, which is why you need <code>eslint-config-prettier</code> to disable the overlap.
-<strong>The hidden question:</strong> "Can I just use one?" -&gt; You could, but you'd lose either bug detection or consistent formatting.</p>
-<p>[Q&amp;A] <strong>Student Q:</strong> "What's the difference between <code>npm install</code> and <code>npm ci</code>?"
-<strong>Short answer:</strong> <code>install</code> updates the lock file, <code>ci</code> uses it exactly.
-<strong>Real answer:</strong> <code>npm install</code> is for local development — it updates <code>package-lock.json</code> if dependencies changed. <code>npm ci</code> is for CI/CD — it installs exactly what's in the lock file, ensuring reproducible builds. Always use <code>npm ci</code> in CI.
-<strong>The hidden question:</strong> "Why does this matter?" -&gt; Because <code>npm install</code> in CI can produce different results on different machines.</p>
-<p>[LOST] <strong>If they're lost:</strong> "The simplest summary: npm = package manager. Vite = bundles your code. ESLint = catches bugs. Prettier = formats code. Git = tracks changes. That's all you need to know today."</p>
+<p>[BOARD] <strong>Whiteboard Analogy:</strong> The Car Factory</p>
+<ul>
+<li><strong>Your Code:</strong> The raw steel, rubber, and glass.</li>
+<li><strong>NPM:</strong> The supply chain delivering pre-built parts (radio, tires) from other factories.</li>
+<li><strong>Vite (Bundler):</strong> The assembly line that crushes 5,000 files down into a single, highly optimized, drivable car.</li>
+</ul>
 </blockquote>
-<hr />
-<h3>4. Code Walkthrough</h3>
+<hr>
+<h3><span style="background:#2563eb;color:#fff;padding:2px 10px;border-radius:12px;font-size:0.8em;">25 min</span> 2. Core Concepts &amp; Discussion Topics</h3>
+<h4>▸ A. NPM &amp; <code>package.json</code> (7 min)</h4>
 <blockquote>
-<p>[TIME] <strong>Pacing:</strong> 30 min (5 min npm init -&gt; 5 min package.json -&gt; 5 min install -&gt; 5 min vite config -&gt; 10 min CI pipeline)</p>
-<p>[SPEAK] <strong>Script:</strong> "Let's set up a professional project from scratch. We'll go step by step: npm init, add scripts, install dependencies, configure Vite, and set up a CI pipeline."</p>
-<p>[SLIDE] <strong>Slide:</strong> Show each step on its own slide. Step 1: <code>npm init -y</code>. Step 2: package.json scripts. Step 3: install commands. Step 4: vite.config.ts. Step 5: CI YAML.</p>
-<p>[TIP] <strong>Teaching Tip:</strong> <strong>Run each command live.</strong> Show the terminal output after each step. When you run <code>npm install</code>, show the <code>node_modules</code> folder appearing. When you run <code>npm run dev</code>, show the browser opening.</p>
-<p>[BOARD] <strong>Whiteboard:</strong> Draw the project structure as you build it:
-<code>my-app/
-+-- package.json       &lt;- project ID + scripts
-+-- vite.config.ts     &lt;- Vite settings
-+-- .eslintrc          &lt;- ESLint rules
-+-- .prettierrc        &lt;- Prettier settings
-+-- .github/workflows/ &lt;- CI pipeline
-|   +-- ci.yml
-+-- src/               &lt;- your code</code></p>
-<p>[ENGAGE] <strong>Gen-Z:</strong> "Setting up a project is like building a PC. You pick the parts (dependencies), assemble them (config files), and test if it boots (npm run dev)."<br />
-<strong>-&gt; Type-along:</strong> "Run each command with me. Don't copy-paste — type it. You need to know these commands by heart."</p>
-<p>[Q&amp;A] <strong>Student Q:</strong> "Why does vite.config.ts need the React plugin?"
-<strong>Short answer:</strong> Because Vite doesn't understand JSX by default.
-<strong>Real answer:</strong> JSX (the HTML-like syntax in React) isn't valid JavaScript. The React plugin tells Vite how to transform JSX into regular JavaScript. Without it, your .tsx files would cause syntax errors.
-<strong>The hidden question:</strong> "What if I'm not using React?" -&gt; Then you don't need the React plugin. Vite has plugins for Vue, Svelte, etc.</p>
-<p>[LOST] <strong>If they're lost:</strong> "Focus on the scripts in package.json. <code>dev</code> = start dev server. <code>build</code> = bundle for production. <code>lint</code> = check code quality. Those three are the ones you'll use every day."</p>
+<p><strong>[SPEAK] Discussion:</strong> &quot;NPM is the Node Package Manager. It is a giant library of free code written by other people. The <code>package.json</code> is your receipt. It lists exactly which versions of which libraries your app needs to run.&quot;</p>
+<p><strong>[CODE] Example:</strong></p>
+<pre><code class="language-json">&quot;dependencies&quot;: { &quot;react&quot;: &quot;^18.2.0&quot; },
+&quot;devDependencies&quot;: { &quot;eslint&quot;: &quot;^8.0.0&quot; }
+</code></pre>
+<p><strong>[TIP] Instructor Tip:</strong> Emphasize that dependencies are required for the app to work in production. DevDependencies are just tools for the developer (like linters).</p>
 </blockquote>
-<hr />
-<h3>5. The "Industry Reality"</h3>
+<h4>▸ B. The <code>node_modules</code> Black Hole (6 min)</h4>
 <blockquote>
-<p>[SPEAK] <strong>Script:</strong> "At any mid-to-large company, you cannot push code to <code>main</code> without a passing CI pipeline. Your first week at a real job, you'll be setting up your dev environment with the exact same tools."</p>
-<p>[SLIDE] <strong>Slide:</strong> Show a real GitHub Actions CI run with green checkmarks. Label: "This runs on every PR. If it fails, your code doesn't merge."</p>
-<p>[TIP] <strong>Teaching Tip:</strong> Keep this to 5 minutes. Show them that tooling isn't academic — it's what every professional team uses.</p>
-<p>[ENGAGE] <strong>Gen-Z:</strong> <strong>-&gt; Poll:</strong> "How many of you have used GitHub Actions before?" (Few hands.) "After this week, you'll have set up your first CI pipeline."</p>
-<p>[LOST] <strong>If they're lost:</strong> "You don't need to understand CI/CD fully today. Just know: it's automated testing that runs when you push code. If it fails, you fix it."</p>
+<p><strong>[SPEAK] Discussion:</strong> &quot;When you run <code>npm install</code>, it downloads all the code listed in your <code>package.json</code> into a folder called <code>node_modules</code>. This folder is massive. It will contain tens of thousands of files.&quot;</p>
+<p><strong>[VISUAL] Example:</strong>
+Show the <code>.gitignore</code> file with <code>node_modules/</code> in it.</p>
+<p><strong>[TIP] Gen-Z Hook:</strong> Never commit <code>node_modules</code> to GitHub. It&#39;s like mailing your entire house instead of just the blueprint. GitHub will reject it, and your teammates will hate you.</p>
 </blockquote>
-<hr />
-<h3>6. Exercise</h3>
+<h4>▸ C. Bundlers / Vite (7 min)</h4>
 <blockquote>
-<p>[TIME] <strong>Pacing:</strong> 55 min total (5 min setup -&gt; 40 min scaffold -&gt; 10 min share)</p>
-<p>[SPEAK] <strong>Script:</strong> "Set up a professional project scaffold from scratch. npm init, Vite with React + TypeScript, ESLint, Prettier, CI pipeline, README, and a PR workflow."</p>
-<p>[SLIDE] <strong>Slide:</strong> Exercise checklist:
-- [ ] <code>npm init</code> with <code>"type": "module"</code>
-- [ ] Vite + React + TypeScript
-- [ ] ESLint strict config
-- [ ] Prettier setup
-- [ ] ESLint + Prettier compatibility
-- [ ] <code>.github/workflows/ci.yml</code>
-- [ ] <code>README.md</code> with setup instructions
-- [ ] Git branch + PR</p>
-<p>[TIP] <strong>Teaching Tip:</strong> The ESLint + Prettier compatibility (requirement 5) is the hardest part. Students will get conflicting rules. Circulate and help with <code>eslint-config-prettier</code>.</p>
-<p>[ENGAGE] <strong>Gen-Z:</strong> <strong>-&gt; Pair up:</strong> "One person handles the tooling setup (Vite, ESLint, Prettier), the other handles the Git workflow (branch, commit, PR). Then combine."</p>
-<p>[LOST] <strong>If they're lost:</strong> "Start with <code>npm init</code> and <code>npm install</code>. Get the dev server running first. Then add ESLint. Then Prettier. Then CI. One step at a time."</p>
+<p><strong>[SPEAK] Discussion:</strong> &quot;Browsers are slow at downloading 500 individual JS files. A bundler like Vite takes your modern modules and crushes them together into one optimized <code>.js</code> file for the browser.&quot;</p>
+<p><strong>[CODE] Example:</strong>
+Run <code>npm run build</code>. Show the terminal output where it shrinks the code into the <code>dist/</code> folder.</p>
+<p><strong>[TIP] Instructor Tip:</strong> Explain why Create React App (CRA) is dead and why Vite is the modern standard (it uses native ES modules so dev server starts in 100ms instead of 10 seconds).</p>
 </blockquote>
-<hr />
-<h3>7. AI Integration Note</h3>
+<h4>▸ D. Git Feature Branches (5 min)</h4>
 <blockquote>
-<p>[TIME] <strong>Pacing:</strong> 10 min (5 min demo -&gt; 5 min try)</p>
-<p>[SPEAK] <strong>Script:</strong> "This week, ask AI to generate config files and then review each setting. Ask 'What does this rule actually check?' for every ESLint rule. Never let AI configure your CI pipeline without understanding every step."</p>
-<p>[SLIDE] <strong>Slide:</strong> AI usage guide:
-| [OK] Allowed | [NO] Not Allowed |
-|-----------|--------------|
-| "Generate a .eslintrc config" | "Set up my entire CI pipeline" |
-| "What does this ESLint rule check?" | "Fix my ESLint/Prettier conflicts" |</p>
-<p>[TIP] <strong>Teaching Tip:</strong> Point out the common AI mistakes: outdated ESLint configs, conflicting Prettier rules, <code>npm install</code> instead of <code>npm ci</code> in CI.</p>
-<p>[ENGAGE] <strong>Gen-Z:</strong> "AI is great at generating config files but terrible at understanding YOUR project's needs. Always review what it generates."</p>
+<p><strong>[SPEAK] Discussion:</strong> &quot;In the real world, you don&#39;t commit directly to the <code>main</code> branch. You create a sandbox, do your work, and then request to merge it.&quot;</p>
+<p><strong>[CODE] Example:</strong></p>
+<pre><code class="language-bash">git checkout -b feature/login-page
+# Do work, commit, push
+</code></pre>
+<p><strong>[TIP] Instructor Tip:</strong> Drill this rule: &quot;Working directly on <code>main</code> is a fireable offense in most companies.&quot;</p>
 </blockquote>
-<hr />
-<h3>8. Debugging / "Watch Out For" Section</h3>
+<hr>
+<h3><span style="background:#2563eb;color:#fff;padding:2px 10px;border-radius:12px;font-size:0.8em;">30 min</span> 3. Code Walkthrough / Live Coding Blueprint</h3>
 <blockquote>
-<p>[TIME] <strong>Pacing:</strong> 15 min (5 min common errors -&gt; 5 min group debug -&gt; 5 min Q&amp;A)</p>
-<p>[SPEAK] <strong>Script:</strong> "Here are the setup errors you'll hit this week. Most of them are dependency or config issues."</p>
-<p>[SLIDE] <strong>Slide:</strong> Error cards:
-<code>+--------------------------------------+
-| "Cannot find module 'react'"         |
-| Missing node_modules or corrupted    |
-| Fix: delete node_modules, npm install|
-+--------------------------------------+
-+--------------------------------------+
-| "ESLint and Prettier conflict"       |
-| Both control formatting              |
-| Fix: install eslint-config-prettier  |
-+--------------------------------------+</code></p>
-<p>[ENGAGE] <strong>Gen-Z:</strong> "The ESLint/Prettier conflict is like having two managers telling you to do the same thing differently. You need one to step back — that's <code>eslint-config-prettier</code>."</p>
-<p>[Q&amp;A] <strong>Student Q:</strong> "Why does my app work in dev but break after build?"
-<strong>Short answer:</strong> Dev and production handle things differently.
-<strong>Real answer:</strong> Vite's dev server resolves imports differently than the production build. You might be relying on dev-only behavior (like importing a file with a relative path that works in dev but not in production). Always test the production build locally with <code>npm run preview</code> before deploying.
-<strong>The hidden question:</strong> "How do I prevent this?" -&gt; Always run <code>npm run preview</code> before deploying.</p>
-<p>[LOST] <strong>If they're lost:</strong> "The #1 issue: never commit <code>node_modules</code>. If you did, run <code>git rm -r --cached node_modules</code> and add it to <code>.gitignore</code>. That fixes it."</p>
+<p>[SPEAK] <strong>Script:</strong> &quot;Let&#39;s build a modern project from scratch using Vite, install a package, and push it to a feature branch.&quot;</p>
 </blockquote>
-<hr />
-<h3>Teaching Script</h3>
-<p>This week's annotations cover: pacing table at top, inline annotations per section, and this summary. The step-by-step scaffold is key — run each command live and show the results.</p>
-<hr />
+<ul>
+<li><strong>Step 1: Scaffolding with Vite</strong><ul>
+<li><em>Action:</em> Run <code>npm create vite@latest my-app -- --template vanilla</code>. <code>cd</code> into it, run <code>npm install</code>, then <code>npm run dev</code>.</li>
+</ul>
+</li>
+<li><strong>Step 2: Installing a Package</strong><ul>
+<li><em>Action:</em> Install a visual package like <code>canvas-confetti</code>. Import it into <code>main.js</code> and make a button trigger it. Show the <code>package.json</code> updating.</li>
+</ul>
+</li>
+<li><strong>Step 3: Branching &amp; Pushing</strong><ul>
+<li><em>Action:</em> Create a feature branch, commit the confetti feature, and push it to GitHub.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3><span style="background:#2563eb;color:#fff;padding:2px 10px;border-radius:12px;font-size:0.8em;">15 min</span> 4. Debugging + Wrap</h3>
+<ul>
+<li><strong>Common Error 1:</strong> <code>npm ERR! code ERESOLVE</code>. -&gt; Dependency conflict. Usually fixed by reading the terminal and using <code>--legacy-peer-deps</code> (explain why cautiously).</li>
+<li><strong>Common Error 2:</strong> <code>command not found: vite</code>. -&gt; You forgot to run <code>npm install</code> before running <code>npm run dev</code>.</li>
+</ul>
+<hr>
+<h3><span style="background:#2563eb;color:#fff;padding:2px 10px;border-radius:12px;font-size:0.8em;">55 min</span> 5. In-Class Exercise</h3>
+<blockquote>
+<p>[TIME] <strong>In-Class Exercise (55 min):</strong> Scaffold a vanilla Vite app. Install the <code>date-fns</code> package. Write a script that imports <code>formatDistanceToNow</code> to show exactly how many days/hours ago they were born. Push it to a feature branch.</p>
+</blockquote>
+<hr>
+<h3>💻 Online Session (1 hour)</h3>
+<h3>From the Trenches (Pro-Tip)</h3>
+<blockquote>
+<p>[TRENCHES] <strong>Instructor Script:</strong> &quot;When you join a company, day one is usually &#39;Set up your local environment.&#39; You will pull the code, run <code>npm install</code>, and it will immediately crash. This is normal. Half the job of a modern frontend developer is fighting with mismatched Node versions and broken dependencies. Learn to read the red error text. The answer is almost always literally written in the terminal output, but junior devs panic and don&#39;t read it.&quot;</p>
+</blockquote>
+<h3>AI Integration</h3>
+<ul>
+<li><strong>AI Policy:</strong> Allowed: &quot;What does this npm error mean?&quot; Not Allowed: &quot;Write a bash script to do all my git commands.&quot;</li>
+</ul>
+<h3>Learning Baseline (Self-Assessment)</h3>
+<blockquote>
+<p><strong>[ASSESSMENT]</strong> By the end of this week, students must be able to say &quot;Yes&quot; to:</p>
+<ul>
+<li><input disabled="" type="checkbox"> I know why we use <code>package.json</code>.</li>
+<li><input disabled="" type="checkbox"> I understand why <code>node_modules</code> must be in <code>.gitignore</code>.</li>
+<li><input disabled="" type="checkbox"> I can use Vite to scaffold and run a development server.</li>
+<li><input disabled="" type="checkbox"> I can install a 3rd party package using NPM.</li>
+<li><input disabled="" type="checkbox"> I can create and push a Git feature branch.</li>
+</ul>
+</blockquote>
+<h3>Take-Home Mission</h3>
+<blockquote>
+<p><strong>[HOMEWORK]</strong> <strong>Mission:</strong> &quot;The Linter&#39;s Revenge&quot;</p>
+<ol>
+<li>Create a new Vite Vanilla project.</li>
+<li>Write a messy, poorly formatted JavaScript file with unused variables and bad indentation.</li>
+<li><strong>The Catch:</strong> Install ESLint and Prettier. Configure them. Run the linting script and take a screenshot of ESLint screaming at your bad code, then run the auto-fix command to format it perfectly.</li>
+</ol>
+</blockquote>
+<h3>Instructor Assets Blueprint</h3>
+<blockquote>
+<p><strong>[ASSETS]</strong> What to prepare before this class:</p>
+<ul>
+<li><strong>Starter Repo:</strong> None. Scaffold live.</li>
+<li><strong>Solution Repo:</strong> A vanilla Vite project with <code>canvas-confetti</code> and <code>date-fns</code> installed, demonstrating basic package importing.</li>
+</ul>
+</blockquote>
 </body></html>

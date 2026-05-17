@@ -1,6 +1,6 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>elective-3\week-09-api-design-philosophy.md</title><style>
+<title>week-09-api-design-philosophy.md</title><style>
 body { font-family: 'Segoe UI', Arial, sans-serif; max-width: 960px; margin: 2em auto; padding: 0 1.5em; line-height: 1.7; color: #1a1a1a; background: #fafafa; }
 h1 { border-bottom: 2px solid #2563eb; padding-bottom: .3em; margin-top: 1.5em; color: #1e3a5f; }
 h2 { border-bottom: 1px solid #cbd5e1; padding-bottom: .2em; margin-top: 1.5em; color: #1e3a5f; }
@@ -18,9 +18,23 @@ hr { border: none; border-top: 2px solid #e2e8f0; margin: 2em 0; }
 </style></head><body>
 <nav><a href="index.htm">Home</a></nav>
 <h2>Week 9: API Design Philosophy</h2>
+<div style="background: #fefce8; padding: 15px; border-left: 5px solid #ca8a04; margin-bottom: 20px;">
+    <strong>📋 This Week at a Glance</strong><br>
+    🔁 Last week: &quot;Week 8: React Router &amp; SPA Concepts&quot;<br>
+    🎯 This week: &quot;Shift to the backend — learning how to design RESTful APIs before writing any C# code&quot;<br>
+    <br>
+    <strong>LAB (3h) Topics:</strong><br>
+    ▸ A. RESTful Principles (Nouns vs Verbs) (7 min)<br>
+    ▸ B. JSON Standardization (6 min)<br>
+    ▸ C. The API Contract / Status Codes (7 min)<br>
+    ▸ D. Pagination &amp; Filtering (5 min)<br>
+    <br>
+    <strong>ONLINE (1h):</strong> Industry Reality + AI Integration + Take-Home Mission (The API Architect)<br>
+    <br>
+    ✅ By end of lab: Design RESTful URLs using Nouns; understand GET/POST/PUT/DELETE; return specific HTTP status codes; use query params for pagination
+</div>
 <blockquote>
-<p>[TIME] <strong>Session Pacing (180 min)</strong></p>
-</blockquote>
+<p>[TIME] <strong>Session Pacing (Lab - ~150 min)</strong></p>
 <table>
 <thead>
 <tr>
@@ -29,8 +43,7 @@ hr { border: none; border-top: 2px solid #e2e8f0; margin: 2em 0; }
 <th>Format</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>Hook + Analogy</td>
 <td>15 min</td>
 <td>Lecture + Whiteboard</td>
@@ -38,17 +51,12 @@ hr { border: none; border-top: 2px solid #e2e8f0; margin: 2em 0; }
 <tr>
 <td>Concept Discussion</td>
 <td>25 min</td>
-<td>Lecture + Slides + REST Constraint Diagram</td>
+<td>Lecture + Slides + The REST Contract</td>
 </tr>
 <tr>
 <td>Code Walkthrough</td>
 <td>30 min</td>
-<td>Live Spec Writing (OpenAPI YAML)</td>
-</tr>
-<tr>
-<td>Industry Reality</td>
-<td>10 min</td>
-<td>Lecture + Discussion</td>
+<td>Live Diagramming (Postman)</td>
 </tr>
 <tr>
 <td>Break</td>
@@ -61,11 +69,6 @@ hr { border: none; border-top: 2px solid #e2e8f0; margin: 2em 0; }
 <td>Lab (solo or pairs)</td>
 </tr>
 <tr>
-<td>AI Integration</td>
-<td>10 min</td>
-<td>Demo + Prompt Walkthrough</td>
-</tr>
-<tr>
 <td>Debugging + Wrap</td>
 <td>15 min</td>
 <td>Group Debug + Q&amp;A</td>
@@ -75,154 +78,139 @@ hr { border: none; border-top: 2px solid #e2e8f0; margin: 2em 0; }
 <td>10 min</td>
 <td>Overflow / Stretch discussion</td>
 </tr>
-</tbody>
-</table>
-<blockquote>
-<p>[TIP] <strong>Teaching Tip (Week 9 strategy):</strong> This is the pivot week — students switch from frontend consumers to backend designers. The biggest mental shift: "APIs are products, not implementation details." Emphasize API-first design: contract before code. The restaurant menu analogy is essential — reference it every time you introduce a new concept. Don't let students skip to coding; the OpenAPI spec IS the work this week.</p>
+</tbody></table>
 </blockquote>
-<h3>1. The Hook</h3>
 <blockquote>
-<p>[SPEAK] <strong>Script:</strong> "You know how Twitter's API changed and thousands of third-party apps broke overnight? Or how Instagram's API has strict rate limits that made developers scream? APIs are products, and bad API design is like a restaurant with no menu — customers don't know what's available, the kitchen doesn't know what to make, and everyone leaves frustrated. You're about to learn how to design APIs that other developers (including your future self) actually want to use."</p>
-<p>[SLIDE] <strong>Slide:</strong> Title: "APIs Are Products, Not Afterthoughts"<br />
-Left: Twitter API v1 -&gt; v2 migration chaos (broken apps, angry devs). Right: Stripe's API docs (clean, consistent, beloved). Subtitle: "The difference is design philosophy."</p>
-<p>[TIP] <strong>Teaching Tip:</strong> This hook creates stakes — students realize their future APIs could break real products. Make it personal: "Raise your hand if you've ever used an API with terrible documentation."</p>
-<p>[ENGAGE] <strong>Gen-Z:</strong> "Bad API design is like a GCash transfer with no confirmation screen. You send the money, but you have no idea if it went through, how much the fee was, or where to check the receipt. Good APIs tell you exactly what happened."<br />
-<strong>-&gt; Phone moment:</strong> "Open any app that uses a public API — maybe a weather app or a crypto tracker. Notice how it loads data smoothly? That's good API design working behind the scenes."</p>
-<p>[LOST] <strong>If they're lost:</strong> "Don't worry if you've never designed an API before. You've been USING them your whole life. This week, you learn how they're built from the consumer's perspective first."</p>
+<p>[TIP] <strong>Teaching Tip:</strong> We are shifting from Frontend to Backend. Students will want to dive into C# immediately. STOP them. Architecture comes before code. Today is about <em>how</em> we design URLs and JSON payloads, regardless of the language.</p>
 </blockquote>
-<hr />
-<h3>2. The Analogy</h3>
+<hr>
+<h3><span style="background:#2563eb;color:#fff;padding:2px 10px;border-radius:12px;font-size:0.8em;">15 min</span> 1. The Hook &amp; The Analogy</h3>
 <blockquote>
-<p>[SPEAK] <strong>Script:</strong> "Designing an API is like designing a restaurant menu. The menu (API contract) tells customers (frontend developers) exactly what they can order (endpoints), how to order it (HTTP methods), what they'll get back (response format), and what happens if something goes wrong (error responses). A good menu is consistent, clear, and doesn't surprise you. A bad menu has 'Chef's Surprise' as the only option and charges you differently every time. Your API contract is the menu — write it before you build the kitchen."</p>
-<p>[BOARD] <strong>Whiteboard:</strong> Draw the restaurant comparison:
-```
-MENU (API Contract)          KITCHEN (Backend Implementation)
-+------------------+         +------------------+
-| GET /posts       | ------=&gt; |  Fetch from DB   |
-| POST /posts      | ------=&gt; |  Insert to DB    |
-| DELETE /posts/42 | ------=&gt; |  Remove from DB  |
-+------------------+         +------------------+</p>
-<p>GOOD MENU:                    BAD MENU:
-- Clear descriptions          - "Chef's Surprise"
-- Consistent prices           - Different prices daily
-- Error: "Out of stock"       - Error: <em>silence</em>
-```</p>
-<p>[TIP] <strong>Teaching Tip:</strong> The menu analogy maps perfectly: menu items = endpoints, ordering method = HTTP verbs, dish description = response schema, "out of stock" = error responses. Draw it and reference it throughout.</p>
-<p>[ENGAGE] <strong>Gen-Z:</strong> "The API contract is like your Shopee order page — it shows exactly what you're getting, the price, the delivery date, and what happens if something goes wrong. No surprises."<br />
-<strong>-&gt; Turn to your neighbor:</strong> "In the restaurant analogy, what's the HTTP method? What's the response body? 15 seconds, discuss!"</p>
-<p>[LOST] <strong>If they're lost:</strong> "Forget the restaurant. API contract = agreement on what data goes in, what comes out, and what errors look like. Write it before coding. That's the whole point."</p>
+<p>[SPEAK] <strong>Script:</strong> &quot;If you build an API with URLs like <code>/getTheUsers</code> and <code>/updateUserById</code>, you will be laughed out of a job interview. An API is a professional contract between the frontend and the backend. Today, we learn the rules of REST—the language of the internet.&quot;</p>
 </blockquote>
-<hr />
-<h3>3. Concept Discussion</h3>
 <blockquote>
-<p>[TIME] <strong>Pacing:</strong> 25 min total (5 min REST constraints -&gt; 5 min resource modeling -&gt; 5 min HTTP methods -&gt; 5 min error contracts -&gt; 5 min naming conventions)</p>
-<p>[SPEAK] <strong>Script:</strong> "Without a contract, frontend and backend developers work in the dark. The backend builds endpoints the frontend doesn't need. The frontend expects data the backend doesn't provide. API-first design solves this by agreeing on the contract <em>before</em> writing any code. Let me show you the core principles."</p>
-<p>[SLIDE] <strong>Slide:</strong> Show one concept at a time. For each: (1) the concept, (2) a good vs bad example, (3) why it matters. Don't show all concepts at once — cognitive overload.</p>
-<p>[TIP] <strong>Teaching Tip:</strong> Spend the most time on resource modeling and HTTP method semantics — this is where students make the most mistakes. They'll want to create <code>/getUser</code> and <code>/createUser</code>. Stop them. Emphasize: nouns, not verbs.</p>
-<p>[ASK] <strong>Ask the class:</strong> "If you want to get all users, what's the endpoint?" (<code>GET /users</code>) "If you want to create a new user?" (<code>POST /users</code>) "If you want to delete user 42?" (<code>DELETE /users/42</code>) "See the pattern? The URL is the resource, the method is the action."</p>
-<p>[ENGAGE] <strong>Gen-Z:</strong> "REST constraints are like the rules of a board game. Stateless = each turn is independent. Client-server = you play your cards, the game board tracks the state. Uniform interface = everyone follows the same rules. Break the rules and the game falls apart."<br />
-<strong>-&gt; Phone moment:</strong> "Open your browser's DevTools -&gt; Network tab. Look at any API request. What's the HTTP method? What's the URL? What's the response status? That's REST in action."</p>
-<p>[Q&amp;A] <strong>Student Q:</strong> "Why can't I just use POST for everything? It's simpler."
-<strong>Short answer:</strong> Because it breaks the REST contract and loses semantics.
-<strong>Real answer:</strong> <code>GET</code> is cacheable and safe. <code>PUT</code> is idempotent (retry-safe). <code>DELETE</code> is idempotent. If you use POST for everything, you lose caching, retry safety, and every tool that understands HTTP semantics. Proxies, CDNs, and browsers all rely on these semantics.
-<strong>The hidden question:</strong> "Does this really matter?" -&gt; Yes. Using wrong methods breaks caching, breaks retry logic, and makes your API confusing for every developer who uses it.</p>
-<p>[Q&amp;A] <strong>Student Q:</strong> "What's the difference between PUT and PATCH?"
-<strong>Short answer:</strong> PUT replaces the entire resource. PATCH updates specific fields.
-<strong>Real answer:</strong> <code>PUT /users/1</code> with <code>{ name: "Bob" }</code> replaces the entire user — any fields not included become null/default. <code>PATCH /users/1</code> with <code>{ name: "Bob" }</code> only changes the name, leaving other fields intact. Use PUT when you have the full resource, PATCH when you're updating a few fields.
-<strong>The hidden question:</strong> "Which one should I use?" -&gt; PATCH for partial updates (most common). PUT when you're replacing the entire resource.</p>
-<p>[LOST] <strong>If they're lost:</strong> "The simplest API design summary: (1) URLs are nouns (resources). (2) HTTP methods are verbs (actions). (3) Errors are consistent. (4) Write the contract first. That's 90% of what you need."</p>
+<p>[BOARD] <strong>Whiteboard Analogy:</strong> The Vending Machine (The Contract)</p>
+<ul>
+<li><strong>The Button (Endpoint):</strong> A4 (Chips). It&#39;s clearly labeled.</li>
+<li><strong>The Coin Slot (Payload):</strong> You must insert exactly 50 pesos. If you insert a leaf, it rejects it (400 Bad Request).</li>
+<li><strong>The Output (Response):</strong> It dispenses the chips (200 OK) or shows an &#39;Out of Stock&#39; light (404 Not Found).</li>
+<li>If the vending machine changes how it works internally, you don&#39;t care, as long as A4 still gives you chips. That&#39;s a strong API contract.</li>
+</ul>
 </blockquote>
-<hr />
-<h3>4. Code Walkthrough</h3>
+<hr>
+<h3><span style="background:#2563eb;color:#fff;padding:2px 10px;border-radius:12px;font-size:0.8em;">25 min</span> 2. Core Concepts &amp; Discussion Topics</h3>
+<h4>▸ A. RESTful Principles (Nouns vs Verbs) (7 min)</h4>
 <blockquote>
-<p>[TIME] <strong>Pacing:</strong> 30 min (5 min explain contract-first -&gt; 15 min write OpenAPI spec live -&gt; 10 min validate in Swagger Editor)</p>
-<p>[SPEAK] <strong>Script:</strong> "Let's design an OpenAPI spec for a blog API — contract first, code later. We'll define the data shapes first, then the endpoints, then validate it. This is how professional teams design APIs."</p>
-<p>[SLIDE] <strong>Slide:</strong> Show each step on its own slide. Step 1: schemas (Post, Error). Step 2: GET /posts (list with pagination). Step 3: POST /posts (create with validation). Step 4: GET/DELETE /posts/{id}.</p>
-<p>[TIP] <strong>Teaching Tip:</strong> <strong>Type the OpenAPI spec live, don't paste.</strong> Explain each section as you write it: "This is the Post schema — these are the fields the client can expect." "This <code>readOnly: true</code> means the client can't set it — the server generates it."</p>
-<p>[BOARD] <strong>Whiteboard:</strong> Draw the spec structure:
-<code>openapi.yaml
-+-- info (title, version, description)
-+-- components
-|   +-- schemas (Post, Error)
-+-- paths
-    +-- /posts (GET, POST)
-    +-- /posts/{postId} (GET, DELETE)</code></p>
-<p>[ENGAGE] <strong>Gen-Z:</strong> "Writing an OpenAPI spec is like building a Gundam instruction manual. You define every part (schemas), every assembly step (endpoints), and what the final product looks like (responses). Then you build it."<br />
-<strong>-&gt; Type-along:</strong> "Open the Swagger Editor in your browser. Type the spec with me, section by section. Watch it validate in real-time — green means valid, red means fix it."</p>
-<p>[Q&amp;A] <strong>Student Q:</strong> "Why define schemas before endpoints?"
-<strong>Short answer:</strong> Because schemas are your data types — endpoints reference them.
-<strong>Real answer:</strong> Defining schemas first is like defining TypeScript interfaces before writing functions. You establish the data shapes, then endpoints reference those shapes with <code>$ref</code>. This avoids duplication and ensures consistency — every endpoint that returns a Post uses the exact same schema.
-<strong>The hidden question:</strong> "Can I write endpoints first?" -&gt; You can, but you'll end up duplicating response shapes. Schema-first is cleaner.</p>
-<p>[LOST] <strong>If they're lost:</strong> "Start with just the Post schema. Get that right. Then add the Error schema. Then one endpoint (GET /posts). Validate it. Then add the next endpoint. One piece at a time."</p>
+<p><strong>[SPEAK] Discussion:</strong> &quot;In REST, URLs represent Resources (Nouns). The HTTP Method represents the Action (Verb). We never put verbs in the URL.&quot;</p>
+<p><strong>[CODE] Example:</strong></p>
+<pre><code class="language-text">BAD:  GET /getAllUsers
+BAD:  POST /createNewUser
+
+GOOD: GET /users      (Returns a list)
+GOOD: POST /users     (Creates one)
+GOOD: GET /users/5    (Returns user #5)
+GOOD: DELETE /users/5 (Deletes user #5)
+</code></pre>
+<p><strong>[TIP] Instructor Tip:</strong> Drill this hard. &quot;The URL is the &#39;Thing&#39;. The HTTP Method is what you &#39;Do&#39; to the Thing.&quot;</p>
 </blockquote>
-<hr />
-<h3>5. The "Industry Reality"</h3>
+<h4>▸ B. JSON Standardization (6 min)</h4>
 <blockquote>
-<p>[SPEAK] <strong>Script:</strong> "Stripe's API is widely considered the gold standard of API design. Their consistency is legendary — every endpoint follows the same patterns, every error has the same structure, and their documentation is generated from their OpenAPI spec. Companies that design their API contract first (like Stripe, Twilio, GitHub) have happier developers and fewer integration bugs. Companies that don't (like early Twitter, early Facebook) spend years fixing breaking changes."</p>
-<p>[SLIDE] <strong>Slide:</strong> Stripe API docs screenshot (clean, consistent). Logos: Stripe, Twilio, GitHub. Stat: "API-first companies ship 40% faster with 60% fewer integration bugs."</p>
-<p>[TIP] <strong>Teaching Tip:</strong> Keep this to 5 minutes. Show them that API design isn't academic — it's what separates professional APIs from amateur ones.</p>
-<p>[ENGAGE] <strong>Gen-Z:</strong> <strong>-&gt; Poll:</strong> "How many of you have used an API where the docs were terrible?" (Most hands.) "That's what happens when companies don't design their API contract first."</p>
-<p>[LOST] <strong>If they're lost:</strong> "You don't need to know Stripe's entire API. Just understand: good API design = consistent patterns + clear docs + contract first. That's the standard."</p>
+<p><strong>[SPEAK] Discussion:</strong> &quot;When you send data back to the frontend, it needs to be predictable. Don&#39;t nest objects 10 layers deep. Keep it flat, clean, and consistent.&quot;</p>
+<p><strong>[CODE] Example:</strong></p>
+<pre><code class="language-json">// A predictable API response
+{
+    &quot;data&quot;: { &quot;id&quot;: 5, &quot;name&quot;: &quot;Nina&quot; },
+    &quot;success&quot;: true,
+    &quot;message&quot;: null
+}
+</code></pre>
+<p><strong>[TIP] Gen-Z Hook:</strong> Good JSON is like a well-organized Notion page. Everything has a predictable place. Bad JSON is like a messy bedroom.</p>
 </blockquote>
-<hr />
-<h3>6. Exercise</h3>
+<h4>▸ C. The API Contract / Status Codes (7 min)</h4>
 <blockquote>
-<p>[TIME] <strong>Pacing:</strong> 55 min total (5 min setup -&gt; 40 min spec writing -&gt; 10 min share)</p>
-<p>[SPEAK] <strong>Script:</strong> "Design an OpenAPI spec for an e-commerce API. Define schemas for Product, Category, Order, OrderItem, and Customer. Then define endpoints for CRUD operations, filtering, and pagination. Validate it in the Swagger Editor."</p>
-<p>[SLIDE] <strong>Slide:</strong> Exercise requirements as a checklist:
-- [ ] Define schemas: Product, Category, Order, OrderItem, Customer
-- [ ] CRUD for Products (list, get, create, update, delete)
-- [ ] <code>GET /categories/{id}/products</code> — list products by category
-- [ ] <code>POST /orders</code> — create an order with order items
-- [ ] <code>GET /orders/{id}</code> — get an order by ID
-- [ ] <code>GET /customers/{id}/orders</code> — list orders for a customer
-- [ ] Pagination (<code>page</code>, <code>limit</code>) for all list endpoints
-- [ ] Filtering where appropriate (<code>?status=pending</code>)
-- [ ] Consistent error response schema
-- [ ] Proper HTTP status codes (201, 204, 404, etc.)
-- [ ] Validate in Swagger Editor</p>
-<p>[TIP] <strong>Teaching Tip:</strong> The nested resource endpoints (requirements 3, 5, 6) are the hardest part. Students will struggle with URL design for sub-resources. Circulate and help with the pattern: <code>/parent/{id}/child</code>.</p>
-<p>[ENGAGE] <strong>Gen-Z:</strong> <strong>-&gt; Pair up:</strong> "One person handles the schemas (data shapes), the other handles the endpoints (URLs and methods). Then combine and validate together. It's like a collab — each person owns their part."</p>
-<p>[LOST] <strong>If they're lost:</strong> "Start with the Product schema. Then the GET /products endpoint. Then POST /products. Then add the other schemas. Then the nested endpoints. Build incrementally."</p>
+<p><strong>[SPEAK] Discussion:</strong> &quot;The frontend relies on Status Codes to know if it should show a success toast, a red error message, or redirect to a login screen. If your API throws an error but returns a 200 OK, you have broken the contract.&quot;</p>
+<p><strong>[VISUAL] Example:</strong></p>
+<ul>
+<li><code>200 OK</code>: Normal success.</li>
+<li><code>201 Created</code>: Success for a POST.</li>
+<li><code>400 Bad Request</code>: Frontend sent bad validation data.</li>
+<li><code>401 Unauthorized</code>: No token / Not logged in.</li>
+</ul>
+<p><strong>[TIP] Instructor Tip:</strong> Emphasize that returning <code>500</code> means the backend developer failed to catch an exception.</p>
 </blockquote>
-<hr />
-<h3>7. AI Integration Note</h3>
+<h4>▸ D. Pagination &amp; Filtering (5 min)</h4>
 <blockquote>
-<p>[TIME] <strong>Pacing:</strong> 10 min (5 min demo -&gt; 5 min try)</p>
-<p>[SPEAK] <strong>Script:</strong> "This week, ask AI to generate an OpenAPI spec from your requirements, then review every endpoint for REST compliance. Ask 'Is this endpoint using the right HTTP method?' and 'Are all error responses consistent?'"</p>
-<p>[SLIDE] <strong>Slide:</strong> AI usage guide:
-| [OK] Allowed | [NO] Not Allowed |
-|-----------|--------------|
-| "Generate an OpenAPI spec for an e-commerce API" | "Design my error contract for me" |
-| "Is this endpoint REST-compliant?" | "Do the entire exercise" |</p>
-<p>[TIP] <strong>Teaching Tip:</strong> Point out the common AI mistakes listed in the content. AI creates action-based endpoints (<code>/createUser</code>) instead of resource-based. Teach students to catch this.</p>
-<p>[ENGAGE] <strong>Gen-Z:</strong> "AI is like a junior dev who writes fast but doesn't understand REST principles. It'll give you a working spec, but you need to verify it follows resource-based design."</p>
+<p><strong>[SPEAK] Discussion:</strong> &quot;Never return the entire database. If a table has 10 million rows, <code>GET /users</code> will crash your server. You must use query parameters for pagination.&quot;</p>
+<p><strong>[CODE] Example:</strong></p>
+<pre><code class="language-text">GET /users?page=2&amp;limit=50&amp;sort=name_asc
+</code></pre>
+<p><strong>[TIP] Instructor Tip:</strong> Explain that query parameters <code>?key=value</code> are used for filtering, sorting, and pagination, while path parameters <code>/users/5</code> are used to identify a specific resource.</p>
 </blockquote>
-<hr />
-<h3>8. Debugging / "Watch Out For" Section</h3>
+<hr>
+<h3><span style="background:#2563eb;color:#fff;padding:2px 10px;border-radius:12px;font-size:0.8em;">30 min</span> 3. Code Walkthrough / Live Diagramming Blueprint</h3>
 <blockquote>
-<p>[TIME] <strong>Pacing:</strong> 15 min (5 min common errors -&gt; 5 min group debug -&gt; 5 min Q&amp;A)</p>
-<p>[SPEAK] <strong>Script:</strong> "Here are the spec errors and mental model traps you'll hit this week. The inconsistent naming alone will save you from designing a confusing API."</p>
-<p>[SLIDE] <strong>Slide:</strong> Error cards:
-<code>+--------------------------------------+
-| "OpenAPI spec validation fails"      |
-| YAML syntax errors or invalid keywords|
-| Fix: use Swagger Editor to validate  |
-+--------------------------------------+
-+--------------------------------------+
-| "Inconsistent naming conventions"    |
-| Mixed singular/plural, action verbs  |
-| Fix: pick one style and stick to it  |
-+--------------------------------------+</code></p>
-<p>[ENGAGE] <strong>Gen-Z:</strong> "The inconsistent naming trap is like your Shopee search — sometimes it's 'phone case', sometimes 'phonecase', sometimes 'phone-case'. Pick one and stick to it, or nobody can find anything."</p>
-<p>[Q&amp;A] <strong>Student Q:</strong> "REST is not a strict rulebook? So I can bend the rules?"
-<strong>Short answer:</strong> Yes, consistency matters more than purity.
-<strong>Real answer:</strong> REST is a set of architectural constraints, not a specification. Some of the best APIs bend REST rules (GraphQL, RPC-style endpoints for specific actions). The goal is that your API is predictable and consistent. If every endpoint follows the same patterns, developers can use it without reading docs for every single endpoint.
-<strong>The hidden question:</strong> "So when DO I break REST rules?" -&gt; When there's a genuinely complex action that doesn't fit the CRUD model (e.g., <code>/posts/{id}/publish</code>). But keep it rare.</p>
-<p>[LOST] <strong>If they're lost:</strong> "The #1 issue: inconsistent naming. Pick plural nouns for collections (<code>/users</code>), kebab-case for multi-word (<code>/blog-posts</code>), and proper HTTP methods. That solves 80% of design confusion."</p>
+<p>[SPEAK] <strong>Script:</strong> &quot;We aren&#39;t opening Visual Studio today. We are opening Postman and a Whiteboard to design the architecture for a Blog API.&quot;</p>
 </blockquote>
-<hr />
-<h3>Teaching Script</h3>
-<p>This week's annotations cover: pacing table at top, inline annotations per section, and this summary. The core arc is: API as product -&gt; restaurant menu analogy -&gt; REST constraints -&gt; OpenAPI spec design -&gt; validation. The biggest mental shift is from "API as implementation detail" to "API as product." The OpenAPI spec IS the deliverable this week — students should not write any backend code. Emphasize: contract first, code later. The Swagger Editor validation step is the "aha" moment — students see their spec turn from red to green. Common pitfalls: action-based endpoints (<code>/createUser</code>), inconsistent naming, wrong HTTP status codes.</p>
-<hr />
+<ul>
+<li><strong>Step 1: Designing the Endpoints</strong><ul>
+<li><em>Action:</em> Ask the class: &quot;How do we get all posts?&quot; (<code>GET /posts</code>). &quot;How do we get comments for post #2?&quot; (<code>GET /posts/2/comments</code>). Write the map on the board.</li>
+</ul>
+</li>
+<li><strong>Step 2: Inspecting a Real API</strong><ul>
+<li><em>Action:</em> Open Postman. Make a GET request to <code>https://jsonplaceholder.typicode.com/posts</code>. Show the clean JSON array.</li>
+</ul>
+</li>
+<li><strong>Step 3: Breaking the Rules</strong><ul>
+<li><em>Action:</em> Discuss why an endpoint like <code>POST /posts/2/delete</code> is horrible architecture (it mixes POST and DELETE, and puts a verb in the URL).</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3><span style="background:#2563eb;color:#fff;padding:2px 10px;border-radius:12px;font-size:0.8em;">15 min</span> 4. Debugging + Wrap</h3>
+<ul>
+<li><strong>Common Error 1:</strong> Designing <code>GET /users?id=5</code> instead of <code>GET /users/5</code>. -&gt; Query parameters are for filtering a list. Path parameters are for identifying a single specific resource.</li>
+</ul>
+<hr>
+<h3><span style="background:#2563eb;color:#fff;padding:2px 10px;border-radius:12px;font-size:0.8em;">55 min</span> 5. In-Class Exercise</h3>
+<blockquote>
+<p>[TIME] <strong>In-Class Exercise (55 min):</strong> You are building an API for a Library system. Write a Markdown document defining the exact HTTP Method, URL, and expected JSON Body for the following actions: 1) Add a new book. 2) List all books. 3) Checkout a specific book. 4) Delete a book.</p>
+</blockquote>
+<hr>
+<h3>💻 Online Session (1 hour)</h3>
+<h3>From the Trenches (Pro-Tip)</h3>
+<blockquote>
+<p>[TRENCHES] <strong>Instructor Script:</strong> &quot;Frontend and Backend developers at companies will physically argue over API design. The Frontend wants the exact shape of data they need for their React component. The Backend wants to keep the data normalized and generic. A good API is a compromise. If you build an API endpoint that only works for one specific UI button, you failed. Build APIs around resources, not screens.&quot;</p>
+</blockquote>
+<h3>AI Integration</h3>
+<ul>
+<li><strong>AI Policy:</strong> Allowed: &quot;Is this URL design RESTful?&quot; Not Allowed: &quot;Design my entire database schema.&quot;</li>
+</ul>
+<h3>Learning Baseline (Self-Assessment)</h3>
+<blockquote>
+<p><strong>[ASSESSMENT]</strong> By the end of this week, students must be able to say &quot;Yes&quot; to:</p>
+<ul>
+<li><input disabled="" type="checkbox"> I can design RESTful URLs using Nouns instead of Verbs.</li>
+<li><input disabled="" type="checkbox"> I understand when to use GET vs POST vs PUT vs DELETE.</li>
+<li><input disabled="" type="checkbox"> I know why we return specific HTTP status codes.</li>
+<li><input disabled="" type="checkbox"> I can use query parameters to design pagination (<code>?page=1</code>).</li>
+</ul>
+</blockquote>
+<h3>Take-Home Mission</h3>
+<blockquote>
+<p><strong>[HOMEWORK]</strong> <strong>Mission:</strong> &quot;The API Architect&quot;
+Write an API Specification Document for a simple &quot;Twitter Clone&quot; (Tweets and Users).</p>
+<ol>
+<li>Define 5 endpoints (Methods + URLs).</li>
+<li>Write out a sample JSON response for <code>GET /tweets</code>.</li>
+<li><strong>The Catch:</strong> Your endpoints must be perfectly RESTful. You must design an endpoint to &quot;Like&quot; a tweet without using the word &quot;Like&quot; as a verb in the URL. (Hint: Creating a &quot;like&quot; resource).</li>
+</ol>
+</blockquote>
+<h3>Instructor Assets Blueprint</h3>
+<blockquote>
+<p><strong>[ASSETS]</strong> What to prepare before this class:</p>
+<ul>
+<li><strong>Starter Repo:</strong> None. This is a design/architecture week.</li>
+<li><strong>Solution Repo:</strong> A completed API Specification Markdown document showing the perfect RESTful routes for the Library exercise.</li>
+</ul>
+</blockquote>
 </body></html>
