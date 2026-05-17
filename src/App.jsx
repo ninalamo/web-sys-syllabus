@@ -46,6 +46,29 @@ export default function App() {
   const item = ALL_ITEMS[index]
   const CurrentComponent = item?.component
 
+  const [showScrollTop, setShowScrollTop] = useState(false)
+
+  useEffect(() => {
+    const el = contentRef.current
+    if (!el) return
+
+    const handleScroll = () => {
+      setShowScrollTop(el.scrollTop > 300)
+    }
+
+    el.addEventListener('scroll', handleScroll)
+    // Run once initially
+    handleScroll()
+
+    return () => el.removeEventListener('scroll', handleScroll)
+  }, [index]) // Re-run when page changes to bind to new reference or reset scroll
+
+  const scrollToTop = () => {
+    if (contentRef.current) {
+      contentRef.current.scrollTo({ top: 0, behavior: 'smooth' })
+    }
+  }
+
   const headerTitle = useMemo(() => {
     if (!item) return ''
     for (const chapter of CHAPTERS) {
@@ -97,6 +120,14 @@ export default function App() {
           </Suspense>
         </Content>
       </div>
+
+      <button
+        className={`scroll-to-top${showScrollTop ? ' visible' : ''}`}
+        onClick={scrollToTop}
+        title="Scroll to top"
+      >
+        ▲
+      </button>
     </div>
   )
 }

@@ -13,7 +13,7 @@ export const CHAPTERS = [
       {
         title: 'Week 1: C# Translation Bootcamp',
         file: '/elective-2/week-01-csharp-translation-bootcamp.htm',
-        component: lazy(() => import('./content/CsharpTranslationBootcamp')),
+        component: lazy(() => import('./content/elective-2/week-01/CsharpTranslationBootcamp')),
         children: [
           {
             title: 'Resources',
@@ -21,17 +21,17 @@ export const CHAPTERS = [
               {
                 title: 'C# Syntax Reference',
                 file: '/elective-2/week-01/resources/csharp-syntax-reference.htm',
-                component: lazy(() => import('./content/E2W1ResoCsharpSyntaxReference'))
+                component: lazy(() => import('./content/elective-2/week-01/resources/E2W1ResoCsharpSyntaxReference'))
               },
               {
                 title: 'Learning Checklist (Self-Assessment)',
                 file: '/elective-2/week-01/resources/learning-checklist.htm',
-                component: lazy(() => import('./content/E2W1ResoLearningChecklist'))
+                component: lazy(() => import('./content/elective-2/week-01/resources/E2W1ResoLearningChecklist'))
               },
               {
                 title: 'Quick-Reference Card',
                 file: '/elective-2/week-01/resources/quick-reference-card.htm',
-                component: lazy(() => import('./content/E2W1ResoQuickReferenceCard'))
+                component: lazy(() => import('./content/elective-2/week-01/resources/E2W1ResoQuickReferenceCard'))
               }
             ]
           },
@@ -41,7 +41,7 @@ export const CHAPTERS = [
               {
                 title: 'Week 1 — Presentation Notes',
                 file: '/elective-2/week-01/presentations/slide-notes.htm',
-                component: lazy(() => import('./content/E2W1PresSlideNotes'))
+                component: lazy(() => import('./content/elective-2/week-01/presentations/E2W1PresSlideNotes'))
               }
             ]
           },
@@ -51,42 +51,42 @@ export const CHAPTERS = [
               {
                 title: 'Calculator Solution',
                 file: '/elective-2/week-01/exercises/calculator-solution.cs',
-                component: lazy(() => import('./content/E2W1ExerCalculatorSolution'))
+                component: lazy(() => import('./content/elective-2/week-01/exercises/E2W1ExerCalculatorSolution'))
               },
               {
                 title: 'Calculator Starter',
                 file: '/elective-2/week-01/exercises/calculator-starter.cs',
-                component: lazy(() => import('./content/E2W1ExerCalculatorStarter'))
+                component: lazy(() => import('./content/elective-2/week-01/exercises/E2W1ExerCalculatorStarter'))
               },
               {
                 title: 'Fizzbuzz Solution',
                 file: '/elective-2/week-01/exercises/fizzbuzz-solution.cs',
-                component: lazy(() => import('./content/E2W1ExerFizzbuzzSolution'))
+                component: lazy(() => import('./content/elective-2/week-01/exercises/E2W1ExerFizzbuzzSolution'))
               },
               {
                 title: 'Fizzbuzz Starter',
                 file: '/elective-2/week-01/exercises/fizzbuzz-starter.cs',
-                component: lazy(() => import('./content/E2W1ExerFizzbuzzStarter'))
+                component: lazy(() => import('./content/elective-2/week-01/exercises/E2W1ExerFizzbuzzStarter'))
               },
               {
                 title: 'Week 1 — In-Class Exercise: Three Small Programs',
                 file: '/elective-2/week-01/exercises/in-class-exercise-prompt.htm',
-                component: lazy(() => import('./content/E2W1ExerInClassExercisePrompt'))
+                component: lazy(() => import('./content/elective-2/week-01/exercises/E2W1ExerInClassExercisePrompt'))
               },
               {
                 title: 'Student Manager Solution',
                 file: '/elective-2/week-01/exercises/student-manager-solution.cs',
-                component: lazy(() => import('./content/E2W1ExerStudentManagerSolution'))
+                component: lazy(() => import('./content/elective-2/week-01/exercises/E2W1ExerStudentManagerSolution'))
               },
               {
                 title: 'Student Manager Starter',
                 file: '/elective-2/week-01/exercises/student-manager-starter.cs',
-                component: lazy(() => import('./content/E2W1ExerStudentManagerStarter'))
+                component: lazy(() => import('./content/elective-2/week-01/exercises/E2W1ExerStudentManagerStarter'))
               },
               {
                 title: 'Take-Home Mission: "The Translation Engine"',
                 file: '/elective-2/week-01/exercises/translation-engine-homework.htm',
-                component: lazy(() => import('./content/E2W1ExerTranslationEngineHomework'))
+                component: lazy(() => import('./content/elective-2/week-01/exercises/E2W1ExerTranslationEngineHomework'))
               }
             ]
           }
@@ -95,7 +95,7 @@ export const CHAPTERS = [
       {
         title: 'Week 2: Interfaces & DI Mental Model',
         file: '/elective-2/week-02-interfaces-and-di-mental-model.htm',
-        component: lazy(() => import('./content/InterfacesAndDiMentalModel')),
+        component: lazy(() => import('./content/elective-2/week-02/InterfacesAndDiMentalModel')),
         children: [
           {
             title: 'Resources',
@@ -103,12 +103,12 @@ export const CHAPTERS = [
               {
                 title: 'Interfaces & DI Reference',
                 file: '/elective-2/week-02/resources/interfaces-and-di-reference.htm',
-                component: lazy(() => import('./content/E2W2ResoInterfacesAndDiReference'))
+                component: lazy(() => import('./content/elective-2/week-02/resources/E2W2ResoInterfacesAndDiReference'))
               },
               {
                 title: 'Learning Checklist',
                 file: '/elective-2/week-02/resources/learning-checklist.htm',
-                component: lazy(() => import('./content/E2W2ResoLearningChecklist'))
+                component: lazy(() => import('./content/elective-2/week-02/resources/E2W2ResoLearningChecklist'))
               }
             ]
           },
@@ -118,7 +118,7 @@ export const CHAPTERS = [
               {
                 title: 'Week 2 — Presentation Notes',
                 file: '/elective-2/week-02/presentations/slide-notes.htm',
-                component: lazy(() => import('./content/E2W2PresSlideNotes'))
+                component: lazy(() => import('./content/elective-2/week-02/presentations/E2W2PresSlideNotes'))
               }
             ]
           },
@@ -128,22 +128,22 @@ export const CHAPTERS = [
               {
                 title: 'Week 2 — In-Class Exercise: Logging System with DI',
                 file: '/elective-2/week-02/exercises/in-class-exercise-prompt.htm',
-                component: lazy(() => import('./content/E2W2ExerInClassExercisePrompt'))
+                component: lazy(() => import('./content/elective-2/week-02/exercises/E2W2ExerInClassExercisePrompt'))
               },
               {
                 title: 'Logger System Solution',
                 file: '/elective-2/week-02/exercises/logger-system-solution.cs',
-                component: lazy(() => import('./content/E2W2ExerLoggerSystemSolution'))
+                component: lazy(() => import('./content/elective-2/week-02/exercises/E2W2ExerLoggerSystemSolution'))
               },
               {
                 title: 'Logger System Starter',
                 file: '/elective-2/week-02/exercises/logger-system-starter.cs',
-                component: lazy(() => import('./content/E2W2ExerLoggerSystemStarter'))
+                component: lazy(() => import('./content/elective-2/week-02/exercises/E2W2ExerLoggerSystemStarter'))
               },
               {
                 title: 'Take-Home Mission: "The Payment Gateway Swap"',
                 file: '/elective-2/week-02/exercises/payment-gateway-homework.htm',
-                component: lazy(() => import('./content/E2W2ExerPaymentGatewayHomework'))
+                component: lazy(() => import('./content/elective-2/week-02/exercises/E2W2ExerPaymentGatewayHomework'))
               }
             ]
           }
@@ -152,7 +152,7 @@ export const CHAPTERS = [
       {
         title: 'Week 3: HTTP & The Web',
         file: '/elective-2/week-03-http-and-the-web.htm',
-        component: lazy(() => import('./content/HttpAndTheWeb')),
+        component: lazy(() => import('./content/elective-2/week-03/HttpAndTheWeb')),
         children: [
           {
             title: 'Resources',
@@ -160,12 +160,12 @@ export const CHAPTERS = [
               {
                 title: 'HTTP & The Web Reference',
                 file: '/elective-2/week-03/resources/http-reference.htm',
-                component: lazy(() => import('./content/E2W3ResoHttpReference'))
+                component: lazy(() => import('./content/elective-2/week-03/resources/E2W3ResoHttpReference'))
               },
               {
                 title: 'Learning Checklist',
                 file: '/elective-2/week-03/resources/learning-checklist.htm',
-                component: lazy(() => import('./content/E2W3ResoLearningChecklist'))
+                component: lazy(() => import('./content/elective-2/week-03/resources/E2W3ResoLearningChecklist'))
               }
             ]
           },
@@ -175,7 +175,7 @@ export const CHAPTERS = [
               {
                 title: 'Week 3 — Presentation Notes',
                 file: '/elective-2/week-03/presentations/slide-notes.htm',
-                component: lazy(() => import('./content/E2W3PresSlideNotes'))
+                component: lazy(() => import('./content/elective-2/week-03/presentations/E2W3PresSlideNotes'))
               }
             ]
           },
@@ -185,17 +185,17 @@ export const CHAPTERS = [
               {
                 title: 'Week 3 — In-Class Exercise: DevTools Detective',
                 file: '/elective-2/week-03/exercises/devtools-detective-prompt.htm',
-                component: lazy(() => import('./content/E2W3ExerDevtoolsDetectivePrompt'))
+                component: lazy(() => import('./content/elective-2/week-03/exercises/E2W3ExerDevtoolsDetectivePrompt'))
               },
               {
                 title: 'Http Client Starter',
                 file: '/elective-2/week-03/exercises/http-client-starter.cs',
-                component: lazy(() => import('./content/E2W3ExerHttpClientStarter'))
+                component: lazy(() => import('./content/elective-2/week-03/exercises/E2W3ExerHttpClientStarter'))
               },
               {
                 title: 'Take-Home Mission: "The Postman Challenge"',
                 file: '/elective-2/week-03/exercises/postman-challenge-homework.htm',
-                component: lazy(() => import('./content/E2W3ExerPostmanChallengeHomework'))
+                component: lazy(() => import('./content/elective-2/week-03/exercises/E2W3ExerPostmanChallengeHomework'))
               }
             ]
           }
@@ -204,7 +204,7 @@ export const CHAPTERS = [
       {
         title: 'Week 4: MVC Big Picture',
         file: '/elective-2/week-04-mvc-big-picture.htm',
-        component: lazy(() => import('./content/MvcBigPicture')),
+        component: lazy(() => import('./content/elective-2/week-04/MvcBigPicture')),
         children: [
           {
             title: 'Resources',
@@ -212,12 +212,12 @@ export const CHAPTERS = [
               {
                 title: 'Learning Checklist',
                 file: '/elective-2/week-04/resources/learning-checklist.htm',
-                component: lazy(() => import('./content/E2W4ResoLearningChecklist'))
+                component: lazy(() => import('./content/elective-2/week-04/resources/E2W4ResoLearningChecklist'))
               },
               {
                 title: 'MVC Big Picture Reference',
                 file: '/elective-2/week-04/resources/mvc-reference.htm',
-                component: lazy(() => import('./content/E2W4ResoMvcReference'))
+                component: lazy(() => import('./content/elective-2/week-04/resources/E2W4ResoMvcReference'))
               }
             ]
           },
@@ -227,7 +227,7 @@ export const CHAPTERS = [
               {
                 title: 'Week 4 — Presentation Notes',
                 file: '/elective-2/week-04/presentations/slide-notes.htm',
-                component: lazy(() => import('./content/E2W4PresSlideNotes'))
+                component: lazy(() => import('./content/elective-2/week-04/presentations/E2W4PresSlideNotes'))
               }
             ]
           },
@@ -237,17 +237,17 @@ export const CHAPTERS = [
               {
                 title: 'Week 4 — In-Class Exercise: Movies MVC App',
                 file: '/elective-2/week-04/exercises/in-class-exercise-prompt.htm',
-                component: lazy(() => import('./content/E2W4ExerInClassExercisePrompt'))
+                component: lazy(() => import('./content/elective-2/week-04/exercises/E2W4ExerInClassExercisePrompt'))
               },
               {
                 title: 'Movies Controller Starter',
                 file: '/elective-2/week-04/exercises/movies-controller-starter.cs',
-                component: lazy(() => import('./content/E2W4ExerMoviesControllerStarter'))
+                component: lazy(() => import('./content/elective-2/week-04/exercises/E2W4ExerMoviesControllerStarter'))
               },
               {
                 title: 'Take-Home Mission: "The Portfolio Skeleton"',
                 file: '/elective-2/week-04/exercises/portfolio-skeleton-homework.htm',
-                component: lazy(() => import('./content/E2W4ExerPortfolioSkeletonHomework'))
+                component: lazy(() => import('./content/elective-2/week-04/exercises/E2W4ExerPortfolioSkeletonHomework'))
               }
             ]
           }
@@ -256,7 +256,7 @@ export const CHAPTERS = [
       {
         title: 'Week 5: Routing Deep Dive',
         file: '/elective-2/week-05-routing-deep-dive.htm',
-        component: lazy(() => import('./content/RoutingDeepDive')),
+        component: lazy(() => import('./content/elective-2/week-05/RoutingDeepDive')),
         children: [
           {
             title: 'Resources',
@@ -264,12 +264,12 @@ export const CHAPTERS = [
               {
                 title: 'Learning Checklist',
                 file: '/elective-2/week-05/resources/learning-checklist.htm',
-                component: lazy(() => import('./content/E2W5ResoLearningChecklist'))
+                component: lazy(() => import('./content/elective-2/week-05/resources/E2W5ResoLearningChecklist'))
               },
               {
                 title: 'Routing Deep Dive Reference',
                 file: '/elective-2/week-05/resources/routing-reference.htm',
-                component: lazy(() => import('./content/E2W5ResoRoutingReference'))
+                component: lazy(() => import('./content/elective-2/week-05/resources/E2W5ResoRoutingReference'))
               }
             ]
           },
@@ -279,7 +279,7 @@ export const CHAPTERS = [
               {
                 title: 'Week 5 — Presentation Notes',
                 file: '/elective-2/week-05/presentations/slide-notes.htm',
-                component: lazy(() => import('./content/E2W5PresSlideNotes'))
+                component: lazy(() => import('./content/elective-2/week-05/presentations/E2W5PresSlideNotes'))
               }
             ]
           },
@@ -289,22 +289,22 @@ export const CHAPTERS = [
               {
                 title: 'Blog Controller Solution',
                 file: '/elective-2/week-05/exercises/blog-controller-solution.cs',
-                component: lazy(() => import('./content/E2W5ExerBlogControllerSolution'))
+                component: lazy(() => import('./content/elective-2/week-05/exercises/E2W5ExerBlogControllerSolution'))
               },
               {
                 title: 'Blog Controller Starter',
                 file: '/elective-2/week-05/exercises/blog-controller-starter.cs',
-                component: lazy(() => import('./content/E2W5ExerBlogControllerStarter'))
+                component: lazy(() => import('./content/elective-2/week-05/exercises/E2W5ExerBlogControllerStarter'))
               },
               {
                 title: 'Week 5 — In-Class Exercise: Blog Routing',
                 file: '/elective-2/week-05/exercises/in-class-exercise-prompt.htm',
-                component: lazy(() => import('./content/E2W5ExerInClassExercisePrompt'))
+                component: lazy(() => import('./content/elective-2/week-05/exercises/E2W5ExerInClassExercisePrompt'))
               },
               {
                 title: 'Take-Home Mission: "The SEO Overhaul"',
                 file: '/elective-2/week-05/exercises/seo-overhaul-homework.htm',
-                component: lazy(() => import('./content/E2W5ExerSeoOverhaulHomework'))
+                component: lazy(() => import('./content/elective-2/week-05/exercises/E2W5ExerSeoOverhaulHomework'))
               }
             ]
           }
@@ -313,7 +313,7 @@ export const CHAPTERS = [
       {
         title: 'Week 6: Controllers & Action Results',
         file: '/elective-2/week-06-controllers-and-action-results.htm',
-        component: lazy(() => import('./content/ControllersAndActionResults')),
+        component: lazy(() => import('./content/elective-2/week-06/ControllersAndActionResults')),
         children: [
           {
             title: 'Resources',
@@ -321,12 +321,12 @@ export const CHAPTERS = [
               {
                 title: 'Controllers & Action Results Reference',
                 file: '/elective-2/week-06/resources/action-results-reference.htm',
-                component: lazy(() => import('./content/E2W6ResoActionResultsReference'))
+                component: lazy(() => import('./content/elective-2/week-06/resources/E2W6ResoActionResultsReference'))
               },
               {
                 title: 'Learning Checklist',
                 file: '/elective-2/week-06/resources/learning-checklist.htm',
-                component: lazy(() => import('./content/E2W6ResoLearningChecklist'))
+                component: lazy(() => import('./content/elective-2/week-06/resources/E2W6ResoLearningChecklist'))
               }
             ]
           },
@@ -336,7 +336,7 @@ export const CHAPTERS = [
               {
                 title: 'Week 6 — Presentation Notes',
                 file: '/elective-2/week-06/presentations/slide-notes.htm',
-                component: lazy(() => import('./content/E2W6PresSlideNotes'))
+                component: lazy(() => import('./content/elective-2/week-06/presentations/E2W6PresSlideNotes'))
               }
             ]
           },
@@ -346,22 +346,22 @@ export const CHAPTERS = [
               {
                 title: 'Week 6 — In-Class Exercise: SearchController',
                 file: '/elective-2/week-06/exercises/in-class-exercise-prompt.htm',
-                component: lazy(() => import('./content/E2W6ExerInClassExercisePrompt'))
+                component: lazy(() => import('./content/elective-2/week-06/exercises/E2W6ExerInClassExercisePrompt'))
               },
               {
                 title: 'Take-Home Mission: "The Safe Form Submission"',
                 file: '/elective-2/week-06/exercises/safe-form-homework.htm',
-                component: lazy(() => import('./content/E2W6ExerSafeFormHomework'))
+                component: lazy(() => import('./content/elective-2/week-06/exercises/E2W6ExerSafeFormHomework'))
               },
               {
                 title: 'Search Controller Solution',
                 file: '/elective-2/week-06/exercises/search-controller-solution.cs',
-                component: lazy(() => import('./content/E2W6ExerSearchControllerSolution'))
+                component: lazy(() => import('./content/elective-2/week-06/exercises/E2W6ExerSearchControllerSolution'))
               },
               {
                 title: 'Search Controller Starter',
                 file: '/elective-2/week-06/exercises/search-controller-starter.cs',
-                component: lazy(() => import('./content/E2W6ExerSearchControllerStarter'))
+                component: lazy(() => import('./content/elective-2/week-06/exercises/E2W6ExerSearchControllerStarter'))
               }
             ]
           }
@@ -370,7 +370,7 @@ export const CHAPTERS = [
       {
         title: 'Week 7: Views & Layouts',
         file: '/elective-2/week-07-views-and-layouts.htm',
-        component: lazy(() => import('./content/ViewsAndLayouts')),
+        component: lazy(() => import('./content/elective-2/week-07/ViewsAndLayouts')),
         children: [
           {
             title: 'Resources',
@@ -378,12 +378,12 @@ export const CHAPTERS = [
               {
                 title: 'Learning Checklist',
                 file: '/elective-2/week-07/resources/learning-checklist.htm',
-                component: lazy(() => import('./content/E2W7ResoLearningChecklist'))
+                component: lazy(() => import('./content/elective-2/week-07/resources/E2W7ResoLearningChecklist'))
               },
               {
                 title: 'Views & Layouts Reference',
                 file: '/elective-2/week-07/resources/views-and-layouts-reference.htm',
-                component: lazy(() => import('./content/E2W7ResoViewsAndLayoutsReference'))
+                component: lazy(() => import('./content/elective-2/week-07/resources/E2W7ResoViewsAndLayoutsReference'))
               }
             ]
           },
@@ -393,7 +393,7 @@ export const CHAPTERS = [
               {
                 title: 'Week 7 — Presentation Notes',
                 file: '/elective-2/week-07/presentations/slide-notes.htm',
-                component: lazy(() => import('./content/E2W7PresSlideNotes'))
+                component: lazy(() => import('./content/elective-2/week-07/presentations/E2W7PresSlideNotes'))
               }
             ]
           },
@@ -403,17 +403,17 @@ export const CHAPTERS = [
               {
                 title: 'Week 7 — In-Class Exercise: Storefront',
                 file: '/elective-2/week-07/exercises/in-class-exercise-prompt.htm',
-                component: lazy(() => import('./content/E2W7ExerInClassExercisePrompt'))
+                component: lazy(() => import('./content/elective-2/week-07/exercises/E2W7ExerInClassExercisePrompt'))
               },
               {
                 title: 'Product Tile Partial',
                 file: '/elective-2/week-07/exercises/product-tile-partial.cshtml',
-                component: lazy(() => import('./content/E2W7ExerProductTilePartial'))
+                component: lazy(() => import('./content/elective-2/week-07/exercises/E2W7ExerProductTilePartial'))
               },
               {
                 title: 'Take-Home Mission: "The Theme Switcher"',
                 file: '/elective-2/week-07/exercises/theme-switcher-homework.htm',
-                component: lazy(() => import('./content/E2W7ExerThemeSwitcherHomework'))
+                component: lazy(() => import('./content/elective-2/week-07/exercises/E2W7ExerThemeSwitcherHomework'))
               }
             ]
           }
@@ -422,7 +422,7 @@ export const CHAPTERS = [
       {
         title: 'Week 8: Model Binding & Validation',
         file: '/elective-2/week-08-model-binding-and-validation.htm',
-        component: lazy(() => import('./content/ModelBindingAndValidation')),
+        component: lazy(() => import('./content/elective-2/week-08/ModelBindingAndValidation')),
         children: [
           {
             title: 'Resources',
@@ -430,12 +430,12 @@ export const CHAPTERS = [
               {
                 title: 'Learning Checklist',
                 file: '/elective-2/week-08/resources/learning-checklist.htm',
-                component: lazy(() => import('./content/E2W8ResoLearningChecklist'))
+                component: lazy(() => import('./content/elective-2/week-08/resources/E2W8ResoLearningChecklist'))
               },
               {
                 title: 'Model Binding & Validation Reference',
                 file: '/elective-2/week-08/resources/model-binding-reference.htm',
-                component: lazy(() => import('./content/E2W8ResoModelBindingReference'))
+                component: lazy(() => import('./content/elective-2/week-08/resources/E2W8ResoModelBindingReference'))
               }
             ]
           },
@@ -445,7 +445,7 @@ export const CHAPTERS = [
               {
                 title: 'Week 8 — Presentation Notes',
                 file: '/elective-2/week-08/presentations/slide-notes.htm',
-                component: lazy(() => import('./content/E2W8PresSlideNotes'))
+                component: lazy(() => import('./content/elective-2/week-08/presentations/E2W8PresSlideNotes'))
               }
             ]
           },
@@ -455,27 +455,27 @@ export const CHAPTERS = [
               {
                 title: 'Contact Controller Solution',
                 file: '/elective-2/week-08/exercises/contact-controller-solution.cs',
-                component: lazy(() => import('./content/E2W8ExerContactControllerSolution'))
+                component: lazy(() => import('./content/elective-2/week-08/exercises/E2W8ExerContactControllerSolution'))
               },
               {
                 title: 'Contact Message Model Solution',
                 file: '/elective-2/week-08/exercises/contact-message-model-solution.cs',
-                component: lazy(() => import('./content/E2W8ExerContactMessageModelSolution'))
+                component: lazy(() => import('./content/elective-2/week-08/exercises/E2W8ExerContactMessageModelSolution'))
               },
               {
                 title: 'Contact Message Model Starter',
                 file: '/elective-2/week-08/exercises/contact-message-model-starter.cs',
-                component: lazy(() => import('./content/E2W8ExerContactMessageModelStarter'))
+                component: lazy(() => import('./content/elective-2/week-08/exercises/E2W8ExerContactMessageModelStarter'))
               },
               {
                 title: 'Week 8 — In-Class Exercise: Contact Us Form',
                 file: '/elective-2/week-08/exercises/in-class-exercise-prompt.htm',
-                component: lazy(() => import('./content/E2W8ExerInClassExercisePrompt'))
+                component: lazy(() => import('./content/elective-2/week-08/exercises/E2W8ExerInClassExercisePrompt'))
               },
               {
                 title: 'Take-Home Mission: "The Strict Sign-Up"',
                 file: '/elective-2/week-08/exercises/strict-signup-homework.htm',
-                component: lazy(() => import('./content/E2W8ExerStrictSignupHomework'))
+                component: lazy(() => import('./content/elective-2/week-08/exercises/E2W8ExerStrictSignupHomework'))
               }
             ]
           }
@@ -484,7 +484,7 @@ export const CHAPTERS = [
       {
         title: 'Week 9: EF Core Fundamentals',
         file: '/elective-2/week-09-ef-core-fundamentals.htm',
-        component: lazy(() => import('./content/EfCoreFundamentals')),
+        component: lazy(() => import('./content/elective-2/week-09/EfCoreFundamentals')),
         children: [
           {
             title: 'Resources',
@@ -492,12 +492,12 @@ export const CHAPTERS = [
               {
                 title: 'EF Core Fundamentals Reference',
                 file: '/elective-2/week-09/resources/ef-core-reference.htm',
-                component: lazy(() => import('./content/E2W9ResoEfCoreReference'))
+                component: lazy(() => import('./content/elective-2/week-09/resources/E2W9ResoEfCoreReference'))
               },
               {
                 title: 'Learning Checklist',
                 file: '/elective-2/week-09/resources/learning-checklist.htm',
-                component: lazy(() => import('./content/E2W9ResoLearningChecklist'))
+                component: lazy(() => import('./content/elective-2/week-09/resources/E2W9ResoLearningChecklist'))
               }
             ]
           },
@@ -507,7 +507,7 @@ export const CHAPTERS = [
               {
                 title: 'Week 9 — Presentation Notes',
                 file: '/elective-2/week-09/presentations/slide-notes.htm',
-                component: lazy(() => import('./content/E2W9PresSlideNotes'))
+                component: lazy(() => import('./content/elective-2/week-09/presentations/E2W9PresSlideNotes'))
               }
             ]
           },
@@ -517,17 +517,17 @@ export const CHAPTERS = [
               {
                 title: 'Take-Home Mission: "The Database Registration"',
                 file: '/elective-2/week-09/exercises/database-registration-homework.htm',
-                component: lazy(() => import('./content/E2W9ExerDatabaseRegistrationHomework'))
+                component: lazy(() => import('./content/elective-2/week-09/exercises/E2W9ExerDatabaseRegistrationHomework'))
               },
               {
                 title: 'Ef Core Books Solution',
                 file: '/elective-2/week-09/exercises/ef-core-books-solution.cs',
-                component: lazy(() => import('./content/E2W9ExerEfCoreBooksSolution'))
+                component: lazy(() => import('./content/elective-2/week-09/exercises/E2W9ExerEfCoreBooksSolution'))
               },
               {
                 title: 'Week 9 — In-Class Exercise: EF Core InMemory',
                 file: '/elective-2/week-09/exercises/in-class-exercise-prompt.htm',
-                component: lazy(() => import('./content/E2W9ExerInClassExercisePrompt'))
+                component: lazy(() => import('./content/elective-2/week-09/exercises/E2W9ExerInClassExercisePrompt'))
               }
             ]
           }
@@ -536,7 +536,7 @@ export const CHAPTERS = [
       {
         title: 'Week 10: Relationships & Data Display',
         file: '/elective-2/week-10-relationships-and-data-display.htm',
-        component: lazy(() => import('./content/RelationshipsAndDataDisplay')),
+        component: lazy(() => import('./content/elective-2/week-10/RelationshipsAndDataDisplay')),
         children: [
           {
             title: 'Resources',
@@ -544,12 +544,12 @@ export const CHAPTERS = [
               {
                 title: 'Learning Checklist',
                 file: '/elective-2/week-10/resources/learning-checklist.htm',
-                component: lazy(() => import('./content/E2W10ResoLearningChecklist'))
+                component: lazy(() => import('./content/elective-2/week-10/resources/E2W10ResoLearningChecklist'))
               },
               {
                 title: 'Relationships & Data Display Reference',
                 file: '/elective-2/week-10/resources/relationships-reference.htm',
-                component: lazy(() => import('./content/E2W10ResoRelationshipsReference'))
+                component: lazy(() => import('./content/elective-2/week-10/resources/E2W10ResoRelationshipsReference'))
               }
             ]
           },
@@ -559,7 +559,7 @@ export const CHAPTERS = [
               {
                 title: 'Week 10 — Presentation Notes',
                 file: '/elective-2/week-10/presentations/slide-notes.htm',
-                component: lazy(() => import('./content/E2W10PresSlideNotes'))
+                component: lazy(() => import('./content/elective-2/week-10/presentations/E2W10PresSlideNotes'))
               }
             ]
           },
@@ -569,17 +569,17 @@ export const CHAPTERS = [
               {
                 title: 'Take-Home Mission: "The E-Commerce Dashboard"',
                 file: '/elective-2/week-10/exercises/ecommerce-dashboard-homework.htm',
-                component: lazy(() => import('./content/E2W10ExerEcommerceDashboardHomework'))
+                component: lazy(() => import('./content/elective-2/week-10/exercises/E2W10ExerEcommerceDashboardHomework'))
               },
               {
                 title: 'Week 10 — In-Class Exercise: School System',
                 file: '/elective-2/week-10/exercises/in-class-exercise-prompt.htm',
-                component: lazy(() => import('./content/E2W10ExerInClassExercisePrompt'))
+                component: lazy(() => import('./content/elective-2/week-10/exercises/E2W10ExerInClassExercisePrompt'))
               },
               {
                 title: 'School System Solution',
                 file: '/elective-2/week-10/exercises/school-system-solution.cs',
-                component: lazy(() => import('./content/E2W10ExerSchoolSystemSolution'))
+                component: lazy(() => import('./content/elective-2/week-10/exercises/E2W10ExerSchoolSystemSolution'))
               }
             ]
           }
@@ -588,7 +588,7 @@ export const CHAPTERS = [
       {
         title: 'Week 11: Consuming APIs with HttpClient',
         file: '/elective-2/week-11-consuming-apis-with-httpclient.htm',
-        component: lazy(() => import('./content/ConsumingApisWithHttpclient')),
+        component: lazy(() => import('./content/elective-2/week-11/ConsumingApisWithHttpclient')),
         children: [
           {
             title: 'Resources',
@@ -596,12 +596,12 @@ export const CHAPTERS = [
               {
                 title: 'Consuming APIs Reference',
                 file: '/elective-2/week-11/resources/consuming-apis-reference.htm',
-                component: lazy(() => import('./content/E2W11ResoConsumingApisReference'))
+                component: lazy(() => import('./content/elective-2/week-11/resources/E2W11ResoConsumingApisReference'))
               },
               {
                 title: 'Learning Checklist',
                 file: '/elective-2/week-11/resources/learning-checklist.htm',
-                component: lazy(() => import('./content/E2W11ResoLearningChecklist'))
+                component: lazy(() => import('./content/elective-2/week-11/resources/E2W11ResoLearningChecklist'))
               }
             ]
           },
@@ -611,7 +611,7 @@ export const CHAPTERS = [
               {
                 title: 'Week 11 — Presentation Notes',
                 file: '/elective-2/week-11/presentations/slide-notes.htm',
-                component: lazy(() => import('./content/E2W11PresSlideNotes'))
+                component: lazy(() => import('./content/elective-2/week-11/presentations/E2W11PresSlideNotes'))
               }
             ]
           },
@@ -621,17 +621,17 @@ export const CHAPTERS = [
               {
                 title: 'Take-Home Mission: "The GitHub Profiler"',
                 file: '/elective-2/week-11/exercises/github-profiler-homework.htm',
-                component: lazy(() => import('./content/E2W11ExerGithubProfilerHomework'))
+                component: lazy(() => import('./content/elective-2/week-11/exercises/E2W11ExerGithubProfilerHomework'))
               },
               {
                 title: 'Week 11 — In-Class Exercise: Pokemon Viewer',
                 file: '/elective-2/week-11/exercises/in-class-exercise-prompt.htm',
-                component: lazy(() => import('./content/E2W11ExerInClassExercisePrompt'))
+                component: lazy(() => import('./content/elective-2/week-11/exercises/E2W11ExerInClassExercisePrompt'))
               },
               {
                 title: 'Pokemon Viewer Solution',
                 file: '/elective-2/week-11/exercises/pokemon-viewer-solution.cs',
-                component: lazy(() => import('./content/E2W11ExerPokemonViewerSolution'))
+                component: lazy(() => import('./content/elective-2/week-11/exercises/E2W11ExerPokemonViewerSolution'))
               }
             ]
           }
@@ -640,7 +640,7 @@ export const CHAPTERS = [
       {
         title: 'Week 12: Mini Capstone Checkpoint',
         file: '/elective-2/week-12-mini-capstone-checkpoint.htm',
-        component: lazy(() => import('./content/MiniCapstoneCheckpoint')),
+        component: lazy(() => import('./content/elective-2/week-12/MiniCapstoneCheckpoint')),
         children: [
           {
             title: 'Resources',
@@ -648,12 +648,12 @@ export const CHAPTERS = [
               {
                 title: 'Mini Capstone Checkpoint Reference',
                 file: '/elective-2/week-12/resources/capstone-checkpoint-reference.htm',
-                component: lazy(() => import('./content/E2W12ResoCapstoneCheckpointReference'))
+                component: lazy(() => import('./content/elective-2/week-12/resources/E2W12ResoCapstoneCheckpointReference'))
               },
               {
                 title: 'Learning Checklist',
                 file: '/elective-2/week-12/resources/learning-checklist.htm',
-                component: lazy(() => import('./content/E2W12ResoLearningChecklist'))
+                component: lazy(() => import('./content/elective-2/week-12/resources/E2W12ResoLearningChecklist'))
               }
             ]
           },
@@ -663,7 +663,7 @@ export const CHAPTERS = [
               {
                 title: 'Week 12 — Presentation Notes',
                 file: '/elective-2/week-12/presentations/slide-notes.htm',
-                component: lazy(() => import('./content/E2W12PresSlideNotes'))
+                component: lazy(() => import('./content/elective-2/week-12/presentations/E2W12PresSlideNotes'))
               }
             ]
           },
@@ -673,12 +673,12 @@ export const CHAPTERS = [
               {
                 title: 'Week 12 — In-Class Exercise: Peer Code Review',
                 file: '/elective-2/week-12/exercises/in-class-exercise-prompt.htm',
-                component: lazy(() => import('./content/E2W12ExerInClassExercisePrompt'))
+                component: lazy(() => import('./content/elective-2/week-12/exercises/E2W12ExerInClassExercisePrompt'))
               },
               {
                 title: 'Take-Home Mission: "The Mini-Capstone MVP"',
                 file: '/elective-2/week-12/exercises/mini-capstone-homework.htm',
-                component: lazy(() => import('./content/E2W12ExerMiniCapstoneHomework'))
+                component: lazy(() => import('./content/elective-2/week-12/exercises/E2W12ExerMiniCapstoneHomework'))
               }
             ]
           }
@@ -687,7 +687,7 @@ export const CHAPTERS = [
       {
         title: 'Week 13: Authentication & Authorization',
         file: '/elective-2/week-13-authentication-and-authorization.htm',
-        component: lazy(() => import('./content/AuthenticationAndAuthorization')),
+        component: lazy(() => import('./content/elective-2/week-13/AuthenticationAndAuthorization')),
         children: [
           {
             title: 'Resources',
@@ -695,12 +695,12 @@ export const CHAPTERS = [
               {
                 title: 'Week 13 — Identity Setup Commands',
                 file: '/elective-2/week-13/resources/identity-reference.htm',
-                component: lazy(() => import('./content/E2W13ResoIdentityReference'))
+                component: lazy(() => import('./content/elective-2/week-13/resources/E2W13ResoIdentityReference'))
               },
               {
                 title: 'Learning Checklist',
                 file: '/elective-2/week-13/resources/learning-checklist.htm',
-                component: lazy(() => import('./content/E2W13ResoLearningChecklist'))
+                component: lazy(() => import('./content/elective-2/week-13/resources/E2W13ResoLearningChecklist'))
               }
             ]
           },
@@ -710,7 +710,7 @@ export const CHAPTERS = [
               {
                 title: 'Week 13 — Presentation Notes',
                 file: '/elective-2/week-13/presentations/slide-notes.htm',
-                component: lazy(() => import('./content/E2W13PresSlideNotes'))
+                component: lazy(() => import('./content/elective-2/week-13/presentations/E2W13PresSlideNotes'))
               }
             ]
           },
@@ -720,7 +720,7 @@ export const CHAPTERS = [
               {
                 title: 'Week 13 — In-Class Exercise: App with Login Gate',
                 file: '/elective-2/week-13/exercises/in-class-exercise-prompt.htm',
-                component: lazy(() => import('./content/E2W13ExerInClassExercisePrompt'))
+                component: lazy(() => import('./content/elective-2/week-13/exercises/E2W13ExerInClassExercisePrompt'))
               }
             ]
           }
@@ -729,7 +729,7 @@ export const CHAPTERS = [
       {
         title: 'Week 14: Security Fundamentals',
         file: '/elective-2/week-14-security-fundamentals.htm',
-        component: lazy(() => import('./content/SecurityFundamentals')),
+        component: lazy(() => import('./content/elective-2/week-14/SecurityFundamentals')),
         children: [
           {
             title: 'Resources',
@@ -737,12 +737,12 @@ export const CHAPTERS = [
               {
                 title: 'Learning Checklist',
                 file: '/elective-2/week-14/resources/learning-checklist.htm',
-                component: lazy(() => import('./content/E2W14ResoLearningChecklist'))
+                component: lazy(() => import('./content/elective-2/week-14/resources/E2W14ResoLearningChecklist'))
               },
               {
                 title: 'Security Fundamentals Reference',
                 file: '/elective-2/week-14/resources/security-reference.htm',
-                component: lazy(() => import('./content/E2W14ResoSecurityReference'))
+                component: lazy(() => import('./content/elective-2/week-14/resources/E2W14ResoSecurityReference'))
               }
             ]
           },
@@ -752,7 +752,7 @@ export const CHAPTERS = [
               {
                 title: 'Week 14 — Presentation Notes',
                 file: '/elective-2/week-14/presentations/slide-notes.htm',
-                component: lazy(() => import('./content/E2W14PresSlideNotes'))
+                component: lazy(() => import('./content/elective-2/week-14/presentations/E2W14PresSlideNotes'))
               }
             ]
           },
@@ -762,7 +762,7 @@ export const CHAPTERS = [
               {
                 title: 'Week 14 — In-Class Exercise: Security Audit Report',
                 file: '/elective-2/week-14/exercises/in-class-exercise-prompt.htm',
-                component: lazy(() => import('./content/E2W14ExerInClassExercisePrompt'))
+                component: lazy(() => import('./content/elective-2/week-14/exercises/E2W14ExerInClassExercisePrompt'))
               }
             ]
           }
@@ -771,7 +771,7 @@ export const CHAPTERS = [
       {
         title: 'Week 15: Capstone Sprint',
         file: '/elective-2/week-15-capstone-sprint.htm',
-        component: lazy(() => import('./content/CapstoneSprint')),
+        component: lazy(() => import('./content/elective-2/week-15/CapstoneSprint')),
         children: [
           {
             title: 'Resources',
@@ -779,12 +779,12 @@ export const CHAPTERS = [
               {
                 title: 'Capstone Sprint Reference',
                 file: '/elective-2/week-15/resources/capstone-sprint-reference.htm',
-                component: lazy(() => import('./content/E2W15ResoCapstoneSprintReference'))
+                component: lazy(() => import('./content/elective-2/week-15/resources/E2W15ResoCapstoneSprintReference'))
               },
               {
                 title: 'Learning Checklist',
                 file: '/elective-2/week-15/resources/learning-checklist.htm',
-                component: lazy(() => import('./content/E2W15ResoLearningChecklist'))
+                component: lazy(() => import('./content/elective-2/week-15/resources/E2W15ResoLearningChecklist'))
               }
             ]
           },
@@ -794,7 +794,7 @@ export const CHAPTERS = [
               {
                 title: 'Week 15 — Presentation Notes',
                 file: '/elective-2/week-15/presentations/slide-notes.htm',
-                component: lazy(() => import('./content/E2W15PresSlideNotes'))
+                component: lazy(() => import('./content/elective-2/week-15/presentations/E2W15PresSlideNotes'))
               }
             ]
           },
@@ -804,7 +804,7 @@ export const CHAPTERS = [
               {
                 title: 'Week 15 — Capstone Sprint',
                 file: '/elective-2/week-15/exercises/capstone-sprint-prompt.htm',
-                component: lazy(() => import('./content/E2W15ExerCapstoneSprintPrompt'))
+                component: lazy(() => import('./content/elective-2/week-15/exercises/E2W15ExerCapstoneSprintPrompt'))
               }
             ]
           }
@@ -813,7 +813,7 @@ export const CHAPTERS = [
       {
         title: 'Week 16: Capstone Final — Deploy & Present',
         file: '/elective-2/week-16-capstone-final-deploy-and-present.htm',
-        component: lazy(() => import('./content/CapstoneFinalDeployAndPresent')),
+        component: lazy(() => import('./content/elective-2/week-16/CapstoneFinalDeployAndPresent')),
         children: [
           {
             title: 'Resources',
@@ -821,12 +821,12 @@ export const CHAPTERS = [
               {
                 title: 'Deployment Reference',
                 file: '/elective-2/week-16/resources/deployment-reference.htm',
-                component: lazy(() => import('./content/E2W16ResoDeploymentReference'))
+                component: lazy(() => import('./content/elective-2/week-16/resources/E2W16ResoDeploymentReference'))
               },
               {
                 title: 'Learning Checklist',
                 file: '/elective-2/week-16/resources/learning-checklist.htm',
-                component: lazy(() => import('./content/E2W16ResoLearningChecklist'))
+                component: lazy(() => import('./content/elective-2/week-16/resources/E2W16ResoLearningChecklist'))
               }
             ]
           },
@@ -836,7 +836,7 @@ export const CHAPTERS = [
               {
                 title: 'Week 16 — Presentation Notes',
                 file: '/elective-2/week-16/presentations/slide-notes.htm',
-                component: lazy(() => import('./content/E2W16PresSlideNotes'))
+                component: lazy(() => import('./content/elective-2/week-16/presentations/E2W16PresSlideNotes'))
               }
             ]
           },
@@ -846,7 +846,7 @@ export const CHAPTERS = [
               {
                 title: 'Week 16 — Capstone Deploy & Present',
                 file: '/elective-2/week-16/exercises/deploy-and-present-prompt.htm',
-                component: lazy(() => import('./content/E2W16ExerDeployAndPresentPrompt'))
+                component: lazy(() => import('./content/elective-2/week-16/exercises/E2W16ExerDeployAndPresentPrompt'))
               }
             ]
           }
@@ -871,7 +871,7 @@ export const CHAPTERS = [
       {
         title: 'Week 1: Modern JavaScript Review',
         file: '/elective-3/week-01-modern-javascript-review.htm',
-        component: lazy(() => import('./content/ModernJavascriptReview')),
+        component: lazy(() => import('./content/elective-3/week-01/ModernJavascriptReview')),
         children: [
           {
             title: 'Resources',
@@ -879,7 +879,7 @@ export const CHAPTERS = [
               {
                 title: 'Modern JavaScript Review — Resources & Reference',
                 file: '/elective-3/week-01/resources/reference-card.htm',
-                component: lazy(() => import('./content/E3W1ResoReferenceCard'))
+                component: lazy(() => import('./content/elective-3/week-01/resources/E3W1ResoReferenceCard'))
               }
             ]
           },
@@ -889,7 +889,7 @@ export const CHAPTERS = [
               {
                 title: 'Presentations — Placeholder',
                 file: '/elective-3/week-01/presentations/PLACEHOLDER.htm',
-                component: lazy(() => import('./content/E3W1PresPlaceholder'))
+                component: lazy(() => import('./content/elective-3/week-01/presentations/E3W1PresPlaceholder'))
               }
             ]
           },
@@ -899,27 +899,27 @@ export const CHAPTERS = [
               {
                 title: 'Modern JavaScript Review — Exercises',
                 file: '/elective-3/week-01/exercises/exercise-prompt.htm',
-                component: lazy(() => import('./content/E3W1ExerExercisePrompt'))
+                component: lazy(() => import('./content/elective-3/week-01/exercises/E3W1ExerExercisePrompt'))
               },
               {
                 title: 'Legacy Inventory Starter',
                 file: '/elective-3/week-01/exercises/legacy-inventory-starter.js',
-                component: lazy(() => import('./content/E3W1ExerLegacyInventoryStarter'))
+                component: lazy(() => import('./content/elective-3/week-01/exercises/E3W1ExerLegacyInventoryStarter'))
               },
               {
                 title: 'Solution Data',
                 file: '/elective-3/week-01/exercises/solution-data.js',
-                component: lazy(() => import('./content/E3W1ExerSolutionData'))
+                component: lazy(() => import('./content/elective-3/week-01/exercises/E3W1ExerSolutionData'))
               },
               {
                 title: 'Solution Utils',
                 file: '/elective-3/week-01/exercises/solution-utils.js',
-                component: lazy(() => import('./content/E3W1ExerSolutionUtils'))
+                component: lazy(() => import('./content/elective-3/week-01/exercises/E3W1ExerSolutionUtils'))
               },
               {
                 title: 'Take-Home Mission — "The Legacy Code Rescue"',
                 file: '/elective-3/week-01/exercises/take-home-mission.htm',
-                component: lazy(() => import('./content/E3W1ExerTakeHomeMission'))
+                component: lazy(() => import('./content/elective-3/week-01/exercises/E3W1ExerTakeHomeMission'))
               }
             ]
           }
@@ -928,7 +928,7 @@ export const CHAPTERS = [
       {
         title: 'Week 2: Async JavaScript Deep-Dive',
         file: '/elective-3/week-02-async-javascript-deep-dive.htm',
-        component: lazy(() => import('./content/AsyncJavascriptDeepDive')),
+        component: lazy(() => import('./content/elective-3/week-02/AsyncJavascriptDeepDive')),
         children: [
           {
             title: 'Resources',
@@ -936,7 +936,7 @@ export const CHAPTERS = [
               {
                 title: 'Async JavaScript Deep-Dive — Resources & Reference',
                 file: '/elective-3/week-02/resources/reference-card.htm',
-                component: lazy(() => import('./content/E3W2ResoReferenceCard'))
+                component: lazy(() => import('./content/elective-3/week-02/resources/E3W2ResoReferenceCard'))
               }
             ]
           },
@@ -946,7 +946,7 @@ export const CHAPTERS = [
               {
                 title: 'Presentations — Placeholder',
                 file: '/elective-3/week-02/presentations/PLACEHOLDER.htm',
-                component: lazy(() => import('./content/E3W2PresPlaceholder'))
+                component: lazy(() => import('./content/elective-3/week-02/presentations/E3W2PresPlaceholder'))
               }
             ]
           },
@@ -956,27 +956,27 @@ export const CHAPTERS = [
               {
                 title: 'Async JavaScript Deep-Dive — Exercises',
                 file: '/elective-3/week-02/exercises/exercise-prompt.htm',
-                component: lazy(() => import('./content/E3W2ExerExercisePrompt'))
+                component: lazy(() => import('./content/elective-3/week-02/exercises/E3W2ExerExercisePrompt'))
               },
               {
                 title: 'Solution Fetcher',
                 file: '/elective-3/week-02/exercises/solution-fetcher.js',
-                component: lazy(() => import('./content/E3W2ExerSolutionFetcher'))
+                component: lazy(() => import('./content/elective-3/week-02/exercises/E3W2ExerSolutionFetcher'))
               },
               {
                 title: 'Starter Fetcher',
                 file: '/elective-3/week-02/exercises/starter-fetcher.js',
-                component: lazy(() => import('./content/E3W2ExerStarterFetcher'))
+                component: lazy(() => import('./content/elective-3/week-02/exercises/E3W2ExerStarterFetcher'))
               },
               {
                 title: 'Async Fetcher Exercise',
                 file: '/elective-3/week-02/exercises/starter-index.html',
-                component: lazy(() => import('./content/E3W2ExerStarterIndex'))
+                component: lazy(() => import('./content/elective-3/week-02/exercises/E3W2ExerStarterIndex'))
               },
               {
                 title: 'Take-Home Mission — "The Broken Pokedex"',
                 file: '/elective-3/week-02/exercises/take-home-mission.htm',
-                component: lazy(() => import('./content/E3W2ExerTakeHomeMission'))
+                component: lazy(() => import('./content/elective-3/week-02/exercises/E3W2ExerTakeHomeMission'))
               }
             ]
           }
@@ -985,7 +985,7 @@ export const CHAPTERS = [
       {
         title: 'Week 3: TypeScript Essentials',
         file: '/elective-3/week-03-typescript-essentials.htm',
-        component: lazy(() => import('./content/TypescriptEssentials')),
+        component: lazy(() => import('./content/elective-3/week-03/TypescriptEssentials')),
         children: [
           {
             title: 'Resources',
@@ -993,7 +993,7 @@ export const CHAPTERS = [
               {
                 title: 'TypeScript Essentials — Resources & Reference',
                 file: '/elective-3/week-03/resources/reference-card.htm',
-                component: lazy(() => import('./content/E3W3ResoReferenceCard'))
+                component: lazy(() => import('./content/elective-3/week-03/resources/E3W3ResoReferenceCard'))
               }
             ]
           },
@@ -1003,7 +1003,7 @@ export const CHAPTERS = [
               {
                 title: 'Presentations — Placeholder',
                 file: '/elective-3/week-03/presentations/PLACEHOLDER.htm',
-                component: lazy(() => import('./content/E3W3PresPlaceholder'))
+                component: lazy(() => import('./content/elective-3/week-03/presentations/E3W3PresPlaceholder'))
               }
             ]
           },
@@ -1013,27 +1013,27 @@ export const CHAPTERS = [
               {
                 title: 'TypeScript Essentials — Exercises',
                 file: '/elective-3/week-03/exercises/exercise-prompt.htm',
-                component: lazy(() => import('./content/E3W3ExerExercisePrompt'))
+                component: lazy(() => import('./content/elective-3/week-03/exercises/E3W3ExerExercisePrompt'))
               },
               {
                 title: 'Solution Catalog',
                 file: '/elective-3/week-03/exercises/solution-catalog.ts',
-                component: lazy(() => import('./content/E3W3ExerSolutionCatalog'))
+                component: lazy(() => import('./content/elective-3/week-03/exercises/E3W3ExerSolutionCatalog'))
               },
               {
                 title: 'Starter Catalog',
                 file: '/elective-3/week-03/exercises/starter-catalog.ts',
-                component: lazy(() => import('./content/E3W3ExerStarterCatalog'))
+                component: lazy(() => import('./content/elective-3/week-03/exercises/E3W3ExerStarterCatalog'))
               },
               {
                 title: 'Starter Tsconfig',
                 file: '/elective-3/week-03/exercises/starter-tsconfig.json',
-                component: lazy(() => import('./content/E3W3ExerStarterTsconfig'))
+                component: lazy(() => import('./content/elective-3/week-03/exercises/E3W3ExerStarterTsconfig'))
               },
               {
                 title: 'Take-Home Mission — "The Strict Mode Migration"',
                 file: '/elective-3/week-03/exercises/take-home-mission.htm',
-                component: lazy(() => import('./content/E3W3ExerTakeHomeMission'))
+                component: lazy(() => import('./content/elective-3/week-03/exercises/E3W3ExerTakeHomeMission'))
               }
             ]
           }
@@ -1042,7 +1042,7 @@ export const CHAPTERS = [
       {
         title: 'Week 4: Dev Tooling & Workflow',
         file: '/elective-3/week-04-dev-tooling-and-workflow.htm',
-        component: lazy(() => import('./content/DevToolingAndWorkflow')),
+        component: lazy(() => import('./content/elective-3/week-04/DevToolingAndWorkflow')),
         children: [
           {
             title: 'Resources',
@@ -1050,7 +1050,7 @@ export const CHAPTERS = [
               {
                 title: 'NPM & Vite Quick Reference',
                 file: '/elective-3/week-04/resources/reference-card.htm',
-                component: lazy(() => import('./content/E3W4ResoReferenceCard'))
+                component: lazy(() => import('./content/elective-3/week-04/resources/E3W4ResoReferenceCard'))
               }
             ]
           },
@@ -1060,7 +1060,7 @@ export const CHAPTERS = [
               {
                 title: 'Presentations — Placeholder',
                 file: '/elective-3/week-04/presentations/PLACEHOLDER.htm',
-                component: lazy(() => import('./content/E3W4PresPlaceholder'))
+                component: lazy(() => import('./content/elective-3/week-04/presentations/E3W4PresPlaceholder'))
               }
             ]
           },
@@ -1070,12 +1070,12 @@ export const CHAPTERS = [
               {
                 title: 'Dev Tooling & Workflow — Exercises',
                 file: '/elective-3/week-04/exercises/exercise-prompt.htm',
-                component: lazy(() => import('./content/E3W4ExerExercisePrompt'))
+                component: lazy(() => import('./content/elective-3/week-04/exercises/E3W4ExerExercisePrompt'))
               },
               {
                 title: 'Take-Home Mission — "The Linter\'s Revenge"',
                 file: '/elective-3/week-04/exercises/take-home-mission.htm',
-                component: lazy(() => import('./content/E3W4ExerTakeHomeMission'))
+                component: lazy(() => import('./content/elective-3/week-04/exercises/E3W4ExerTakeHomeMission'))
               }
             ]
           }
@@ -1084,7 +1084,7 @@ export const CHAPTERS = [
       {
         title: 'Week 5: Component Thinking (Vanilla JS)',
         file: '/elective-3/week-05-component-thinking-in-vanilla-js.htm',
-        component: lazy(() => import('./content/ComponentThinkingInVanillaJs')),
+        component: lazy(() => import('./content/elective-3/week-05/ComponentThinkingInVanillaJs')),
         children: [
           {
             title: 'Resources',
@@ -1092,7 +1092,7 @@ export const CHAPTERS = [
               {
                 title: 'Component Thinking (Vanilla JS) — Resources & Reference',
                 file: '/elective-3/week-05/resources/reference-card.htm',
-                component: lazy(() => import('./content/E3W5ResoReferenceCard'))
+                component: lazy(() => import('./content/elective-3/week-05/resources/E3W5ResoReferenceCard'))
               }
             ]
           },
@@ -1102,7 +1102,7 @@ export const CHAPTERS = [
               {
                 title: 'Presentations — Placeholder',
                 file: '/elective-3/week-05/presentations/PLACEHOLDER.htm',
-                component: lazy(() => import('./content/E3W5PresPlaceholder'))
+                component: lazy(() => import('./content/elective-3/week-05/presentations/E3W5PresPlaceholder'))
               }
             ]
           },
@@ -1112,27 +1112,27 @@ export const CHAPTERS = [
               {
                 title: 'Component Thinking (Vanilla JS) — Exercises',
                 file: '/elective-3/week-05/exercises/exercise-prompt.htm',
-                component: lazy(() => import('./content/E3W5ExerExercisePrompt'))
+                component: lazy(() => import('./content/elective-3/week-05/exercises/E3W5ExerExercisePrompt'))
               },
               {
                 title: 'Solution App',
                 file: '/elective-3/week-05/exercises/solution-app.js',
-                component: lazy(() => import('./content/E3W5ExerSolutionApp'))
+                component: lazy(() => import('./content/elective-3/week-05/exercises/E3W5ExerSolutionApp'))
               },
               {
                 title: 'Starter App',
                 file: '/elective-3/week-05/exercises/starter-app.js',
-                component: lazy(() => import('./content/E3W5ExerStarterApp'))
+                component: lazy(() => import('./content/elective-3/week-05/exercises/E3W5ExerStarterApp'))
               },
               {
                 title: 'Todo List',
                 file: '/elective-3/week-05/exercises/starter-index.html',
-                component: lazy(() => import('./content/E3W5ExerStarterIndex'))
+                component: lazy(() => import('./content/elective-3/week-05/exercises/E3W5ExerStarterIndex'))
               },
               {
                 title: 'Take-Home Mission — "The Component Factory"',
                 file: '/elective-3/week-05/exercises/take-home-mission.htm',
-                component: lazy(() => import('./content/E3W5ExerTakeHomeMission'))
+                component: lazy(() => import('./content/elective-3/week-05/exercises/E3W5ExerTakeHomeMission'))
               }
             ]
           }
@@ -1141,7 +1141,7 @@ export const CHAPTERS = [
       {
         title: 'Week 6: React Fundamentals',
         file: '/elective-3/week-06-react-fundamentals.htm',
-        component: lazy(() => import('./content/ReactFundamentals')),
+        component: lazy(() => import('./content/elective-3/week-06/ReactFundamentals')),
         children: [
           {
             title: 'Resources',
@@ -1149,7 +1149,7 @@ export const CHAPTERS = [
               {
                 title: 'React Fundamentals — Resources & Reference',
                 file: '/elective-3/week-06/resources/reference-card.htm',
-                component: lazy(() => import('./content/E3W6ResoReferenceCard'))
+                component: lazy(() => import('./content/elective-3/week-06/resources/E3W6ResoReferenceCard'))
               }
             ]
           },
@@ -1159,7 +1159,7 @@ export const CHAPTERS = [
               {
                 title: 'Presentations — Placeholder',
                 file: '/elective-3/week-06/presentations/PLACEHOLDER.htm',
-                component: lazy(() => import('./content/E3W6PresPlaceholder'))
+                component: lazy(() => import('./content/elective-3/week-06/presentations/E3W6PresPlaceholder'))
               }
             ]
           },
@@ -1169,22 +1169,22 @@ export const CHAPTERS = [
               {
                 title: 'React Fundamentals — Exercises',
                 file: '/elective-3/week-06/exercises/exercise-prompt.htm',
-                component: lazy(() => import('./content/E3W6ExerExercisePrompt'))
+                component: lazy(() => import('./content/elective-3/week-06/exercises/E3W6ExerExercisePrompt'))
               },
               {
                 title: 'Solution Counter',
                 file: '/elective-3/week-06/exercises/solution-counter.jsx',
-                component: lazy(() => import('./content/E3W6ExerSolutionCounter'))
+                component: lazy(() => import('./content/elective-3/week-06/exercises/E3W6ExerSolutionCounter'))
               },
               {
                 title: 'Solution Profilecard',
                 file: '/elective-3/week-06/exercises/solution-profilecard.jsx',
-                component: lazy(() => import('./content/E3W6ExerSolutionProfilecard'))
+                component: lazy(() => import('./content/elective-3/week-06/exercises/E3W6ExerSolutionProfilecard'))
               },
               {
                 title: 'Take-Home Mission — "The State Toggler"',
                 file: '/elective-3/week-06/exercises/take-home-mission.htm',
-                component: lazy(() => import('./content/E3W6ExerTakeHomeMission'))
+                component: lazy(() => import('./content/elective-3/week-06/exercises/E3W6ExerTakeHomeMission'))
               }
             ]
           }
@@ -1193,7 +1193,7 @@ export const CHAPTERS = [
       {
         title: 'Week 7: Effects & Data Fetching',
         file: '/elective-3/week-07-effects-and-data-fetching.htm',
-        component: lazy(() => import('./content/EffectsAndDataFetching')),
+        component: lazy(() => import('./content/elective-3/week-07/EffectsAndDataFetching')),
         children: [
           {
             title: 'Resources',
@@ -1201,7 +1201,7 @@ export const CHAPTERS = [
               {
                 title: 'Effects & Data Fetching — Resources & Reference',
                 file: '/elective-3/week-07/resources/reference-card.htm',
-                component: lazy(() => import('./content/E3W7ResoReferenceCard'))
+                component: lazy(() => import('./content/elective-3/week-07/resources/E3W7ResoReferenceCard'))
               }
             ]
           },
@@ -1211,7 +1211,7 @@ export const CHAPTERS = [
               {
                 title: 'Presentations — Placeholder',
                 file: '/elective-3/week-07/presentations/PLACEHOLDER.htm',
-                component: lazy(() => import('./content/E3W7PresPlaceholder'))
+                component: lazy(() => import('./content/elective-3/week-07/presentations/E3W7PresPlaceholder'))
               }
             ]
           },
@@ -1221,22 +1221,22 @@ export const CHAPTERS = [
               {
                 title: 'Effects & Data Fetching — Exercises',
                 file: '/elective-3/week-07/exercises/exercise-prompt.htm',
-                component: lazy(() => import('./content/E3W7ExerExercisePrompt'))
+                component: lazy(() => import('./content/elective-3/week-07/exercises/E3W7ExerExercisePrompt'))
               },
               {
                 title: 'Solution Pokesearch',
                 file: '/elective-3/week-07/exercises/solution-pokesearch.jsx',
-                component: lazy(() => import('./content/E3W7ExerSolutionPokesearch'))
+                component: lazy(() => import('./content/elective-3/week-07/exercises/E3W7ExerSolutionPokesearch'))
               },
               {
                 title: 'Solution Window Resizer',
                 file: '/elective-3/week-07/exercises/solution-window-resizer.jsx',
-                component: lazy(() => import('./content/E3W7ExerSolutionWindowResizer'))
+                component: lazy(() => import('./content/elective-3/week-07/exercises/E3W7ExerSolutionWindowResizer'))
               },
               {
                 title: 'Take-Home Mission — "The Window Resizer"',
                 file: '/elective-3/week-07/exercises/take-home-mission.htm',
-                component: lazy(() => import('./content/E3W7ExerTakeHomeMission'))
+                component: lazy(() => import('./content/elective-3/week-07/exercises/E3W7ExerTakeHomeMission'))
               }
             ]
           }
@@ -1245,7 +1245,7 @@ export const CHAPTERS = [
       {
         title: 'Week 8: React Router & SPA Concepts',
         file: '/elective-3/week-08-react-router-and-spa-concepts.htm',
-        component: lazy(() => import('./content/ReactRouterAndSpaConcepts')),
+        component: lazy(() => import('./content/elective-3/week-08/ReactRouterAndSpaConcepts')),
         children: [
           {
             title: 'Resources',
@@ -1253,7 +1253,7 @@ export const CHAPTERS = [
               {
                 title: 'React Router & SPA Concepts — Resources & Reference',
                 file: '/elective-3/week-08/resources/reference-card.htm',
-                component: lazy(() => import('./content/E3W8ResoReferenceCard'))
+                component: lazy(() => import('./content/elective-3/week-08/resources/E3W8ResoReferenceCard'))
               }
             ]
           },
@@ -1263,7 +1263,7 @@ export const CHAPTERS = [
               {
                 title: 'Presentations — Placeholder',
                 file: '/elective-3/week-08/presentations/PLACEHOLDER.htm',
-                component: lazy(() => import('./content/E3W8PresPlaceholder'))
+                component: lazy(() => import('./content/elective-3/week-08/presentations/E3W8PresPlaceholder'))
               }
             ]
           },
@@ -1273,17 +1273,17 @@ export const CHAPTERS = [
               {
                 title: 'React Router & SPA Concepts — Exercises',
                 file: '/elective-3/week-08/exercises/exercise-prompt.htm',
-                component: lazy(() => import('./content/E3W8ExerExercisePrompt'))
+                component: lazy(() => import('./content/elective-3/week-08/exercises/E3W8ExerExercisePrompt'))
               },
               {
                 title: 'Solution Portfolio',
                 file: '/elective-3/week-08/exercises/solution-portfolio.jsx',
-                component: lazy(() => import('./content/E3W8ExerSolutionPortfolio'))
+                component: lazy(() => import('./content/elective-3/week-08/exercises/E3W8ExerSolutionPortfolio'))
               },
               {
                 title: 'Take-Home Mission — "The Fake E-Commerce Site"',
                 file: '/elective-3/week-08/exercises/take-home-mission.htm',
-                component: lazy(() => import('./content/E3W8ExerTakeHomeMission'))
+                component: lazy(() => import('./content/elective-3/week-08/exercises/E3W8ExerTakeHomeMission'))
               }
             ]
           }
@@ -1292,7 +1292,7 @@ export const CHAPTERS = [
       {
         title: 'Week 9: API Design Philosophy',
         file: '/elective-3/week-09-api-design-philosophy.htm',
-        component: lazy(() => import('./content/ApiDesignPhilosophy')),
+        component: lazy(() => import('./content/elective-3/week-09/ApiDesignPhilosophy')),
         children: [
           {
             title: 'Resources',
@@ -1300,7 +1300,7 @@ export const CHAPTERS = [
               {
                 title: 'API Design Philosophy — Resources & Reference',
                 file: '/elective-3/week-09/resources/reference-card.htm',
-                component: lazy(() => import('./content/E3W9ResoReferenceCard'))
+                component: lazy(() => import('./content/elective-3/week-09/resources/E3W9ResoReferenceCard'))
               }
             ]
           },
@@ -1310,7 +1310,7 @@ export const CHAPTERS = [
               {
                 title: 'Presentations — Placeholder',
                 file: '/elective-3/week-09/presentations/PLACEHOLDER.htm',
-                component: lazy(() => import('./content/E3W9PresPlaceholder'))
+                component: lazy(() => import('./content/elective-3/week-09/presentations/E3W9PresPlaceholder'))
               }
             ]
           },
@@ -1320,17 +1320,17 @@ export const CHAPTERS = [
               {
                 title: 'API Design Philosophy — Exercises',
                 file: '/elective-3/week-09/exercises/exercise-prompt.htm',
-                component: lazy(() => import('./content/E3W9ExerExercisePrompt'))
+                component: lazy(() => import('./content/elective-3/week-09/exercises/E3W9ExerExercisePrompt'))
               },
               {
                 title: 'Library API Design — Solution',
                 file: '/elective-3/week-09/exercises/solution-library-api.htm',
-                component: lazy(() => import('./content/E3W9ExerSolutionLibraryApi'))
+                component: lazy(() => import('./content/elective-3/week-09/exercises/E3W9ExerSolutionLibraryApi'))
               },
               {
                 title: 'Take-Home Mission — "The API Architect"',
                 file: '/elective-3/week-09/exercises/take-home-mission.htm',
-                component: lazy(() => import('./content/E3W9ExerTakeHomeMission'))
+                component: lazy(() => import('./content/elective-3/week-09/exercises/E3W9ExerTakeHomeMission'))
               }
             ]
           }
@@ -1339,7 +1339,7 @@ export const CHAPTERS = [
       {
         title: 'Week 10: ASP.NET Core Web API',
         file: '/elective-3/week-10-aspnet-core-web-api.htm',
-        component: lazy(() => import('./content/AspnetCoreWebApi')),
+        component: lazy(() => import('./content/elective-3/week-10/AspnetCoreWebApi')),
         children: [
           {
             title: 'Resources',
@@ -1347,7 +1347,7 @@ export const CHAPTERS = [
               {
                 title: 'ASP.NET Core Web API — Resources & Reference',
                 file: '/elective-3/week-10/resources/reference-card.htm',
-                component: lazy(() => import('./content/E3W10ResoReferenceCard'))
+                component: lazy(() => import('./content/elective-3/week-10/resources/E3W10ResoReferenceCard'))
               }
             ]
           },
@@ -1357,7 +1357,7 @@ export const CHAPTERS = [
               {
                 title: 'Presentations — Placeholder',
                 file: '/elective-3/week-10/presentations/PLACEHOLDER.htm',
-                component: lazy(() => import('./content/E3W10PresPlaceholder'))
+                component: lazy(() => import('./content/elective-3/week-10/presentations/E3W10PresPlaceholder'))
               }
             ]
           },
@@ -1367,17 +1367,17 @@ export const CHAPTERS = [
               {
                 title: 'ASP.NET Core Web API — Exercises',
                 file: '/elective-3/week-10/exercises/exercise-prompt.htm',
-                component: lazy(() => import('./content/E3W10ExerExercisePrompt'))
+                component: lazy(() => import('./content/elective-3/week-10/exercises/E3W10ExerExercisePrompt'))
               },
               {
                 title: 'Solution Games Controller',
                 file: '/elective-3/week-10/exercises/solution-games-controller.cs',
-                component: lazy(() => import('./content/E3W10ExerSolutionGamesController'))
+                component: lazy(() => import('./content/elective-3/week-10/exercises/E3W10ExerSolutionGamesController'))
               },
               {
                 title: 'Take-Home Mission — "The Secure DTO"',
                 file: '/elective-3/week-10/exercises/take-home-mission.htm',
-                component: lazy(() => import('./content/E3W10ExerTakeHomeMission'))
+                component: lazy(() => import('./content/elective-3/week-10/exercises/E3W10ExerTakeHomeMission'))
               }
             ]
           }
@@ -1386,7 +1386,7 @@ export const CHAPTERS = [
       {
         title: 'Week 11: Frontend/Backend Integration',
         file: '/elective-3/week-11-frontend-backend-integration.htm',
-        component: lazy(() => import('./content/FrontendBackendIntegration')),
+        component: lazy(() => import('./content/elective-3/week-11/FrontendBackendIntegration')),
         children: [
           {
             title: 'Resources',
@@ -1394,7 +1394,7 @@ export const CHAPTERS = [
               {
                 title: 'Frontend/Backend Integration — Resources & Reference',
                 file: '/elective-3/week-11/resources/reference-card.htm',
-                component: lazy(() => import('./content/E3W11ResoReferenceCard'))
+                component: lazy(() => import('./content/elective-3/week-11/resources/E3W11ResoReferenceCard'))
               }
             ]
           },
@@ -1404,7 +1404,7 @@ export const CHAPTERS = [
               {
                 title: 'Presentations — Placeholder',
                 file: '/elective-3/week-11/presentations/PLACEHOLDER.htm',
-                component: lazy(() => import('./content/E3W11PresPlaceholder'))
+                component: lazy(() => import('./content/elective-3/week-11/presentations/E3W11PresPlaceholder'))
               }
             ]
           },
@@ -1414,17 +1414,17 @@ export const CHAPTERS = [
               {
                 title: 'Frontend/Backend Integration — Exercises',
                 file: '/elective-3/week-11/exercises/exercise-prompt.htm',
-                component: lazy(() => import('./content/E3W11ExerExercisePrompt'))
+                component: lazy(() => import('./content/elective-3/week-11/exercises/E3W11ExerExercisePrompt'))
               },
               {
                 title: 'Solution Todo App',
                 file: '/elective-3/week-11/exercises/solution-todo-app.jsx',
-                component: lazy(() => import('./content/E3W11ExerSolutionTodoApp'))
+                component: lazy(() => import('./content/elective-3/week-11/exercises/E3W11ExerSolutionTodoApp'))
               },
               {
                 title: 'Take-Home Mission — "The Full Stack Delete"',
                 file: '/elective-3/week-11/exercises/take-home-mission.htm',
-                component: lazy(() => import('./content/E3W11ExerTakeHomeMission'))
+                component: lazy(() => import('./content/elective-3/week-11/exercises/E3W11ExerTakeHomeMission'))
               }
             ]
           }
@@ -1433,7 +1433,7 @@ export const CHAPTERS = [
       {
         title: 'Week 12: API Versioning & Documentation',
         file: '/elective-3/week-12-api-versioning-and-documentation.htm',
-        component: lazy(() => import('./content/ApiVersioningAndDocumentation')),
+        component: lazy(() => import('./content/elective-3/week-12/ApiVersioningAndDocumentation')),
         children: [
           {
             title: 'Resources',
@@ -1441,7 +1441,7 @@ export const CHAPTERS = [
               {
                 title: 'API Versioning & Documentation — Resources & Reference',
                 file: '/elective-3/week-12/resources/reference-card.htm',
-                component: lazy(() => import('./content/E3W12ResoReferenceCard'))
+                component: lazy(() => import('./content/elective-3/week-12/resources/E3W12ResoReferenceCard'))
               }
             ]
           },
@@ -1451,7 +1451,7 @@ export const CHAPTERS = [
               {
                 title: 'Presentations — Placeholder',
                 file: '/elective-3/week-12/presentations/PLACEHOLDER.htm',
-                component: lazy(() => import('./content/E3W12PresPlaceholder'))
+                component: lazy(() => import('./content/elective-3/week-12/presentations/E3W12PresPlaceholder'))
               }
             ]
           },
@@ -1461,22 +1461,22 @@ export const CHAPTERS = [
               {
                 title: 'API Versioning & Documentation — Exercises',
                 file: '/elective-3/week-12/exercises/exercise-prompt.htm',
-                component: lazy(() => import('./content/E3W12ExerExercisePrompt'))
+                component: lazy(() => import('./content/elective-3/week-12/exercises/E3W12ExerExercisePrompt'))
               },
               {
                 title: 'Solution Users V1',
                 file: '/elective-3/week-12/exercises/solution-users-v1.cs',
-                component: lazy(() => import('./content/E3W12ExerSolutionUsersV1'))
+                component: lazy(() => import('./content/elective-3/week-12/exercises/E3W12ExerSolutionUsersV1'))
               },
               {
                 title: 'Solution Users V2',
                 file: '/elective-3/week-12/exercises/solution-users-v2.cs',
-                component: lazy(() => import('./content/E3W12ExerSolutionUsersV2'))
+                component: lazy(() => import('./content/elective-3/week-12/exercises/E3W12ExerSolutionUsersV2'))
               },
               {
                 title: 'Take-Home Mission — "The Professional Contract"',
                 file: '/elective-3/week-12/exercises/take-home-mission.htm',
-                component: lazy(() => import('./content/E3W12ExerTakeHomeMission'))
+                component: lazy(() => import('./content/elective-3/week-12/exercises/E3W12ExerTakeHomeMission'))
               }
             ]
           }
@@ -1485,7 +1485,7 @@ export const CHAPTERS = [
       {
         title: 'Week 13: Auth Deep-Dive',
         file: '/elective-3/week-13-auth-deep-dive.htm',
-        component: lazy(() => import('./content/AuthDeepDive')),
+        component: lazy(() => import('./content/elective-3/week-13/AuthDeepDive')),
         children: [
           {
             title: 'Resources',
@@ -1493,7 +1493,7 @@ export const CHAPTERS = [
               {
                 title: 'Auth Deep-Dive — Resources & Reference',
                 file: '/elective-3/week-13/resources/reference-card.htm',
-                component: lazy(() => import('./content/E3W13ResoReferenceCard'))
+                component: lazy(() => import('./content/elective-3/week-13/resources/E3W13ResoReferenceCard'))
               }
             ]
           },
@@ -1503,7 +1503,7 @@ export const CHAPTERS = [
               {
                 title: 'Presentations — Placeholder',
                 file: '/elective-3/week-13/presentations/PLACEHOLDER.htm',
-                component: lazy(() => import('./content/E3W13PresPlaceholder'))
+                component: lazy(() => import('./content/elective-3/week-13/presentations/E3W13PresPlaceholder'))
               }
             ]
           },
@@ -1513,22 +1513,22 @@ export const CHAPTERS = [
               {
                 title: 'Auth Deep-Dive — Exercises',
                 file: '/elective-3/week-13/exercises/exercise-prompt.htm',
-                component: lazy(() => import('./content/E3W13ExerExercisePrompt'))
+                component: lazy(() => import('./content/elective-3/week-13/exercises/E3W13ExerExercisePrompt'))
               },
               {
                 title: 'Solution Auth Controller',
                 file: '/elective-3/week-13/exercises/solution-auth-controller.cs',
-                component: lazy(() => import('./content/E3W13ExerSolutionAuthController'))
+                component: lazy(() => import('./content/elective-3/week-13/exercises/E3W13ExerSolutionAuthController'))
               },
               {
                 title: 'Solution Token Service',
                 file: '/elective-3/week-13/exercises/solution-token-service.cs',
-                component: lazy(() => import('./content/E3W13ExerSolutionTokenService'))
+                component: lazy(() => import('./content/elective-3/week-13/exercises/E3W13ExerSolutionTokenService'))
               },
               {
                 title: 'Take-Home Mission — "The Security Audit"',
                 file: '/elective-3/week-13/exercises/take-home-mission.htm',
-                component: lazy(() => import('./content/E3W13ExerTakeHomeMission'))
+                component: lazy(() => import('./content/elective-3/week-13/exercises/E3W13ExerTakeHomeMission'))
               }
             ]
           }
@@ -1537,7 +1537,7 @@ export const CHAPTERS = [
       {
         title: 'Week 14: Testing',
         file: '/elective-3/week-14-testing.htm',
-        component: lazy(() => import('./content/Testing')),
+        component: lazy(() => import('./content/elective-3/week-14/Testing')),
         children: [
           {
             title: 'Resources',
@@ -1545,7 +1545,7 @@ export const CHAPTERS = [
               {
                 title: 'Testing — Resources & Reference',
                 file: '/elective-3/week-14/resources/reference-card.htm',
-                component: lazy(() => import('./content/E3W14ResoReferenceCard'))
+                component: lazy(() => import('./content/elective-3/week-14/resources/E3W14ResoReferenceCard'))
               }
             ]
           },
@@ -1555,7 +1555,7 @@ export const CHAPTERS = [
               {
                 title: 'Presentations — Placeholder',
                 file: '/elective-3/week-14/presentations/PLACEHOLDER.htm',
-                component: lazy(() => import('./content/E3W14PresPlaceholder'))
+                component: lazy(() => import('./content/elective-3/week-14/presentations/E3W14PresPlaceholder'))
               }
             ]
           },
@@ -1565,27 +1565,27 @@ export const CHAPTERS = [
               {
                 title: 'Testing — Exercises',
                 file: '/elective-3/week-14/exercises/exercise-prompt.htm',
-                component: lazy(() => import('./content/E3W14ExerExercisePrompt'))
+                component: lazy(() => import('./content/elective-3/week-14/exercises/E3W14ExerExercisePrompt'))
               },
               {
                 title: 'Solution E2e Tests',
                 file: '/elective-3/week-14/exercises/solution-e2e-tests.ts',
-                component: lazy(() => import('./content/E3W14ExerSolutionE2eTests'))
+                component: lazy(() => import('./content/elective-3/week-14/exercises/E3W14ExerSolutionE2eTests'))
               },
               {
                 title: 'Solution Integration Tests',
                 file: '/elective-3/week-14/exercises/solution-integration-tests.cs',
-                component: lazy(() => import('./content/E3W14ExerSolutionIntegrationTests'))
+                component: lazy(() => import('./content/elective-3/week-14/exercises/E3W14ExerSolutionIntegrationTests'))
               },
               {
                 title: 'Solution Unit Tests',
                 file: '/elective-3/week-14/exercises/solution-unit-tests.cs',
-                component: lazy(() => import('./content/E3W14ExerSolutionUnitTests'))
+                component: lazy(() => import('./content/elective-3/week-14/exercises/E3W14ExerSolutionUnitTests'))
               },
               {
                 title: 'Take-Home Mission — "The Test Coverage Challenge"',
                 file: '/elective-3/week-14/exercises/take-home-mission.htm',
-                component: lazy(() => import('./content/E3W14ExerTakeHomeMission'))
+                component: lazy(() => import('./content/elective-3/week-14/exercises/E3W14ExerTakeHomeMission'))
               }
             ]
           }
@@ -1594,7 +1594,7 @@ export const CHAPTERS = [
       {
         title: 'Week 15: CI/CD & Deployment',
         file: '/elective-3/week-15-ci-cd-and-deployment.htm',
-        component: lazy(() => import('./content/CiCdAndDeployment')),
+        component: lazy(() => import('./content/elective-3/week-15/CiCdAndDeployment')),
         children: [
           {
             title: 'Resources',
@@ -1602,7 +1602,7 @@ export const CHAPTERS = [
               {
                 title: 'CI/CD & Deployment — Resources & Reference',
                 file: '/elective-3/week-15/resources/reference-card.htm',
-                component: lazy(() => import('./content/E3W15ResoReferenceCard'))
+                component: lazy(() => import('./content/elective-3/week-15/resources/E3W15ResoReferenceCard'))
               }
             ]
           },
@@ -1612,7 +1612,7 @@ export const CHAPTERS = [
               {
                 title: 'Presentations — Placeholder',
                 file: '/elective-3/week-15/presentations/PLACEHOLDER.htm',
-                component: lazy(() => import('./content/E3W15PresPlaceholder'))
+                component: lazy(() => import('./content/elective-3/week-15/presentations/E3W15PresPlaceholder'))
               }
             ]
           },
@@ -1622,22 +1622,22 @@ export const CHAPTERS = [
               {
                 title: 'CI/CD & Deployment — Exercises',
                 file: '/elective-3/week-15/exercises/exercise-prompt.htm',
-                component: lazy(() => import('./content/E3W15ExerExercisePrompt'))
+                component: lazy(() => import('./content/elective-3/week-15/exercises/E3W15ExerExercisePrompt'))
               },
               {
                 title: 'Solution Cd Yml',
                 file: '/elective-3/week-15/exercises/solution-cd-yml',
-                component: lazy(() => import('./content/E3W15ExerSolutionCdYml'))
+                component: lazy(() => import('./content/elective-3/week-15/exercises/E3W15ExerSolutionCdYml'))
               },
               {
                 title: 'Solution Ci Yml',
                 file: '/elective-3/week-15/exercises/solution-ci-yml',
-                component: lazy(() => import('./content/E3W15ExerSolutionCiYml'))
+                component: lazy(() => import('./content/elective-3/week-15/exercises/E3W15ExerSolutionCiYml'))
               },
               {
                 title: 'Take-Home Mission — "The Live Deploy"',
                 file: '/elective-3/week-15/exercises/take-home-mission.htm',
-                component: lazy(() => import('./content/E3W15ExerTakeHomeMission'))
+                component: lazy(() => import('./content/elective-3/week-15/exercises/E3W15ExerTakeHomeMission'))
               }
             ]
           }
@@ -1646,7 +1646,7 @@ export const CHAPTERS = [
       {
         title: 'Week 16: Capstone Final',
         file: '/elective-3/week-16-capstone-final.htm',
-        component: lazy(() => import('./content/CapstoneFinal')),
+        component: lazy(() => import('./content/elective-3/week-16/CapstoneFinal')),
         children: [
           {
             title: 'Resources',
@@ -1654,7 +1654,7 @@ export const CHAPTERS = [
               {
                 title: 'Capstone Final — Resources & Reference',
                 file: '/elective-3/week-16/resources/reference-card.htm',
-                component: lazy(() => import('./content/E3W16ResoReferenceCard'))
+                component: lazy(() => import('./content/elective-3/week-16/resources/E3W16ResoReferenceCard'))
               }
             ]
           },
@@ -1664,7 +1664,7 @@ export const CHAPTERS = [
               {
                 title: 'Presentations — Placeholder',
                 file: '/elective-3/week-16/presentations/PLACEHOLDER.htm',
-                component: lazy(() => import('./content/E3W16PresPlaceholder'))
+                component: lazy(() => import('./content/elective-3/week-16/presentations/E3W16PresPlaceholder'))
               }
             ]
           },
@@ -1674,17 +1674,17 @@ export const CHAPTERS = [
               {
                 title: 'Capstone Final — Exercises',
                 file: '/elective-3/week-16/exercises/exercise-prompt.htm',
-                component: lazy(() => import('./content/E3W16ExerExercisePrompt'))
+                component: lazy(() => import('./content/elective-3/week-16/exercises/E3W16ExerExercisePrompt'))
               },
               {
                 title: 'Capstone Presentation Template',
                 file: '/elective-3/week-16/exercises/presentation-template.htm',
-                component: lazy(() => import('./content/E3W16ExerPresentationTemplate'))
+                component: lazy(() => import('./content/elective-3/week-16/exercises/E3W16ExerPresentationTemplate'))
               },
               {
                 title: 'Take-Home Mission — "The Portfolio Polish"',
                 file: '/elective-3/week-16/exercises/take-home-mission.htm',
-                component: lazy(() => import('./content/E3W16ExerTakeHomeMission'))
+                component: lazy(() => import('./content/elective-3/week-16/exercises/E3W16ExerTakeHomeMission'))
               }
             ]
           }

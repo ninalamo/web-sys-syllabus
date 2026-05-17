@@ -4,9 +4,13 @@ import path from 'path'
 const ROOT = process.cwd()
 const SRC = path.join(ROOT, 'src', 'content')
 
-if (!fs.existsSync(SRC)) fs.mkdirSync(SRC, { recursive: true })
+// Clean build of output directory to prevent stray files
+if (fs.existsSync(SRC)) {
+  fs.rmSync(SRC, { recursive: true, force: true })
+}
+fs.mkdirSync(SRC, { recursive: true })
 
-// ─── Name helpers ────────────────────────────────────────────────────────────
+// ─── Name and path helpers ───────────────────────────────────────────────────
 
 function toPascalCase(str) {
   return str
@@ -47,6 +51,23 @@ function uniqueComponentName(relativeFile) {
   // Root level page, e.g. "elective-2-building-web-products.htm"
   const base = path.basename(file, path.extname(file))
   return sanitizeComponentName(base)
+}
+
+function getComponentSubfolder(relativeFile) {
+  const file = relativeFile.replace(/\\/g, '/')
+  const dir = path.dirname(file)
+  
+  if (dir.includes('/week-')) {
+    return dir
+  }
+  
+  const weekMatch = file.match(/elective-(\d+)\/week-(\d+)-/i)
+  if (weekMatch) {
+    const [, electiveNum, weekNum] = weekMatch
+    return `elective-${electiveNum}/week-${weekNum}`
+  }
+  
+  return ''
 }
 
 function getTitleFromHtml(htmlContent, fallback) {
@@ -259,7 +280,7 @@ function preprocessHtml(html) {
 console.log('Discovering files dynamically...')
 
 const CHAPTERS = []
-const processedFiles = new Set()
+const processedFiles = new Map() // maps compName -> relativeFile
 let successCount = 0
 let skipCount = 0
 
@@ -414,7 +435,7 @@ if (fs.existsSync(path.join(ROOT, teachingScript))) {
 function processFile(relativeFile, compName) {
   const filePath = path.join(ROOT, relativeFile.replace(/^\//, ''))
   if (processedFiles.has(compName)) return
-  processedFiles.add(compName)
+  processedFiles.set(compName, relativeFile)
 
   if (!fs.existsSync(filePath)) {
     console.log(`SKIP (not found): ${relativeFile}`)
@@ -464,25 +485,33 @@ ${indented.split('\n').map((l) => '      ' + l).join('\n')}
 `
   }
 
-  const outPath = path.join(SRC, `${compName}.jsx`)
+  const sub = getComponentSubfolder(relativeFile)
+  const destDir = sub ? path.join(SRC, sub) : SRC
+  if (!fs.existsSync(destDir)) fs.mkdirSync(destDir, { recursive: true })
+
+  const outPath = path.join(destDir, `${compName}.jsx`)
   fs.writeFileSync(outPath, componentCode, 'utf8')
-  console.log(`OK: ${relativeFile} → src/content/${compName}.jsx`)
+  console.log(`OK: ${relativeFile} → src/content/${sub ? sub + '/' : ''}${compName}.jsx`)
   successCount++
 }
 
 // ─── Generate src/data.js dynamically ────────────────────────────────────────
 
-const allExportedComponents = Array.from(processedFiles)
+const allExportedComponents = Array.from(processedFiles.keys())
 
 const importsSection = 'import { lazy } from \'react\'\n\n'
 
 const chaptersSection = `export const CHAPTERS = [\n` + CHAPTERS.map((ch) => {
   return `  {\n    id: '${ch.id}',\n    title: '${ch.title}',\n    items: [\n` + ch.items.map((item) => {
-    let out = `      {\n        title: '${item.title.replace(/'/g, "\\'")}',\n        file: '${item.file}',\n        component: lazy(() => import('./content/${item.componentName}'))`
+    const sub = getComponentSubfolder(processedFiles.get(item.componentName))
+    const importPath = sub ? `./content/${sub}/${item.componentName}` : `./content/${item.componentName}`
+    let out = `      {\n        title: '${item.title.replace(/'/g, "\\'")}',\n        file: '${item.file}',\n        component: lazy(() => import('${importPath}'))`
     if (item.children && item.children.length > 0) {
       out += `,\n        children: [\n` + item.children.map((cat) => {
         return `          {\n            title: '${cat.title}',\n            items: [\n` + cat.items.map((subItem) => {
-          return `              {\n                title: '${subItem.title.replace(/'/g, "\\'")}',\n                file: '${subItem.file}',\n                component: lazy(() => import('./content/${subItem.componentName}'))\n              }`
+          const subCat = getComponentSubfolder(processedFiles.get(subItem.componentName))
+          const subImportPath = subCat ? `./content/${subCat}/${subItem.componentName}` : `./content/${subItem.componentName}`
+          return `              {\n                title: '${subItem.title.replace(/'/g, "\\'")}',\n                file: '${subItem.file}',\n                component: lazy(() => import('${subImportPath}'))\n              }`
         }).join(',\n') + `\n            ]\n          }`
       }).join(',\n') + `\n        ]`
     }
@@ -516,7 +545,10 @@ console.log('\nGenerated src/data.js successfully.')
 // ─── Generate src/content/index.js dynamically ────────────────────────────────
 
 const indexExportLines = allExportedComponents.map((name) => {
-  return `export { default as ${name} } from './${name}'`
+  const relativeFile = processedFiles.get(name)
+  const sub = getComponentSubfolder(relativeFile)
+  const pathPart = sub ? `${sub}/${name}` : name
+  return `export { default as ${name} } from './${pathPart}'`
 }).join('\n')
 
 fs.writeFileSync(path.join(SRC, 'index.js'), indexExportLines + '\n', 'utf8')
