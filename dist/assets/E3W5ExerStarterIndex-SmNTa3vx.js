@@ -1,1 +1,0 @@
-import{j as t}from"./index-u8WTylHP.js";function e(){return t.jsxs("div",{className:"page-content",children:[t.jsx("h1",{children:"Todo List"}),t.jsx("input",{type:"text",id:"todoInput",placeholder:"Add a todo..."}),t.jsx("button",{id:"addBtn",children:"Add"}),t.jsx("div",{id:"app"})]})}export{e as default};

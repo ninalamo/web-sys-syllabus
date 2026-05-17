@@ -636,5 +636,111 @@ body {
   max-width: 48%;
 }
 
+/* Weekly Directory Premium Styles */
+.weekly-directory {
+  margin-top: 4rem;
+  border-top: 2px solid var(--border);
+  padding-top: 2.5rem;
+  margin-bottom: 2rem;
+}
+
+.directory-title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--fg);
+  margin-bottom: 0.25rem !important;
+  border-bottom: none !important;
+  padding-bottom: 0 !important;
+}
+
+.directory-subtitle {
+  font-size: 0.88rem;
+  color: var(--muted);
+  margin-bottom: 1.5rem;
+}
+
+.directory-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+}
+
+.directory-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.25rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.directory-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  border-color: var(--accent);
+}
+
+.category-header {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--fg);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.5rem;
+}
+
+.category-icon {
+  font-size: 1.2rem;
+}
+
+.category-list {
+  list-style: none !important;
+  padding-left: 0 !important;
+  margin: 0 !important;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.category-list-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  line-height: 1.4;
+}
+
+.item-bullet {
+  color: var(--accent);
+  font-size: 0.8rem;
+  transition: transform 0.2s;
+}
+
+.item-title-link {
+  color: var(--fg);
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.category-list-item:hover {
+  color: var(--accent);
+  transform: translateX(4px);
+}
+
+.category-list-item:hover .item-title-link {
+  color: var(--accent);
+}
+
+.category-list-item:hover .item-bullet {
+  transform: scale(1.2);
+}
+
+
 
 

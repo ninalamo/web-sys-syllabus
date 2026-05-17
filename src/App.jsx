@@ -131,6 +131,13 @@ export default function App() {
               : <p className="error">Content not found.</p>
             }
           </Suspense>
+          {item?.children && (
+            <WeeklyDirectory
+              weekItem={item}
+              fileToIndexMap={fileToIndexMap}
+              onSelect={(i) => goTo(i)}
+            />
+          )}
           <PageNavigation
             currentIndex={index}
             onSelect={(i) => goTo(i)}
@@ -222,6 +229,42 @@ function PageNavigation({ currentIndex, onSelect }) {
           <span className="page-nav-title">{nextItem.title}</span>
         </div>
       ) : <div className="page-nav-spacer" />}
+    </div>
+  )
+}
+
+function WeeklyDirectory({ weekItem, fileToIndexMap, onSelect }) {
+  if (!weekItem || !weekItem.children) return null
+
+  return (
+    <div className="weekly-directory">
+      <h3 className="directory-title">Weekly Roadmap &amp; Materials</h3>
+      <p className="directory-subtitle">Explore the reference resources, slide presentations, and practice exercises for this week.</p>
+      
+      <div className="directory-grid">
+        {weekItem.children.map((category) => {
+          const categoryIcon = category.title === 'Resources' ? '📚' : category.title === 'Presentations' ? '🖥️' : '💻'
+          return (
+            <div key={category.title} className="directory-card">
+              <h4 className="category-header">
+                <span className="category-icon">{categoryIcon}</span>
+                {category.title}
+              </h4>
+              <ul className="category-list">
+                {category.items.map((subItem) => {
+                  const idx = fileToIndexMap[subItem.file]
+                  return (
+                    <li key={subItem.file} className="category-list-item" onClick={() => idx !== undefined && onSelect(idx)}>
+                      <span className="item-bullet">▸</span>
+                      <span className="item-title-link">{subItem.title}</span>
+                    </li>
+                  )
+                })}
+              </ul>
+            </div>
+          )
+        })}
+      </div>
     </div>
   )
 }
