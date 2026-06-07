@@ -2,7 +2,7 @@ export default function CsharpTranslationBootcamp() {
   return (
     <div className="page-content">
       <h2>Week 1: C# Translation Bootcamp</h2>
-      <div style={{ background: '#fefce8', padding: '15px', borderLeft: '5px solid #ca8a04', marginBottom: '20px' }}>
+      <div style={{ background: '#fefce8', padding: '15px', borderLeft: '5px solid #ca8a04', marginBottom: '20px', color: '#111' }}>
         <strong>📋 This Week at a Glance</strong><br />
         🎯 This week: "Learn C# fundamentals — syntax, types, variables, and classes — the foundation for building web apps with ASP.NET Core"<br />
         <br />
