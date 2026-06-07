@@ -67,10 +67,9 @@ export default function E2W1ExerTranslationEngineHomework() {
         <td>20%</td>
       </tr>
       
-      
       <tr>
-        <td>Web‑Systems Impact: correct service layers and UI flow</td>
-        <td>5%</td>
+        <td>Program runs without errors</td>
+        <td>20%</td>
       </tr>
       </tbody></table>
     </div>

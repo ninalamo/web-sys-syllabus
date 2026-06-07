@@ -19,8 +19,7 @@ export default function E2W1PresSlideNotes() {
         <li><strong>Semicolons &amp; Statements</strong> — Period at end of a sentence analogy</li>
         <li><strong>Console App Anatomy</strong> — .csproj + Program.cs + top-level statements</li>
         <li><strong>Build-Run Cycle</strong> — <code>dotnet build</code> → <code>dotnet run</code> → feedback loop</li>
-        
-        <li><strong>HTTP, MVC, and the .NET stack</strong> — Client ↔︎ Browser ↔︎ Web Server ↔︎ ASP.NET Core MVC ↔︎ View</li>
+        <li><strong>Curly Braces &amp; Code Blocks</strong> — Visual boxes around code</li>
         <li><strong>Live Demo</strong> — Scaffold, write, build, break, fix</li>
         <li><strong>Exercise Intro</strong> — FizzBuzz, Calculator, Student Manager</li>
         <li><strong>Take-Home Mission</strong> — The Translation Engine (Bank Account in C#)</li>

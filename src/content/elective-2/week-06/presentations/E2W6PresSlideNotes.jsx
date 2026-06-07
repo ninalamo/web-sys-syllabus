@@ -9,8 +9,7 @@ export default function E2W6PresSlideNotes() {
         <li>Status Codes (BadRequest, NotFound, Unauthorized)</li>
         <li>Redirection Patterns (PRG)</li>
         <li>Returning JSON and Files</li>
-        
-        <li>Side‑by‑Side: C# DI vs JavaScript Require (see compare-node/ folder)</li>
+        <li>Live Demo: Swiss Army Controller</li>
         <li>Exercise: SearchController</li>
         <li>Take-Home: Safe Form Submission</li>
       </ol>
