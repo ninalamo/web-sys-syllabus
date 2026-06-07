@@ -4,6 +4,7 @@ export default function CsharpTranslationBootcamp() {
       <h2>Week 1: C# Translation Bootcamp</h2>
       <div style={{ background: '#fefce8', padding: '15px', borderLeft: '5px solid #ca8a04', marginBottom: '20px', color: '#111' }}>
         <strong>📋 This Week at a Glance</strong><br />
+        <h5>Want to see how all of this fits into a full web system? <a href="/content/elective-2/week-01/WebSystemsOverview">Web‑Systems Overview</a></h5>
         🎯 This week: "Learn C# fundamentals — syntax, types, variables, and classes — the foundation for building web apps with ASP.NET Core"<br />
         <br />
         <strong>Core Concepts:</strong><br />

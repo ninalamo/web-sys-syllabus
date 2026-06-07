@@ -8,7 +8,9 @@ export default function E2W5PresSlideNotes() {
         <li>Conventional Routing — default pattern</li>
         <li>Attribute Routing — surgical precision</li>
         <li>Route Constraints — first line of defense</li>
-        <li>Live Demo: Conventional vs Attribute</li>
+        
+        <li>Live Demo: Conventional vs Attribute <strong>(Include Data‑to‑UI AppDemo)</strong>
+        </li>
         <li>Exercise: Blog Routing</li>
         <li>Take-Home: SEO Overhaul</li>
       </ol>
